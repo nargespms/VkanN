@@ -1,0 +1,16 @@
+export default {
+  initiate: 'ingewijde',
+  home: 'house',
+  mytasks: 'mijn taken',
+  dashboard: 'dashboard',
+  EssentialLinks: 'Essentiële koppelingen',
+  tickets: 'kaartjes',
+  profile: 'profiel',
+  services: 'Diensten',
+  userManagement: 'user management',
+  Billing: 'Billing',
+  copyRightMsg: '© 2019 AASAAM COMPANY. Alle rechten voorbehouden.',
+  aboutmsg: 'Energieke en enthousiaste jonge mensen, na jaren van proberen en experimenteren op verschillende gebieden van het web bij verschillende bedrijven en bedrijven, besloten hun jarenlange ervaring te combineren met het enthousiasme en de energie van een nieuwe zelfgemaakte collectie genaamd Assam zodat ze alle beperkingen konden overwinnen die bestaande bedrijven gemeen hebben. En start een nieuw plan.',
+  AboutHeader: 'Over AASAAM Company',
+  contactmsg: 'Neem contact op',
+};

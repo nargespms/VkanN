@@ -1,0 +1,18 @@
+
+☐ adding transition to pages (router-view)
+✔ adding fonts @done(19-10-10 14:09)
+☐ two bugs according to routes
+  ✔ when page refresh the url stays but the page goes to defaultLocale with the same url @done(19-10-10 14:08)
+  ✔ when tryng to change the lang for the specific page it will take you to root of that locale (maybe not a problem :D) @done(19-10-10 14:08)
+  ☐ when typing meaningless character it will show you default homepage not 404 !!
+
+☐ layout needed
+  ☐ footer consist
+    ✔ copyright @done(19-10-10 15:44)
+    ✔ contact information(for clients only) @done(19-10-10 15:56)
+    ✔ about company @done(19-10-10 15:44)
+  ☐ header
+    ☐ login / logout
+    ☐ user avatar & Name
+    ☐ search box
+

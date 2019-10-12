@@ -1,0 +1,71 @@
+
+.con10 {
+  max-width: 1000px;
+  margin: auto;
+}
+.con12 {
+  max-width: 1200px;
+  margin: auto;
+}
+.con16 {
+  max-width: 1400px;
+  margin: auto;
+}
+.con14 {
+  max-width: 1600px;
+  margin: auto;
+}
+
+ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+a:focus {
+	text-decoration: none;
+	border: none;
+}
+a {
+	text-decoration: none;
+	outline: none;
+}
+p, h1, h2, h3, h4, h5, h6 {
+	margin: 0;
+}
+[dir=rtl] body {
+  font-family: 'Shabnam';
+}
+[dir=ltr] body {
+  font-family: 'Roboto';
+}
+body * {
+  box-sizing: border-box;
+}
+.block { display: block; }
+.mb12 { margin-bottom: 12px;}
+.mt12 { margin-top: 12px;}
+.flex { display: flex; }
+.center { text-align: center; }
+.float { float: right;}
+.defloat { float: left;}
+.clear { overflow: auto; }
+
+@font-face {
+  font-family: Shabnam;
+  src: url('./fonts/Shabnam-FD.eot');
+  src: url('./fonts/Shabnam-FD.eot?#iefix') format('embedded-opentype'),
+       url('./fonts/Shabnam-FD.woff2') format('woff2'),
+       url('./fonts/Shabnam-FD.woff') format('woff'),
+       url('./fonts/Shabnam-FD.ttf') format('truetype');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: ShabnamBold;
+  src: url('./fonts/Shabnam-Bold-FD.eot');
+  src: url('./fonts/Shabnam-Bold-FD.eot?#iefix') format('embedded-opentype'),
+       url('./fonts/Shabnam-Bold-FD.woff2') format('woff2'),
+       url('./fonts/Shabnam-Bold-FD.woff') format('woff'),
+       url('./fonts/Shabnam-Bold-FD.ttf') format('truetype');
+  font-weight: bold;
+}
