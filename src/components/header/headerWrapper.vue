@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="clear">
     <q-header elevated >
       <div class="con16">
         <q-toolbar class="headerInner">

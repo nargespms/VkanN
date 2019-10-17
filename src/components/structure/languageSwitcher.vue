@@ -7,6 +7,12 @@
         {{locale.label}}
       </span>
     </router-link>
+    <router-link  :to="'/' +locale + '/' + 'signIn'">
+      <span>
+        <q-icon name="fas fa-user"></q-icon>
+        login
+      </span>
+    </router-link>
   </div>
 </template>
 <script>

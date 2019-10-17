@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="hHr LpR lff">
     <header-wrapper :locale="locale"/>
     <q-page-container>
       <router-view />
@@ -31,6 +31,11 @@ export default {
       import(`quasar/lang/${locale}`).then(({ default: messages }) => {
         this.$q.lang.set(messages);
       });
+    },
+  },
+  computed: {
+    NotUser() {
+      return (this.$route.path !== `'/' + ${this.locale} + '/' + 'signIn'`);
     },
   },
 

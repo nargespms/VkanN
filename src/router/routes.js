@@ -12,7 +12,10 @@ const routes = [
     path: '/:locale',
     component: () => import('layouts/default.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') },
+      { path: '', component: () => import('pages/signIn.vue') },
+      { path: 'dashboard', component: () => import('pages/dashboard.vue') },
+      { path: 'signIn', component: () => import('pages/signIn.vue') },
+      { path: 'signUp', component: () => import('pages/signUp.vue') },
       { path: 'profile', component: () => import('pages/profile') },
       { path: 'clients', component: () => import('pages/clients') },
       { path: 'tickets', component: () => import('pages/tickets') },

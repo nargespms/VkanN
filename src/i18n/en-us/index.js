@@ -17,4 +17,11 @@ export default {
   aboutmsg: 'Energetic and enthusiastic young people, after years of trying and experimenting in different areas of the web in various companies and companies, decided to combine their years of experience with the enthusiasm and youthfulness of their new self-made collection, Assam, so that they could overcome all the limitations common to existing companies. And start a new project.',
   AboutHeader: 'ABout AASAAM Company',
   contactmsg: 'Contact Us',
+  signin: 'SignIn',
+  register: 'Register',
+  welcomemsg: 'Assam Software Group Services and Support System',
+  forgotEmail: 'Forgot Email',
+  forgetpassword: 'Forgot Your Password',
+  questionmark: '?',
+  newaccount: 'Creating New Account',
 };

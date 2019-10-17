@@ -44,25 +44,28 @@ module.exports = function (ctx) {
       //            (fastest compile time; minimum bundle size; most tedious)
       // * true   - Import everything from Quasar
       //            (not treeshaking Quasar; biggest bundle size; convenient)
-      all: false,
+      all: 'auto',
 
       components: [
-        'QLayout',
-        'QHeader',
-        'QFooter',
-        'QDrawer',
-        'QPageContainer',
-        'QPage',
-        'QToolbar',
-        'QToolbarTitle',
-        'QBtn',
-        'QIcon',
-        'QList',
-        'QItem',
-        'QItemSection',
-        'QItemLabel',
-        'QBtnToggle',
-        'QSelect',
+        // 'QLayout',
+        // 'QHeader',
+        // 'QFooter',
+        // 'QDrawer',
+        // 'QPageContainer',
+        // 'QPage',
+        // 'QToolbar',
+        // 'QToolbarTitle',
+        // 'QBtn',
+        // 'QIcon',
+        // 'QList',
+        // 'QItem',
+        // 'QItemSection',
+        // 'QItemLabel',
+        // 'QBtnToggle',
+        // 'QSelect',
+        // 'QCard',
+        // 'QTabs',
+        // 'QTabPanels',
       ],
 
       directives: [
@@ -72,6 +75,8 @@ module.exports = function (ctx) {
       // Quasar plugins
       plugins: [
         'Loading',
+        'Notify',
+        'Dialog',
       ],
     },
 

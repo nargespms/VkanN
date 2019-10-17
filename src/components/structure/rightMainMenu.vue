@@ -11,7 +11,7 @@
           <ul>
             <li class="mainMenuLi">
               <!-- home route -->
-              <router-link :to="'/' +locale">
+              <router-link :to="'/' +locale + '/' + 'dashboard'">
                 <q-icon name="home" />
                 {{$t('dashboard')}}
               </router-link>
@@ -19,7 +19,7 @@
             <li class="mainMenuLi">
               <!-- profile route -->
               <router-link :to="'/' +locale + '/' + 'profile'">
-                <q-icon name="face" />
+                <q-icon name="fas fa-address-card" />
                 {{$t('profile')}}
               </router-link>
             </li>
