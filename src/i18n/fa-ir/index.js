@@ -22,4 +22,7 @@ export default {
   questionmark: '؟',
   newaccount: 'ایجاد حساب کاربری',
   PleaseEnterYourEmailOrUsername: 'لطفا وارد کنید',
+  female: 'زن',
+  male: 'مرد',
+  gender: 'جنسیت',
 };

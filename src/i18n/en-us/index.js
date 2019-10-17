@@ -24,4 +24,7 @@ export default {
   forgetpassword: 'Forgot Your Password',
   questionmark: '?',
   newaccount: 'Creating New Account',
+  female: 'female',
+  male: 'male',
+  gender: 'Gender',
 };

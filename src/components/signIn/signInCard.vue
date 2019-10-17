@@ -58,7 +58,7 @@ export default {
   background-color: #F1F7F8;
   border-left: 1px solid #E5EFF2;
   color: #fff;
-  height: 500px;
+  height: 700px;
   width: 30%;
   box-sizing: border-box;
   background-image: url("../../assets/aasaam-typo.png");
