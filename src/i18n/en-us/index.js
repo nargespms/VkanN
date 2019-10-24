@@ -27,4 +27,11 @@ export default {
   female: 'female',
   male: 'male',
   gender: 'Gender',
+  firstName: 'First Name',
+  lastName: 'Last Name',
+  email: 'Email',
+  pleaseEnterYourPhoneNumber: 'Please Enter Your Phone Number',
+  EnterYourPassword: 'Please Enter Your Password',
+  ReEnterYourPassword: 'Please ReEnter Your Password',
+  submit: 'Submit',
 };

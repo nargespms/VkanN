@@ -7,7 +7,7 @@
       <!-- user name -->
       <q-input  outlined required class="inputFieldText"
                     color="light-blue-10" v-model="form.FirstName"
-                    label="FirstName"
+                    :label="$t('firstName')"
                     lazy-rules
                     :rules="[ val => val && val.length > 0 ]">
         <template v-slot:prepend>
@@ -17,7 +17,7 @@
       <!-- last name -->
       <q-input  outlined required class="inputFieldText"
                     color="light-blue-10" v-model="form.LastName"
-                    label="LastName"
+                    :label="$t('lastName')"
                     lazy-rules
                     :rules="[ val => val && val.length > 0 ]">
         <template v-slot:prepend>
@@ -25,14 +25,15 @@
         </template>
       </q-input>
       <!-- Email -->
-      <q-input outlined required label="Email"
+      <q-input outlined required :label="$t('email')"
         v-model="form.email"
         @blur="$v.form.email.$touch"
         @keyup.enter="submit"
         :error="$v.form.email.$error"
       />
       <!-- Phone Number -->
-        <vue-tel-input required v-model="MobileNumber" ></vue-tel-input>
+        <vue-tel-input required v-model="MobileNumber"
+                       :placeholder="$t('pleaseEnterYourPhoneNumber')"></vue-tel-input>
       <!-- Gender -->
       <div class="genderRegister">
         <label >
@@ -47,7 +48,7 @@
       </div>
       <!-- password -->
       <q-input  outlined required class="inputFieldText passwordField" color="light-blue-10"
-                label="Enter Your Password"
+                :label="$t('EnterYourPassword')"
                 v-model="form.PassWord"  :type="isPwd ? 'password' : 'text'"
                 lazy-rules
                 :rules="[ val => val && val.length > 0 || 'Please type something']">
@@ -61,7 +62,7 @@
       </q-input>
       <!-- Re enter password -->
       <q-input  outlined required class="inputFieldText passwordField" color="light-blue-10"
-                label="ReEnter Your Password"
+                :label="$t('ReEnterYourPassword')"
                 v-model="form.Confirmpass"  :type="isPwd ? 'password' : 'text'"
                 lazy-rules
                 :rules="[ val => val && val.length > 0 || 'Please type something']">
@@ -73,7 +74,9 @@
           />
         </template>
       </q-input>
-      <q-btn color="primary" @click="onSubmit">Submit</q-btn>
+      <q-btn color="primary" @click="onSubmit">
+        {{$t('submit')}}
+      </q-btn>
     </q-form>
   </div>
 </template>
@@ -108,10 +111,13 @@ export default {
   },
   methods: {
     onSubmit() {
-      if ((this.form.email.length !== 0) && (this.form.FirstName.length !== 0)
-      && (this.form.Gender.length !== 0) && (this.form.LastName.length !== 0)
-      && (this.form.PassWord.length !== 0)
-      && (this.form.Confirmpass.length !== 0)
+      if (
+        this.form.email.length !== 0 &&
+        this.form.FirstName.length !== 0 &&
+        this.form.Gender.length !== 0 &&
+        this.form.LastName.length !== 0 &&
+        this.form.PassWord.length !== 0 &&
+        this.form.Confirmpass.length !== 0
       ) {
         this.$v.form.$touch();
         if (this.$v.form.$error) {
@@ -131,9 +137,10 @@ export default {
             position: 'top',
             timeout: Math.random() * 5000 + 3000,
           });
-          console.log('Loged In');
-          // it dosnt work
-          this.$router.push({ path: 'dashboard' });
+          console.log('Logged In');
+          this.$router.push({
+            path: `/${this.$route.params.locale}/dashboard`,
+          });
         } else {
           this.$q.notify({
             message: 'Password dosnt match',
@@ -160,17 +167,16 @@ export default {
 .RegisterForm {
   width: 400px;
   margin: 12px auto;
-  [dir="rtl"] .RegisterForm .vti__dropdown-list {
+  [dir='rtl'] .RegisterForm .vti__dropdown-list {
     position: absolute;
     right: 0;
     direction: ltr;
   }
   .vti__dropdown-list {
-    left: 0!important;
+    left: 0 !important;
     text-align: left;
     width: 382px;
   }
-
 }
 .q-panel-parent {
   overflow: unset;
@@ -182,6 +188,6 @@ export default {
   padding: 8px 2px;
 }
 .genderOpt {
-  padding-right: 50px
+  padding-right: 50px;
 }
 </style>
