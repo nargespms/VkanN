@@ -1,26 +1,27 @@
 <template >
   <div class="q-pa-md">
     <q-card class="myCard">
-      <div class="loginImage">
-
-      </div>
+      <div class="loginImage"></div>
       <div class="tabWrapper">
         <q-tabs v-model="tab" class="tabsContainer">
-          <q-tab class="tabSelect" label="" name="one">{{$t('signin')}}</q-tab>
-          <q-tab class="tabSelect" label="" name="two">{{$t('register')}}</q-tab>
+          <q-tab class="tabSelect" label name="login">{{$t('signin')}}</q-tab>
+          <q-tab class="tabSelect" label name="register">{{$t('register')}}</q-tab>
         </q-tabs>
-         <q-card-section>
-          <p class="welcomeMgs">
-            {{$t('welcomemsg')}}
-          </p>
+        <!-- titl for login Register Card -->
+        <q-card-section>
+          <p class="welcomeMgs">{{$t('welcomemsg')}}</p>
         </q-card-section>
         <q-tab-panels v-model="tab" animated>
-          <q-tab-panel name="one">
-            <loginCmp/>
+          <q-tab-panel name="login">
+            <loginCmp @changeTab="signUp" @changToForget="forget" />
           </q-tab-panel>
 
-          <q-tab-panel name="two">
-            <registerCmp/>
+          <q-tab-panel name="register">
+            <registerCmp />
+          </q-tab-panel>
+
+          <q-tab-panel name="forget">
+            <forgetCmp />
           </q-tab-panel>
         </q-tab-panels>
       </div>
@@ -30,16 +31,27 @@
 <script>
 import loginCmp from './loginCmp.vue';
 import registerCmp from './registerCmp.vue';
+import forgetCmp from './forgetCmp.vue';
 
 export default {
   data() {
     return {
-      tab: 'one',
+      tab: 'login',
     };
   },
   components: {
     loginCmp,
     registerCmp,
+    forgetCmp,
+  },
+  methods: {
+    signUp() {
+      this.tab = 'register';
+    },
+    forget() {
+      this.tab = 'forget';
+      console.log('signincard');
+    },
   },
 };
 </script>
@@ -50,23 +62,24 @@ export default {
   overflow: auto;
 }
 .tabWrapper {
-   width: 70%;
+  width: 70%;
   float: right;
+  overflow: hidden;
 }
 .loginImage {
   float: left;
-  background-color: #F1F7F8;
-  border-left: 1px solid #E5EFF2;
+  background-color: #f1f7f8;
+  border-left: 1px solid #e5eff2;
   color: #fff;
   height: 900px;
   width: 30%;
   box-sizing: border-box;
-  background-image: url("../../assets/aasaam-typo.png");
+  background-image: url('../../assets/aasaam-typo.png');
   background-size: 70%;
   background-repeat: no-repeat;
   background-position: center;
 }
-.tabsContainer{
+.tabsContainer {
   background-color: #ffa900;
   color: #fff;
   font-family: 'ShabnamBold';
@@ -88,14 +101,16 @@ export default {
   display: flex;
   justify-content: space-around;
   font-family: 'ShabnamBold';
-  font-size:18px;
+  font-size: 18px;
   margin-bottom: 24px;
 }
-[dir="rtl"] .q-card > div:first-child, [dir="rtl"] .q-card > img:first-child {
+[dir='rtl'] .q-card > div:first-child,
+[dir='rtl'] .q-card > img:first-child {
   border-top-right-radius: inherit;
   border-top-left-radius: 0;
 }
-[dir="ltr"] .q-card > div:first-child, [dir="ltr"] .q-card > img:first-child {
+[dir='ltr'] .q-card > div:first-child,
+[dir='ltr'] .q-card > img:first-child {
   border-top-left-radius: inherit;
   border-top-right-radius: 0;
 }

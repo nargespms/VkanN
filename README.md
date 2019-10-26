@@ -1,4 +1,4 @@
-# aasaamCrm (aasaam_crm)
+# VkanN
 
 is an app for Customer relationship management
 
@@ -22,4 +22,3 @@ npm run lint
 npm run build
 ```
 
-# aasaamCRM
