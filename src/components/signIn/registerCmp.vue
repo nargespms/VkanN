@@ -6,7 +6,7 @@
     >
       <!-- user name -->
       <q-input  outlined required class="inputFieldText"
-                    color="light-blue-10" v-model="form.FirstName"
+                    color="light-blue-10" ref="form.FirstName" v-model="form.FirstName"
                     label="FirstName"
                     lazy-rules
                     :rules="[ val => val && val.length > 0 ]">
@@ -16,7 +16,7 @@
       </q-input>
       <!-- last name -->
       <q-input  outlined required class="inputFieldText"
-                    color="light-blue-10" v-model="form.LastName"
+                    color="light-blue-10" ref="form.LastName" v-model="form.LastName"
                     label="LastName"
                     lazy-rules
                     :rules="[ val => val && val.length > 0 ]">
@@ -26,13 +26,19 @@
       </q-input>
       <!-- Email -->
       <q-input outlined required label="Email"
+        ref="form.email"
         v-model="form.email"
         @blur="$v.form.email.$touch"
         @keyup.enter="submit"
         :error="$v.form.email.$error"
+        :rules="[ val => val && val.length > 0 ]"
       />
       <!-- Phone Number -->
-        <vue-tel-input required v-model="MobileNumber" ></vue-tel-input>
+        <vue-tel-input required v-model="form.MobileNumber"
+                      :rules="[
+                        val => val !== null && val !== '' || 'Please type your age',
+                      ]">
+        </vue-tel-input>
       <!-- Gender -->
       <div class="genderRegister">
         <label >
@@ -50,7 +56,8 @@
                 label="Enter Your Password"
                 v-model="form.PassWord"  :type="isPwd ? 'password' : 'text'"
                 lazy-rules
-                :rules="[ val => val && val.length > 0 || 'Please type something']">
+                ref="form.PassWord"
+                :rules="[ val => val && val.length > 0]">
         <template v-slot:prepend>
           <q-icon
             :name="isPwd ? 'visibility_off' : 'visibility'"
@@ -64,7 +71,8 @@
                 label="ReEnter Your Password"
                 v-model="form.Confirmpass"  :type="isPwd ? 'password' : 'text'"
                 lazy-rules
-                :rules="[ val => val && val.length > 0 || 'Please type something']">
+                ref="form.Confirmpass"
+                :rules="[ val => val && val.length > 0]">
         <template v-slot:prepend>
           <q-icon
             :name="isPwd ? 'visibility_off' : 'visibility'"
@@ -89,12 +97,12 @@ export default {
   data() {
     return {
       enableRegister: true,
-      MobileNumber: '',
       isPwd: true,
       form: {
         email: '',
         FirstName: '',
         LastName: '',
+        MobileNumber: '',
         Gender: '',
         PassWord: '',
         Confirmpass: '',
@@ -108,32 +116,34 @@ export default {
   },
   methods: {
     onSubmit() {
-      if ((this.form.email.length !== 0) && (this.form.FirstName.length !== 0)
-      && (this.form.Gender.length !== 0) && (this.form.LastName.length !== 0)
-      && (this.form.PassWord.length !== 0)
-      && (this.form.Confirmpass.length !== 0)
+      // validation for first name &last name & email
+
+      if ((this.$refs['form.FirstName'].validate()) && (this.$refs['form.LastName'].validate())
+      && (this.$refs['form.email'].validate()) && (this.$refs['form.PassWord'].validate())
+      && (this.$refs['form.Confirmpass'].validate()) && (this.form.MobileNumber.length !== 0)
       ) {
-        this.$v.form.$touch();
-        if (this.$v.form.$error) {
-          this.$q.notify({
-            message: 'Please Enter A valid Email',
-            color: 'negative',
-            icon: 'warning',
-            position: 'top',
-          });
-        }
         if (this.form.PassWord === this.form.Confirmpass) {
-          this.enableRegister = false;
-          this.$q.notify({
-            color: 'dark',
-            icon: 'verified_user',
-            message: `Welcome ${this.form.FirstName}!`,
-            position: 'top',
-            timeout: Math.random() * 5000 + 3000,
-          });
+          // last step
+          this.$v.form.$touch();
+          if (this.$v.form.$error) {
+            this.$q.notify({
+              message: 'Please Enter A valid Email',
+              color: 'negative',
+              icon: 'warning',
+              position: 'top',
+            });
+          } else {
+            this.enableRegister = false;
+            this.$router.push({ path: 'dashboard' });
+            this.$q.notify({
+              color: 'dark',
+              icon: 'verified_user',
+              message: `Welcome ${this.form.FirstName}!`,
+              position: 'top',
+              timeout: Math.random() * 5000 + 3000,
+            });
+          }
           console.log('Loged In');
-          // it dosnt work
-          this.$router.push({ path: 'dashboard' });
         } else {
           this.$q.notify({
             message: 'Password dosnt match',
@@ -142,10 +152,17 @@ export default {
             position: 'top',
           });
         }
-      } else {
+      } else if (this.form.MobileNumber.length === 0) {
         console.log(this.form.email.length);
         this.$q.notify({
-          message: 'Please fill the required fields',
+          message: 'Please fill number',
+          color: 'negative',
+          icon: 'warning',
+          position: 'top',
+        });
+      } else {
+        this.$q.notify({
+          message: 'Please fill required filds',
           color: 'negative',
           icon: 'warning',
           position: 'top',

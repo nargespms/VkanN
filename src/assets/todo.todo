@@ -7,7 +7,7 @@
   ☐ when typing meaningless character it will show you default homepage not 404 !!
 
 ☐ layout needed
-  ☐ footer consist
+  ✔ footer consist @done(19-10-20 14:27)
     ✔ copyright @done(19-10-10 15:44)
     ✔ contact information(for clients only) @done(19-10-10 15:56)
     ✔ about company @done(19-10-10 15:44)
@@ -18,3 +18,7 @@
 
 ☐ Register
   ☐ How to use tel input computed properties
+  ☐ specify requirement fields for register
+  ☐ captcha Register & login
+  ☐ otp implemention
+  ☐ validation for form (it should check emil before password)
