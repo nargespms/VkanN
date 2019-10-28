@@ -29,4 +29,4 @@
   ☐ validation for code becaus its fill with ##### its not empty
   ☐ enter button should be disabl when retrive code dosnt fill yet
 bugFixfor forget
-      ☐ in other langs when trying to go to forget pass it goes to default lang
+      ☐ in other langs when trying to go to forget pass it goes to default lang (emit actions goes to default lang)

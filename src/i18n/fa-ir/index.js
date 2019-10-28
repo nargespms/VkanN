@@ -45,6 +45,5 @@ export default {
   RetrivePass: 'بازیابی رمز عبور',
   retrivedMessage:'بعد از فلان دقیقه کد برای شما ارسال میشود',
   resendPass: 'بازیابی  دوباره رمز',
-  // otp: 'رمز یکبار مصرف',
-  // password: 'رمز  کاربری',
+  choosePhoto: 'انتخاب عکس',
 };
