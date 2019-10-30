@@ -19,3 +19,10 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.profileInfoWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+</style>

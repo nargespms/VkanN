@@ -47,7 +47,6 @@ export default {
 
 <style lang="scss">
 .userInformationWrapper {
-  width: 75%;
-  display: flex;
+  width: calc(100%);
 }
 </style>
