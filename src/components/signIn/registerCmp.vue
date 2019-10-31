@@ -188,7 +188,7 @@ export default {
   overflow: hidden;
 }
 .RegisterForm {
-  width: 400px;
+  width: 100%;
   margin: 12px auto;
   [dir='rtl'] .RegisterForm .vti__dropdown-list {
     position: absolute;

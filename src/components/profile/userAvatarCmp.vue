@@ -6,7 +6,8 @@
         <p class="absolute-bottom text-h6 choosePhoto">{{$t('choosePhoto')}}</p>
       </div>
       <q-card-section class="usrInfoAvatar">
-        <p>ssssssssssssssssssssssssssssss</p>
+        <p>ssssssssssssssss
+          ssssssssssssss</p>
       </q-card-section>
     </q-card>
   </div>
@@ -21,7 +22,7 @@ export default {
 <style lang="scss">
 .userAvatar {
   width: calc(100% / 6);
-  padding-left: 16px;
+  padding-right: 16px;
   img {
     max-width: 100%;
   }

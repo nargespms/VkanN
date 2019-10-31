@@ -189,7 +189,7 @@ export default {
 </script>
 <style lang="scss">
 .loginForm {
-  width: 400px;
+  width: 100%;
   margin: 12px auto;
 }
 .inputFieldText {

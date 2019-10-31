@@ -1,12 +1,17 @@
 <template>
   <div class="q-pa-lg">
-    {{$t('userManagement')}}
+    <userManagementList/>
   </div>
 </template>
 
 
 <script>
+import userManagementList from '../components/userMangement/userManagementList.vue';
+
 export default {
+  components: {
+    userManagementList,
+  },
   data() {
     return {
       name: 'userManagement',
@@ -15,5 +20,4 @@ export default {
 };
 </script>
 <style lang="scss">
-
 </style>

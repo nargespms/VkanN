@@ -45,4 +45,8 @@ export default {
   PleaseEnterAvalidEmail: 'Please Enter Avalid Email',
   otp: 'OTP',
   password: 'Password',
+  choosePhoto: ' choose Photo',
+  profileInfo: ' profile Info',
+  profileInfoDetails: 'profile Info Details ',
+  editProfile: 'edit Profile',
 };

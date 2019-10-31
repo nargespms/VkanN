@@ -6,40 +6,47 @@
         dense
         class="text-grey"
         active-color="primary"
-        indicator-color="primary"
         align="justify"
-        narrow-indicator
       >
-        <q-tab name="mails" label="Mails" />
-        <q-tab name="alarms" label="Alarms" />
-        <q-tab name="movies" label="Movies" />
+        <q-tab name="profileInfo" :label="$t('profileInfo')" />
+        <q-tab name="profileInfoDetails" :label="$t('profileInfoDetails')" />
+        <q-tab name="editProfile" :label="$t('editProfile')" />
       </q-tabs>
-
       <q-separator />
-
       <q-tab-panels v-model="tab" animated>
-        <q-tab-panel name="mails">
-          <div class="text-h6">Mails</div>Lorem ipsum dolor sit amet consectetur adipisicing elit.
+
+        <q-tab-panel name="profileInfo">
+          <userInformationInfo/>
         </q-tab-panel>
 
-        <q-tab-panel name="alarms">
-          <div class="text-h6">Alarms</div>Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        <q-tab-panel name="profileInfoDetails">
+          <userInformationDetailsInfo/>
         </q-tab-panel>
 
-        <q-tab-panel name="movies">
-          <div class="text-h6">Movies</div>Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        <q-tab-panel name="editProfile">
+          <profileEditForm/>
         </q-tab-panel>
+
       </q-tab-panels>
     </q-card>
   </div>
 </template>
 
 <script>
+import userInformationInfo from './userInformationInfo.vue';
+import userInformationDetailsInfo from './userInformationDetailsInfo.vue';
+import profileEditForm from './profileEditForm.vue';
+
 export default {
   name: 'userInformation',
+  components: {
+    userInformationInfo,
+    userInformationDetailsInfo,
+    profileEditForm,
+  },
   data() {
     return {
-      tab: 'mails',
+      tab: 'profileInfo',
     };
   },
 };
@@ -48,5 +55,11 @@ export default {
 <style lang="scss">
 .userInformationWrapper {
   width: calc(100%);
+}
+[dir] .q-tab--active {
+  border-bottom: 3px solid $orange;
+}
+.q-tab__indicator {
+  height: 0px;
 }
 </style>

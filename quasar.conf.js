@@ -18,6 +18,7 @@ module.exports = function (ctx) {
     css: [
       // 'app.scss',
       'global.scss',
+      'stickyListTable.scss',
     ],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
@@ -109,9 +110,12 @@ module.exports = function (ctx) {
         });
         cfg.module.rules.push({
           resourceQuery: /blockType=i18n/,
-          use: [
-            { loader: '@kazupon/vue-i18n-loader' },
-            { loader: 'yaml-loader' },
+          use: [{
+              loader: '@kazupon/vue-i18n-loader'
+            },
+            {
+              loader: 'yaml-loader'
+            },
           ],
         });
       },
@@ -145,8 +149,7 @@ module.exports = function (ctx) {
         orientation: 'portrait',
         background_color: '#ffffff',
         theme_color: '#027be3',
-        icons: [
-          {
+        icons: [{
             src: 'statics/icons/icon-128x128.png',
             sizes: '128x128',
             type: 'image/png',
