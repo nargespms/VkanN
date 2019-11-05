@@ -1,22 +1,26 @@
 <template>
-    <div class="userManagementListWrap">
-       <q-table
-        class="my-sticky-header-column-table"
-        title="Treats"
-        :data="data"
-        :columns="columns"
-        :filter="filter"
-        row-key="name"
-        >
-        <template v-slot:top-right>
-        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
+  <div class="userManagementListWrap">
+    <q-table
+      class="my-sticky-header-table"
+      :data="data"
+      :columns="columns"
+      :filter="filter"
+      :pagination.sync="pagination"
+      row-key="name"
+      :dense="$q.screen.lt.md"
+      :sort-method="customSort"
+      binary-state-sort
+      :separator="separator"
+    >
+      <template v-slot:top-right>
+        <q-input borderless dense debounce="300" v-model="filter" :placeholder="$t('Search')">
           <template v-slot:append>
             <q-icon name="search" />
           </template>
         </q-input>
       </template>
-       </q-table>
-    </div>
+    </q-table>
+  </div>
 </template>
 
 <script>
@@ -24,6 +28,14 @@ export default {
   data() {
     return {
       filter: '',
+      pagination: {
+        sortBy: 'name',
+        descending: false,
+        page: 1,
+        rowsPerPage: 10,
+        // rowsNumber: xx if getting data from a server
+      },
+      separator: 'cell',
       columns: [
         {
           name: 'name',
@@ -63,9 +75,9 @@ export default {
           sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
         },
         {
-          name: 'iron',
-          label: 'Iron (%)',
-          field: 'iron',
+          name: 'status',
+          label: 'status',
+          field: 'status',
           sortable: true,
           sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
         },
@@ -80,7 +92,7 @@ export default {
           protein: 4.0,
           sodium: 87,
           calcium: '14%',
-          iron: '1%',
+          status: 'active',
         },
         {
           name: 'Ice cream sandwich',
@@ -90,7 +102,7 @@ export default {
           protein: 4.3,
           sodium: 129,
           calcium: '8%',
-          iron: '1%',
+          status: 'active',
         },
         {
           name: 'Eclair',
@@ -100,7 +112,7 @@ export default {
           protein: 6.0,
           sodium: 337,
           calcium: '6%',
-          iron: '7%',
+          status: 'active',
         },
         {
           name: 'Cupcake',
@@ -110,7 +122,7 @@ export default {
           protein: 4.3,
           sodium: 413,
           calcium: '3%',
-          iron: '8%',
+          status: 'active',
         },
         {
           name: 'Gingerbread',
@@ -120,7 +132,7 @@ export default {
           protein: 3.9,
           sodium: 327,
           calcium: '7%',
-          iron: '16%',
+          status: 'inactive',
         },
         {
           name: 'Jelly bean',
@@ -130,7 +142,7 @@ export default {
           protein: 0.0,
           sodium: 50,
           calcium: '0%',
-          iron: '0%',
+          status: 'active',
         },
         {
           name: 'Lollipop',
@@ -140,7 +152,7 @@ export default {
           protein: 0,
           sodium: 38,
           calcium: '0%',
-          iron: '2%',
+          status: 'active',
         },
         {
           name: 'Honeycomb',
@@ -150,7 +162,7 @@ export default {
           protein: 6.5,
           sodium: 562,
           calcium: '0%',
-          iron: '45%',
+          status: 'inactive',
         },
         {
           name: 'Donut',
@@ -160,7 +172,7 @@ export default {
           protein: 4.9,
           sodium: 326,
           calcium: '2%',
-          iron: '22%',
+          status: 'inactive',
         },
         {
           name: 'KitKat',
@@ -170,10 +182,31 @@ export default {
           protein: 7,
           sodium: 54,
           calcium: '12%',
-          iron: '6%',
+          status: 'active',
         },
       ],
     };
+  },
+  methods: {
+    customSort(rows, sortBy, descending) {
+      const data = [...rows];
+
+      if (sortBy) {
+        data.sort((a, b) => {
+          const x = descending ? b : a;
+          const y = descending ? a : b;
+          if (sortBy === 'name') {
+            // string sort
+            // eslint-disable-next-line no-nested-ternary
+            return x[sortBy] > y[sortBy] ? 1 : x[sortBy] < y[sortBy] ? -1 : 0;
+          }
+          // numeric sort
+          return parseFloat(x[sortBy]) - parseFloat(y[sortBy]);
+        });
+      }
+
+      return data;
+    },
   },
 };
 </script>

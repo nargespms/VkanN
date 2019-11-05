@@ -51,7 +51,7 @@ export default {
   methods: {
     onSubmit() {
       if (this.MobileNumber.length !== 0) {
-        console.log('retrive pass request');
+        // console.log('retrive pass request');
         this.enterMobile = false;
         this.entercode = true;
       } else {
@@ -66,7 +66,7 @@ export default {
     enterFromForgetpas() {
       if (this.retrivedCode !== 0) {
         this.entercode = false;
-        console.log('Submit Form');
+        // console.log('Submit Form');
         this.showNotif('top-right');
       } else {
         this.$q.dialog({

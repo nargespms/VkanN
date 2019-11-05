@@ -1,16 +1,16 @@
 <template >
   <div>
-    <router-link class="switchLangsBut"  v-for="locale in locales"
-                  :key="locale.label"
-                  :to="'/' + locale.value + '/' +newroute">
-      <span >
-        {{locale.label}}
-      </span>
+    <router-link
+      class="switchLangsBut"
+      v-for="locale in locales"
+      :key="locale.label"
+      :to="'/' + locale.value + '/' +newroute"
+    >
+      <span>{{locale.label}}</span>
     </router-link>
-    <router-link  :to="'/' +locale + '/' + 'signIn'">
+    <router-link :to="'/' +locale + '/' + 'signIn'" class="loginBut text-white">
       <span>
-        <q-icon name="fas fa-user"></q-icon>
-        login
+        <q-icon name="fas fa-user"></q-icon>login
       </span>
     </router-link>
   </div>
@@ -31,7 +31,10 @@ export default {
   },
   computed: {
     newroute() {
-      return this.$route.path.split('/').slice(2).toString();
+      return this.$route.path
+        .split('/')
+        .slice(2)
+        .toString();
     },
   },
 };
@@ -51,5 +54,4 @@ export default {
     color: #ffff03;
   }
 }
-
 </style>

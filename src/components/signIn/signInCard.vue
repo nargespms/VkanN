@@ -50,7 +50,7 @@ export default {
     },
     forget() {
       this.tab = 'forget';
-      console.log('signincard');
+      // console.log('signincard');
     },
   },
 };

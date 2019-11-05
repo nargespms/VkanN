@@ -157,7 +157,7 @@ export default {
             position: 'top',
             timeout: Math.random() * 5000 + 3000,
           });
-          console.log('Logged In');
+          // console.log('Logged In');
           this.$router.push({
             path: `/${this.$route.params.locale}/dashboard`,
           });
@@ -170,7 +170,7 @@ export default {
           });
         }
       } else {
-        console.log(this.form.email.length);
+        // console.log(this.form.email.length);
         this.$q.notify({
           message: this.$t('PleaseFillTheRequiredFields'),
           color: 'negative',

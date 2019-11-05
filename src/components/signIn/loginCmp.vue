@@ -117,7 +117,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log('Loged In');
+      // console.log('Loged In');
     },
     continueToNextLevel() {
       if (this.UserName.length !== 0) {
@@ -148,7 +148,7 @@ export default {
     stepTwoComplete() {
       if (this.password.length !== 0) {
         this.EnableSecondLevel = false;
-        console.log('Submit Form');
+        // console.log('Submit Form');
         this.showNotif('top-right');
       } else {
         this.$q.dialog({
@@ -159,7 +159,7 @@ export default {
     otpStepComplete() {
       if (this.otp.length !== 0) {
         this.EnableOtpLevel = false;
-        console.log('Submit Form');
+        // console.log('Submit Form');
         this.showNotif('top-right');
       } else {
         this.$q.dialog({
@@ -182,7 +182,7 @@ export default {
     },
     goToForget() {
       this.$emit('changToForget');
-      console.log('loginCmp');
+      // console.log('loginCmp');
     },
   },
 };

@@ -6,8 +6,10 @@
         <p class="absolute-bottom text-h6 choosePhoto">{{$t('choosePhoto')}}</p>
       </div>
       <q-card-section class="usrInfoAvatar">
-        <p>ssssssssssssssss
-          ssssssssssssss</p>
+        <p>
+          <span>{{lists.fullName}}/</span>
+          <span>{{ lists.role}}</span>
+        </p>
       </q-card-section>
     </q-card>
   </div>
@@ -16,6 +18,14 @@
 <script>
 export default {
   name: 'userAvatarCmp',
+  data() {
+    return {
+      lists: {
+        fullName: 'نرگس پورمقدسی',
+        role: 'تک',
+      },
+    };
+  },
 };
 </script>
 

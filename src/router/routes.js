@@ -1,7 +1,5 @@
-
 import { Quasar } from 'quasar';
 // import { i18n } from '../boot/i18n.js';
-
 
 const routes = [
   {
@@ -22,6 +20,9 @@ const routes = [
       { path: 'tasks', component: () => import('pages/tasks') },
       { path: 'services', component: () => import('pages/services') },
       { path: 'userManagement', component: () => import('pages/userManagement') },
+      { path: 'userManagement/staffs', component: () => import('pages/staffs') },
+      { path: 'userManagement/clients', component: () => import('pages/clients') },
+      { path: 'userManagement/addMember', component: () => import('pages/addMember') },
       { path: 'billing', component: () => import('pages/billing') },
       { path: '*', component: () => import('pages/Error404.vue') },
     ],

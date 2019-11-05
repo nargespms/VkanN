@@ -44,11 +44,11 @@ h6 {
   margin: 0;
 }
 
-[dir=rtl] body {
+[dir='rtl'] body {
   font-family: 'Shabnam';
 }
 
-[dir=ltr] body {
+[dir='ltr'] body {
   font-family: 'Roboto';
 }
 
@@ -91,10 +91,8 @@ body * {
 @font-face {
   font-family: Shabnam;
   src: url('./fonts/Shabnam-FD.eot');
-  src: url('./fonts/Shabnam-FD.eot?#iefix') format('embedded-opentype'),
-    url('./fonts/Shabnam-FD.woff2') format('woff2'),
-    url('./fonts/Shabnam-FD.woff') format('woff'),
-    url('./fonts/Shabnam-FD.ttf') format('truetype');
+  src: url('./fonts/Shabnam-FD.eot?#iefix') format('embedded-opentype'), url('./fonts/Shabnam-FD.woff2') format('woff2'),
+    url('./fonts/Shabnam-FD.woff') format('woff'), url('./fonts/Shabnam-FD.ttf') format('truetype');
   font-weight: normal;
 }
 
@@ -102,13 +100,22 @@ body * {
   font-family: ShabnamBold;
   src: url('./fonts/Shabnam-Bold-FD.eot');
   src: url('./fonts/Shabnam-Bold-FD.eot?#iefix') format('embedded-opentype'),
-    url('./fonts/Shabnam-Bold-FD.woff2') format('woff2'),
-    url('./fonts/Shabnam-Bold-FD.woff') format('woff'),
+    url('./fonts/Shabnam-Bold-FD.woff2') format('woff2'), url('./fonts/Shabnam-Bold-FD.woff') format('woff'),
     url('./fonts/Shabnam-Bold-FD.ttf') format('truetype');
   font-weight: bold;
 }
+.fnb {
+  font-family: ShabnamBold;
+}
 
-// Qtabs Pannel 
+// Qtabs Pannel
 .q-panel-parent {
-  overflow: hidden;
+  overflow: hidden !important;
+}
+
+.vue-tel-input {
+  height: 56px;
+}
+body {
+  background-color: #f6f6f6;
 }
