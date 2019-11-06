@@ -58,6 +58,13 @@
                 {{$t('Billing')}}
               </router-link>
             </li>
+            <li class="mainMenuLi">
+              <!-- tags -->
+              <router-link :to="'/' +locale + '/' + 'tags'">
+                <q-icon name="label_important" />
+                {{$t('tagsManagement')}}
+              </router-link>
+            </li>
           </ul>
         </div>
       </q-list>
@@ -68,9 +75,7 @@ export default {
   name: 'rightMainMenu',
   props: ['locale', 'leftDrawerOpen'],
   data() {
-    return {
-
-    };
+    return {};
   },
 };
 </script>

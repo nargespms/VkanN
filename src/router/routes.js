@@ -19,11 +19,24 @@ const routes = [
       { path: 'tickets', component: () => import('pages/tickets') },
       { path: 'tasks', component: () => import('pages/tasks') },
       { path: 'services', component: () => import('pages/services') },
-      { path: 'userManagement', component: () => import('pages/userManagement') },
-      { path: 'userManagement/staffs', component: () => import('pages/staffs') },
-      { path: 'userManagement/clients', component: () => import('pages/clients') },
-      { path: 'userManagement/addMember', component: () => import('pages/addMember') },
+      {
+        path: 'userManagement',
+        component: () => import('pages/userManagement'),
+      },
+      {
+        path: 'userManagement/staffs',
+        component: () => import('pages/staffs'),
+      },
+      {
+        path: 'userManagement/clients',
+        component: () => import('pages/clients'),
+      },
+      {
+        path: 'userManagement/addMember',
+        component: () => import('pages/addMember'),
+      },
       { path: 'billing', component: () => import('pages/billing') },
+      { path: 'tags', component: () => import('pages/tags') },
       { path: '*', component: () => import('pages/Error404.vue') },
     ],
   },

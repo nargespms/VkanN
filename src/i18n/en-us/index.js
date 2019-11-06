@@ -14,8 +14,7 @@ export default {
   userManagement: 'userManagement',
   Billing: 'Billing',
   copyRightMsg: '© 2019 AASAAM COMPANY.All Rights Reserved.',
-  aboutmsg:
-    'Energetic and enthusiastic young people, after years of trying and experimenting in different areas of the web in various companies and companies, decided to combine their years of experience with the enthusiasm and youthfulness of their new self-made collection, Assam, so that they could overcome all the limitations common to existing companies. And start a new project.',
+  aboutmsg: 'Energetic and enthusiastic young people, after years of trying and experimenting in different areas of the web in various companies and companies, decided to combine their years of experience with the enthusiasm and youthfulness of their new self-made collection, Assam, so that they could overcome all the limitations common to existing companies. And start a new project.',
   AboutHeader: 'ABout AASAAM Company',
   contactmsg: 'Contact Us',
   signin: 'SignIn',
@@ -69,4 +68,6 @@ export default {
   staffs: 'staffs',
   clients: 'clients ',
   addMember: 'clients ',
+  tagsManagement: 'tags Management',
+  EnterNewTag: 'Enter NewTag',
 };
