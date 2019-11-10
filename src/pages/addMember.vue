@@ -1,9 +1,7 @@
 <template>
   <div class="q-pa-lg">
     <h4 class="headerTitle">
-      <span>
-        {{$t('addMember')}}
-      </span>
+      <span>{{$t('addMember')}}</span>
     </h4>
     <profileEditForm />
   </div>

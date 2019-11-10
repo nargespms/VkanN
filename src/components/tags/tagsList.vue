@@ -20,6 +20,25 @@
         </q-card>
       </li>
     </ul>
+    <div v-if="deactivetags.length">
+      <h4 class="headerTitleInPage">
+        <span>{{$t('deletedTags')}}</span>
+      </h4>
+      <ul class="deactiveList">
+        <li v-for="tag in deactivetags" :key="tag.id">
+          <q-card class="card mb12">
+            <!-- action -->
+            <q-card-actions class="tagAction">
+              <span>{{tag.name}}</span>
+            </q-card-actions>
+            <!-- main content -->
+            <!-- <q-card-section class="tagTxt p16 brleft" @click="deactiveTag(tag)">
+              <q-icon name="fa fa-check" class="editTag positive" />
+            </q-card-section>-->
+          </q-card>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -36,6 +55,9 @@ export default {
   computed: {
     activetags() {
       return this.data.filter(item => item.status !== 'deactive');
+    },
+    deactivetags() {
+      return this.data.filter(item => item.status === 'deactive');
     },
   },
   methods: {
@@ -90,6 +112,15 @@ export default {
       margin-right: 18px;
     }
   }
+  .deactiveList {
+    li {
+      width: calc(100% / 7 - 18px);
+      > div {
+        background-color: #c10015;
+        color: #fff;
+      }
+    }
+  }
 }
 .p16 {
   padding: 16px;
@@ -104,5 +135,9 @@ export default {
 }
 .brleft {
   border-right: 1px solid #b7b7b7 !important;
+}
+.headerTitleInPage {
+  font-size: 22px;
+  margin: 12px;
 }
 </style>
