@@ -119,3 +119,6 @@ body * {
 body {
   background-color: #f6f6f6;
 }
+ .q-card__section + .q-card__section {
+  padding-top: unset;
+}

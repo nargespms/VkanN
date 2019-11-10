@@ -30,3 +30,11 @@
   ☐ enter button should be disabl when retrive code dosnt fill yet
 bugFixfor forget
       ☐ in other langs when trying to go to forget pass it goes to default lang (emit actions goes to default lang)
+☐ userManagement
+  ☐ filter on each colomns
+  ☐ make mock file to get data from
+☐ tag
+  ☐ check during edditing tag
+  ☐ check after edit tags and add them again
+☐ userList
+  ☐ field &format deleted

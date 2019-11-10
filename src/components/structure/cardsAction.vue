@@ -35,12 +35,16 @@ export default {
   margin-bottom: 12px;
   padding: 0px 24px;
   .card {
+    width: 100%;
     i {
       font-size: 60px;
       vertical-align: middle;
       padding-right: 24px;
     }
   }
+}
+.usrInfoAvatar {
+  width: 100%;
 }
 .numberCardData {
   float: right;

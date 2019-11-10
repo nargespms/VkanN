@@ -78,4 +78,5 @@ export default {
   addMember: 'افزودن کاربر',
   tagsManagement: 'مدیریت برچسب ها',
   EnterNewTag: 'برچسب جدید وارد نمایید',
+  tagIsNotValid: 'تگ وارد شده مجاز نیست',
 };
