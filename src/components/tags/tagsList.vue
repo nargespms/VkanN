@@ -29,12 +29,12 @@
           <q-card class="card mb12">
             <!-- action -->
             <q-card-actions class="tagAction">
-              <span>{{tag.name}}</span>
+              <span class="clw">{{tag.name}}</span>
             </q-card-actions>
             <!-- main content -->
-            <!-- <q-card-section class="tagTxt p16 brleft" @click="deactiveTag(tag)">
-              <q-icon name="fa fa-check" class="editTag positive" />
-            </q-card-section>-->
+            <q-card-section class="tagTxt p16 brleft" @click="activeTag(tag)">
+              <q-icon name="restore" class="editTag positive clb" />
+            </q-card-section>
           </q-card>
         </li>
       </ul>
@@ -73,6 +73,10 @@ export default {
       tag.status = 'deactive';
       this.$emit('deleteTag', this.tags);
     },
+    activeTag(tag) {
+      tag.status = 'active';
+      this.$emit('activeAgain', this.tag)
+    }
   },
 };
 </script>
@@ -117,7 +121,7 @@ export default {
       width: calc(100% / 7 - 18px);
       > div {
         background-color: #c10015;
-        color: #fff;
+        color: #000;
       }
     }
   }

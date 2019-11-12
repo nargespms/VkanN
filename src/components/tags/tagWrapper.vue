@@ -2,7 +2,7 @@
   <div class="tagWrapper">
     <h3 class="tagsHeader fnb">{{$t('tagsManagement')}}</h3>
     <addTagCmp :data="tags" @addTag="addToTags" />
-    <tagsList :data="tags" @deleteTag="deleteTag" />
+    <tagsList :data="tags" @deleteTag="deleteTag" @activeAgain="activeagain"/>
   </div>
 </template>
 
@@ -38,6 +38,9 @@ export default {
       console.log(this.tags);
       // should post to server
     },
+    activeagain(value) {
+      this.tag = value;
+    }
   },
 };
 </script>
