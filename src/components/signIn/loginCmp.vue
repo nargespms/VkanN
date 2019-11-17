@@ -1,6 +1,7 @@
 <template >
   <div class="loginWrapperCmp">
     <q-form @submit="onSubmit" class="q-gutter-md loginForm">
+      <asyncValidationInput />
       <!-- step one -->
       <div v-if="EnableFirstLevel">
         <q-input
@@ -101,7 +102,12 @@
 </template>
 
 <script>
+import asyncValidationInput from '../structure/asyncValidationInput.vue';
+
 export default {
+  components: {
+    asyncValidationInput,
+  },
   data() {
     return {
       UserName: '',

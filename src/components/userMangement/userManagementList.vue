@@ -12,7 +12,7 @@
       binary-state-sort
       :separator="separator"
       :loading="loading"
-      @request="onRequest"
+      @request="loadData"
     >
       <!-- search field -->
       <template v-slot:top-right>
@@ -613,7 +613,7 @@ export default {
   methods: {
     loadData() {
       this.$axios
-        .get('/mock/user')
+        .get('/statics/user.json')
         .then(response => {
           this.data = response.data;
         })
