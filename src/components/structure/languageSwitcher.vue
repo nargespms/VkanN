@@ -34,6 +34,7 @@ export default {
       return this.$route.path
         .split('/')
         .slice(2)
+        .join('/')
         .toString();
     },
   },

@@ -119,8 +119,66 @@ body * {
 body {
   background-color: #f6f6f6;
 }
- .q-card__section + .q-card__section {
+.q-card__section + .q-card__section {
   padding-top: unset;
 }
-.clw { color: #fff;}
-.clb { color: #000;}
+// customization for tel input
+.vti__dropdown-list {
+  position: absolute;
+  right: 0;
+  direction: ltr;
+}
+.vti__dropdown-list {
+  left: 0 !important;
+  text-align: left;
+  width: 382px;
+}
+.clw {
+  color: #fff;
+}
+.clb {
+  color: #000;
+}
+.col3th {
+  overflow: auto;
+  .col1,
+  .col2,
+  .col3 {
+    float: left;
+    width: calc(100% / 3 - 16px);
+  }
+}
+.pt16 {
+  padding-top: 16px;
+}
+.pt20 {
+  padding-top: 20px;
+}
+.w100 {
+  width: 100%;
+}
+.p8 {
+  padding: 8px;
+}
+.halfw {
+  width: calc(100% / 2 - 16px);
+  float: left;
+}
+.headerTitleInPage {
+  font-size: 22px;
+  margin: 12px;
+}
+.saveInfo {
+  margin: auto;
+  display: block;
+  clear: both;
+  width: 100%;
+  button {
+    width: 200px;
+    margin: auto;
+    display: block;
+  }
+}
+.inputStyle {
+  padding-bottom: 20px;
+}

@@ -10,6 +10,8 @@
       :pagination.sync="pagination"
       :dense="$q.screen.lt.md"
       binary-state-sort
+      class="my-sticky-header-table"
+      @request="onRequest"
     >
       <!-- search field -->
       <template v-slot:top-right>
@@ -76,5 +78,91 @@ export default {
     };
   },
   props: ['data', 'columns'],
+  methods: {
+    onRequest(props) {
+      const {
+        page,
+        rowsPerPage,
+        rowsNumber,
+        sortBy,
+        descending,
+      } = props.pagination;
+      const { filter } = props;
+
+      console.log(props);
+
+      this.loading = true;
+
+      this.$axios
+        .get('', {
+          params: {
+            page,
+            rowsPerPage,
+            rowsNumber,
+            sortBy,
+            descending,
+            filter,
+          },
+        })
+        .then(response => {
+          this.pagination.rowsNumber = response.data.rowsNumber;
+          this.data1.splice(0, this.data1.length, ...response.data.rows);
+
+          // don't forget to update local pagination object
+          this.pagination.page = page;
+          this.pagination.rowsPerPage = rowsPerPage;
+          this.pagination.sortBy = sortBy;
+          this.pagination.descending = descending;
+
+          this.loading = false;
+        });
+    },
+  },
 };
 </script>
+
+<style lang="scss">
+.userManagementListWrap {
+  .q-field__native,
+  .q-field__prefix,
+  .q-field__suffix {
+    color: #fff !important;
+  }
+  .q-icon {
+    color: #fff;
+  }
+  .expandTable {
+    .q-icon {
+      color: #666;
+    }
+  }
+  .q-table__sort-icon {
+    color: #666;
+  }
+  .q-table__top {
+    .q-field__control {
+      border-bottom: 1px solid #b4b4b4;
+    }
+  }
+  .listNameTable,
+  .q-table thead th {
+    color: #000;
+    font-family: 'ShabnamBold';
+    font-size: 16px;
+  }
+}
+[dir] .my-sticky-header-column-table td:first-child {
+  background-color: #e0e0e0;
+}
+[dir] .q-table__top {
+  background-color: #2f2f2f;
+  color: #fff !important;
+}
+[dir] .q-table__bottom {
+  background-color: #2f2f2f;
+  color: #fff !important;
+}
+[dir] .my-sticky-header-column-table tr:first-child th {
+  background: #e0e0e0;
+}
+</style>

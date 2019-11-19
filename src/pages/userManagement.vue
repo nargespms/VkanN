@@ -25,17 +25,20 @@ export default {
           icon: 'person_pin',
           bg: '#26A69A',
           cardName: 'staffs',
+          parentUrl: 'userManagement',
         },
         clients: {
           number: 150,
           icon: 'people',
           bg: '#D64367',
           cardName: 'clients',
+          parentUrl: 'userManagement',
         },
         addMember: {
           icon: 'person_add',
           bg: '#ffa900',
           cardName: 'addMember',
+          parentUrl: 'userManagement',
         },
       },
     };

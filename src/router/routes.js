@@ -19,6 +19,9 @@ const routes = [
       { path: 'tickets', component: () => import('pages/tickets') },
       { path: 'tasks', component: () => import('pages/tasks') },
       { path: 'services', component: () => import('pages/services') },
+      { path: 'services/servicesList', component: () => import('pages/servicesList') },
+      { path: 'services/addService', component: () => import('pages/addService') },
+      // userManagement
       {
         path: 'userManagement',
         component: () => import('pages/userManagement'),
@@ -35,8 +38,21 @@ const routes = [
         path: 'userManagement/addMember',
         component: () => import('pages/addMember'),
       },
-      { path: 'billing', component: () => import('pages/billing') },
+      // contracts
+      {
+        path: 'contracts',
+        component: () => import('pages/contracts')
+      },
+      {
+        path: 'contracts/contractsList',
+        component: () => import('pages/contractsList')
+      },
+      {
+        path: 'contracts/addContract',
+        component: () => import('pages/addContract')
+      },
       { path: 'tags', component: () => import('pages/tags') },
+      { path: 'billing', component: () => import('pages/billing') },
       { path: '*', component: () => import('pages/Error404.vue') },
     ],
   },

@@ -1,5 +1,5 @@
 <template>
-  <div class="editProfileWrap">
+  <div class="editProfileWrap col3th">
     <q-form @submit="onSubmit" class="q-gutter-md RegisterForm">
       <div class="col1">
         <!-- user name -->
@@ -341,21 +341,10 @@ export default {
 </script>
 
 <style lang="scss">
-.editProfileWrap {
-  overflow: auto;
-  .col1,
-  .col2,
-  .col3 {
-    float: left;
-    width: calc(100% / 3 - 16px);
-  }
-}
 .mb20 {
   margin-bottom: 20px;
 }
-.inputStyle {
-  padding-bottom: 20px;
-}
+
 .maskInputStyles {
   input {
     text-align: center;

@@ -9,10 +9,9 @@
       :pagination.sync="pagination"
       row-key="name"
       :dense="$q.screen.lt.md"
-      binary-state-sort
       :separator="separator"
       :loading="loading"
-      @request="loadData"
+      @request="onRequest"
     >
       <!-- search field -->
       <template v-slot:top-right>
@@ -611,21 +610,21 @@ export default {
     });
   },
   methods: {
-    loadData() {
-      this.$axios
-        .get('/statics/user.json')
-        .then(response => {
-          this.data = response.data;
-        })
-        .catch(() => {
-          this.$q.notify({
-            color: 'negative',
-            position: 'top',
-            message: 'Loading failed',
-            icon: 'report_problem',
-          });
-        });
-    },
+    // loadData() {
+    //   this.$axios
+    //     .get('/statics/user.json')
+    //     .then(response => {
+    //       this.data = response.data;
+    //     })
+    //     .catch(() => {
+    //       this.$q.notify({
+    //         color: 'negative',
+    //         position: 'top',
+    //         message: 'Loading failed',
+    //         icon: 'report_problem',
+    //       });
+    //     });
+    // },
     onRequest(props) {
       const {
         page,
@@ -636,7 +635,32 @@ export default {
       } = props.pagination;
       const { filter } = props;
 
+      console.log(props);
+
       this.loading = true;
+
+      this.$axios
+        .get('', {
+          params: {
+            page,
+            rowsPerPage,
+            rowsNumber,
+            sortBy,
+            descending,
+          },
+        })
+        .then(response => {
+          this.pagination.rowsNumber = response.data.rowsNumber;
+          this.data.splice(0, this.data.length, ...response.data.rows);
+
+          // don't forget to update local pagination object
+          this.pagination.page = page;
+          this.pagination.rowsPerPage = rowsPerPage;
+          this.pagination.sortBy = sortBy;
+          this.pagination.descending = descending;
+
+          this.loading = false;
+        });
 
       // emulate server
       setTimeout(() => {
@@ -665,6 +689,7 @@ export default {
         this.pagination.page = page;
         this.pagination.rowsPerPage = rowsPerPage;
         this.pagination.sortBy = sortBy;
+        console.log(sortBy);
         this.pagination.descending = descending;
 
         // ...and turn of loading indicator

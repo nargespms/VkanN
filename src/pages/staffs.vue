@@ -1,22 +1,24 @@
 <template>
   <div class="q-pa-lg">
     <!-- user management table -->
-    <userManagementList />
-    <tableData :data="data" :columns="columns" />
+    <!-- <userManagementList /> -->
+    <div class="userManagementListWrap">
+      <!-- <tableData :data="data" :columns="columns" /> -->
+    </div>
   </div>
 </template>
 
 <script>
 // import axios from 'axios';
 
-import userManagementList from '../components/userMangement/userManagementList.vue';
-import tableData from '../components/structure/tableData.vue';
+// import userManagementList from '../components/userMangement/userManagementList.vue';
+// import tableData from '../components/structure/tableData.vue';
 
 export default {
   name: 'staffs',
   components: {
-    userManagementList,
-    tableData,
+    // userManagementList,
+    // tableData,
   },
   methods: {
     loadData() {
@@ -197,7 +199,7 @@ export default {
           url: 'login',
           mobileNumber: '09152369874',
           role: 'custumer',
-          todoTask: 4,
+          todoTask: 45,
           weeklyTime: 65,
           status: 'active',
         },
@@ -221,7 +223,7 @@ export default {
           url: 'login',
           mobileNumber: '09152369874',
           role: 'custumer',
-          todoTask: 4,
+          todoTask: 44,
           weeklyTime: 65,
           status: 'active',
         },

@@ -1,39 +1,36 @@
-<template>
+<template >
   <div class="q-pa-lg">
-    <cardsAction :data="services.list" />
-    <cardsAction :data="services.addService" />
+    <cardsAction :data="contracts.list" />
+    <cardsAction :data="contracts.addContract" />
   </div>
 </template>
-
 
 <script>
 import cardsAction from '../components/structure/cardsAction.vue';
 
 export default {
-  name: 'services',
+  name: 'contracts',
   components: {
     cardsAction,
   },
   data() {
     return {
-      services: {
+      contracts: {
         list: {
           number: 15,
           icon: 'settings_applications',
           bg: '#26A69A',
-          cardName: 'servicesList',
-          parentUrl: 'services',
+          cardName: 'contractsList',
+          parentUrl: 'contracts',
         },
-        addService: {
+        addContract: {
           icon: 'perm_data_setting',
           bg: '#ffa900',
-          cardName: 'addService',
-          parentUrl: 'services',
+          cardName: 'addContract',
+          parentUrl: 'contracts',
         },
       },
     };
   },
 };
 </script>
-<style lang="scss">
-</style>
