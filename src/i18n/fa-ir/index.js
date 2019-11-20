@@ -101,4 +101,6 @@ export default {
   type: 'نوع',
   clientName: 'نام مشتری',
   currency: 'واحد ارز',
+  startDate: 'تاریخ شروع',
+  endDate: 'تاریخ پایان',
 };

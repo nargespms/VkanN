@@ -33,30 +33,42 @@
         <!-- <q-date v-model="date" calendar="persian" today-btn></q-date> -->
         <!-- <q-date v-model="date" minimal calendar="persian" /> -->
         <!-- start date -->
-        <q-input outlined v-model="startdate" mask="date" :rules="['date']">
+        <q-input
+          outlined
+          v-model="contract.startdate"
+          mask="date"
+          :rules="['date']"
+          :label="$t('startDate')"
+        >
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                 <q-date
                   v-model="contract.startdate"
                   @input="() => $refs.qDateProxy.hide()"
-                  calendar="persian"
                   today-btn
+                  calendar="persian"
                 />
               </q-popup-proxy>
             </q-icon>
           </template>
         </q-input>
         <!-- end date -->
-        <q-input outlined v-model="enddate" mask="date" :rules="['date']">
+        <q-input
+          outlined
+          v-model="contract.enddate"
+          mask="date"
+          :rules="['date']"
+          :label="$t('endDate')"
+        >
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                 <q-date
                   v-model="contract.enddate"
                   @input="() => $refs.qDateProxy.hide()"
-                  calendar="persian"
                   today-btn
+                  calendar="persian"
                 />
               </q-popup-proxy>
             </q-icon>
@@ -150,12 +162,18 @@
         <q-btn color="primary" type="submit">{{ $t('save') }}</q-btn>
       </div>
     </q-form>
+    <uploadfile />
   </div>
 </template>
 
 <script>
+import uploadfile from '../structure/uploadfile.vue';
+
 export default {
   name: 'addContractCmp',
+  components: {
+    uploadfile,
+  },
   data() {
     return {
       clients: ['client1', 'client2', 'client3'],
@@ -163,7 +181,7 @@ export default {
       contractStatus: ['status1', 'status2', 'status3'],
       contractType: ['type1', 'type2', 'type3'],
       contractCurrency: ['currency1', 'currency2', 'currency3'],
-      startdate: '1212112',
+      date: this.today,
       enddate: '1212112',
       contract: {
         serviceName: '',
@@ -180,7 +198,12 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log('edit service');
+      console.log(this.form);
+    },
+  },
+  computed: {
+    today() {
+      return new Date();
     },
   },
 };

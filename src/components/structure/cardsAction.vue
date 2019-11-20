@@ -1,7 +1,10 @@
 <template>
   <div class="cardAction">
     <q-card class="card" :style="{border:'1px solid' + this.data.bg}">
-      <q-card-section class="usrInfoAvatar cardSectionWrapper" :style="{background:data.bg}">
+      <q-card-section
+        class="usrInfoAvatar cardSectionWrapper bgCardPart"
+        :style="{background:data.bg}"
+      >
         <router-link :to="url" class="text-white cardLinkInner">
           <q-icon :name="data.icon" />
           <span class="fnb cardName">{{$t(name)}}</span>
@@ -37,6 +40,7 @@ export default {
   padding: 0px 24px;
   .card {
     width: 100%;
+    height: 130px;
     i {
       font-size: 60px;
       vertical-align: middle;
@@ -63,6 +67,9 @@ export default {
 }
 .cardName {
   font-size: 18px;
+}
+.bgCardPart {
+  height: 100px;
 }
 </style>
 
