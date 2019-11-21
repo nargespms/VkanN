@@ -1,6 +1,12 @@
 <template >
-  <div>
-    <input type="file" name="filesToUpload" multiple id="upload_file" />
+  <div class="fileUploadWrapper">
+    <div class="fileUploadPlace">
+      <div class="fileUploadPlaceInner">
+        <q-icon name="fas fa-cloud-upload-alt" />
+        <span>upload files</span>
+      </div>
+      <input type="file" name="filesToUpload" multiple id="upload_file" />
+    </div>
     <input type="submit" @click="submit_btn" />
   </div>
 </template>
@@ -13,6 +19,7 @@ export default {
     submit_btn() {
       const [file] = document.querySelector('input[type=file]').files;
       if (file) {
+        // get the extension from file
         const extensionArray = file.name.split('.').slice();
         const extension = file.name
           .split('.')
@@ -48,3 +55,30 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.fileUploadWrapper {
+  width: 300px;
+  input[type='file'] {
+    height: 100px;
+    opacity: 0;
+    width: 100%;
+    cursor: pointer;
+  }
+}
+.fileUploadPlace {
+  background-color: #fff;
+  border: 1px solid #cecece;
+  position: relative;
+  .fileUploadPlaceInner {
+    color: #aeaeae;
+    font-size: 20px;
+    position: absolute;
+    right: 30%;
+    top: 40%;
+    i {
+      padding-right: 12px;
+    }
+  }
+}
+</style>
