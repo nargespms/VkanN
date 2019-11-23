@@ -91,5 +91,7 @@ export default {
   type: 'Type',
   clientName: 'client Name',
   currency: 'Currency',
+  upload: 'Upload',
+  attachments: 'attachments',
 
 };

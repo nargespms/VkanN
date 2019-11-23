@@ -103,4 +103,6 @@ export default {
   currency: 'واحد ارز',
   startDate: 'تاریخ شروع',
   endDate: 'تاریخ پایان',
+  upload: 'بارگذاری',
+  attachments: 'متعلقات',
 };

@@ -3,7 +3,7 @@
     <!-- user management table -->
     <!-- <userManagementList /> -->
     <div class="userManagementListWrap">
-      <!-- <tableData :data="data" :columns="columns" /> -->
+      <tableData :data="data" :columns="columns" />
     </div>
   </div>
 </template>
@@ -12,13 +12,13 @@
 // import axios from 'axios';
 
 // import userManagementList from '../components/userMangement/userManagementList.vue';
-// import tableData from '../components/structure/tableData.vue';
+import tableData from '../components/structure/tableData.vue';
 
 export default {
   name: 'staffs',
   components: {
     // userManagementList,
-    // tableData,
+    tableData,
   },
   methods: {
     loadData() {

@@ -87,7 +87,9 @@ body * {
 .clear {
   overflow: auto;
 }
-
+.clearme {
+  clear: both;
+}
 @font-face {
   font-family: Shabnam;
   src: url('./fonts/Shabnam-FD.eot');
@@ -146,6 +148,7 @@ body {
   .col3 {
     float: left;
     width: calc(100% / 3 - 16px);
+    padding-right: 16px;
   }
 }
 .pt16 {
@@ -162,6 +165,10 @@ body {
 }
 .halfw {
   width: calc(100% / 2 - 16px);
+  float: left;
+}
+.w50 {
+  width: 50%;
   float: left;
 }
 .headerTitleInPage {
@@ -181,4 +188,13 @@ body {
 }
 .inputStyle {
   padding-bottom: 20px;
+}
+.pr16 {
+  padding-right: 16px;
+}
+.pl16 {
+  padding-left: 16px;
+}
+.mr16 {
+  margin-right: 16px;
 }

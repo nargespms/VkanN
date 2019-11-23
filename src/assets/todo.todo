@@ -33,6 +33,8 @@ bugFixfor forget
 ☐ userManagement
   ☐ filter on each colomns
   ☐ make mock file to get data from
+☐ profile
+  ☐ add upload for user profile
 ☐ tag
   ☐ check during edditing tag
   ☐ check after edit tags and add them again
@@ -40,8 +42,11 @@ bugFixfor forget
   ☐ field &format deleted
 **********************spirint 5*******************
 ☐ add service
-  ☐ avatar service
-  ☐ attachments
+  ✔ avatar service @done(19-11-23 13:13)
+  ✔ attachments @done(19-11-23 12:59)
 ☐ add contract
-  ☐ attachments
+  ✔ attachments @done(19-11-23 12:43)
   ✔ date picker @done(19-11-20 12:24)
+☐ upload file
+  ☐ progressbar
+  ☐ name for file

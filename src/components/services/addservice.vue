@@ -1,6 +1,6 @@
 <template >
   <div class="col3th addServiceWrapper">
-    <q-form @submit="onSubmit" class="q-gutter-md">
+    <q-form @submit="onSubmit">
       <div class="col1">
         <!--  Service name -->
         <q-input
@@ -154,6 +154,12 @@
         <q-btn class="halfw generalBut" icon="play_for_work" :label="$t('tasks')" />
         <q-btn class="halfw generalBut" icon="fas fa-handshake" :label="$t('contracts')" />
         <q-btn class="halfw generalBut" icon="fas fa-file-invoice" :label="$t('invoices')" />
+        <div class="halfw mr16">
+          <uploadfile :showButton="false" ref="upload" :text="'attachments'" />
+        </div>
+        <div class="halfw">
+          <uploadfile :showButton="false" ref="upload" :text="'avatar'" />
+        </div>
       </div>
       <div class="saveInfo">
         <q-btn color="primary" type="submit">{{ $t('save') }}</q-btn>
@@ -163,8 +169,13 @@
 </template>
 
 <script>
+import uploadfile from '../structure/uploadfile.vue';
+
 export default {
   name: 'addservice',
+  components: {
+    uploadfile,
+  },
   data() {
     return {
       serviceType: ['type1', 'type2', 'type3'],
@@ -188,6 +199,7 @@ export default {
   methods: {
     onSubmit() {
       console.log('edit service');
+      this.$refs.upload.submit_btn();
     },
   },
 };

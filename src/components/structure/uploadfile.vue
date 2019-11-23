@@ -2,12 +2,24 @@
   <div class="fileUploadWrapper">
     <div class="fileUploadPlace">
       <div class="fileUploadPlaceInner">
-        <q-icon name="fas fa-cloud-upload-alt" />
-        <span>upload files</span>
+        <div v-if="!fileValue" class="emptyFile">
+          <q-icon name="fas fa-cloud-upload-alt" />
+          <span>{{$t(this.text)}}</span>
+        </div>
+        <div v-if="fileValue" class="uploadedFile">
+          <q-icon name="fas fa-file" />
+          <!-- <span v-for="file in fileContent" :key="file.id">{{file.name}}</span> -->
+        </div>
       </div>
-      <input type="file" name="filesToUpload" multiple id="upload_file" />
+      <input type="file" name="filesToUpload" multiple id="upload_file" @change="fileStatus" />
     </div>
-    <input type="submit" @click="submit_btn" />
+    <q-btn
+      v-if="showButton"
+      class="uploadBut"
+      color="primary"
+      type="submit"
+      @click="submit_btn"
+    >{{ $t('upload') }}</q-btn>
   </div>
 </template>
 
@@ -15,7 +27,23 @@
 import tus from '../../../node_modules/tus-js-client/dist/tus.js';
 
 export default {
+  props: ['showButton', 'text'],
+  data() {
+    return {
+      fileValue: false,
+    };
+  },
+  // computed: {
+  //   fileContent() {
+  //     return document.querySelector('input[type=file]').files;
+  //   },
+  // },
   methods: {
+    fileStatus() {
+      this.fileValue = true;
+      // this.fileContent = document.querySelector('input[type=file]').files;
+      // console.log(this.fileContent[0]);
+    },
     submit_btn() {
       const [file] = document.querySelector('input[type=file]').files;
       if (file) {
@@ -47,6 +75,7 @@ export default {
             console.log('Download %s from %s', upload.file.name, upload.url);
           },
         });
+        console.log(upload);
 
         // Start the upload
         upload.start();
@@ -58,27 +87,54 @@ export default {
 
 <style lang="scss">
 .fileUploadWrapper {
-  width: 300px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14),
+    0 3px 1px -5px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #cecece;
   input[type='file'] {
-    height: 100px;
+    height: 208px;
     opacity: 0;
     width: 100%;
     cursor: pointer;
   }
 }
 .fileUploadPlace {
-  background-color: #fff;
-  border: 1px solid #cecece;
+  // width: 300px;
+  background-color: transparent;
   position: relative;
+  cursor: pointer;
   .fileUploadPlaceInner {
-    color: #aeaeae;
-    font-size: 20px;
     position: absolute;
-    right: 30%;
-    top: 40%;
-    i {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    color: #aeaeae;
+    .uploadedFile {
+      text-align: center;
+      height: 100%;
+      width: 100%;
+      padding-top: 40px;
+      display: inline-block;
+      font-size: 45px;
+    }
+    .emptyFile {
+      text-align: center;
+      height: 100%;
+      width: 100%;
+      padding-top: 40px;
+      display: inline-block;
+      font-size: 20px;
+      cursor: pointer;
       padding-right: 12px;
+      i {
+        padding-right: 12px;
+      }
     }
   }
+}
+.uploadBut {
+  float: right;
+  margin-top: 12px;
 }
 </style>

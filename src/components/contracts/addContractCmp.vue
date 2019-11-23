@@ -157,12 +157,14 @@
             <q-icon name />
           </template>
         </q-select>
+        <div class="pt20 w100">
+          <uploadfile :showButton="false" ref="upload" :text="'attachments'" />
+        </div>
       </div>
       <div class="saveInfo">
         <q-btn color="primary" type="submit">{{ $t('save') }}</q-btn>
       </div>
     </q-form>
-    <uploadfile />
   </div>
 </template>
 
@@ -199,6 +201,7 @@ export default {
   methods: {
     onSubmit() {
       console.log(this.form);
+      this.$refs.upload.submit_btn();
     },
   },
   computed: {

@@ -21,6 +21,12 @@
           </template>
         </q-input>
       </template>
+      <!-- custom header -->
+      <template v-slot:header="props">
+        <q-tr :props="props">
+          <q-th v-for="col in columns1" :key="col.name" :props="props">{{ col.label }}</q-th>
+        </q-tr>
+      </template>
       <!-- custom rows -->
       <template v-slot:body="props">
         <q-tr :props="props">
