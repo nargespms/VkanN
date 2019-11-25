@@ -1,7 +1,9 @@
 <template>
   <div class="q-pa-lg">
-    <cardsAction :data="services.list" />
-    <cardsAction :data="services.addService" />
+    <div class="cardActionWrap">
+      <cardsAction :data="services.list" />
+      <cardsAction :data="services.addService" />
+    </div>
   </div>
 </template>
 

@@ -93,5 +93,10 @@ export default {
   currency: 'Currency',
   upload: 'Upload',
   attachments: 'attachments',
-
+  search: 'Search',
+  addTicket: 'add Ticket',
+  ticketsList: 'tickets List',
+  myTasksList: 'my Tasks List',
+  addTask: 'add Task',
+  tasksList: 'tasks List',
 };

@@ -47,13 +47,6 @@
       "sortable": true
     },
     {
-      "name": "weeklyTime",
-      "required": true,
-      "label": "weeklyTime",
-      "align": "left",
-      "sortable": true
-    },
-    {
       "name": "status",
       "required": true,
       "label": "status",
@@ -64,102 +57,92 @@
   "data": [
     {
       "id": 1,
-      "name": "Customer1",
+      "name": "Service1",
       "email": "something@ddd.com",
       "mobileNumber": "09152369874",
-      "role": "custumer",
+      "role": "Service",
       "todoTask": 4,
-      "weeklyTime": 65,
       "status": "active"
     },
     {
       "id": 2,
-      "name": "Customer2",
+      "name": "Service2",
       "email": "something@ddd.com",
       "mobileNumber": "09152369874",
-      "role": "custumer",
+      "role": "Service",
       "todoTask": 4,
-      "weeklyTime": 65,
       "status": "active"
     },
     {
       "id": 3,
-      "name": "Customer3",
+      "name": "Service3",
       "email": "something@ddd.com",
       "mobileNumber": "09152369874",
-      "role": "custumer",
+      "role": "Service",
       "todoTask": 14,
-      "weeklyTime": 65,
       "status": "active"
     },
     {
       "id": 4,
-      "name": "Customer4",
+      "name": "Service4",
       "email": "something@ddd.com",
       "mobileNumber": "09152369874",
-      "role": "custumer",
+      "role": "Service",
       "todoTask": 4,
-      "weeklyTime": 65,
       "status": "active"
     },
     {
       "id": 5,
-      "name": "Customer5",
+      "name": "Service5",
       "email": "something@ddd.com",
       "mobileNumber": "09152369874",
-      "role": "custumer",
+      "role": "Service",
       "todoTask": 4,
-      "weeklyTime": 65,
       "status": "active"
     },
     {
       "id": 6,
-      "name": "Customer6",
+      "name": "Service6",
       "email": "something@ddd.com",
       "mobileNumber": "09152369874",
-      "role": "custumer",
+      "role": "Service",
       "todoTask": 41,
-      "weeklyTime": 65,
       "status": "active"
     },
     {
       "id": 7,
-      "name": "Customer7",
+      "name": "Service7",
       "email": "something@ddd.com",
       "mobileNumber": "09152369874",
-      "role": "custumer",
+      "role": "Service",
       "todoTask": 4,
-      "weeklyTime": 65,
       "status": "active"
     },
     {
       "id": 8,
-      "name": "Customer8",
+      "name": "Service8",
       "email": "something@ddd.com",
       "mobileNumber": "09152369874",
-      "role": "custumer",
+      "role": "Service",
       "todoTask": 4,
-      "weeklyTime": 65,
       "status": "active"
     },
     {
       "id": 9,
-      "name": "Customer9",
+      "name": "Service9",
       "email": "something@ddd.com",
       "mobileNumber": "09152369874",
-      "role": "custumer",
+      "role": "Service",
       "todoTask": 44,
-      "weeklyTime": 65,
       "status": "active"
     },
     {
       "id": 10,
-      "name": "Customer10",
+      "name": "Service10",
       "email": "something@ddd.com",
       "mobileNumber": "09152369874",
-      "role": "custumer",
+      "role": "Service",
       "todoTask": 3,
-      "weeklyTime": 65,
       "status": "active"
     }
   ]

@@ -17,7 +17,11 @@ const routes = [
       { path: 'profile', component: () => import('pages/profile') },
       { path: 'clients', component: () => import('pages/clients') },
       { path: 'tickets', component: () => import('pages/tickets') },
+      { path: 'tickets/ticketsList', component: () => import('pages/ticketsList') },
       { path: 'tasks', component: () => import('pages/tasks') },
+      { path: 'tasks/myTasksList', component: () => import('pages/myTasksList') },
+      { path: 'tasks/tasksList', component: () => import('pages/tasksList') },
+      { path: 'tasks/addTask', component: () => import('pages/addTask') },
       { path: 'services', component: () => import('pages/services') },
       { path: 'services/servicesList', component: () => import('pages/servicesList') },
       { path: 'services/addService', component: () => import('pages/addService') },
@@ -41,15 +45,15 @@ const routes = [
       // contracts
       {
         path: 'contracts',
-        component: () => import('pages/contracts')
+        component: () => import('pages/contracts'),
       },
       {
         path: 'contracts/contractsList',
-        component: () => import('pages/contractsList')
+        component: () => import('pages/contractsList'),
       },
       {
         path: 'contracts/addContract',
-        component: () => import('pages/addContract')
+        component: () => import('pages/addContract'),
       },
       { path: 'tags', component: () => import('pages/tags') },
       { path: 'billing', component: () => import('pages/billing') },

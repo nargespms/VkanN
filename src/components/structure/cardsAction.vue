@@ -70,6 +70,8 @@ export default {
 }
 .bgCardPart {
   height: 100px;
+  border-bottom-right-radius: unset !important;
+  border-bottom-left-radius: unset !important;
 }
 </style>
 

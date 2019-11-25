@@ -1,7 +1,7 @@
 <template >
   <div class="q-pa-lg">
     <div class="userManagementListWrap">
-      <tableDataWrap :endpoint="'/statics/service.json'" />
+      <tableDataWrap :endpoint="'/statics/tasks.json'" />
     </div>
   </div>
 </template>
@@ -10,9 +10,12 @@
 import tableDataWrap from '../structure/tableDataWrap.vue';
 
 export default {
-  name: 'serviceList',
+  name: 'tasksListCmp',
   components: {
     tableDataWrap,
   },
 };
 </script>
+
+<style lang="scss">
+</style>

@@ -105,4 +105,10 @@ export default {
   endDate: 'تاریخ پایان',
   upload: 'بارگذاری',
   attachments: 'متعلقات',
+  search: 'جستجو',
+  addTicket: 'ایجاد تیکت',
+  ticketsList: 'لیست تیکت ها',
+  myTasksList: 'لیست کارهای من',
+  addTask: 'ایجاد کار جدید',
+  tasksList: 'لیست کارها',
 };

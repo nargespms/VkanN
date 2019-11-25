@@ -16,9 +16,9 @@ export default {
   components: {
     cardsAction,
   },
+  name: 'userManagement',
   data() {
     return {
-      name: 'userManagement',
       users: {
         staffs: {
           number: 15,
