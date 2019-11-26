@@ -20,16 +20,16 @@ export default {
       contracts: {
         list: {
           number: 15,
-          icon: 'settings_applications',
+          icon: 'fas fa-handshake',
           bg: '#26A69A',
           cardName: 'contractsList',
-          parentUrl: 'contracts',
+          parentUrl: 'billing/contracts',
         },
         addContract: {
-          icon: 'perm_data_setting',
+          icon: 'fas fa-handshake',
           bg: '#ffa900',
           cardName: 'addContract',
-          parentUrl: 'contracts',
+          parentUrl: 'billing/contracts',
         },
       },
     };

@@ -99,4 +99,7 @@ export default {
   myTasksList: 'my Tasks List',
   addTask: 'add Task',
   tasksList: 'tasks List',
+  fileManagements: 'File Managements',
+  filesList: 'files List',
+  uploadFile: 'Upload File',
 };

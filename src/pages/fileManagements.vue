@@ -1,36 +1,35 @@
-<template>
+<template >
   <div class="q-pa-lg">
     <div class="cardActionWrap">
-      <cardsAction :data="billing.invoices" />
-      <cardsAction :data="billing.contracts" />
+      <cardsAction :data="files.invoices" />
+      <cardsAction :data="files.contracts" />
     </div>
   </div>
 </template>
-
 
 <script>
 import cardsAction from '../components/structure/cardsAction.vue';
 
 export default {
-  name: 'billing',
+  name: 'fileManagements',
   components: {
     cardsAction,
   },
   data() {
     return {
-      billing: {
+      files: {
         invoices: {
           number: 15,
-          icon: 'attach_money',
+          icon: 'fas fa-copy',
           bg: '#26A69A',
-          cardName: 'invoices',
-          parentUrl: 'billing',
+          cardName: 'filesList',
+          parentUrl: 'fileManagements',
         },
         contracts: {
-          icon: 'fas fa-handshake',
+          icon: 'fa fa-upload',
           bg: '#ffa900',
-          cardName: 'contracts',
-          parentUrl: 'billing',
+          cardName: 'uploadFile',
+          parentUrl: 'fileManagements',
         },
       },
     };

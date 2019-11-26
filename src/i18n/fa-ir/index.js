@@ -111,4 +111,7 @@ export default {
   myTasksList: 'لیست کارهای من',
   addTask: 'ایجاد کار جدید',
   tasksList: 'لیست کارها',
+  fileManagements: 'مدیریت فایل ها',
+  filesList: 'لیست فایل ها ',
+  uploadFile: 'بارگذاری فایل',
 };
