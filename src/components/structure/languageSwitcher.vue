@@ -22,8 +22,8 @@ export default {
   data() {
     return {
       locales: [
-        { label: 'En', value: 'en-us' },
-        { label: 'Fa', value: 'fa-ir' },
+        { label: 'En', value: 'en' },
+        { label: 'Fa', value: 'fa' },
         { label: 'ar', value: 'ar' },
         { label: 'de', value: 'de' },
       ],

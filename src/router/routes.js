@@ -1,10 +1,10 @@
-import { Quasar } from 'quasar';
+// import { Quasar } from 'quasar';
 // import { i18n } from '../boot/i18n.js';
 
 const routes = [
   {
     path: '/',
-    redirect: `/${Quasar.lang.isoName}`,
+    redirect:'/fa',
   },
   {
     path: '/:locale',
@@ -14,11 +14,18 @@ const routes = [
       { path: 'dashboard', component: () => import('pages/dashboard.vue') },
       { path: 'signIn', component: () => import('pages/signIn.vue') },
       { path: 'signUp', component: () => import('pages/signUp.vue') },
-      { path: 'profile', component: () => import('pages/profile') },
+      // user
+      { path: 'profile', component: () => import('pages/profile')},
+      { path: 'profile/:profileId', component: () => import('pages/profile')},
       { path: 'clients', component: () => import('pages/clients') },
-      { path: 'tickets', component: () => import('pages/tickets') },
+      // tickets
+      { path: 'tickets', component: () => import('pages/tickets')},
+      { path: 'tickets/:ticketId', component: () => import('pages/ticket')},
       { path: 'tickets/ticketsList', component: () => import('pages/ticketsList') },
-      { path: 'tasks', component: () => import('pages/tasks') },
+      // tasks
+      { path: 'tasks', component: () => import('pages/tasks')},
+      { path: 'tasks/:taskId', component: () => import('pages/task')},
+
       { path: 'tasks/myTasksList', component: () => import('pages/myTasksList') },
       { path: 'tasks/tasksList', component: () => import('pages/tasksList') },
       { path: 'tasks/addTask', component: () => import('pages/addTask') },
@@ -28,7 +35,9 @@ const routes = [
       { path: 'fileManagements/uploadFile', component: () => import('pages/uploadFile') },
 
       // services
-      { path: 'services', component: () => import('pages/services') },
+      { path: 'services', component: () => import('pages/services')},
+      { path: 'services/:serviceId', component: () => import('pages/service')},
+
       { path: 'services/servicesList', component: () => import('pages/servicesList') },
       { path: 'services/addService', component: () => import('pages/addService') },
       // userManagement
@@ -53,6 +62,11 @@ const routes = [
         path: 'billing/contracts',
         component: () => import('pages/contracts'),
       },
+      {
+        path: 'billing/contracts/:contractId',
+        component: () => import('pages/contract'),
+      },
+
       {
         path: 'billing/contracts/contractsList',
         component: () => import('pages/contractsList'),

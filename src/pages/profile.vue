@@ -1,5 +1,6 @@
 <template>
   <div class="q-pa-lg">
+    {{$route.params.profileId}}
     <profileInfoCmp />
   </div>
 </template>
