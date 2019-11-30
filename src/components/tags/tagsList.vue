@@ -2,21 +2,23 @@
   <div class="tagsListWrapp">
     <ul>
       <li v-for="tag in activetags" :key="tag.id">
-        <q-card class="card mb12">
+        <q-card class="card mb12 tagList">
           <!-- action -->
           <q-card-actions class="bg-white tagAction">
             <span>{{tag.name}}</span>
           </q-card-actions>
           <!-- main content -->
-          <q-card-section class="tagTxt brright">
-            <q-icon name="edit" class="editTag" />
-            <q-popup-edit v-model="tag.name" buttons anchor="top left">
-              <q-input v-model="tag.name" dense autofocus counter />
-            </q-popup-edit>
-          </q-card-section>
-          <q-card-section class="tagTxt p16 brleft" @click="deactiveTag(tag)">
-            <q-icon name="fa fa-trash" class="editTag" />
-          </q-card-section>
+          <div class="tagListButtsWrapper">
+            <q-card-section class="tagTxt brright">
+              <q-icon name="edit" class="editTag" />
+              <q-popup-edit v-model="tag.name" buttons anchor="top left">
+                <q-input v-model="tag.name" dense autofocus counter @change="setEditTag(tag)" />
+              </q-popup-edit>
+            </q-card-section>
+            <q-card-section class="tagTxt p16 brleft" @click="deactiveTag(tag)">
+              <q-icon name="fa fa-trash" class="editTag" />
+            </q-card-section>
+          </div>
         </q-card>
       </li>
     </ul>
@@ -26,7 +28,7 @@
       </h4>
       <ul class="deactiveList">
         <li v-for="tag in deactivetags" :key="tag.id">
-          <q-card class="card mb12">
+          <q-card class="card mb12 tagList">
             <!-- action -->
             <q-card-actions class="tagAction">
               <span class="clw">{{tag.name}}</span>
@@ -62,12 +64,12 @@ export default {
   },
   methods: {
     setEditTag(value, initialValue) {
-      console.log(value);
       this.tags.forEach(tag => {
         if (tag.name === initialValue) {
           tag.name = value;
         }
       });
+      this.$emit('addToTags', this.tags);
     },
     deactiveTag(tag) {
       tag.status = 'deactive';
@@ -75,8 +77,8 @@ export default {
     },
     activeTag(tag) {
       tag.status = 'active';
-      this.$emit('activeAgain', this.tag)
-    }
+      this.$emit('activeAgain', this.tag);
+    },
   },
 };
 </script>
@@ -98,6 +100,7 @@ export default {
   .tagAction {
     align-items: center;
     float: left;
+    width: 50px;
   }
 }
 .mb8 {
@@ -113,12 +116,24 @@ export default {
     margin-right: -18px;
     li {
       width: calc(100% / 4 - 18px);
+      @media screen and (max-width: 800px) {
+        width: calc(100% / 2 - 18px);
+      }
+      @media screen and (max-width: 480px) {
+        width: calc(100% - 18px);
+      }
       margin-right: 18px;
     }
   }
   .deactiveList {
     li {
-      width: calc(100% / 7 - 18px);
+      width: calc(100% / 4 - 18px);
+      @media screen and (max-width: 800px) {
+        width: calc(100% / 2 - 18px);
+      }
+      @media screen and (max-width: 480px) {
+        width: calc(100% - 18px);
+      }
       > div {
         background-color: #c10015;
         color: #000;
@@ -143,5 +158,9 @@ export default {
 .headerTitleInPage {
   font-size: 22px;
   margin: 12px;
+}
+.tagList {
+  display: flex;
+  justify-content: space-between;
 }
 </style>

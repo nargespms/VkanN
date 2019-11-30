@@ -65,15 +65,11 @@ export default {
   float: right;
   font-size: 24px;
 }
-// .q-card__section {
-//   padding: 24px;
-// }
-.cardSectionWrapper {
-  padding: 8px 24px;
-}
 .cardLinkInner {
   display: flex;
   justify-content: space-around;
+  padding: 16px;
+  align-items: center;
 }
 .cardName {
   font-size: 18px;

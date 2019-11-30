@@ -36,10 +36,10 @@ const routes = [
 
       // services
       { path: 'services', component: () => import('pages/services')},
-      { path: 'services/:serviceId', component: () => import('pages/service')},
 
       { path: 'services/servicesList', component: () => import('pages/servicesList') },
       { path: 'services/addService', component: () => import('pages/addService') },
+      { path: 'services/:serviceId', component: () => import('pages/service')},
       // userManagement
       {
         path: 'userManagement',
@@ -62,10 +62,6 @@ const routes = [
         path: 'billing/contracts',
         component: () => import('pages/contracts'),
       },
-      {
-        path: 'billing/contracts/:contractId',
-        component: () => import('pages/contract'),
-      },
 
       {
         path: 'billing/contracts/contractsList',
@@ -74,6 +70,10 @@ const routes = [
       {
         path: 'billing/contracts/addContract',
         component: () => import('pages/addContract'),
+      },
+      {
+        path: 'billing/contracts/:contractId',
+        component: () => import('pages/contract'),
       },
       { path: 'tags', component: () => import('pages/tags') },
       { path: 'billing', component: () => import('pages/billing') },

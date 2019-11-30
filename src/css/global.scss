@@ -142,7 +142,8 @@ body {
   color: #000;
 }
 .col3th {
-  overflow: auto;
+  // overflow: auto;
+  clear: both;
   .col1,
   .col2,
   .col3 {

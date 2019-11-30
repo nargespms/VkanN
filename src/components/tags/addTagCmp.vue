@@ -34,10 +34,15 @@ export default {
       if (this.newTag) {
         // for prevent to add duplicate tag
         let isDuplicate = false;
-        this.data.forEach(tag => {
-          isDuplicate = tag.name === this.newTag;
-        });
-
+        // used try for checking in all tags :D
+        try {
+          this.mytags.forEach(tag => {
+            isDuplicate = tag.name === this.newTag;
+            if (isDuplicate) throw this.BreakException;
+          });
+        } catch (e) {
+          if (e !== this.BreakException) throw e;
+        }
         if (isDuplicate) {
           this.$q.notify({
             message: this.$t('tagIsNotValid'),

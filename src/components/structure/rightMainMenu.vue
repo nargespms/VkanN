@@ -1,5 +1,5 @@
 <template >
-  <q-drawer v-model="leftDrawerOpen" bordered content-class="bg-white">
+  <q-drawer v-model="localLeftDrawerOpen" bordered content-class="bg-white">
     <q-list>
       <q-item-label header>{{$t('EssentialLinks')}}</q-item-label>
       <div class="mainMenuWrapper">
@@ -183,7 +183,19 @@ export default {
   name: 'rightMainMenu',
   props: ['locale', 'leftDrawerOpen'],
   data() {
-    return {};
+    return {
+      localLeftDrawerOpen: false,
+    };
+  },
+  watch: {
+    /* If our prop ever gets changed outside of this component then we need to update our local data version of the prop */
+    leftDrawerOpen(newVal) {
+      this.localLeftDrawerOpen = newVal;
+    },
+  },
+  mounted() {
+    /* As soon as the component is mounted convert our passed prop into data */
+    this.localLeftDrawerOpen = this.leftDrawerOpen;
   },
 };
 </script>

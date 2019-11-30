@@ -39,7 +39,6 @@ export default {
       leftDrawerOpen: false,
     };
   },
-  methods: {},
 };
 </script>
 <style lang="scss">
