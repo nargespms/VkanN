@@ -24,5 +24,8 @@ export default {
 .profileInfoWrapper {
   display: flex;
   justify-content: space-between;
+  @media screen and (max-width: 640px) {
+    display: block;
+  }
 }
 </style>

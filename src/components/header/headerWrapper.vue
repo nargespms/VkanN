@@ -19,7 +19,6 @@
     </q-header>
     <!-- right  main menu component -->
     <rightMainMenu :locale="locale" :leftDrawerOpen="leftDrawerOpen" />
-    <!-- <expandableMenu /> -->
   </div>
 </template>
 <script>
@@ -37,7 +36,7 @@ export default {
   props: ['locale'],
   data() {
     return {
-      leftDrawerOpen: true,
+      leftDrawerOpen: false,
     };
   },
   methods: {},

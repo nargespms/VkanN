@@ -1,32 +1,24 @@
 <template>
   <div class="userInformationWrapper">
     <q-card>
-      <q-tabs
-        v-model="tab"
-        dense
-        class="text-grey"
-        active-color="primary"
-        align="justify"
-      >
+      <q-tabs v-model="tab" dense class="text-grey" active-color="primary" align="justify">
         <q-tab name="profileInfo" :label="$t('profileInfo')" />
         <q-tab name="profileInfoDetails" :label="$t('profileInfoDetails')" />
         <q-tab name="editProfile" :label="$t('editProfile')" />
       </q-tabs>
       <q-separator />
       <q-tab-panels v-model="tab" animated>
-
         <q-tab-panel name="profileInfo">
-          <userInformationInfo/>
+          <userInformationInfo />
         </q-tab-panel>
 
         <q-tab-panel name="profileInfoDetails">
-          <userInformationDetailsInfo/>
+          <userInformationDetailsInfo />
         </q-tab-panel>
 
         <q-tab-panel name="editProfile">
-          <profileEditForm/>
+          <profileEditForm />
         </q-tab-panel>
-
       </q-tab-panels>
     </q-card>
   </div>
@@ -55,6 +47,12 @@ export default {
 <style lang="scss">
 .userInformationWrapper {
   width: calc(100%);
+  @media screen and (max-width: 1024px) and (min-width: 640px) {
+    width: 70%;
+  }
+  @media screen and (max-width: 640px) {
+    width: 100%;
+  }
 }
 [dir] .q-tab--active {
   border-bottom: 3px solid $orange;

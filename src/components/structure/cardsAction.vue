@@ -34,7 +34,17 @@ export default {
 
 <style lang="scss">
 .cardAction {
-  width: calc(100% / 4 - 24px);
+  // width: calc(100% / 4 - 24px);
+  @media screen and (min-width: 980px) {
+    width: 310px;
+  }
+  @media screen and (max-width: 980px) and (min-width: 480px) {
+    width: 50%;
+  }
+  @media screen and (max-width: 480px) {
+    width: 100%;
+  }
+  // min-width: 320px;
   float: left;
   margin-bottom: 12px;
   padding: 0px 24px;

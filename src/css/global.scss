@@ -149,6 +149,11 @@ body {
     float: left;
     width: calc(100% / 3 - 16px);
     padding-right: 16px;
+    @media screen and (max-width: 1024px) {
+      width: calc(100% - 16px);
+      padding: 0;
+      margin: 16px;
+    }
   }
 }
 .pt16 {
@@ -201,4 +206,7 @@ body {
 .cardActionWrap {
   display: flex;
   justify-content: center;
+  @media screen and (max-width: 980px) {
+    display: block;
+  }
 }

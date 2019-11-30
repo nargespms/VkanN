@@ -1,5 +1,5 @@
 <template >
-  <q-drawer v-model="leftDrawerOpen" show-if-above bordered content-class="bg-white">
+  <q-drawer v-model="leftDrawerOpen" bordered content-class="bg-white">
     <q-list>
       <q-item-label header>{{$t('EssentialLinks')}}</q-item-label>
       <div class="mainMenuWrapper">

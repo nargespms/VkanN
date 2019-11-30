@@ -33,6 +33,13 @@ export default {
 .userAvatar {
   width: calc(100% / 6);
   padding-right: 16px;
+  @media screen and (max-width: 1024px) and (min-width: 640px) {
+    width: 30%;
+  }
+  @media screen and (max-width: 640px) {
+    width: 100%;
+    margin-bottom: 16px;
+  }
   img {
     max-width: 100%;
   }

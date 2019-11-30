@@ -46,8 +46,4 @@ export default {
 };
 </script>
 <style lang="scss">
-.cardActionWrap {
-  display: flex;
-  justify-content: center;
-}
 </style>

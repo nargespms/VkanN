@@ -1,8 +1,6 @@
 <template >
   <div class="contactUsWrapper">
-    <p >
-      {{$t('contactmsg')}}
-    </p>
+    <p>{{$t('contactmsg')}}</p>
   </div>
 </template>
 
@@ -16,12 +14,15 @@ export default {
 .contactUsWrapper {
   float: right;
   width: 40%;
+  @media screen and (max-width: 640px) {
+    margin-top: 16px;
+    width: 100%;
+  }
   p {
     color: #fff;
     font-size: 16px;
     margin-bottom: 12px;
-    font-family: "ShabnamBold";
-
+    font-family: 'ShabnamBold';
   }
 }
 </style>
