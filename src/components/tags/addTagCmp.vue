@@ -34,10 +34,10 @@ export default {
       if (this.newTag) {
         // for prevent to add duplicate tag
         let isDuplicate = false;
-        // used try for checking in all tags :D
         try {
           this.mytags.forEach(tag => {
             isDuplicate = tag.name === this.newTag;
+            console.log(`${isDuplicate}foreach`);
             if (isDuplicate) throw this.BreakException;
           });
         } catch (e) {
