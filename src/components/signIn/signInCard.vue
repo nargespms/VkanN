@@ -1,9 +1,9 @@
 <template >
   <div class="q-pa-md">
-    <q-card class="myCard">
+    <q-card class="myCard loginWrapperCard">
       <div class="loginImage"></div>
       <div class="tabWrapper">
-        <q-tabs v-model="tab" class="tabsContainer">
+        <q-tabs v-model="tab" class="tabsContainer block640">
           <q-tab class="tabSelect" label name="login">{{$t('signin')}}</q-tab>
           <q-tab class="tabSelect" label name="register">{{$t('register')}}</q-tab>
         </q-tabs>
@@ -55,11 +55,14 @@ export default {
   },
 };
 </script>
-<style >
-.myCard {
-  width: 60%;
+<style lang="scss">
+.loginWrapperCard {
+  width: 100%;
   margin: 0px auto;
   overflow: auto;
+  @media screen and (min-width: 1024px) {
+    width: 60%;
+  }
 }
 .tabWrapper {
   width: 70%;
@@ -92,10 +95,12 @@ export default {
   background: none;
 }
 .tabSelect {
-  width: 50%;
-  float: right;
-  font-size: 16px;
   color: #000;
+  @media screen and (min-width: 1024px) {
+    width: 50%;
+    float: right;
+    font-size: 16px;
+  }
 }
 .welcomeMgs {
   display: flex;
@@ -103,6 +108,7 @@ export default {
   font-family: 'ShabnamBold';
   font-size: 18px;
   margin-bottom: 24px;
+  text-align: center;
 }
 [dir='rtl'] .q-card > div:first-child,
 [dir='rtl'] .q-card > img:first-child {

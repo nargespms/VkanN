@@ -1,181 +1,208 @@
 <template >
-  <q-drawer v-model="localLeftDrawerOpen" bordered content-class="bg-white">
-    <q-list>
-      <q-item-label header>{{$t('EssentialLinks')}}</q-item-label>
-      <div class="mainMenuWrapper">
-        <ul>
-          <li class="mainMenuLi">
-            <!-- <q-expansion-item icon="home" :label="$t('dashboard')"> -->
-            <!-- home route -->
-            <router-link class="noneExpandableMenu" :to="'/' +locale + '/' + 'dashboard'">
-              <q-icon name="home" />
-              {{$t('dashboard')}}
-            </router-link>
-            <!-- </q-expansion-item> -->
-          </li>
-          <li class="mainMenuLi">
-            <!-- <q-expansion-item
-              class="expandableMenu"
-              icon="fas fa-address-card"
-              :label="$t('profile')"
-            >-->
-            <!-- profile route -->
-            <router-link class="noneExpandableMenu" :to="'/' +locale + '/' + 'profile'">
-              <q-icon name="fas fa-address-card" />
-              {{$t('profile')}}
-            </router-link>
-            <!-- </q-expansion-item> -->
-          </li>
-          <li class="mainMenuLi">
-            <q-expansion-item
-              expand-icon-toggle
-              class="expandableMenu"
-              icon="system_update_alt"
-              :label="$t('tickets')"
-              :to="'/' +locale + '/' + 'tickets'"
-            >
-              <!-- tickets list-->
-              <router-link class="block" :to="'/' +locale + '/' + 'tickets' + '/' +'ticketsList'">
-                <q-icon name="system_update_alt" />
-                {{$t('ticketsList')}}
-              </router-link>
-              <!-- add new tickets -->
-              <router-link class="block" :to="'/' +locale + '/' + 'tickets' + '/' + 'addTicket'">
-                <q-icon name="system_update_alt" />
-                {{$t('addTicket')}}
-              </router-link>
-            </q-expansion-item>
-          </li>
-          <!-- my tasks route -->
-          <li class="mainMenuLi">
-            <q-expansion-item
-              expand-icon-toggle
-              class="expandableMenu"
-              icon="play_for_work"
-              :label="$t('tasks')"
-              :to="'/' +locale + '/' + 'tasks'"
-            >
-              <router-link class="block" :to="'/' +locale + '/' + 'tasks' + '/' + 'myTasksList'">
-                <q-icon name="play_for_work" />
-                {{$t('mytasks')}}
-              </router-link>
-              <router-link class="block" :to="'/' +locale + '/' + 'tasks' + '/' + 'tasksList'">
-                <q-icon name="play_for_work" />
-                {{$t('tasksList')}}
-              </router-link>
-              <router-link class="block" :to="'/' +locale + '/' + 'tasks' + '/' + 'addTask'">
-                <q-icon name="play_for_work" />
-                {{$t('addTask')}}
-              </router-link>
-            </q-expansion-item>
-          </li>
-          <!-- services route -->
-          <li class="mainMenuLi">
-            <q-expansion-item
-              icon="perm_data_setting"
-              :label="$t('services')"
-              expand-icon-toggle
-              class="expandableMenu"
-              :to="'/' +locale + '/' + 'services'"
-            >
-              <router-link class="block" :to="'/' +locale + '/' + 'services' + '/' +'servicesList'">
-                <q-icon name="perm_data_setting" />
-                {{$t('servicesList')}}
-              </router-link>
-              <router-link class="block" :to="'/' +locale + '/' + 'services' + '/' +'addService'">
-                <q-icon name="perm_data_setting" />
-                {{$t('addService')}}
-              </router-link>
-            </q-expansion-item>
-          </li>
-          <!-- userManagement route -->
-          <li class="mainMenuLi">
-            <q-expansion-item
-              icon="supervisor_account"
-              :label="$t('userManagement')"
-              expand-icon-toggle
-              class="expandableMenu"
-              :to="'/' +locale + '/' + 'userManagement'"
-            >
-              <router-link
-                class="block"
-                :to="'/' +locale + '/' + 'userManagement' + '/' + 'staffs'"
-              >
-                <q-icon name="supervisor_account" />
-                {{$t('staffs')}}
-              </router-link>
-              <router-link
-                class="block"
-                :to="'/' +locale + '/' + 'userManagement' + '/' + 'clients'"
-              >
-                <q-icon name="supervisor_account" />
-                {{$t('clients')}}
-              </router-link>
-              <router-link
-                class="block"
-                :to="'/' +locale + '/' + 'userManagement' + '/' + 'addMember'"
-              >
-                <q-icon name="supervisor_account" />
-                {{$t('addMember')}}
-              </router-link>
-            </q-expansion-item>
-          </li>
-
-          <!-- billing route -->
-          <li class="mainMenuLi">
-            <q-expansion-item
-              icon="attach_money"
-              :label="$t('Billing')"
-              caption
-              expand-icon-toggle
-              class="expandableMenu"
-              :to="'/' +locale + '/' + 'billing'"
-            >
-              <!-- contract route -->
-              <router-link class="block" :to="'/' +locale + '/' +'billing'+ '/' +'contracts'">
-                <q-icon name="fas fa-handshake" />
-                {{$t('contracts')}}
-              </router-link>
-            </q-expansion-item>
-          </li>
-          <!-- tags management -->
-          <li class="mainMenuLi">
-            <!-- tags -->
-            <router-link class="noneExpandableMenu" :to="'/' +locale + '/' + 'tags'">
-              <q-icon name="label_important" />
-              {{$t('tagsManagement')}}
-            </router-link>
-          </li>
-          <!-- file management -->
-          <li class="mainMenuLi">
-            <q-expansion-item
-              icon="fa fa-file"
-              :label="$t('fileManagements')"
-              caption
-              expand-icon-toggle
-              class="expandableMenu"
-              :to="'/' +locale + '/' + 'fileManagements'"
-            >
-              <!-- filesList -->
-              <router-link
-                class="block"
-                :to="'/' +locale + '/' + 'fileManagements' +'/'+'filesList'"
-              >
-                <q-icon name="fas fa-copy" />
-                {{$t('filesList')}}
-              </router-link>
-              <router-link
-                class="block"
-                :to="'/' +locale + '/' +'fileManagements' +'/'+'uploadFile'"
-              >
-                <q-icon name="fa fa-upload" />
-                {{$t('uploadFile')}}
-              </router-link>
-            </q-expansion-item>
-          </li>
-        </ul>
+  <q-drawer
+    v-model="localLeftDrawerOpen"
+    bordered
+    content-class="bg-white"
+    :mini="miniState"
+    :breakpoint="980"
+  >
+    <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
+      <div v-if="!miniState" class="absolute-bottom bg-transparent">
+        <q-avatar size="56px" class="q-mb-sm">
+          <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+        </q-avatar>
+        <div class="text-weight-bold">Razvan Stoenescu</div>
+        <div>@rstoenescu</div>
       </div>
-    </q-list>
+    </q-img>
+    <q-scroll-area
+      style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd"
+    >
+      <q-list>
+        <q-item-label header>{{$t('EssentialLinks')}}</q-item-label>
+        <q-btn dense round center unelevated icon="menu" @click="miniState = !miniState" />
+        <div class="mainMenuWrapper">
+          <ul>
+            <!-- home route -->
+            <li class="mainMenuLi">
+              <q-item>
+                <router-link class="noneExpandableMenu" :to="'/' +locale + '/' + 'dashboard'">
+                  <q-item-section avatar>
+                    <q-icon name="home" />
+                  </q-item-section>
+                  <q-item-section>{{$t('dashboard')}}</q-item-section>
+                </router-link>
+              </q-item>
+            </li>
+            <li class="mainMenuLi">
+              <q-item>
+                <!-- profile route -->
+                <router-link class="noneExpandableMenu" :to="'/' +locale + '/' + 'profile'">
+                  <q-item-section avatar>
+                    <q-icon name="fas fa-address-card" />
+                  </q-item-section>
+                  <q-item-section>{{$t('profile')}}</q-item-section>
+                </router-link>
+              </q-item>
+            </li>
+            <li class="mainMenuLi">
+              <q-expansion-item
+                expand-icon-toggle
+                class="expandableMenu"
+                icon="system_update_alt"
+                :label="$t('tickets')"
+                :to="'/' +locale + '/' + 'tickets'"
+              >
+                <!-- tickets list-->
+                <router-link class="block" :to="'/' +locale + '/' + 'tickets' + '/' +'ticketsList'">
+                  <q-icon name="system_update_alt" />
+                  {{$t('ticketsList')}}
+                </router-link>
+                <!-- add new tickets -->
+                <router-link class="block" :to="'/' +locale + '/' + 'tickets' + '/' + 'addTicket'">
+                  <q-icon name="system_update_alt" />
+                  {{$t('addTicket')}}
+                </router-link>
+              </q-expansion-item>
+            </li>
+            <!-- my tasks route -->
+            <li class="mainMenuLi">
+              <q-expansion-item
+                expand-icon-toggle
+                class="expandableMenu"
+                icon="play_for_work"
+                :label="$t('tasks')"
+                :to="'/' +locale + '/' + 'tasks'"
+              >
+                <router-link class="block" :to="'/' +locale + '/' + 'tasks' + '/' + 'myTasksList'">
+                  <q-icon name="play_for_work" />
+                  {{$t('mytasks')}}
+                </router-link>
+                <router-link class="block" :to="'/' +locale + '/' + 'tasks' + '/' + 'tasksList'">
+                  <q-icon name="play_for_work" />
+                  {{$t('tasksList')}}
+                </router-link>
+                <router-link class="block" :to="'/' +locale + '/' + 'tasks' + '/' + 'addTask'">
+                  <q-icon name="play_for_work" />
+                  {{$t('addTask')}}
+                </router-link>
+              </q-expansion-item>
+            </li>
+            <!-- services route -->
+            <li class="mainMenuLi">
+              <q-expansion-item
+                icon="perm_data_setting"
+                :label="$t('services')"
+                expand-icon-toggle
+                class="expandableMenu"
+                :to="'/' +locale + '/' + 'services'"
+              >
+                <router-link
+                  class="block"
+                  :to="'/' +locale + '/' + 'services' + '/' +'servicesList'"
+                >
+                  <q-icon name="perm_data_setting" />
+                  {{$t('servicesList')}}
+                </router-link>
+                <router-link class="block" :to="'/' +locale + '/' + 'services' + '/' +'addService'">
+                  <q-icon name="perm_data_setting" />
+                  {{$t('addService')}}
+                </router-link>
+              </q-expansion-item>
+            </li>
+            <!-- userManagement route -->
+            <li class="mainMenuLi">
+              <q-expansion-item
+                icon="supervisor_account"
+                :label="$t('userManagement')"
+                expand-icon-toggle
+                class="expandableMenu"
+                :to="'/' +locale + '/' + 'userManagement'"
+              >
+                <router-link
+                  class="block"
+                  :to="'/' +locale + '/' + 'userManagement' + '/' + 'staffs'"
+                >
+                  <q-icon name="supervisor_account" />
+                  {{$t('staffs')}}
+                </router-link>
+                <router-link
+                  class="block"
+                  :to="'/' +locale + '/' + 'userManagement' + '/' + 'clients'"
+                >
+                  <q-icon name="supervisor_account" />
+                  {{$t('clients')}}
+                </router-link>
+                <router-link
+                  class="block"
+                  :to="'/' +locale + '/' + 'userManagement' + '/' + 'addMember'"
+                >
+                  <q-icon name="supervisor_account" />
+                  {{$t('addMember')}}
+                </router-link>
+              </q-expansion-item>
+            </li>
+
+            <!-- billing route -->
+            <li class="mainMenuLi">
+              <q-expansion-item
+                icon="attach_money"
+                :label="$t('Billing')"
+                caption
+                expand-icon-toggle
+                class="expandableMenu"
+                :to="'/' +locale + '/' + 'billing'"
+              >
+                <!-- contract route -->
+                <router-link class="block" :to="'/' +locale + '/' +'billing'+ '/' +'contracts'">
+                  <q-icon name="fas fa-handshake" />
+                  {{$t('contracts')}}
+                </router-link>
+              </q-expansion-item>
+            </li>
+            <!-- tags management -->
+            <li class="mainMenuLi">
+              <q-item>
+                <!-- tags -->
+                <router-link class="noneExpandableMenu" :to="'/' +locale + '/' + 'tags'">
+                  <q-item-section avatar>
+                    <q-icon name="label_important" />
+                  </q-item-section>
+                  <q-item-section>{{$t('tagsManagement')}}</q-item-section>
+                </router-link>
+              </q-item>
+            </li>
+            <!-- file management -->
+            <li class="mainMenuLi">
+              <q-expansion-item
+                icon="fa fa-file"
+                :label="$t('fileManagements')"
+                caption
+                expand-icon-toggle
+                class="expandableMenu"
+                :to="'/' +locale + '/' + 'fileManagements'"
+              >
+                <!-- filesList -->
+                <router-link
+                  class="block"
+                  :to="'/' +locale + '/' + 'fileManagements' +'/'+'filesList'"
+                >
+                  <q-icon name="fas fa-copy" />
+                  {{$t('filesList')}}
+                </router-link>
+                <router-link
+                  class="block"
+                  :to="'/' +locale + '/' +'fileManagements' +'/'+'uploadFile'"
+                >
+                  <q-icon name="fa fa-upload" />
+                  {{$t('uploadFile')}}
+                </router-link>
+              </q-expansion-item>
+            </li>
+          </ul>
+        </div>
+      </q-list>
+    </q-scroll-area>
   </q-drawer>
 </template>
 <script>
@@ -185,6 +212,7 @@ export default {
   data() {
     return {
       localLeftDrawerOpen: false,
+      miniState: true,
     };
   },
   watch: {
@@ -238,10 +266,8 @@ export default {
   }
 }
 .noneExpandableMenu {
-  padding: 12px 16px;
-  display: block;
+  display: flex;
   i {
-    padding-right: 16px;
     font-size: 24px;
     min-width: 56px;
     text-align: center;

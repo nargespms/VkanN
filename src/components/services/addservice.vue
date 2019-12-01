@@ -154,10 +154,10 @@
         <q-btn class="halfw generalBut" icon="play_for_work" :label="$t('tasks')" />
         <q-btn class="halfw generalBut" icon="fas fa-handshake" :label="$t('contracts')" />
         <q-btn class="halfw generalBut" icon="fas fa-file-invoice" :label="$t('invoices')" />
-        <div class="halfw mr16">
+        <div class="mr16 fullw mb16">
           <uploadfile :showButton="false" ref="upload" :text="'attachments'" />
         </div>
-        <div class="halfw">
+        <div class="fullw mb16">
           <uploadfile :showButton="false" ref="upload" :text="'avatar'" />
         </div>
       </div>
@@ -219,5 +219,8 @@ export default {
   padding: 15px;
   margin-right: 16px;
   background-color: #ddd;
+  @media screen and (max-width: 360px) {
+    width: calc(100% - 16px) !important;
+  }
 }
 </style>

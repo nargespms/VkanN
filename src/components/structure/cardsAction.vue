@@ -43,6 +43,7 @@ export default {
   }
   @media screen and (max-width: 480px) {
     width: 100%;
+    padding: 0 !important;
   }
   // min-width: 320px;
   float: left;
@@ -55,6 +56,9 @@ export default {
       font-size: 60px;
       vertical-align: middle;
       padding-right: 24px;
+      @media screen and (max-width: 768px) {
+        font-size: 35px !important;
+      }
     }
   }
 }
@@ -68,7 +72,6 @@ export default {
 .cardLinkInner {
   display: flex;
   justify-content: space-around;
-  padding: 16px;
   align-items: center;
 }
 .cardName {

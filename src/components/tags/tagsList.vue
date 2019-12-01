@@ -100,7 +100,6 @@ export default {
   .tagAction {
     align-items: center;
     float: left;
-    width: 50px;
   }
 }
 .mb8 {

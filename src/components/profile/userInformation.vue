@@ -1,7 +1,7 @@
 <template>
   <div class="userInformationWrapper">
     <q-card>
-      <q-tabs v-model="tab" dense class="text-grey" active-color="primary" align="justify">
+      <q-tabs v-model="tab" dense class="text-grey block460" active-color="primary" align="justify">
         <q-tab name="profileInfo" :label="$t('profileInfo')" />
         <q-tab name="profileInfoDetails" :label="$t('profileInfoDetails')" />
         <q-tab name="editProfile" :label="$t('editProfile')" />

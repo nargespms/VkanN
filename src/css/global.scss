@@ -173,6 +173,10 @@ body {
   width: calc(100% / 2 - 16px);
   float: left;
 }
+.fullw {
+  width: calc(100% - 16px);
+  float: left;
+}
 .w50 {
   width: 50%;
   float: left;
@@ -204,10 +208,32 @@ body {
 .mr16 {
   margin-right: 16px;
 }
+.mb16 {
+  margin-bottom: 16px;
+}
 .cardActionWrap {
   display: flex;
   justify-content: center;
   @media screen and (max-width: 980px) {
     display: block;
+    overflow: auto;
+  }
+}
+@media screen and (max-width: 480px) {
+  .block460 {
+    > div {
+      display: block !important;
+    }
+  }
+}
+@media screen and (max-width: 640px) {
+  .block640 {
+    > div {
+      display: block !important;
+    }
+  }
+  .fullw640 {
+    width: calc(100% - 16px);
+    margin-bottom: 16px;
   }
 }

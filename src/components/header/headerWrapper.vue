@@ -3,6 +3,7 @@
     <q-header elevated>
       <div class="con16">
         <q-toolbar class="headerInner">
+          <!-- should show this only for mobile -->
           <q-btn
             flat
             dense
@@ -11,6 +12,7 @@
             icon="menu"
             aria-label="Menu"
           />
+          {{leftDrawerOpen}}
           <q-toolbar-title>AASAAM CRM</q-toolbar-title>
           <!-- language switcher component -->
           <languageSwitcher :locale="locale" />
@@ -36,7 +38,7 @@ export default {
   props: ['locale'],
   data() {
     return {
-      leftDrawerOpen: false,
+      leftDrawerOpen: true,
     };
   },
 };
