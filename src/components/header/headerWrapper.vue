@@ -5,14 +5,14 @@
         <q-toolbar class="headerInner">
           <!-- should show this only for mobile -->
           <q-btn
+            v-if="mobileSize"
             flat
             dense
             round
-            @click="leftDrawerOpen = !leftDrawerOpen"
+            @click="changeMenState"
             icon="menu"
             aria-label="Menu"
           />
-          {{leftDrawerOpen}}
           <q-toolbar-title>AASAAM CRM</q-toolbar-title>
           <!-- language switcher component -->
           <languageSwitcher :locale="locale" />
@@ -20,7 +20,13 @@
       </div>
     </q-header>
     <!-- right  main menu component -->
-    <rightMainMenu :locale="locale" :leftDrawerOpen="leftDrawerOpen" />
+    <rightMainMenu
+      :locale="locale"
+      :leftDrawerOpen="leftDrawerOpen"
+      :screenSize="screenSize"
+      @backFalse="backFalse"
+    />
+    <q-resize-observer @resize="onResize" />
   </div>
 </template>
 <script>
@@ -39,7 +45,29 @@ export default {
   data() {
     return {
       leftDrawerOpen: true,
+      mobileSize: false,
+      screenSize: 'default',
     };
+  },
+  methods: {
+    changeMenState() {
+      this.leftDrawerOpen = !this.leftDrawerOpen;
+    },
+    onResize(size) {
+      if (size.width < 980) {
+        this.leftDrawerOpen = false;
+        this.mobileSize = true;
+        this.screenSize = 'mobile';
+      } else {
+        this.leftDrawerOpen = true;
+        this.mobileSize = false;
+        this.screenSize = 'desktop';
+      }
+      // console.log(this.screenSize);
+    },
+    backFalse() {
+      this.leftDrawerOpen = false;
+    },
   },
 };
 </script>

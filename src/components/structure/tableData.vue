@@ -13,6 +13,7 @@
       :loading="loading"
       class="my-sticky-header-table"
       @request="onRequest"
+      :grid="$q.screen.xs"
     >
       <!-- search field -->
       <template v-slot:top-right>
@@ -72,6 +73,24 @@
           </q-td>
         </q-tr>
       </template>
+      <!-- for responsive  -->
+      <template v-slot:item="props">
+        <q-card class="q-ma-xs">
+          <q-list dense>
+            <!-- <q-item v-for="col in props.cols" :key="col.id">
+              <q-item-section>
+                <q-item-label>{{ col.label }}</q-item-label>
+              </q-item-section>
+            </q-item>-->
+            <q-item class="mobileItem" v-for="prop in props.row" :key="prop.id">
+              <q-item-section>
+                <q-item-label v-if=" prop !== props.row['__index']">{{prop}}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-card>
+      </template>
+      <!-- for responsive  -->
     </q-table>
   </div>
 </template>
@@ -213,5 +232,9 @@ export default {
   padding-left: 24px;
   margin-top: 12px;
   padding-right: 12px;
+}
+.mobileItem {
+  text-align: center;
+  border-bottom: 1px solid #d1d1d1;
 }
 </style>

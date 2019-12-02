@@ -5,6 +5,8 @@
     content-class="bg-white"
     :mini="miniState"
     :breakpoint="980"
+    :behavior="localScreenSize"
+    @hide="hideMenu"
   >
     <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
       <div v-if="!miniState" class="absolute-bottom bg-transparent">
@@ -20,7 +22,7 @@
     >
       <q-list>
         <q-item-label header>{{$t('EssentialLinks')}}</q-item-label>
-        <q-btn dense round center unelevated icon="menu" @click="miniState = !miniState" />
+        <q-btn class="pl16" center unelevated icon="menu" @click="miniState = !miniState" />
         <div class="mainMenuWrapper">
           <ul>
             <!-- home route -->
@@ -208,11 +210,12 @@
 <script>
 export default {
   name: 'rightMainMenu',
-  props: ['locale', 'leftDrawerOpen'],
+  props: ['locale', 'leftDrawerOpen', 'screenSize'],
   data() {
     return {
       localLeftDrawerOpen: false,
       miniState: true,
+      localScreenSize: this.screenSize,
     };
   },
   watch: {
@@ -224,6 +227,12 @@ export default {
   mounted() {
     /* As soon as the component is mounted convert our passed prop into data */
     this.localLeftDrawerOpen = this.leftDrawerOpen;
+  },
+  methods: {
+    hideMenu() {
+      // console.log('hided');
+      this.$emit('backFalse', this.leftDrawerOpen);
+    },
   },
 };
 </script>
