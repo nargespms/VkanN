@@ -8,6 +8,7 @@
       :label="$t('EnterNewTag')"
       lazy-rules
       @keyup.enter="addTag"
+      autofocus
     >
       <template v-slot:prepend>
         <q-icon name="label" color="primary" />

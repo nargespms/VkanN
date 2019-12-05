@@ -3,20 +3,23 @@
     <q-form @submit="onSubmit" class="q-gutter-md">
       <div class="col1">
         <!--  Service name -->
-        <q-input
+        <q-select
           outlined
           required
-          color="light-blue-10"
-          v-model="contract.serviceName"
+          color="light-blue-10 "
+          v-model="contract.servicesName"
+          :options="servicesName"
           :label="$t('serviceName')"
+          class="inputStyle"
           lazy-rules
           :rules="[val => val && val.length > 0]"
+          autofocus
         >
           <template v-slot:prepend>
             <q-icon name="settings_applications" />
           </template>
-        </q-input>
-        <!-- client Name -->
+          <!-- client Name -->
+        </q-select>
         <q-select
           color="light-blue-10 "
           outlined
@@ -39,6 +42,9 @@
           mask="date"
           :rules="['date']"
           :label="$t('startDate')"
+          @change="EnableDate"
+          ref="qDateProxy"
+          name="event"
         >
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
@@ -60,6 +66,7 @@
           mask="date"
           :rules="['date']"
           :label="$t('endDate')"
+          :disable="!this.enableEndDate"
         >
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
@@ -178,6 +185,7 @@ export default {
   },
   data() {
     return {
+      servicesName: ['name1', 'name2', 'name3'],
       clients: ['client1', 'client2', 'client3'],
       contractDuration: ['monthly', 'yearly', 'season'],
       contractStatus: ['status1', 'status2', 'status3'],
@@ -196,12 +204,16 @@ export default {
         startdate: '',
         enddate: '',
       },
+      enableEndDate: false,
     };
   },
   methods: {
     onSubmit() {
       console.log(this.form);
       this.$refs.upload.submit_btn();
+    },
+    EnableDate() {
+      this.enableEndDate = true;
     },
   },
   computed: {

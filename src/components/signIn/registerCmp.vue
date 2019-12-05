@@ -11,19 +11,18 @@
         :label="$t('firstName')"
         lazy-rules
         :rules="[ val => val && val.length > 0 ]"
+        autofocus
       >
         <template v-slot:prepend>
           <q-icon name="fas fa-user" />
         </template>
+        <!-- firstname validation -->
+        <p v-if="errors" class="error">
+          <span v-if="!$v.form.FirstName.required">*{{$t('thisfieldisrequired')}}.</span>
+          <span v-if="!$v.form.FirstName.minLength">{{$t('Fieldmusthaveatleast3characters')}}</span>
+        </p>
+        <!-- firstname validation -->
       </q-input>
-      <!-- firstname validation -->
-      <p v-if="errors" class="error">
-        <span v-if="!$v.form.FirstName.required">this field is required.</span>
-        <span
-          v-if="!$v.form.FirstName.minLength"
-        >Field must have at least {{ $v.form.FirstName.$params.minLength.min }} characters.</span>
-      </p>
-      <!-- firstname validation -->
       <!-- last name -->
       <q-input
         outlined
@@ -38,6 +37,9 @@
         <template v-slot:prepend>
           <q-icon name="fas fa-user" />
         </template>
+        <p v-if="errors" class="error">
+          <span v-if="!$v.form.LastName.required">*{{$t('thisfieldisrequired')}}.</span>
+        </p>
       </q-input>
       <!-- Email -->
       <q-input
@@ -52,14 +54,14 @@
         <template v-slot:prepend>
           <q-icon name="email" class="mailIcon" />
         </template>
+        <!-- email errors -->
+        <p v-if="errors" class="error">
+          <span v-if="!$v.form.email.required">*{{$t('thisfieldisrequired')}}.</span>
+          <span v-if="!$v.form.email.email">* {{$t('Needstobeavalidemail')}}.</span>
+          <span v-if="!$v.form.email.isUnique">*{{$t('Thisemailisalreadyregistered')}}.</span>
+        </p>
+        <!-- email errors -->
       </q-input>
-      <!-- email errors -->
-      <p v-if="errors" class="error">
-        <span v-if="!$v.form.email.required">this field is required.</span>
-        <span v-if="!$v.form.email.email">Needs to be a valid email.</span>
-        <span v-if="!$v.form.email.isUnique">This email is already registered.</span>
-      </p>
-      <!-- email errors -->
       <!-- Phone Number -->
       <vue-tel-input
         required
@@ -71,6 +73,9 @@
         <label>{{$t('gender')}}:</label>
         <q-radio class="genderOpt" v-model="form.Gender" val="female">{{$t('female')}}</q-radio>
         <q-radio class="genderOpt" v-model="form.Gender" val="male">{{$t('male')}}</q-radio>
+        <p v-if="errors" class="error float">
+          <span v-if="!$v.form.Gender.required">*{{$t('thisfieldisrequired')}}.</span>
+        </p>
       </div>
       <!-- password -->
       <q-input
@@ -82,7 +87,7 @@
         v-model="$v.form.PassWord.$model"
         :type="isPwd ? 'password' : 'text'"
         lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Please type something']"
+        @input="EnableConf"
       >
         <template v-slot:prepend>
           <q-icon
@@ -91,9 +96,11 @@
             @click="isPwd = !isPwd"
           />
         </template>
+        <p class="error" v-if="errors">
+          <span v-if="!$v.form.PassWord.required">*{{$t('thisfieldisrequired')}}.</span>
+        </p>
       </q-input>
-      <p class="error" v-if="errors">
-        <span v-if="!$v.form.PassWord.required">*</span>
+      <p class="error">
         <span
           v-if="!$v.form.PassWord.strongPassword"
         >Strong passwords need to have a letter, a number, a special character, and be more than 8 characters long.</span>
@@ -102,6 +109,7 @@
       <q-input
         outlined
         required
+        :disable="!this.enableConfirm"
         class="inputFieldText passwordField"
         color="light-blue-10"
         :label="$t('ReEnterYourPassword')"
@@ -120,9 +128,7 @@
       </q-input>
       <!-- errors for pass2 -->
       <p v-if="errors" class="error">
-        <span v-if="!$v.form.Confirmpass.required">*</span>
-      </p>
-      <p v-if="errors" class="error">
+        <span v-if="!$v.form.Confirmpass.required">*{{$t('thisfieldisrequired')}}</span>
         <span v-if="!$v.form.Confirmpass.sameAsPassword">The passwords do not match.</span>
       </p>
       <!-- errors for pass2 -->
@@ -166,10 +172,12 @@ export default {
         PassWord: '',
         Confirmpass: '',
       },
+      enableConfirm: false,
     };
   },
   validations: {
     form: {
+      Gender: { required },
       email: {
         required,
         email,
@@ -188,6 +196,7 @@ export default {
         },
       },
       FirstName: { required, minLength: minLength(3) },
+      LastName: { required },
       PassWord: {
         required,
         strongPassword(PassWord) {
@@ -218,12 +227,15 @@ export default {
         });
       } else {
         this.$q.notify({
-          message: 'The form above has errors,',
+          message: this.$t('Theformabovehaserrors'),
           color: 'negative',
           icon: 'warning',
           position: 'top',
         });
       }
+    },
+    EnableConf() {
+      this.enableConfirm = true;
     },
 
     // console.log('Logged In');

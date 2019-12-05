@@ -23,7 +23,7 @@
     <rightMainMenu
       :locale="locale"
       :leftDrawerOpen="leftDrawerOpen"
-      :screenSize="screenSize"
+      :mobileSize="mobileSize"
       @backFalse="backFalse"
     />
     <q-resize-observer @resize="onResize" />
@@ -46,7 +46,6 @@ export default {
     return {
       leftDrawerOpen: true,
       mobileSize: false,
-      screenSize: 'default',
     };
   },
   methods: {
@@ -57,11 +56,9 @@ export default {
       if (size.width < 980) {
         this.leftDrawerOpen = false;
         this.mobileSize = true;
-        this.screenSize = 'mobile';
       } else {
         this.leftDrawerOpen = true;
         this.mobileSize = false;
-        this.screenSize = 'desktop';
       }
       // console.log(this.screenSize);
     },

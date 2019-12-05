@@ -12,10 +12,17 @@
           :label="$t('firstName')"
           lazy-rules
           :rules="[val => val && val.length > 0]"
+          autofocus
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-user" />
           </template>
+          <!-- firstname validation -->
+          <p v-if="errors" class="error">
+            <span v-if="!$v.form.FirstName.required">*{{$t('thisfieldisrequired')}}.</span>
+            <span v-if="!$v.form.FirstName.minLength">{{$t('Fieldmusthaveatleast3characters')}}</span>
+          </p>
+          <!-- firstname validation -->
         </q-input>
         <!-- last name -->
         <q-input
@@ -45,6 +52,13 @@
           <template v-slot:prepend>
             <q-icon name="email" class="mailIcon" />
           </template>
+          <!-- email errors -->
+          <p v-if="errors" class="error">
+            <span v-if="!$v.form.email.required">*{{$t('thisfieldisrequired')}}.</span>
+            <span v-if="!$v.form.email.email">* {{$t('Needstobeavalidemail')}}.</span>
+            <span v-if="!$v.form.email.isUnique">*{{$t('Thisemailisalreadyregistered')}}.</span>
+          </p>
+          <!-- email errors -->
         </q-input>
         <!-- Phone Number -->
         <vue-tel-input
@@ -65,7 +79,7 @@
             <q-icon name />
           </template>
         </q-select>
-        <!-- current password -->
+        <!-- current password
         <q-input
           outlined
           required
@@ -84,7 +98,7 @@
               @click="isPwd = !isPwd"
             />
           </template>
-        </q-input>
+        </q-input>-->
         <!--New  password -->
         <q-input
           outlined
@@ -96,6 +110,7 @@
           :type="isPwd ? 'password' : 'text'"
           lazy-rules
           :rules="[val => (val && val.length > 0) || 'Please type something']"
+          @input="EnableConf"
         >
           <template v-slot:prepend>
             <q-icon
@@ -116,6 +131,7 @@
           :type="isPwd ? 'password' : 'text'"
           lazy-rules
           :rules="[val => (val && val.length > 0) || 'Please type something']"
+          :disable="!this.enableConfirm"
         >
           <template v-slot:prepend>
             <q-icon
@@ -285,7 +301,7 @@
 </template>
 
 <script>
-import { required, email } from 'vuelidate/lib/validators';
+import { required, email, minLength } from 'vuelidate/lib/validators';
 import { VueTelInput } from 'vue-tel-input';
 
 export default {
@@ -295,6 +311,11 @@ export default {
   },
   data() {
     return {
+      // data for validation
+      uiState: 'submit not clicked',
+      errors: false,
+      empty: true,
+      // data for validation
       countries: ['amrica', 'germany', 'iran', 'hind', 'japan', 'china'],
       cities: ['Finland', 'Canada', 'Berlin', 'Tehran', 'tokyo'],
       roles: ['staff', 'client', 'Admin', 'ProductManager', 'Billing'],
@@ -325,16 +346,54 @@ export default {
         linkdin: '',
         git: '',
       },
+      enableConfirm: false,
     };
   },
   validations: {
     form: {
-      email: { required, email },
+      email: {
+        required,
+        email,
+        isUnique(value) {
+          // standalone validator ideally should not assume a field is required
+          if (value === '') return true;
+
+          // simulate async call, fail for all logins with even length
+          return new Promise(resolve => {
+            setTimeout(() => {
+              resolve(
+                typeof value === 'string' && value !== 'narges.pm@yahoo.com'
+              );
+            }, 350 + Math.random() * 300);
+          });
+        },
+      },
+      FirstName: { required, minLength: minLength(3) },
     },
   },
   methods: {
     onSubmit() {
       // console.log('edit profile');
+      this.empty = !this.$v.form.$anyDirty;
+      this.errors = this.$v.form.$anyError;
+      this.uiState = 'submit clicked';
+      if (this.errors === false && this.empty === false) {
+        // this is where you send the responses
+        this.uiState = 'form submitted';
+        this.$router.push({
+          path: `/${this.$route.params.locale}/profile`,
+        });
+      } else {
+        this.$q.notify({
+          message: this.$t('Theformabovehaserrors'),
+          color: 'negative',
+          icon: 'warning',
+          position: 'top',
+        });
+      }
+    },
+    EnableConf() {
+      this.enableConfirm = true;
     },
   },
 };

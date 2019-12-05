@@ -1,26 +1,29 @@
 <template >
   <div class="loginWrapperCmp">
     <q-form @submit="onSubmit" class="q-gutter-md loginForm">
-      <asyncValidationInput />
       <!-- step one -->
       <div v-if="EnableFirstLevel">
         <q-input
           outlined
           class="inputFieldText firstStepLogin"
           color="light-blue-10"
-          v-model="UserName"
+          v-model="form.UserName"
           :label="$t('EmailorPhoneNumber')"
           lazy-rules
+          autofocus
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-user" />
           </template>
+          <p v-if="errors" class="error">
+            <span v-if="!$v.form.UserName.isUnique">*{{$t('Thisemailisalreadyregistered')}}.</span>
+          </p>
         </q-input>
         <!-- choosing how to verify acoount -->
         <q-select
           color="light-blue-10"
           outlined
-          v-model="method"
+          v-model="form.method"
           :options="methodOptions"
           :label="$t('chooseYourMethodToLogin')"
         >
@@ -46,13 +49,13 @@
       <!-- step one -->
       <!-- step two if password choosed -->
       <div v-if="EnableSecondLevel">
-        <span class="userName" @click="backToStepOne">{{UserName}}</span>
+        <span class="userName" @click="backToStepOne">{{form.UserName}}</span>
         <q-input
           outlined
           class="inputFieldText passwordField"
           color="light-blue-10"
           :label="$t('EnterYourPassword')"
-          v-model="password"
+          v-model="form.password"
           :type="isPwd ? 'password' : 'text'"
           lazy-rules
         >
@@ -79,9 +82,9 @@
       <!-- step two if password chose -->
       <!-- step two if OTP chosed -->
       <div v-if="EnableOtpLevel">
-        <span class="userName" @click="backToStepOne">{{UserName}}</span>
+        <span class="userName" @click="backToStepOne">{{form.UserName}}</span>
         <span>{{$t('otpMessage')}}</span>
-        <q-input filled v-model="otp" class="otpInput" mask="# # # #" fill-mask="_">
+        <q-input filled v-model="form.otp" class="otpInput" mask="# # # #" fill-mask="_">
           <template v-slot:prepend>
             <q-icon name />
           </template>
@@ -102,36 +105,62 @@
 </template>
 
 <script>
-import asyncValidationInput from '../structure/asyncValidationInput.vue';
+import { required } from 'vuelidate/lib/validators';
 
 export default {
-  components: {
-    asyncValidationInput,
-  },
   data() {
     return {
-      UserName: '',
-      password: '',
+      // data for validation
+      uiState: 'submit not clicked',
+      errors: false,
+      empty: true,
+      // data for validation
+      form: {
+        UserName: '',
+        password: '',
+        method: this.$t('otp'),
+        otp: '',
+      },
       isPwd: true,
       EnableSecondLevel: false,
       EnableFirstLevel: true,
       EnableOtpLevel: false,
-      method: this.$t('otp'),
       methodOptions: [this.$t('otp'), this.$t('password')],
-      otp: '',
     };
+  },
+  validations: {
+    form: {
+      UserName: {
+        required,
+        isUnique(value) {
+          // standalone validator ideally should not assume a field is required
+          if (value === '') return true;
+
+          // simulate async call, fail for all logins with even length
+          return new Promise(resolve => {
+            setTimeout(() => {
+              resolve(
+                typeof value === 'string' && value !== 'narges.pm@yahoo.com'
+              );
+            }, 350 + Math.random() * 300);
+          });
+        },
+      },
+    },
   },
   methods: {
     onSubmit() {
       // console.log('Loged In');
     },
     continueToNextLevel() {
-      if (this.UserName.length !== 0) {
-        if (this.method.length !== 0) {
-          if (this.method === 'otp') {
+      if (this.form.UserName.length !== 0) {
+        this.errors = this.$v.form.$anyError;
+        console.log(this.$v.form);
+        if (this.form.method.length !== 0) {
+          if (this.form.method === 'otp') {
             this.EnableOtpLevel = true;
             this.EnableFirstLevel = false;
-          } else if (this.method === 'password') {
+          } else if (this.form.method === 'password') {
             this.EnableFirstLevel = false;
             this.EnableSecondLevel = true;
           }
@@ -152,7 +181,7 @@ export default {
       this.EnableSecondLevel = false;
     },
     stepTwoComplete() {
-      if (this.password.length !== 0) {
+      if (this.form.password.length !== 0) {
         this.EnableSecondLevel = false;
         // console.log('Submit Form');
         this.showNotif('top-right');
@@ -163,7 +192,7 @@ export default {
       }
     },
     otpStepComplete() {
-      if (this.otp.length !== 0) {
+      if (this.form.otp.length !== 0) {
         this.EnableOtpLevel = false;
         // console.log('Submit Form');
         this.showNotif('top-right');
@@ -177,7 +206,7 @@ export default {
       this.$q.notify({
         color: 'dark',
         icon: 'verified_user',
-        message: `Welcome ${this.UserName}!`,
+        message: `Welcome ${this.form.UserName}!`,
         position,
         timeout: Math.random() * 5000 + 3000,
       });

@@ -3,19 +3,25 @@
     <q-form @submit="onSubmit">
       <div class="col1">
         <!--  Service name -->
-        <q-input
+        <q-select
           outlined
           required
-          color="light-blue-10"
+          color="light-blue-10 "
           v-model="service.name"
+          :options="servicesName"
           :label="$t('serviceName')"
+          class="inputStyle"
           lazy-rules
           :rules="[val => val && val.length > 0]"
+          autofocus
         >
           <template v-slot:prepend>
             <q-icon name="settings_applications" />
           </template>
-        </q-input>
+          <!-- <p v-if="this.errors" class="error">
+            <span v-if="$v.service.name.required">*{{$t('thisfieldisrequired')}}.</span>
+          </p>-->
+        </q-select>
         <!-- service type -->
         <q-select
           color="light-blue-10 "
@@ -148,6 +154,14 @@
             <q-icon name="fas fa-exclamation-circle" />
           </template>
         </q-select>
+        <p v-if="errors" class="error">
+          The form above has errors,
+          <br />please get your act together and resubmit
+        </p>
+        <p v-else-if="empty && uiState === 'submit clicked'" class="error">
+          The form above is empty,
+          <br />cmon y'all you can't submit an empty form!
+        </p>
       </div>
       <div class="col3">
         <q-btn class="halfw generalBut" icon="system_update_alt" :label="$t('tickets')" />
@@ -169,6 +183,7 @@
 </template>
 
 <script>
+// import { required } from 'vuelidate/lib/validators';
 import uploadfile from '../structure/uploadfile.vue';
 
 export default {
@@ -178,6 +193,12 @@ export default {
   },
   data() {
     return {
+      // data for validation
+      uiState: 'submit not clicked',
+      errors: false,
+      empty: true,
+      // end of data for validation
+      servicesName: ['name1', 'name2', 'name3'],
       serviceType: ['type1', 'type2', 'type3'],
       servicesTag: ['tag1', 'tag2', 'tag3'],
       staff: ['employee1', 'employee2', 'employee3'],
@@ -196,10 +217,27 @@ export default {
       },
     };
   },
+  // validations: {
+  //   service: {
+  //     name: { required },
+  //   },
+  // },
   methods: {
     onSubmit() {
+      // this.empty = !this.$v.service.$anyDirty;
+      // this.errors = this.$v.service.$anyError;
+      // this.uiState = 'submit clicked';
+      // if (this.errors === false && this.empty === false) {
       console.log('edit service');
       this.$refs.upload.submit_btn();
+      // } else {
+      // console.log(this.$v.service);
+      // this.$q.notify({
+      // message: this.$t('Theformabovehaserrors'),
+      // color: 'negative',
+      // icon: 'warning',
+      // position: 'top',
+      // });
     },
   },
 };

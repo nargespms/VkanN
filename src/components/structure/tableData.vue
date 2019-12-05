@@ -8,12 +8,12 @@
       :filter="filter"
       :separator="separator"
       :pagination.sync="innerPagination"
-      :dense="$q.screen.lt.md"
       binary-state-sort
       :loading="loading"
       class="my-sticky-header-table"
       @request="onRequest"
-      :grid="$q.screen.xs"
+      :dense="$q.screen.lt.sm"
+      :grid="$q.screen.lt.sm"
     >
       <!-- search field -->
       <template v-slot:top-right>
@@ -74,9 +74,10 @@
         </q-tr>
       </template>
       <!-- for responsive  -->
+
       <template v-slot:item="props">
-        <q-card class="q-ma-xs">
-          <q-list dense>
+        <q-card class="q-ma-xs q-pa-sm">
+          <q-list dense class="mobileList">
             <!-- <q-item v-for="col in props.cols" :key="col.id">
               <q-item-section>
                 <q-item-label>{{ col.label }}</q-item-label>
@@ -84,12 +85,21 @@
             </q-item>-->
             <q-item class="mobileItem" v-for="prop in props.row" :key="prop.id">
               <q-item-section>
-                <q-item-label v-if=" prop !== props.row['__index']">{{prop}}</q-item-label>
+                <span v-if="prop == props.row['name']">
+                  <router-link
+                    class="listNameTable"
+                    :to="'/' +$route.params.locale + '/' + 'profile' +'/' "
+                  >#{{ props.row.name }}</router-link>
+                </span>
+                <q-item-label
+                  v-if="prop !== props.row['name'] && prop !== props.row['__index']"
+                >{{prop}}</q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
         </q-card>
       </template>
+
       <!-- for responsive  -->
     </q-table>
   </div>
@@ -233,8 +243,18 @@ export default {
   margin-top: 12px;
   padding-right: 12px;
 }
-.mobileItem {
-  text-align: center;
-  border-bottom: 1px solid #d1d1d1;
+.mobileList {
+  .mobileItem {
+    text-align: center;
+    border-bottom: 1px solid #d1d1d1;
+  }
+  :last-child {
+    border-bottom: none;
+  }
+}
+.my-sticky-header-table {
+  .row {
+    justify-content: space-evenly;
+  }
 }
 </style>

@@ -114,4 +114,10 @@ export default {
   fileManagements: 'مدیریت فایل ها',
   filesList: 'لیست فایل ها ',
   uploadFile: 'بارگذاری فایل',
+  Fieldmusthaveatleast3characters: 'حداقل کاراکتر مجاز ۳ عدد میباشد',
+  Needstobeavalidemail: 'ایمیل وارد شده صحیح نمیباشد',
+  Thisemailisalreadyregistered: 'ایمیل وارد شده قبلا ثبت شده است ',
+  thisfieldisrequired: 'تکمیل این قسمت ضروری است',
+  Theformabovehaserrors: 'لطفا خطاهای فرم را اصلاح نمایید',
+  emptyFormCanNotSubmit: 'لطفا فرم را تکمیل نمایید',
 };
