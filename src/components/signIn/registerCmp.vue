@@ -100,10 +100,10 @@
           <span v-if="!$v.form.PassWord.required">*{{$t('thisfieldisrequired')}}.</span>
         </p>
       </q-input>
-      <p class="error">
+      <p class="error" v-if="errors">
         <span
           v-if="!$v.form.PassWord.strongPassword"
-        >Strong passwords need to have a letter, a number, a special character, and be more than 8 characters long.</span>
+        >{{$t('Strongpasswords')}}</span>
       </p>
       <!-- Re enter password -->
       <q-input
@@ -128,7 +128,6 @@
       </q-input>
       <!-- errors for pass2 -->
       <p v-if="errors" class="error">
-        <span v-if="!$v.form.Confirmpass.required">*{{$t('thisfieldisrequired')}}</span>
         <span v-if="!$v.form.Confirmpass.sameAsPassword">The passwords do not match.</span>
       </p>
       <!-- errors for pass2 -->
@@ -203,7 +202,7 @@ export default {
           return (
             /[a-z]/.test(PassWord) && // checks for a-z
             /[0-9]/.test(PassWord) && // checks for 0-9
-            /\W|_/.test(PassWord) && // checks for special char
+            // /\W|_/.test(PassWord) && // checks for special char
             PassWord.length >= 6
           );
         },

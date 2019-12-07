@@ -60,12 +60,21 @@
           </p>
           <!-- email errors -->
         </q-input>
-        <!-- Phone Number -->
+        <!-- Mobile Phone Number -->
         <vue-tel-input
           required
           v-model="MobileNumber"
+          class="mb20"
           :placeholder="$t('pleaseEnterYourMobilephoneNumber')"
         ></vue-tel-input>
+        <!-- line Phone Number -->
+        <vue-tel-input
+          required
+          v-model="form.landLine"
+          class="generalInputStyles"
+          :placeholder="$t('pleaseEnterYourPhoneNumber')"
+        ></vue-tel-input>
+
         <!-- Gender -->
         <q-select
           color="light-blue-10"
@@ -106,7 +115,7 @@
           class="inputFieldText passwordField"
           color="light-blue-10"
           :label="$t('EnterYourPassword')"
-          v-model="form.newPassWord"
+          v-model="form.PassWord"
           :type="isPwd ? 'password' : 'text'"
           lazy-rules
           :rules="[val => (val && val.length > 0) || 'Please type something']"
@@ -119,7 +128,13 @@
               @click="isPwd = !isPwd"
             />
           </template>
+          <p class="error" v-if="errors">
+            <span v-if="!$v.form.PassWord.required">*{{$t('thisfieldisrequired')}}.</span>
+          </p>
         </q-input>
+        <p class="error" v-if="errors">
+          <span v-if="!$v.form.PassWord.strongPassword">{{$t('Strongpasswords')}}</span>
+        </p>
         <!-- Re enter password -->
         <q-input
           outlined
@@ -141,25 +156,30 @@
             />
           </template>
         </q-input>
+        <!-- errors for pass2 -->
+        <p v-if="errors" class="error">
+          <span v-if="!$v.form.Confirmpass.sameAsPassword">The passwords do not match.</span>
+        </p>
+        <!-- errors for pass2 -->
       </div>
       <div class="col2">
-        <!-- Phone Number -->
-        <vue-tel-input
-          required
-          v-model="form.landLine"
-          class="generalInputStyles"
-          :placeholder="$t('pleaseEnterYourPhoneNumber')"
-        ></vue-tel-input>
         <!-- NationalId -->
         <q-input
           outlined
+          required
           v-model="form.nationalId"
           :label="$t('PleaseEnterNationalId')"
-          class="inputStyle pt20"
+          class="inputStyle"
+          :error="$v.form.nationalId.$error"
+          mask="###-#######"
         >
           <template v-slot:prepend>
             <q-icon name />
           </template>
+          <p v-if="errors" class="error">
+            <span v-if="!$v.form.nationalId.required">*{{$t('thisfieldisrequired')}}.</span>
+            <span v-if="!$v.form.nationalId.minLength">*{{$t('Fieldmusthaveatleast10characters')}}.</span>
+          </p>
         </q-input>
         <!-- Country -->
         <q-select
@@ -199,10 +219,16 @@
           v-model="form.postalCode"
           :label="$t('PleaseEnterPostalCode')"
           class="inputStyle pt20"
+          :error="$v.form.postalCode.$error"
+          mask="#####-#####"
         >
           <template v-slot:prepend>
             <q-icon name />
           </template>
+          <p v-if="errors" class="error">
+            <span v-if="!$v.form.postalCode.required">*{{$t('thisfieldisrequired')}}.</span>
+            <span v-if="!$v.form.postalCode.minLength">*{{$t('Fieldmusthaveatleast10characters')}}.</span>
+          </p>
         </q-input>
         <!-- Role -->
         <q-select
@@ -230,8 +256,6 @@
             <q-icon name />
           </template>
         </q-select>
-      </div>
-      <div class="col3">
         <!-- tags -->
         <q-select
           color="light-blue-10"
@@ -245,6 +269,8 @@
             <q-icon name />
           </template>
         </q-select>
+      </div>
+      <div class="col3">
         <!-- personality -->
         <q-select
           color="light-blue-10"
@@ -301,7 +327,7 @@
 </template>
 
 <script>
-import { required, email, minLength } from 'vuelidate/lib/validators';
+import { required, email, minLength, sameAs } from 'vuelidate/lib/validators';
 import { VueTelInput } from 'vue-tel-input';
 
 export default {
@@ -331,7 +357,7 @@ export default {
         LastName: '',
         Gender: '',
         currentPass: '',
-        newPassWord: '',
+        PassWord: '',
         Confirmpass: '',
         nationalId: '',
         landLine: '',
@@ -351,6 +377,14 @@ export default {
   },
   validations: {
     form: {
+      nationalId: {
+        required,
+        minLength: minLength(10),
+      },
+      postalCode: {
+        required,
+        minLength: minLength(10),
+      },
       email: {
         required,
         email,
@@ -369,6 +403,21 @@ export default {
         },
       },
       FirstName: { required, minLength: minLength(3) },
+      PassWord: {
+        required,
+        strongPassword(PassWord) {
+          return (
+            /[a-z]/.test(PassWord) && // checks for a-z
+            /[0-9]/.test(PassWord) && // checks for 0-9
+            // /\W|_/.test(PassWord) && // checks for special char
+            PassWord.length >= 6
+          );
+        },
+      },
+      Confirmpass: {
+        required,
+        sameAsPassword: sameAs('PassWord'),
+      },
     },
   },
   methods: {
@@ -381,7 +430,7 @@ export default {
         // this is where you send the responses
         this.uiState = 'form submitted';
         this.$router.push({
-          path: `/${this.$route.params.locale}/profile`,
+          path: `/${this.$route.params.locale}/userManagement`,
         });
       } else {
         this.$q.notify({
