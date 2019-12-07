@@ -12,7 +12,7 @@
           :label="$t('serviceName')"
           class="inputStyle"
           lazy-rules
-          :rules="[val => val && val.length > 0]"
+          :rules="[ val => val && val.length > 0 ]"
           autofocus
         >
           <template v-slot:prepend>
@@ -176,6 +176,8 @@
 </template>
 
 <script>
+// import { required, minLength } from 'vuelidate/lib/validators';
+
 import uploadfile from '../structure/uploadfile.vue';
 
 export default {

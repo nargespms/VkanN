@@ -161,11 +161,35 @@
                 class="expandableMenu"
                 :to="'/' +locale + '/' + 'billing'"
               >
-                <!-- contract route -->
-                <router-link class="block" :to="'/' +locale + '/' +'billing'+ '/' +'contracts'">
-                  <q-icon name="fas fa-handshake" />
-                  {{$t('contracts')}}
+                <!-- invoice route -->
+                <router-link class="block" :to="'/' +locale + '/' +'billing'+ '/' +'invoices'">
+                  <q-icon name="attach_money" />
+                  {{$t('invoices')}}
                 </router-link>
+                <!-- contract route -->
+                <q-expansion-item
+                  icon="fas fa-handshake"
+                  :label="$t('contracts')"
+                  caption
+                  expand-icon-toggle
+                  class="expandableMenu"
+                  :to="'/' +locale + '/' +'billing'+ '/' +'contracts'"
+                >
+                  <router-link
+                    class="block"
+                    :to="'/' +locale + '/' +'billing'+ '/' +'contracts' + '/' + 'addContract'"
+                  >
+                    <q-icon name="attach_money" />
+                    {{$t('addContract')}}
+                  </router-link>
+                  <router-link
+                    class="block"
+                    :to="'/' +locale + '/' +'billing'+ '/' +'contracts' + '/' + 'contractsList'"
+                  >
+                    <q-icon name="attach_money" />
+                    {{$t('contractsList')}}
+                  </router-link>
+                </q-expansion-item>
               </q-expansion-item>
             </li>
             <!-- tags management -->
@@ -270,7 +294,7 @@ export default {
     font-size: 17px;
   }
   .q-expansion-item__content {
-    padding: 0px 48px;
+    padding: 0px 18px;
     background-color: #f0f0f0;
     border: 1px solid #e9e9e9;
     a {

@@ -26,6 +26,7 @@
         <q-select
           color="light-blue-10 "
           outlined
+          required
           v-model="service.type"
           :options="serviceType"
           :label="$t('serviceType')"
@@ -52,6 +53,7 @@
         <q-select
           color="light-blue-10 "
           outlined
+          required
           v-model="service.client"
           :options="clients"
           :label="$t('clientName')"
@@ -64,13 +66,11 @@
         <!-- primary Domain -->
         <q-input
           outlined
-          required
           class
           color="light-blue-10"
           v-model="service.primaryDomain"
           :label="$t('primaryDomain')"
           lazy-rules
-          :rules="[val => val && val.length > 0]"
         >
           <template v-slot:prepend>
             <q-icon name />
@@ -79,13 +79,11 @@
         <!-- park Domain -->
         <q-input
           outlined
-          required
-          class="inputFieldText inputStyle"
+          class="inputFieldText inputStyle pt20"
           color="light-blue-10"
           v-model="service.parkDomain"
           :label="$t('parkDomain')"
           lazy-rules
-          :rules="[val => val && val.length > 0]"
         >
           <template v-slot:prepend>
             <q-icon name />
@@ -116,10 +114,15 @@
           :label="$t('voipNumber')"
           lazy-rules
           :rules="[val => val && val.length > 0]"
+          :error="$v.service.voip.$error"
+          mask="#####"
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-tty" />
           </template>
+          <p v-if="errors" class="error">
+            <span v-if="!$v.service.voip.minLength">*{{$t('Fieldmusthaveatleast4characters')}}.</span>
+          </p>
         </q-input>
         <!-- description -->
         <textarea
@@ -183,7 +186,7 @@
 </template>
 
 <script>
-import { required } from 'vuelidate/lib/validators';
+import { required, minLength } from 'vuelidate/lib/validators';
 import uploadfile from '../structure/uploadfile.vue';
 
 export default {
@@ -220,27 +223,29 @@ export default {
   validations: {
     service: {
       name: { required },
+      voip: {
+        minLength: minLength(4),
+      },
     },
   },
   methods: {
     onSubmit() {
-      console.log('edit service');
-      this.$refs.upload.submit_btn();
-      // this.empty = !this.$v.service.$anyDirty;
-      // this.errors = this.$v.service.$anyError;
-      // this.uiState = 'submit clicked';
-      // if (this.errors === false && this.empty === false) {
-      //   console.log(this.errors);
-      //   console.log(this.$v.service.name.$model);
-      // } else {
-      //   console.log(this.$v.service);
-      //   this.$q.notify({
-      //     message: this.$t('Theformabovehaserrors'),
-      //     color: 'negative',
-      //     icon: 'warning',
-      //     position: 'top',
-      //   });
-      // }
+      this.empty = !this.$v.service.$anyDirty;
+      this.errors = this.$v.service.$anyError;
+      this.uiState = 'submit clicked';
+      if (this.errors === false && this.empty === false) {
+        // this is where you send the responses
+        this.uiState = 'form submitted';
+        console.log('edit service');
+        this.$refs.upload.submit_btn();
+      } else {
+        this.$q.notify({
+          message: this.$t('Theformabovehaserrors'),
+          color: 'negative',
+          icon: 'warning',
+          position: 'top',
+        });
+      }
     },
   },
 };

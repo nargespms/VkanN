@@ -115,6 +115,7 @@ export default {
   filesList: 'لیست فایل ها ',
   uploadFile: 'بارگذاری فایل',
   Fieldmusthaveatleast3characters: 'حداقل کاراکتر مجاز ۳ عدد میباشد',
+  Fieldmusthaveatleast4characters: 'حداقل کاراکتر مجاز ۴ عدد میباشد',
   Fieldmusthaveatleast10characters: 'تعداد کاراکتر مجاز 10 عدد میباشد',
   Needstobeavalidemail: 'ایمیل وارد شده صحیح نمیباشد',
   Thisemailisalreadyregistered: 'ایمیل وارد شده قبلا ثبت شده است ',
