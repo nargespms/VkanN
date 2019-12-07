@@ -12,13 +12,13 @@
           :label="$t('serviceName')"
           class="inputStyle"
           lazy-rules
-          :rules="[val => val && val.length > 0]"
+          :rules="[ val => val && val.length > 0 ]"
           autofocus
         >
           <template v-slot:prepend>
             <q-icon name="settings_applications" />
           </template>
-          <!-- <p v-if="this.errors" class="error">
+          <!-- <p v-if="errors" class="error">
             <span v-if="$v.service.name.required">*{{$t('thisfieldisrequired')}}.</span>
           </p>-->
         </q-select>
@@ -183,7 +183,7 @@
 </template>
 
 <script>
-// import { required } from 'vuelidate/lib/validators';
+import { required } from 'vuelidate/lib/validators';
 import uploadfile from '../structure/uploadfile.vue';
 
 export default {
@@ -217,27 +217,30 @@ export default {
       },
     };
   },
-  // validations: {
-  //   service: {
-  //     name: { required },
-  //   },
-  // },
+  validations: {
+    service: {
+      name: { required },
+    },
+  },
   methods: {
     onSubmit() {
+      console.log('edit service');
+      this.$refs.upload.submit_btn();
       // this.empty = !this.$v.service.$anyDirty;
       // this.errors = this.$v.service.$anyError;
       // this.uiState = 'submit clicked';
       // if (this.errors === false && this.empty === false) {
-      console.log('edit service');
-      this.$refs.upload.submit_btn();
+      //   console.log(this.errors);
+      //   console.log(this.$v.service.name.$model);
       // } else {
-      // console.log(this.$v.service);
-      // this.$q.notify({
-      // message: this.$t('Theformabovehaserrors'),
-      // color: 'negative',
-      // icon: 'warning',
-      // position: 'top',
-      // });
+      //   console.log(this.$v.service);
+      //   this.$q.notify({
+      //     message: this.$t('Theformabovehaserrors'),
+      //     color: 'negative',
+      //     icon: 'warning',
+      //     position: 'top',
+      //   });
+      // }
     },
   },
 };

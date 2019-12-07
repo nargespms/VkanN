@@ -42,9 +42,9 @@
           mask="date"
           :rules="['date']"
           :label="$t('startDate')"
-          @change="EnableDate"
           ref="qDateProxy"
           name="event"
+          @blur="EnableDate"
         >
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
@@ -209,11 +209,13 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log(this.form);
+      console.log(this.contract);
       this.$refs.upload.submit_btn();
     },
     EnableDate() {
-      this.enableEndDate = true;
+      if (this.contract.startdate.length > 0) {
+        this.enableEndDate = true;
+      }
     },
   },
   computed: {
