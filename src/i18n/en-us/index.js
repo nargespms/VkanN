@@ -102,4 +102,5 @@ export default {
   fileManagements: 'File Managements',
   filesList: 'files List',
   uploadFile: 'Upload File',
+  emptyForm: 'Please Enter Your Information',
 };

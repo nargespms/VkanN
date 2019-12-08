@@ -15,10 +15,23 @@
       <!-- step two  entering code  -->
       <div v-if="entercode">
         <span class="retrivedMessage">{{$t('retrivedMessage')}}</span>
-        <q-input filled v-model="retrivedCode" class="otpInput" mask="# # # #" fill-mask="_">
+        <q-input
+          required
+          filled
+          v-model="$v.retrivedCode.$model"
+          class="otpInput"
+          mask="####"
+          :error="$v.retrivedCode.$error"
+          @blur="$v.retrivedCode.$touch"
+        >
           <template v-slot:prepend>
             <q-icon name />
           </template>
+          <p v-if="errors" class="error">
+            <span v-if="!$v.retrivedCode.minLength">*{{$t('Fieldmusthaveatleast4characters')}}.</span>
+            <span v-if="!$v.retrivedCode.required">*{{$t('thisfieldisrequired')}}.</span>
+            <span v-if="!$v.retrivedCode.isUnique">*{{$t('invalidCode')}}.</span>
+          </p>
         </q-input>
         <span class="resendPass" @click="resendPass">{{$t('resendPass')}}</span>
         <q-btn
@@ -34,6 +47,7 @@
 </template>
 
 <script>
+import { required, minLength } from 'vuelidate/lib/validators';
 import { VueTelInput } from 'vue-tel-input';
 
 export default {
@@ -42,11 +56,33 @@ export default {
   },
   data() {
     return {
+      // data for validation
+      uiState: 'submit not clicked',
+      errors: false,
+      empty: true,
+      // end of data for validation
       MobileNumber: '',
       enterMobile: true,
       entercode: false,
       retrivedCode: '',
     };
+  },
+  validations: {
+    retrivedCode: {
+      required,
+      minLength: minLength(4),
+      isUnique(value) {
+        // standalone validator ideally should not assume a field is required
+        // if (value === '') return true;
+
+        // simulate async call, fail for all logins with even length
+        return new Promise(resolve => {
+          setTimeout(() => {
+            resolve(typeof value === 'string' && value !== '0000');
+          }, 350 + Math.random() * 300);
+        });
+      },
+    },
   },
   methods: {
     onSubmit() {
@@ -61,16 +97,28 @@ export default {
       }
     },
     resendPass() {
-      this.onSubmit();
+      // request for new code
     },
     enterFromForgetpas() {
-      if (this.retrivedCode !== 0) {
+      this.empty = !this.$v.retrivedCode.$anyDirty;
+      this.errors = this.$v.retrivedCode.$anyError;
+      this.uiState = 'submit clicked';
+      if (this.errors === false && this.empty === false) {
         this.entercode = false;
         // console.log('Submit Form');
         this.showNotif('top-right');
-      } else {
+      } else if (this.empty === true) {
         this.$q.dialog({
           title: 'لطفا رمز یکبار مصرف  خود را وارد نمایید',
+        });
+      } else {
+        console.log(this.errors);
+        console.log(this.empty);
+        this.$q.notify({
+          message: this.$t('Theformabovehaserrors'),
+          color: 'negative',
+          icon: 'warning',
+          position: 'top',
         });
       }
     },

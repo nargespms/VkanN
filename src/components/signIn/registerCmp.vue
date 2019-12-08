@@ -137,10 +137,7 @@
         The form above has errors,
         <br />please get your act together and resubmit
       </p>
-      <p v-else-if="empty && uiState === 'submit clicked'" class="error">
-        The form above is empty,
-        <br />cmon y'all you can't submit an empty form!
-      </p>
+
     </q-form>
   </div>
 </template>
@@ -223,6 +220,13 @@ export default {
         this.uiState = 'form submitted';
         this.$router.push({
           path: `/${this.$route.params.locale}/dashboard`,
+        });
+      }else if (this.empty === true){
+        this.$q.notify({
+          message: this.$t('emptyForm'),
+          color: 'negative',
+          icon: 'warning',
+          position: 'top',
         });
       } else {
         this.$q.notify({

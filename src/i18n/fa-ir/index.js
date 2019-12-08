@@ -123,4 +123,6 @@ export default {
   Theformabovehaserrors: 'لطفا خطاهای فرم را اصلاح نمایید',
   emptyFormCanNotSubmit: 'لطفا فرم را تکمیل نمایید',
   Strongpasswords: 'رمز عبور قوی شامل حروف و اعداد میباشد',
+  emptyForm: 'لطفا اطلاعات داخل فرم را تکمیل نمایید',
+  invalidCode: 'کد وارد شده غیر مجاز میباشد',
 };
