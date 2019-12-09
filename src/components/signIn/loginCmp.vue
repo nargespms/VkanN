@@ -9,13 +9,18 @@
           color="light-blue-10"
           v-model="form.UserName"
           :label="$t('EmailorPhoneNumber')"
+          @blur="$v.form.UserName.$touch"
+          @input="$v.form.UserName.$touch"
+          :error="$v.form.UserName.$error"
           lazy-rules
           autofocus
+          ref="formUsername"
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-user" />
           </template>
           <p v-if="errors" class="error">
+            <span v-if="!$v.form.UserName.required">*{{$t('thisfieldisrequired')}}.</span>
             <span v-if="!$v.form.UserName.isUnique">*{{$t('Thisemailisalreadyregistered')}}.</span>
           </p>
         </q-input>
@@ -84,10 +89,22 @@
       <div v-if="EnableOtpLevel">
         <span class="userName" @click="backToStepOne">{{form.UserName}}</span>
         <span>{{$t('otpMessage')}}</span>
-        <q-input filled v-model="form.otp" class="otpInput" mask="# # # #" fill-mask="_">
+        <q-input
+          filled
+          v-model="form.otp"
+          class="otpInput"
+          mask="####"
+          :error="$v.form.otp.$error"
+          @input="$v.form.otp.$touch"
+          autofocus
+        >
           <template v-slot:prepend>
             <q-icon name />
           </template>
+          <p v-if="errors" class="error">
+            <span v-if="!$v.form.otp.minLength">{{$t('Fieldmusthaveatleast4characters')}}</span>
+            <span v-if="!$v.form.otp.isUnique">{{$t('invalidCode')}}</span>
+          </p>
         </q-input>
         <div class="clear mt78">
           <q-btn
@@ -105,7 +122,7 @@
 </template>
 
 <script>
-import { required } from 'vuelidate/lib/validators';
+import { required, minLength } from 'vuelidate/lib/validators';
 
 export default {
   data() {
@@ -130,6 +147,20 @@ export default {
   },
   validations: {
     form: {
+      otp: {
+        minLength: minLength(4),
+        isUnique(value) {
+          // standalone validator ideally should not assume a field is required
+          if (value === '') return true;
+
+          // simulate async call, fail for all logins with even length
+          return new Promise(resolve => {
+            setTimeout(() => {
+              resolve(typeof value === 'string' && value !== '0000');
+            }, 350 + Math.random() * 300);
+          });
+        },
+      },
       UserName: {
         required,
         isUnique(value) {
@@ -153,25 +184,40 @@ export default {
       // console.log('Loged In');
     },
     continueToNextLevel() {
-      if (this.form.UserName.length !== 0) {
-        this.errors = this.$v.form.$anyError;
-        console.log(this.$v.form);
-        if (this.form.method.length !== 0) {
-          if (this.form.method === 'otp') {
-            this.EnableOtpLevel = true;
-            this.EnableFirstLevel = false;
-          } else if (this.form.method === 'password') {
-            this.EnableFirstLevel = false;
-            this.EnableSecondLevel = true;
+      this.empty = !this.$v.form.$anyDirty;
+      this.errors = this.$v.form.$anyError;
+      console.log(this.$v.form.$anyError);
+      if (this.errors === false && this.empty === false) {
+        if (this.form.UserName.length !== 0) {
+          this.$refs.formUsername.$el.focus();
+          this.errors = this.$v.form.$anyError;
+          console.log(this.$v.form);
+          if (this.form.method.length !== 0) {
+            if (this.form.method === 'otp') {
+              this.EnableOtpLevel = true;
+              this.EnableFirstLevel = false;
+            } else if (this.form.method === 'password') {
+              this.EnableFirstLevel = false;
+              this.EnableSecondLevel = true;
+            }
+          } else {
+            this.$q.dialog({
+              title: 'لطفا نحوه ورود را انتخاب نمایید',
+            });
           }
         } else {
+          this.$refs.formUsername.$el.focus();
+
           this.$q.dialog({
-            title: 'لطفا نحوه ورود را انتخاب نمایید',
+            title: this.$t('fillMobileOrEmail'),
           });
         }
       } else {
-        this.$q.dialog({
-          title: this.$t('fillMobileOrEmail'),
+        this.$q.notify({
+          message: this.$t('Theformabovehaserrors'),
+          color: 'negative',
+          icon: 'warning',
+          position: 'top',
         });
       }
     },
@@ -179,6 +225,24 @@ export default {
       this.EnableFirstLevel = true;
       this.EnableOtpLevel = false;
       this.EnableSecondLevel = false;
+      // activate username
+      // validation
+      this.$v.$reset();
+      this.empty = !this.$v.form.$anyDirty;
+      this.errors = this.$v.form.$anyError;
+      this.form.otp = '';
+      this.form.UserName = '';
+      // this.$refs.formUsername.$el.focus();
+      // this.empty = !this.$v.form.$anyDirty;
+      // this.errors = this.$v.form.$anyError;
+      if (this.empty === true) {
+        this.$q.notify({
+          message: this.$t('emptyForm'),
+          color: 'negative',
+          icon: 'warning',
+          position: 'top',
+        });
+      }
     },
     stepTwoComplete() {
       if (this.form.password.length !== 0) {
@@ -192,13 +256,24 @@ export default {
       }
     },
     otpStepComplete() {
-      if (this.form.otp.length !== 0) {
-        this.EnableOtpLevel = false;
-        // console.log('Submit Form');
-        this.showNotif('top-right');
+      this.empty = !this.$v.form.$anyDirty;
+      this.errors = this.$v.form.$anyError;
+      if (this.errors === false && this.empty === false) {
+        if (this.form.otp.length !== 0) {
+          this.EnableOtpLevel = false;
+          // console.log('Submit Form');
+          this.showNotif('top-right');
+        } else {
+          this.$q.dialog({
+            title: 'لطفا رمز یکبار مصرف  خود را وارد نمایید',
+          });
+        }
       } else {
-        this.$q.dialog({
-          title: 'لطفا رمز یکبار مصرف  خود را وارد نمایید',
+        this.$q.notify({
+          message: this.$t('Theformabovehaserrors'),
+          color: 'negative',
+          icon: 'warning',
+          position: 'top',
         });
       }
     },
@@ -219,6 +294,9 @@ export default {
       this.$emit('changToForget');
       // console.log('loginCmp');
     },
+  },
+  mounted() {
+    this.$refs.formUsername.$el.focus();
   },
 };
 </script>

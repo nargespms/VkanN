@@ -22,7 +22,7 @@
           class="otpInput"
           mask="####"
           :error="$v.retrivedCode.$error"
-          @blur="$v.retrivedCode.$touch"
+          @input="$v.retrivedCode.$touch"
         >
           <template v-slot:prepend>
             <q-icon name />

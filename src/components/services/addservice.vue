@@ -114,6 +114,7 @@
           :label="$t('voipNumber')"
           lazy-rules
           :rules="[val => val && val.length > 0]"
+          @input="$v.service.voip.$touch"
           :error="$v.service.voip.$error"
           mask="#####"
         >
@@ -157,14 +158,6 @@
             <q-icon name="fas fa-exclamation-circle" />
           </template>
         </q-select>
-        <p v-if="errors" class="error">
-          The form above has errors,
-          <br />please get your act together and resubmit
-        </p>
-        <p v-else-if="empty && uiState === 'submit clicked'" class="error">
-          The form above is empty,
-          <br />cmon y'all you can't submit an empty form!
-        </p>
       </div>
       <div class="col3">
         <q-btn class="halfw generalBut" icon="system_update_alt" :label="$t('tickets')" />
@@ -198,8 +191,8 @@ export default {
     return {
       // data for validation
       uiState: 'submit not clicked',
-      errors: false,
-      empty: true,
+      errors: true,
+      empty: false,
       // end of data for validation
       servicesName: ['name1', 'name2', 'name3'],
       serviceType: ['type1', 'type2', 'type3'],
@@ -238,6 +231,13 @@ export default {
         this.uiState = 'form submitted';
         console.log('edit service');
         this.$refs.upload.submit_btn();
+      } else if (this.empty === true) {
+        this.$q.notify({
+          message: this.$t('emptyForm'),
+          color: 'negative',
+          icon: 'warning',
+          position: 'top',
+        });
       } else {
         this.$q.notify({
           message: this.$t('Theformabovehaserrors'),

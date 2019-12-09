@@ -47,7 +47,7 @@
         required
         :label="$t('email')"
         v-model="form.email"
-        @blur="$v.form.email.$touch"
+        @input="$v.form.email.$touch"
         @keyup.enter="submit"
         :error="$v.form.email.$error"
       >
@@ -101,9 +101,7 @@
         </p>
       </q-input>
       <p class="error" v-if="errors">
-        <span
-          v-if="!$v.form.PassWord.strongPassword"
-        >{{$t('Strongpasswords')}}</span>
+        <span v-if="!$v.form.PassWord.strongPassword">{{$t('Strongpasswords')}}</span>
       </p>
       <!-- Re enter password -->
       <q-input
@@ -114,15 +112,15 @@
         color="light-blue-10"
         :label="$t('ReEnterYourPassword')"
         v-model="$v.form.Confirmpass.$model"
-        :type="isPwd ? 'password' : 'text'"
+        :type="isPwd1 ? 'password' : 'text'"
         lazy-rules
         :rules="[ val => val && val.length > 0 || 'Please type something']"
       >
         <template v-slot:prepend>
           <q-icon
-            :name="isPwd ? 'visibility_off' : 'visibility'"
+            :name="isPwd1 ? 'visibility_off' : 'visibility'"
             class="cursor-pointer visibilityPass"
-            @click="isPwd = !isPwd"
+            @click="isPwd1 = !isPwd1"
           />
         </template>
       </q-input>
@@ -137,7 +135,6 @@
         The form above has errors,
         <br />please get your act together and resubmit
       </p>
-
     </q-form>
   </div>
 </template>
@@ -160,6 +157,7 @@ export default {
       enableRegister: true,
       MobileNumber: '',
       isPwd: true,
+      isPwd1: true,
       form: {
         email: '',
         FirstName: '',
@@ -221,7 +219,7 @@ export default {
         this.$router.push({
           path: `/${this.$route.params.locale}/dashboard`,
         });
-      }else if (this.empty === true){
+      } else if (this.empty === true) {
         this.$q.notify({
           message: this.$t('emptyForm'),
           color: 'negative',

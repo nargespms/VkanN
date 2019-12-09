@@ -4,16 +4,16 @@
       <div class="col1">
         <!--  Service name -->
         <q-select
+          color="light-blue-10 "
           outlined
           required
-          color="light-blue-10 "
-          v-model="contract.servicesName"
+          autofocus
+          v-model="contract.serviceName"
           :options="servicesName"
           :label="$t('serviceName')"
           class="inputStyle"
           lazy-rules
           :rules="[ val => val && val.length > 0 ]"
-          autofocus
         >
           <template v-slot:prepend>
             <q-icon name="settings_applications" />
@@ -22,11 +22,14 @@
         </q-select>
         <q-select
           color="light-blue-10 "
+          required
           outlined
           v-model="contract.client"
           :options="clients"
           :label="$t('clientName')"
           class="inputStyle"
+          lazy-rules
+          :rules="[ val => val && val.length > 0 ]"
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-user" />
@@ -44,7 +47,7 @@
           :label="$t('startDate')"
           ref="qDateProxy"
           name="event"
-          @blur="EnableDate"
+          @input="EnableDate"
         >
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
@@ -62,11 +65,13 @@
         <!-- end date -->
         <q-input
           outlined
-          v-model="contract.enddate"
+          v-model.lazy="$v.contract.enddate.$model"
           mask="date"
           :rules="['date']"
           :label="$t('endDate')"
           :disable="!this.enableEndDate"
+          @input="$v.contract.enddate.$touch"
+          :error="$v.contract.enddate.$error"
         >
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
@@ -117,6 +122,7 @@
           color="light-blue-10"
           v-model="contract.amount"
           :label="$t('amount')"
+          mask="#######################"
           lazy-rules
           :rules="[val => val && val.length > 0]"
         >
@@ -156,9 +162,12 @@
         <q-select
           color="light-blue-10 "
           outlined
+          required
           v-model="contract.currency"
           :options="contractCurrency"
           :label="$t('currency')"
+          lazy-rules
+          :rules="[val => val && val.length > 0]"
         >
           <template v-slot:append>
             <q-icon name />
@@ -176,7 +185,7 @@
 </template>
 
 <script>
-// import { required, minLength } from 'vuelidate/lib/validators';
+// import { minValue } from 'vuelidate/lib/validators';
 
 import uploadfile from '../structure/uploadfile.vue';
 
@@ -208,6 +217,26 @@ export default {
       },
       enableEndDate: false,
     };
+  },
+  validations: {
+    contract: {
+      enddate: {
+        // minValue: value => {
+        //   // const endDateValue = new Date(value);
+        //   // const n = endDateValue.getTime();
+        //   // console.log(n);
+        //   // console.log(value);
+        //   // console.log(new Date(value));
+        //   // const dateModifi = value.split('/');
+        //   // console.log(dateModifi[2]);
+        //   // console.log(dateModifi[1]);
+        //   // console.log(dateModifi[0]);
+        //   // console.log(Date.UTC([dateModifi[0], dateModifi[1], dateModifi[2]]));
+        //   // compare value with another date or iso string
+        //   // value > new Date().toISOString();
+        // },
+      },
+    },
   },
   methods: {
     onSubmit() {

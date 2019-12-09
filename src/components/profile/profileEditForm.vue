@@ -45,7 +45,7 @@
           required
           :label="$t('email')"
           v-model="form.email"
-          @blur="$v.form.email.$touch"
+          @input="$v.form.email.$touch"
           @keyup.enter="submit"
           :error="$v.form.email.$error"
         >
@@ -143,16 +143,16 @@
           color="light-blue-10"
           :label="$t('ReEnterYourPassword')"
           v-model="form.Confirmpass"
-          :type="isPwd ? 'password' : 'text'"
+          :type="isPwd1 ? 'password' : 'text'"
           lazy-rules
           :rules="[val => (val && val.length > 0) || 'Please type something']"
           :disable="!this.enableConfirm"
         >
           <template v-slot:prepend>
             <q-icon
-              :name="isPwd ? 'visibility_off' : 'visibility'"
+              :name="isPwd1 ? 'visibility_off' : 'visibility'"
               class="cursor-pointer visibilityPass"
-              @click="isPwd = !isPwd"
+              @click="isPwd1 = !isPwd1"
             />
           </template>
         </q-input>
@@ -171,14 +171,15 @@
           :label="$t('PleaseEnterNationalId')"
           class="inputStyle"
           :error="$v.form.nationalId.$error"
-          mask="###-#######"
+          mask="##########"
         >
           <template v-slot:prepend>
             <q-icon name />
           </template>
           <p v-if="errors" class="error">
             <span v-if="!$v.form.nationalId.required">*{{$t('thisfieldisrequired')}}.</span>
-            <span v-if="!$v.form.nationalId.minLength">*{{$t('Fieldmusthaveatleast10characters')}}.</span>
+            <!-- <span v-if="!$v.form.nationalId.minLength">*{{$t('Fieldmusthaveatleast10characters')}}.</span> -->
+            <span v-if="!$v.form.nationalId.isValidIranianNationalCode">*{{$t('invalidCode')}}.</span>
           </p>
         </q-input>
         <!-- Country -->
@@ -351,6 +352,7 @@ export default {
       tags: ['tag1', 'tag2'],
       MobileNumber: '',
       isPwd: true,
+      isPwd1: true,
       form: {
         email: '',
         FirstName: '',
@@ -379,7 +381,19 @@ export default {
     form: {
       nationalId: {
         required,
-        minLength: minLength(10),
+        // minLength: minLength(10),
+        // national id check
+        isValidIranianNationalCode(input) {
+          if (!/^\d{10}$/.test(input)) return false;
+
+          const check = +input[9];
+          const sum =
+            Array(9)
+              .fill()
+              .map((_, i) => +input[i] * (10 - i))
+              .reduce((x, y) => x + y) % 11;
+          return (sum < 2 && check === sum) || (sum >= 2 && check + sum === 11);
+        },
       },
       postalCode: {
         required,
