@@ -1,30 +1,34 @@
 <template >
   <div>
     <h4>type number</h4>
-    <input type="text" v-model="formatter" @input="formatter()" />
+    <input type="text" v-model="num" @input="formatter()" />
+    <input type="text" v-model="conuntry" @blur="formatter()" />
   </div>
 </template>
 
 
 <script>
-import { parsePhoneNumberFromString } from 'libphonenumber-js';
+// import { parsePhoneNumberFromString } from 'libphonenumber-js';
+
+// Require `PhoneNumberFormat`.
+const PNF = require('google-libphonenumber').PhoneNumberFormat;
+// Get an instance of `PhoneNumberUtil`.
+const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
+
+// Parse number with country code and keep raw input.
 
 export default {
   data() {
-    return {};
+    return {
+      num: {},
+      country: '',
+    };
   },
   methods: {
     formatter() {
-      const phoneNumber = parsePhoneNumberFromString('+12133734253');
-
-      phoneNumber.format('NATIONAL') === '(213) 373-4253';
-      phoneNumber.format('INTERNATIONAL') === '+1 213 373 4253';
-      phoneNumber.format('RFC3966') === 'tel:+12133734253';
-
-      // Aliases
-      phoneNumber.formatNational() === phoneNumber.format('NATIONAL');
-      phoneNumber.formatInternational() === phoneNumber.format('INTERNATIONAL');
-      phoneNumber.getURI() === phoneNumber.format('RFC3966');
+      const number = phoneUtil.parseAndKeepRawInput(this.num, this.country);
+      console.log(number.getCountryCode());
+      console.log(phoneUtil.format(number, PNF.E164));
     },
   },
 };
