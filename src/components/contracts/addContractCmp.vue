@@ -1,6 +1,6 @@
 <template >
   <div class="addContractWrapper col3th">
-    <q-form @submit="onSubmit" class="q-gutter-md">
+    <q-form @submit="onSubmit" class="q-gutter-md" :error="$v.contract.$error">
       <div class="col1">
         <!--  Service name -->
         <q-select
@@ -47,7 +47,7 @@
           :label="$t('startDate')"
           ref="qDateProxy"
           name="event"
-          @input="EnableDate"
+          @blur="EnableDate"
         >
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
@@ -70,7 +70,7 @@
           :rules="['date']"
           :label="$t('endDate')"
           :disable="!this.enableEndDate"
-          @input="$v.contract.enddate.$touch"
+          @blur="$v.contract.enddate.$touch"
           :error="$v.contract.enddate.$error"
         >
           <template v-slot:append>
@@ -86,6 +86,12 @@
             </q-icon>
           </template>
         </q-input>
+        <p class="error ptb12" v-if="errors">
+          <span v-if="!$v.contract.timeChecker">
+            <q-icon name="warning" class="pr12 pt4" />
+            {{$t('DateUnvalid')}}
+          </span>
+        </p>
         <!-- Duration -->
         <q-select
           color="light-blue-10 "
@@ -185,7 +191,7 @@
 </template>
 
 <script>
-// import { minValue } from 'vuelidate/lib/validators';
+// import { required } from 'vuelidate/lib/validators';
 
 import uploadfile from '../structure/uploadfile.vue';
 
@@ -196,6 +202,11 @@ export default {
   },
   data() {
     return {
+      // data for validation
+      uiState: 'submit not clicked',
+      errors: false,
+      empty: true,
+      // data for validation
       servicesName: ['name1', 'name2', 'name3'],
       clients: ['client1', 'client2', 'client3'],
       contractDuration: ['monthly', 'yearly', 'season'],
@@ -204,6 +215,7 @@ export default {
       contractCurrency: ['currency1', 'currency2', 'currency3'],
       date: this.today,
       enddate: '1212112',
+      enableEndDate: false,
       contract: {
         serviceName: '',
         client: '',
@@ -215,33 +227,38 @@ export default {
         startdate: '',
         enddate: '',
       },
-      enableEndDate: false,
     };
   },
   validations: {
     contract: {
-      enddate: {
-        // minValue: value => {
-        //   // const endDateValue = new Date(value);
-        //   // const n = endDateValue.getTime();
-        //   // console.log(n);
-        //   // console.log(value);
-        //   // console.log(new Date(value));
-        //   // const dateModifi = value.split('/');
-        //   // console.log(dateModifi[2]);
-        //   // console.log(dateModifi[1]);
-        //   // console.log(dateModifi[0]);
-        //   // console.log(Date.UTC([dateModifi[0], dateModifi[1], dateModifi[2]]));
-        //   // compare value with another date or iso string
-        //   // value > new Date().toISOString();
-        // },
+      timeChecker(value) {
+        return (
+          new Date(value.startdate).getTime() <
+          new Date(value.enddate).getTime()
+        );
       },
+      enddate: {},
     },
   },
   methods: {
     onSubmit() {
-      console.log(this.contract);
-      this.$refs.upload.submit_btn();
+      this.empty = !this.$v.contract.$anyDirty;
+      this.errors = this.$v.contract.$anyError;
+      this.uiState = 'submit clicked';
+      if (this.errors === false && this.empty === false) {
+        console.log(this.contract);
+        this.$refs.upload.submit_btn();
+        this.$q.dialog({
+          title: 'ThanQ u  ',
+        });
+      } else {
+        this.$q.notify({
+          message: this.$t('Theformabovehaserrors'),
+          color: 'negative',
+          icon: 'warning',
+          position: 'top',
+        });
+      }
     },
     EnableDate() {
       if (this.contract.startdate.length > 0) {
@@ -260,5 +277,8 @@ export default {
 <style lang="scss">
 .addContractWrapper {
   padding: 12px;
+}
+.ptb12 {
+  padding: 0px 12px;
 }
 </style>

@@ -30,8 +30,10 @@
             <!-- name for each column -->
             <span class="columnLabel">{{ col.label }}</span>
             <!-- if filterable true in each column it will show an input -->
-            <span class="columnFilterWrap" v-if="col.filterable">
+            <div class="columnFilterWrap" v-if="col.filterable">
+              <!-- filter column for text -->
               <input
+                v-if="col.filterableType === 'text'"
                 class="filterColumnSearch"
                 type="text"
                 v-model="columnFilter[col.name]"
@@ -39,7 +41,72 @@
                 @click="stopSort"
                 :placeholder="$t('search')"
               />
-            </span>
+              <!-- filter column for dropboxes -->
+              <q-select
+                v-if="col.filterableType === 'DropBox'"
+                color="grey-10 "
+                class="filterColumnSearch"
+                :options="status"
+                v-model="columnFilter[col.name]"
+                @input="colFilterChange"
+                @click="stopSort"
+              ></q-select>
+              <!-- filter column for dates -->
+              <!-- start date -->
+              <div v-if="col.filterableType === 'date'">
+                <q-input
+                  outlined
+                  v-model="columnFilter[col.name]"
+                  mask="date"
+                  :rules="['date']"
+                  :label="$t('startDate')"
+                  ref="qDateProxy"
+                  name="event"
+                >
+                  <template v-slot:append>
+                    <q-icon name="event" class="cursor-pointer" color="black">
+                      <q-popup-proxy
+                        ref="qDateProxy"
+                        transition-show="scale"
+                        transition-hide="scale"
+                      >
+                        <q-date
+                          v-model="columnFilter[col.name]"
+                          @input="() => $refs.qDateProxy.hide()"
+                          today-btn
+                          calendar="persian"
+                        />
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+                <!-- end date -->
+                <q-input
+                  outlined
+                  v-model="columnFilter[col.name]"
+                  mask="date"
+                  :rules="['date']"
+                  :label="$t('endDate')"
+                >
+                  <template v-slot:append>
+                    <q-icon name="event" class="cursor-pointer" color="black">
+                      <q-popup-proxy
+                        ref="qDateProxy"
+                        transition-show="scale"
+                        transition-hide="scale"
+                      >
+                        <q-date
+                          v-model="columnFilter[col.name]"
+                          @input="() => $refs.qDateProxy.hide()"
+                          today-btn
+                          calendar="persian"
+                        />
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+              </div>
+            </div>
           </q-th>
         </q-tr>
       </template>
@@ -110,6 +177,7 @@ export default {
   name: 'tableData',
   data() {
     return {
+      status: ['active', 'inactive '],
       separator: 'cell',
       columnFilter: {},
       filter: '',
@@ -256,5 +324,10 @@ export default {
   .row {
     justify-content: space-evenly;
   }
+}
+.userManagementListWrap .q-field__native,
+.userManagementListWrap .q-field__prefix,
+.userManagementListWrap .q-field__suffix {
+  color: #000 !important;
 }
 </style>

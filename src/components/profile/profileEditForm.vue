@@ -1,5 +1,6 @@
 <template>
   <div class="editProfileWrap col3th">
+    <!-- <mobilePhone /> -->
     <q-form @submit="onSubmit" class="q-gutter-md RegisterForm">
       <div class="col1">
         <!-- user name -->
@@ -330,11 +331,13 @@
 <script>
 import { required, email, minLength, sameAs } from 'vuelidate/lib/validators';
 import { VueTelInput } from 'vue-tel-input';
+// import mobilePhone from '../structure/mobilePhone.vue';
 
 export default {
   name: 'profileEditForm',
   components: {
     VueTelInput,
+    // mobilePhone,
   },
   data() {
     return {

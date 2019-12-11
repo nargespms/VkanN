@@ -14,7 +14,8 @@
       "label": "fullName",
       "align": "left",
       "sortable": true,
-      "filterable": true
+      "filterable": true,
+      "filterableType": "text"
     },
     {
       "name": "email",
@@ -30,7 +31,8 @@
       "label": "mobileNumber",
       "align": "left",
       "sortable": false,
-      "filterable": true
+      "filterable": true,
+      "filterableType": "text"
     },
     {
       "name": "role",
@@ -58,7 +60,18 @@
       "required": true,
       "label": "status",
       "align": "left",
-      "sortable": true
+      "sortable": true,
+      "filterable": true,
+      "filterableType": "DropBox"
+    },
+    {
+      "name": "date",
+      "required": true,
+      "label": "date",
+      "align": "left",
+      "sortable": true,
+      "filterable": true,
+      "filterableType": "date"
     }
   ],
   "data": [
