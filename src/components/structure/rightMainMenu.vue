@@ -33,21 +33,21 @@
           <ul>
             <!-- home route -->
             <li class="mainMenuLi">
-              <q-item>
+              <q-item class="p8">
                 <router-link class="noneExpandableMenu" :to="'/' +locale + '/' + 'dashboard'">
                   <q-item-section avatar>
-                    <q-icon name="home" />
+                    <q-icon name="fas fa-home" class="fn18" />
                   </q-item-section>
                   <q-item-section>{{$t('dashboard')}}</q-item-section>
                 </router-link>
               </q-item>
             </li>
             <li class="mainMenuLi">
-              <q-item>
+              <q-item class="p8">
                 <!-- profile route -->
                 <router-link class="noneExpandableMenu" :to="'/' +locale + '/' + 'profile'">
                   <q-item-section avatar>
-                    <q-icon name="fas fa-address-card" />
+                    <q-icon name="fas fa-address-card" class="fn18" />
                   </q-item-section>
                   <q-item-section>{{$t('profile')}}</q-item-section>
                 </router-link>
@@ -194,11 +194,11 @@
             </li>
             <!-- tags management -->
             <li class="mainMenuLi">
-              <q-item>
+              <q-item class="p8">
                 <!-- tags -->
                 <router-link class="noneExpandableMenu" :to="'/' +locale + '/' + 'tags'">
                   <q-item-section avatar>
-                    <q-icon name="label_important" />
+                    <q-icon name="fas fa-tags" class="fn18" />
                   </q-item-section>
                   <q-item-section>{{$t('tagsManagement')}}</q-item-section>
                 </router-link>
@@ -219,7 +219,7 @@
                   class="block"
                   :to="'/' +locale + '/' + 'fileManagements' +'/'+'filesList'"
                 >
-                  <q-icon name="fas fa-copy" />
+                  <q-icon name="fas fa-copy" class="fn18" />
                   {{$t('filesList')}}
                 </router-link>
                 <router-link
@@ -284,6 +284,10 @@ export default {
     transition: linear 0.25s;
     background-color: #e7e7e7;
   }
+
+  // .q-icon::before {
+  //   justify-content: unset !important;
+  // }
 }
 .expandableMenu {
   a {

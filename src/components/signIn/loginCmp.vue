@@ -265,7 +265,7 @@ export default {
           this.showNotif('top-right');
         } else {
           this.$q.dialog({
-            title: 'لطفا رمز یکبار مصرف  خود را وارد نمایید',
+            title: this.$t('OtpIsNotEntered'),
           });
         }
       } else {

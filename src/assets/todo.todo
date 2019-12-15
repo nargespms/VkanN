@@ -22,22 +22,22 @@
   ☐ captcha Register & login
   ✔ validation for form (it should check emil before password) @done(19-10-26 14:48)
 ☐ login
-  ☐ otp validation [check for correct & not empty code entered]
+  ✔ otp validation [check for correct & not empty code entered] @done(19-12-14 11:25)
   ☐ dropdown for methodoption should turn to key/value
 ☐ forget
   ☐ adding loading to resend pass
-  ☐ validation for code becaus its fill with ##### its not empty
+  ✔ validation for code becaus its fill with ##### its not empty @done(19-12-14 11:25)
   ☐ enter button should be disabl when retrive code dosnt fill yet
 bugFixfor forget
       ☐ in other langs when trying to go to forget pass it goes to default lang (emit actions goes to default lang)
 ☐ userManagement
   ☐ filter on each colomns
-  ☐ make mock file to get data from
+  ✔ make mock file to get data from @done(19-12-14 11:28)
 ☐ profile
   ☐ add upload for user profile
 ☐ tag
   ☐ check during edditing tag
-  ☐ check after edit tags and add them again
+  ✔ check after edit tags and add them again @done(19-12-14 11:23)
 ☐ userList
   ☐ field &format deleted
 **********************spirint 5*******************

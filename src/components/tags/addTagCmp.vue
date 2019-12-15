@@ -14,7 +14,13 @@
         <q-icon name="label" color="primary" />
       </template>
       <template v-slot:append>
-        <q-icon name="fas fa-plus" class="addTagIcon" @click="addTag" />
+        <q-icon name="fas fa-plus" class="addTagIcon" @click="addTag">
+          <q-tooltip
+            v-model="showing1"
+            transition-show="scale"
+            transition-hide="scale"
+          >{{$t('addTag')}}</q-tooltip>
+        </q-icon>
       </template>
     </q-input>
   </div>

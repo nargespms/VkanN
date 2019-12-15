@@ -96,7 +96,7 @@ export default {
   font-size: 16px;
   width: 50%;
   display: inline-block;
-  font-family: 'ShabnamBold';
+  // font-family: 'ShabnamBold';
 }
 .valueIntro {
   color: $primary;

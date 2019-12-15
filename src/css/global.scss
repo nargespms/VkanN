@@ -1,3 +1,8 @@
+@import '../../node_modules/@aasaam/noto-font/dist/font-face.css';
+
+body {
+  font-family: 'aasaam-Noto', sans-serif;
+}
 .con10 {
   max-width: 1000px;
   margin: auto;
@@ -44,13 +49,13 @@ h6 {
   margin: 0;
 }
 
-[dir='rtl'] body {
-  font-family: 'Shabnam';
-}
+// [dir='rtl'] body {
+//   font-family: 'Shabnam';
+// }
 
-[dir='ltr'] body {
-  font-family: 'Roboto';
-}
+// [dir='ltr'] body {
+//   font-family: 'Roboto';
+// }
 
 body * {
   box-sizing: border-box;
@@ -90,25 +95,25 @@ body * {
 .clearme {
   clear: both;
 }
-@font-face {
-  font-family: Shabnam;
-  src: url('./fonts/Shabnam-FD.eot');
-  src: url('./fonts/Shabnam-FD.eot?#iefix') format('embedded-opentype'), url('./fonts/Shabnam-FD.woff2') format('woff2'),
-    url('./fonts/Shabnam-FD.woff') format('woff'), url('./fonts/Shabnam-FD.ttf') format('truetype');
-  font-weight: normal;
-}
+// @font-face {
+//   font-family: Shabnam;
+//   src: url('./fonts/Shabnam-FD.eot');
+//   src: url('./fonts/Shabnam-FD.eot?#iefix') format('embedded-opentype'), url('./fonts/Shabnam-FD.woff2') format('woff2'),
+//     url('./fonts/Shabnam-FD.woff') format('woff'), url('./fonts/Shabnam-FD.ttf') format('truetype');
+//   font-weight: normal;
+// }
 
-@font-face {
-  font-family: ShabnamBold;
-  src: url('./fonts/Shabnam-Bold-FD.eot');
-  src: url('./fonts/Shabnam-Bold-FD.eot?#iefix') format('embedded-opentype'),
-    url('./fonts/Shabnam-Bold-FD.woff2') format('woff2'), url('./fonts/Shabnam-Bold-FD.woff') format('woff'),
-    url('./fonts/Shabnam-Bold-FD.ttf') format('truetype');
-  font-weight: bold;
-}
-.fnb {
-  font-family: ShabnamBold;
-}
+// @font-face {
+//   font-family: ShabnamBold;
+//   src: url('./fonts/Shabnam-Bold-FD.eot');
+//   src: url('./fonts/Shabnam-Bold-FD.eot?#iefix') format('embedded-opentype'),
+//     url('./fonts/Shabnam-Bold-FD.woff2') format('woff2'), url('./fonts/Shabnam-Bold-FD.woff') format('woff'),
+//     url('./fonts/Shabnam-Bold-FD.ttf') format('truetype');
+//   font-weight: bold;
+// }
+// .fnb {
+//   font-family: ShabnamBold;
+// }
 
 // Qtabs Pannel
 .q-panel-parent {
@@ -167,7 +172,7 @@ body {
   width: 100%;
 }
 .p8 {
-  padding: 8px;
+  padding: 8px !important;
 }
 .halfw {
   width: calc(100% / 2 - 16px);
@@ -264,4 +269,7 @@ body {
   i {
     padding-left: 12px;
   }
+}
+.fn18 {
+  font-size: 18px !important;
 }

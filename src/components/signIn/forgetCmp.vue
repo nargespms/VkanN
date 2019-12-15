@@ -109,7 +109,7 @@ export default {
         this.showNotif('top-right');
       } else if (this.empty === true) {
         this.$q.dialog({
-          title: 'لطفا رمز یکبار مصرف  خود را وارد نمایید',
+          title: this.$t('OtpIsNotEntered'),
         });
       } else {
         console.log(this.errors);

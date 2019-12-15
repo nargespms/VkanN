@@ -11,7 +11,8 @@ module.exports = function (ctx) {
     boot: [
       'i18n',
       'axios',
-      'vuelidate',
+      'vuelidate'
+      // 'information'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -30,7 +31,7 @@ module.exports = function (ctx) {
       // 'themify',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
-      'roboto-font', // optional, you are not bound to it
+      // 'roboto-font', // optional, you are not bound to it
       'material-icons', // optional, you are not bound to it
     ],
 
@@ -91,7 +92,7 @@ module.exports = function (ctx) {
       scopeHoisting: true,
       rtl: true,
       vueRouterMode: 'history',
-      // showProgress: false,
+      showProgress: false,
       // gzip: true,
       // analyze: true,
       // preloadChunks: false,

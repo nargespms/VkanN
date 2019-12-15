@@ -23,7 +23,7 @@ export default {
     color: #fff;
     font-size: 16px;
     margin-bottom: 12px;
-    font-family: 'ShabnamBold';
+    // font-family: 'ShabnamBold';
   }
 }
 </style>

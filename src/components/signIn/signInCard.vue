@@ -29,9 +29,11 @@
   </div>
 </template>
 <script>
+// import { languages, Organization } from '@aasaam/information';
 import loginCmp from './loginCmp.vue';
 import registerCmp from './registerCmp.vue';
 import forgetCmp from './forgetCmp.vue';
+// const { languages, Organization } = require('@aasaam/information');
 
 export default {
   data() {
@@ -44,6 +46,10 @@ export default {
     registerCmp,
     forgetCmp,
   },
+  // mounted() {
+  //   console.log(languages); // array of supported languages ['ar', 'de', ...]
+  //   console.log(Organization.en); // dump english version of organization detail
+  // },
   methods: {
     signUp() {
       this.tab = 'register';
@@ -85,7 +91,7 @@ export default {
 .tabsContainer {
   background-color: #ffa900;
   color: #fff;
-  font-family: 'ShabnamBold';
+  // font-family: 'ShabnamBold';
 }
 .q-tab--active {
   color: #fff;
@@ -105,7 +111,7 @@ export default {
 .welcomeMgs {
   display: flex;
   justify-content: space-around;
-  font-family: 'ShabnamBold';
+  // font-family: 'ShabnamBold';
   font-size: 18px;
   margin-bottom: 24px;
   text-align: center;

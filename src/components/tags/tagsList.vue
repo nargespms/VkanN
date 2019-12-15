@@ -10,13 +10,25 @@
           <!-- main content -->
           <div class="tagListButtsWrapper">
             <q-card-section class="tagTxt brright">
-              <q-icon name="edit" class="editTag" />
+              <q-icon name="edit" class="editTag">
+                <q-tooltip
+                  v-model="showing"
+                  transition-show="scale"
+                  transition-hide="scale"
+                >{{$t('editTag')}}</q-tooltip>
+              </q-icon>
               <q-popup-edit v-model="tag.name" buttons anchor="top left">
                 <q-input v-model="tag.name" dense autofocus counter @change="setEditTag(tag)" />
               </q-popup-edit>
             </q-card-section>
             <q-card-section class="tagTxt p16 brleft" @click="deactiveTag(tag)">
-              <q-icon name="fa fa-trash" class="editTag" />
+              <q-icon name="fa fa-trash" class="editTag">
+                <q-tooltip
+                  v-model="showing1"
+                  transition-show="scale"
+                  transition-hide="scale"
+                >{{$t('deactiveTag')}}</q-tooltip>
+              </q-icon>
             </q-card-section>
           </div>
         </q-card>
@@ -51,6 +63,8 @@ export default {
     return {
       edittag: '',
       tags: this.data,
+      showing: false,
+      showing1: false,
     };
   },
   props: ['data'],

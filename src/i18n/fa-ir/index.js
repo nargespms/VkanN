@@ -1,6 +1,5 @@
 export default {
-  failed: 'العملية فشلت',
-  success: 'العملية تمت بنجاح',
+
   initiate: 'راه اندازی',
   dashboard: 'داشبورد',
   mytasks: 'کارهای من ',
@@ -126,4 +125,10 @@ export default {
   emptyForm: 'لطفا اطلاعات داخل فرم را تکمیل نمایید',
   invalidCode: 'کد وارد شده غیر مجاز میباشد',
   DateUnvalid: 'تاریخ شروع و پایان با هم سازگار نیست',
+  OtpIsNotEntered:'لطفا رمز یکبار مصرف  خود را وارد نمایید',
+  editTag: 'ویرایش برچسب',
+  deactiveTag: 'غیر فعال کردن برچسب',
+  addTag: 'افزودن برچسب',
+  openMenu:'بازکردن منو',
+  chooseYourLang: 'زبان مورد نظر را انتخاب نمایید',
 };

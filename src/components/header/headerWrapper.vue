@@ -13,7 +13,7 @@
             icon="menu"
             aria-label="Menu"
           />
-          <q-toolbar-title>AASAAM CRM</q-toolbar-title>
+          <q-toolbar-title>{{$t('welcomemsg')}}</q-toolbar-title>
           <!-- language switcher component -->
           <languageSwitcher :locale="locale" />
         </q-toolbar>

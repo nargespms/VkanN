@@ -277,7 +277,7 @@ export default {
   .listNameTable,
   .q-table thead th {
     color: #000;
-    font-family: 'ShabnamBold';
+    // font-family: 'ShabnamBold';
     font-size: 16px;
     padding-top: 23px;
   }
