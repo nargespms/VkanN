@@ -12,6 +12,7 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/signIn.vue') },
       { path: 'dashboard', component: () => import('pages/dashboard.vue') },
+      { path: 'search', component: () => import('pages/search.vue') },
       { path: 'signIn', component: () => import('pages/signIn.vue') },
       { path: 'signUp', component: () => import('pages/signUp.vue') },
       // user

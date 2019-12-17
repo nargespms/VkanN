@@ -33,6 +33,7 @@ export default {
     return {
       newTag: '',
       mytags: this.data,
+      showing1: false,
     };
   },
   props: ['data'],

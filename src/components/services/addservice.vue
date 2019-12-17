@@ -7,7 +7,7 @@
           outlined
           required
           color="light-blue-10 "
-          v-model="service.name"
+          v-model.trim="service.name"
           :options="servicesName"
           :label="$t('serviceName')"
           class="inputStyle"
@@ -27,7 +27,7 @@
           color="light-blue-10 "
           outlined
           required
-          v-model="service.type"
+          v-model.trim="service.type"
           :options="serviceType"
           :label="$t('serviceType')"
           class="inputStyle"
@@ -40,7 +40,7 @@
         <q-select
           color="light-blue-10 "
           outlined
-          v-model="service.employee"
+          v-model.trim="service.employee"
           :options="staff"
           :label="$t('employeeName')"
           class="inputStyle"
@@ -54,7 +54,7 @@
           color="light-blue-10 "
           outlined
           required
-          v-model="service.client"
+          v-model.trim="service.client"
           :options="clients"
           :label="$t('clientName')"
           class="inputStyle"
@@ -68,7 +68,7 @@
           outlined
           class
           color="light-blue-10"
-          v-model="service.primaryDomain"
+          v-model.trim="service.primaryDomain"
           :label="$t('primaryDomain')"
           lazy-rules
         >
@@ -81,7 +81,7 @@
           outlined
           class="inputFieldText inputStyle pt20"
           color="light-blue-10"
-          v-model="service.parkDomain"
+          v-model.trim="service.parkDomain"
           :label="$t('parkDomain')"
           lazy-rules
         >
@@ -95,7 +95,7 @@
         <q-select
           color="light-blue-10"
           outlined
-          v-model="service.tag"
+          v-model.trim="service.tag"
           :options="servicesTag"
           :label="$t('Tag')"
           class="inputStyle"
@@ -110,7 +110,7 @@
           required
           class
           color="light-blue-10"
-          v-model="service.voip"
+          v-model.trim="service.voip"
           :label="$t('voipNumber')"
           lazy-rules
           :rules="[val => val && val.length > 0]"
@@ -136,7 +136,7 @@
         <q-select
           color="light-blue-10"
           outlined
-          v-model="service.bilingStatus"
+          v-model.trim="service.bilingStatus"
           :options="bilingStatusService"
           :label="$t('bilingStatus')"
           class="inputStyle pt16"
@@ -149,7 +149,7 @@
         <q-select
           color="light-blue-10"
           outlined
-          v-model="service.status"
+          v-model.trim="service.status"
           :options="servicesStatus"
           :label="$t('status')"
           class="inputStyle"

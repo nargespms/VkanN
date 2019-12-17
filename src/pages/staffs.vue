@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-lg">
+  <div class="q-pa-xl">
     <!-- user management table -->
     <div class="userManagementListWrap">
       <tableDataWrap :endpoint="'/statics/user.json'" />

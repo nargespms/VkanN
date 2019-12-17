@@ -1,7 +1,7 @@
 <template>
-    <div class="q-pa-lg">
-        <tagWrapper/>
-    </div>
+  <div class="q-pa-xl">
+    <tagWrapper />
+  </div>
 </template>
 
 <script>

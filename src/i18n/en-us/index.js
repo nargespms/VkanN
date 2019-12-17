@@ -138,4 +138,9 @@ export default {
   addTag: 'Add Tag',
   openMenu: 'Open Menu',
   chooseYourLang: 'choose Your Lang',
+  persian: 'Persian',
+  arabic: 'Arabic',
+  english: 'English',
+  dutch: 'Dutch',
+  login: 'Login',
 };

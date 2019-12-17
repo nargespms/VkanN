@@ -8,7 +8,7 @@
         <router-link :to="url" class="text-white cardLinkInner">
           <q-icon :name="data.icon" />
           <span class="fnb cardName">{{$t(name)}}</span>
-          <span class="numberCardData">{{data.number}}</span>
+          <span class="numberCardData" v-if="this.data.number">{{localizeNumber }}</span>
         </router-link>
       </q-card-section>
       <!-- optional -->
@@ -27,7 +27,14 @@ export default {
     return {
       name: this.data.cardName,
       url: `/${this.$route.params.locale}/${this.data.parentUrl}/${this.data.cardName}`,
+      localizeNum: this.data.number,
     };
+  },
+  computed: {
+    // for showing localize number
+    localizeNumber() {
+      return this.localizeNum.toLocaleString(`${this.$route.params.locale}`);
+    },
   },
 };
 </script>

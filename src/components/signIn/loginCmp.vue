@@ -7,7 +7,7 @@
           outlined
           class="inputFieldText firstStepLogin"
           color="light-blue-10"
-          v-model="form.UserName"
+          v-model.trim="form.UserName"
           :label="$t('EmailorPhoneNumber')"
           @blur="$v.form.UserName.$touch"
           @input="$v.form.UserName.$touch"
@@ -28,7 +28,7 @@
         <q-select
           color="light-blue-10"
           outlined
-          v-model="form.method"
+          v-model.trim="form.method"
           :options="methodOptions"
           :label="$t('chooseYourMethodToLogin')"
         >
@@ -60,7 +60,7 @@
           class="inputFieldText passwordField"
           color="light-blue-10"
           :label="$t('EnterYourPassword')"
-          v-model="form.password"
+          v-model.trim="form.password"
           :type="isPwd ? 'password' : 'text'"
           lazy-rules
         >
@@ -91,7 +91,7 @@
         <span>{{$t('otpMessage')}}</span>
         <q-input
           filled
-          v-model="form.otp"
+          v-model.trim="form.otp"
           class="otpInput"
           mask="####"
           :error="$v.form.otp.$error"

@@ -54,4 +54,8 @@ export default {
 .tagsHeader {
   font-size: 18px;
 }
+.tagWrapper {
+  width: 60%;
+  margin: auto;
+}
 </style>

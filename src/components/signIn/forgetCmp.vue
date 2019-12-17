@@ -6,7 +6,7 @@
         <!-- Phone Number -->
         <vue-tel-input
           required
-          v-model="MobileNumber"
+          v-model.trim="MobileNumber"
           :placeholder="$t('pleaseEnterYourPhoneNumber')"
         ></vue-tel-input>
         <q-btn class="RetrivePass" :label="$t('RetrivePass')" color="primary" @click="onSubmit" />
@@ -18,7 +18,7 @@
         <q-input
           required
           filled
-          v-model="$v.retrivedCode.$model"
+          v-model.trim="$v.retrivedCode.$model"
           class="otpInput"
           mask="####"
           :error="$v.retrivedCode.$error"

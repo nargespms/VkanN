@@ -1,6 +1,6 @@
 <template >
-  <div>
-    <signInCard/>
+  <div class="q-pa-xl">
+    <signInCard />
   </div>
 </template>
 <script>

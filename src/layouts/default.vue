@@ -1,8 +1,17 @@
 <template>
   <q-layout view="hHr LpR lff">
     <header-wrapper :locale="locale" />
+    <headerTinyInfo :locale="locale" />
     <q-page-container>
-      <router-view />
+      <transition
+        appear
+        enter-active-class="animated fadeIn"
+        leave-active-class="animated fadeOut"
+        :duration="300"
+        mode="out-in"
+      >
+        <router-view />
+      </transition>
     </q-page-container>
     <footerContent />
   </q-layout>
@@ -11,6 +20,7 @@
 <script>
 import headerWrapper from '../components/header/headerWrapper.vue';
 import footerContent from '../components/footer/footerContent.vue';
+import headerTinyInfo from '../components/header/headerTinyInfo.vue';
 
 export default {
   name: 'MyLayout',
@@ -23,6 +33,7 @@ export default {
   components: {
     headerWrapper,
     footerContent,
+    headerTinyInfo,
   },
   methods: {
     setLocale(locale) {

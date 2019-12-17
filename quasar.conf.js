@@ -2,6 +2,8 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
 // eslint-disable-next-line no-unused-vars
 module.exports = function (ctx) {
   return {
@@ -11,8 +13,9 @@ module.exports = function (ctx) {
     boot: [
       'i18n',
       'axios',
-      'vuelidate'
-      // 'information'
+      'vuelidate',
+      'normalizeEmail',
+      // 'information',
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -120,6 +123,7 @@ module.exports = function (ctx) {
             },
           ],
         });
+          cfg.plugins.push(new CopyWebpackPlugin([{ from: 'src/rootFolder/', to: '' }]));
       },
     },
 

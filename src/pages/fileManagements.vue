@@ -1,5 +1,5 @@
 <template >
-  <div class="q-pa-lg">
+  <div class="q-pa-xl">
     <div class="cardActionWrap">
       <cardsAction :data="files.invoices" />
       <cardsAction :data="files.contracts" />

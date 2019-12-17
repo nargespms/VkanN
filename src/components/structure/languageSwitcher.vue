@@ -1,12 +1,14 @@
 <template >
-  <div>
+  <div class="flex">
     <q-select
-      color="blue-grey-10  "
-      class="switchLangsWrap border-blue-grey-10"
-      v-model="model"
+      class="switchLangsWrap"
+      v-model.trim="model"
+      map-options
+      emit-value
+      option-value="label"
       outlined
-      :label="$t('chooseYourLang')"
       :options="locales"
+      :label="$t('chooseYourLang')"
     >
       <template v-slot:option="scope">
         <q-item
@@ -18,26 +20,11 @@
             <q-icon :name="scope.opt.icon" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>{{scope.opt.label}}</q-item-label>
+            <q-item-label>{{$t(scope.opt.label)}}</q-item-label>
           </q-item-section>
         </q-item>
       </template>
     </q-select>
-
-    <!-- the old -->
-    <!-- <router-link
-      class="switchLangsBut"
-      v-for="locale in locales"
-      :key="locale.label"
-      :to="'/' + locale.value + '/' +newroute"
-    >
-      <span>{{locale.label}}</span>
-    </router-link>-->
-    <router-link :to="'/' +locale + '/' + 'signIn'" class="loginBut text-white">
-      <span>
-        <q-icon name="fas fa-user"></q-icon>login
-      </span>
-    </router-link>
   </div>
 </template>
 <script>
@@ -46,25 +33,25 @@ export default {
   name: 'languageSwitcher',
   data() {
     return {
-      model: null,
+      model: this.$t('persian'),
       locales: [
         {
-          label: 'En',
-          value: 'en',
-          url: '' / ' + locale.value + ' / ' +newroute"',
-        },
-        {
-          label: 'Fa',
+          label: 'persian',
           value: 'fa',
           url: '' / ' + locale.value + ' / ' +newroute"',
         },
         {
-          label: 'ar',
+          label: 'english',
+          value: 'en',
+          url: '' / ' + locale.value + ' / ' +newroute"',
+        },
+        {
+          label: 'arabic',
           value: 'ar',
           url: '' / ' + locale.value + ' / ' +newroute"',
         },
         {
-          label: 'de',
+          label: 'dutch',
           value: 'de',
           url: '' / ' + locale.value + ' / ' +newroute"',
         },
@@ -73,9 +60,11 @@ export default {
   },
   methods: {
     changeRoute(value) {
-      this.$router.push({
-        path: `/${value}/${this.newroute}`,
-      });
+      if (this.$route.path !== `/${value}/${this.newroute}`) {
+        this.$router.push({
+          path: `/${value}/${this.newroute}`,
+        });
+      }
     },
   },
   computed: {
@@ -92,9 +81,15 @@ export default {
 <style lang="scss">
 // switch Languages
 .switchLangsWrap {
-  background-color: #fff;
+  background-color: #f1f7f8;
   border-radius: 4px;
+  width: 215px;
+  // height: 39px;
 }
+// .q-field--auto-height .q-field__control,
+// .q-field--auto-height .q-field__native {
+//   min-height: 39px !important;
+// }
 .switchLangsBut {
   span {
     padding: 12px;

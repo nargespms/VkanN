@@ -15,7 +15,7 @@
     >
       <!-- search field -->
       <template v-slot:top-right>
-        <q-input borderless dense debounce="300" v-model="filter" :placeholder="$t('Search')">
+        <q-input borderless dense debounce="300" v-model.trim="filter" :placeholder="$t('Search')">
           <template v-slot:append>
             <q-icon name="search" />
           </template>

@@ -8,7 +8,7 @@
           outlined
           required
           autofocus
-          v-model="contract.serviceName"
+          v-model.trim="contract.serviceName"
           :options="servicesName"
           :label="$t('serviceName')"
           class="inputStyle"
@@ -24,7 +24,7 @@
           color="light-blue-10 "
           required
           outlined
-          v-model="contract.client"
+          v-model.trim="contract.client"
           :options="clients"
           :label="$t('clientName')"
           class="inputStyle"
@@ -41,7 +41,7 @@
         <!-- start date -->
         <q-input
           outlined
-          v-model="contract.startdate"
+          v-model.trim="contract.startdate"
           mask="date"
           :rules="['date']"
           :label="$t('startDate')"
@@ -53,7 +53,7 @@
             <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                 <q-date
-                  v-model="contract.startdate"
+                  v-model.trim="contract.startdate"
                   @input="() => $refs.qDateProxy.hide()"
                   today-btn
                   calendar="persian"
@@ -65,7 +65,7 @@
         <!-- end date -->
         <q-input
           outlined
-          v-model.lazy="$v.contract.enddate.$model"
+          v-model.trim.lazy="$v.contract.enddate.$model"
           mask="date"
           :rules="['date']"
           :label="$t('endDate')"
@@ -77,7 +77,7 @@
             <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                 <q-date
-                  v-model="contract.enddate"
+                  v-model.trim="contract.enddate"
                   @input="() => $refs.qDateProxy.hide()"
                   today-btn
                   calendar="persian"
@@ -96,7 +96,7 @@
         <q-select
           color="light-blue-10 "
           outlined
-          v-model="contract.duration"
+          v-model.trim="contract.duration"
           :options="contractDuration"
           :label="$t('duration')"
           class="inputStyle"
@@ -111,7 +111,7 @@
           required
           class="inputFieldText"
           color="light-blue-10"
-          v-model="contract.number"
+          v-model.trim="contract.number"
           :label="$t('ContractNum')"
           lazy-rules
           :rules="[val => val && val.length > 0]"
@@ -126,7 +126,7 @@
           required
           class="inputFieldText"
           color="light-blue-10"
-          v-model="contract.amount"
+          v-model.trim="contract.amount"
           :label="$t('amount')"
           mask="#######################"
           lazy-rules
@@ -142,7 +142,7 @@
         <q-select
           color="light-blue-10"
           outlined
-          v-model="contract.status"
+          v-model.trim="contract.status"
           :options="contractStatus"
           :label="$t('status')"
           class="inputStyle"
@@ -155,7 +155,7 @@
         <q-select
           color="light-blue-10 "
           outlined
-          v-model="contract.type"
+          v-model.trim="contract.type"
           :options="contractType"
           :label="$t('type')"
           class="inputStyle"
@@ -169,7 +169,7 @@
           color="light-blue-10 "
           outlined
           required
-          v-model="contract.currency"
+          v-model.trim="contract.currency"
           :options="contractCurrency"
           :label="$t('currency')"
           lazy-rules
@@ -247,6 +247,10 @@ export default {
       this.uiState = 'submit clicked';
       if (this.errors === false && this.empty === false) {
         console.log(this.contract);
+        const standardStartDate = new Date(this.contract.startdate);
+        const standardEndDate = new Date(this.contract.enddate);
+        console.log(standardStartDate);
+        console.log(standardEndDate);
         this.$refs.upload.submit_btn();
         this.$q.dialog({
           title: 'ThanQ u  ',

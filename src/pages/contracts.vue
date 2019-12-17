@@ -1,5 +1,5 @@
 <template >
-  <div class="q-pa-lg">
+  <div class="q-pa-xl">
     <div class="cardActionWrap">
       <cardsAction :data="contracts.list" />
       <cardsAction :data="contracts.addContract" />

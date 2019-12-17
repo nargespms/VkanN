@@ -29,7 +29,7 @@
   </div>
 </template>
 <script>
-// import { languages, Organization } from '@aasaam/information';
+// import { Organization } from '@aasaam/information';
 import loginCmp from './loginCmp.vue';
 import registerCmp from './registerCmp.vue';
 import forgetCmp from './forgetCmp.vue';
@@ -47,8 +47,8 @@ export default {
     forgetCmp,
   },
   // mounted() {
-  //   console.log(languages); // array of supported languages ['ar', 'de', ...]
-  //   console.log(Organization.en); // dump english version of organization detail
+  // console.log(languages); // array of supported languages ['ar', 'de', ...]
+  // console.log(Organization.fa); // dump english version of organization detail
   // },
   methods: {
     signUp() {
@@ -62,6 +62,8 @@ export default {
 };
 </script>
 <style lang="scss">
+// @import '/node_modules/@aasaam/information/logo/aasaam-typo.png';
+
 .loginWrapperCard {
   width: 100%;
   margin: 0px auto;
@@ -83,7 +85,7 @@ export default {
   height: 900px;
   width: 30%;
   box-sizing: border-box;
-  background-image: url('../../assets/aasaam-typo.png');
+  background-image: url('../../../node_modules/@aasaam/information/logo/aasaam-typo.png');
   background-size: 70%;
   background-repeat: no-repeat;
   background-position: center;

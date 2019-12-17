@@ -1,5 +1,5 @@
 <template >
-  <div class="q-pa-lg">
+  <div class="q-pa-xl">
     <h4 class="headerTitleInPage">
       <span>{{$t('addService')}}</span>
     </h4>

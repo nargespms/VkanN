@@ -7,7 +7,7 @@
         required
         class="inputFieldText"
         color="light-blue-10"
-        v-model.lazy="$v.form.FirstName.$model"
+        v-model.trim.lazy="$v.form.FirstName.$model"
         :label="$t('firstName')"
         lazy-rules
         :rules="[ val => val && val.length > 0 ]"
@@ -29,7 +29,7 @@
         required
         class="inputFieldText"
         color="light-blue-10"
-        v-model="form.LastName"
+        v-model.trim="form.LastName"
         :label="$t('lastName')"
         lazy-rules
         :rules="[ val => val && val.length > 0 ]"
@@ -46,7 +46,7 @@
         outlined
         required
         :label="$t('email')"
-        v-model="form.email"
+        v-model.trim="form.email"
         @input="$v.form.email.$touch"
         @keyup.enter="submit"
         :error="$v.form.email.$error"
@@ -65,7 +65,7 @@
       <!-- Phone Number -->
       <vue-tel-input
         required
-        v-model="MobileNumber"
+        v-model.trim="MobileNumber"
         :placeholder="$t('pleaseEnterYourPhoneNumber')"
       ></vue-tel-input>
       <!-- Gender -->
@@ -84,7 +84,7 @@
         class="inputFieldText passwordField"
         color="light-blue-10"
         :label="$t('EnterYourPassword')"
-        v-model="$v.form.PassWord.$model"
+        v-model.trim="$v.form.PassWord.$model"
         :type="isPwd ? 'password' : 'text'"
         lazy-rules
         @input="EnableConf"
@@ -111,7 +111,7 @@
         class="inputFieldText passwordField"
         color="light-blue-10"
         :label="$t('ReEnterYourPassword')"
-        v-model="$v.form.Confirmpass.$model"
+        v-model.trim="$v.form.Confirmpass.$model"
         :type="isPwd1 ? 'password' : 'text'"
         lazy-rules
         :rules="[ val => val && val.length > 0 || 'Please type something']"

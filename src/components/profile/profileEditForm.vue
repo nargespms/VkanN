@@ -1,6 +1,5 @@
 <template>
   <div class="editProfileWrap col3th">
-    <mobilePhone />
     <q-form @submit="onSubmit" class="q-gutter-md RegisterForm">
       <div class="col1">
         <!-- user name -->
@@ -9,7 +8,7 @@
           required
           class="inputFieldText"
           color="light-blue-10"
-          v-model="form.FirstName"
+          v-model.trim="form.FirstName"
           :label="$t('firstName')"
           lazy-rules
           :rules="[val => val && val.length > 0]"
@@ -31,7 +30,7 @@
           required
           class="inputFieldText"
           color="light-blue-10"
-          v-model="form.LastName"
+          v-model.trim="form.LastName"
           :label="$t('lastName')"
           lazy-rules
           :rules="[val => val && val.length > 0]"
@@ -45,7 +44,7 @@
           outlined
           required
           :label="$t('email')"
-          v-model="form.email"
+          v-model.trim="form.email"
           @input="$v.form.email.$touch"
           @keyup.enter="submit"
           :error="$v.form.email.$error"
@@ -62,16 +61,18 @@
           <!-- email errors -->
         </q-input>
         <!-- Mobile Phone Number -->
+        <mobilePhone />
+        <!-- Mobile Phone Number -->
         <vue-tel-input
           required
-          v-model="MobileNumber"
+          v-model.trim="MobileNumber"
           class="mb20"
           :placeholder="$t('pleaseEnterYourMobilephoneNumber')"
         ></vue-tel-input>
         <!-- line Phone Number -->
         <vue-tel-input
           required
-          v-model="form.landLine"
+          v-model.trim="form.landLine"
           class="generalInputStyles"
           :placeholder="$t('pleaseEnterYourPhoneNumber')"
         ></vue-tel-input>
@@ -80,7 +81,7 @@
         <q-select
           color="light-blue-10"
           outlined
-          v-model="form.gender"
+          v-model.trim="form.gender"
           :options="genderList"
           :label="$t('Gender')"
           class="inputStyle pt20"
@@ -116,7 +117,7 @@
           class="inputFieldText passwordField"
           color="light-blue-10"
           :label="$t('EnterYourPassword')"
-          v-model="form.PassWord"
+          v-model.trim="form.PassWord"
           :type="isPwd ? 'password' : 'text'"
           lazy-rules
           :rules="[val => (val && val.length > 0) || 'Please type something']"
@@ -143,7 +144,7 @@
           class="inputFieldText passwordField"
           color="light-blue-10"
           :label="$t('ReEnterYourPassword')"
-          v-model="form.Confirmpass"
+          v-model.trim="form.Confirmpass"
           :type="isPwd1 ? 'password' : 'text'"
           lazy-rules
           :rules="[val => (val && val.length > 0) || 'Please type something']"
@@ -168,7 +169,7 @@
         <q-input
           outlined
           required
-          v-model="form.nationalId"
+          v-model.trim="form.nationalId"
           :label="$t('PleaseEnterNationalId')"
           class="inputStyle"
           :error="$v.form.nationalId.$error"
@@ -187,7 +188,7 @@
         <q-select
           color="light-blue-10"
           outlined
-          v-model="form.country"
+          v-model.trim="form.country"
           :options="countries"
           :label="$t('country')"
           class="inputStyle"
@@ -200,7 +201,7 @@
         <q-select
           color="light-blue-10"
           outlined
-          v-model="form.city"
+          v-model.trim="form.city"
           :options="cities"
           :label="$t('city')"
           class="inputStyle"
@@ -218,7 +219,7 @@
         <!-- Postal Code  -->
         <q-input
           outlined
-          v-model="form.postalCode"
+          v-model.trim="form.postalCode"
           :label="$t('PleaseEnterPostalCode')"
           class="inputStyle pt20"
           :error="$v.form.postalCode.$error"
@@ -236,7 +237,7 @@
         <q-select
           color="light-blue-10"
           outlined
-          v-model="form.role"
+          v-model.trim="form.role"
           :options="roles"
           :label="$t('role')"
           class="inputStyle"
@@ -249,7 +250,7 @@
         <q-select
           color="light-blue-10"
           outlined
-          v-model="form.status"
+          v-model.trim="form.status"
           :options="states"
           :label="$t('status')"
           class="inputStyle"
@@ -262,7 +263,7 @@
         <q-select
           color="light-blue-10"
           outlined
-          v-model="form.tag"
+          v-model.trim="form.tag"
           :options="tags"
           :label="$t('Tag')"
           class="inputStyle"
@@ -277,7 +278,7 @@
         <q-select
           color="light-blue-10"
           outlined
-          v-model="form.personality"
+          v-model.trim="form.personality"
           :options="personality"
           :label="$t('personality')"
           class="inputStyle"
@@ -289,7 +290,7 @@
         <!-- Sprint Time -->
         <q-input
           outlined
-          v-model="form.spirintTime"
+          v-model.trim="form.spirintTime"
           :label="$t('PleaseEnterSpirintTime')"
           class="inputStyle"
         >
@@ -300,7 +301,7 @@
         <!-- linkdin Url -->
         <q-input
           outlined
-          v-model="form.linkdin"
+          v-model.trim="form.linkdin"
           :label="$t('PleaseEnterlinkdin')"
           class="inputStyle"
         >
@@ -311,7 +312,7 @@
         <!-- github  -->
         <q-input
           outlined
-          v-model="form.git"
+          v-model.trim="form.git"
           :label="$t('PleaseEnterGithubGitlab')"
           class="inputStyle"
         >
@@ -327,11 +328,13 @@
     </q-form>
   </div>
 </template>
-
 <script>
 import { required, email, minLength, sameAs } from 'vuelidate/lib/validators';
+// import { normalizeEmail } from 'normalize-email';
 import { VueTelInput } from 'vue-tel-input';
 import mobilePhone from '../structure/mobilePhone.vue';
+
+const normalizeEmail = require('normalize-email');
 
 export default {
   name: 'profileEditForm',
@@ -446,6 +449,8 @@ export default {
       if (this.errors === false && this.empty === false) {
         // this is where you send the responses
         this.uiState = 'form submitted';
+        normalizeEmail(this.form.email);
+        console.log(normalizeEmail(this.form.email));
         this.$router.push({
           path: `/${this.$route.params.locale}/userManagement`,
         });

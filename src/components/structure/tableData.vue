@@ -36,7 +36,7 @@
                 v-if="col.filterableType === 'text'"
                 class="filterColumnSearch"
                 type="text"
-                v-model="columnFilter[col.name]"
+                v-model.trim="columnFilter[col.name]"
                 @input="colFilterChange"
                 @click="stopSort"
                 :placeholder="$t('search')"
@@ -47,7 +47,7 @@
                 color="grey-10 "
                 class="filterColumnSearch"
                 :options="status"
-                v-model="columnFilter[col.name]"
+                v-model.trim="columnFilter[col.name]"
                 @input="colFilterChange"
                 @click="stopSort"
               ></q-select>
@@ -56,7 +56,7 @@
               <div v-if="col.filterableType === 'date'">
                 <q-input
                   outlined
-                  v-model="columnFilter[col.name]"
+                  v-model.trim="columnFilter[col.name]"
                   mask="date"
                   :rules="['date']"
                   :label="$t('startDate')"
@@ -71,7 +71,7 @@
                         transition-hide="scale"
                       >
                         <q-date
-                          v-model="columnFilter[col.name]"
+                          v-model.trim="columnFilter[col.name]"
                           @input="() => $refs.qDateProxy.hide()"
                           today-btn
                           calendar="persian"
@@ -83,7 +83,7 @@
                 <!-- end date -->
                 <q-input
                   outlined
-                  v-model="columnFilter[col.name]"
+                  v-model.trim="columnFilter[col.name]"
                   mask="date"
                   :rules="['date']"
                   :label="$t('endDate')"
@@ -96,7 +96,7 @@
                         transition-hide="scale"
                       >
                         <q-date
-                          v-model="columnFilter[col.name]"
+                          v-model.trim="columnFilter[col.name]"
                           @input="() => $refs.qDateProxy.hide()"
                           today-btn
                           calendar="persian"
