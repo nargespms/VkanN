@@ -143,4 +143,6 @@ export default {
   english: 'English',
   dutch: 'Dutch',
   login: 'Login',
+  ok: 'ok',
+  cancel: 'Cancel',
 };

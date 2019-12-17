@@ -137,4 +137,6 @@ export default {
   english: 'انگلیسی',
   dutch:'آلمانی',
   login: 'ورود',
+  ok : 'تایید',
+  cancel:'لغو',
 };

@@ -30,9 +30,10 @@
             <!-- name for each column -->
             <span class="columnLabel">{{ col.label }}</span>
             <!-- if filterable true in each column it will show an input -->
-            <div class="columnFilterWrap" v-if="col.filterable">
+            <div class="columnFilterWrap" v-if="col.filterable" @click.stop="stopSort">
               <!-- filter column for text -->
-              <input
+              <q-input
+                outlined
                 v-if="col.filterableType === 'text'"
                 class="filterColumnSearch"
                 type="text"
@@ -43,25 +44,25 @@
               />
               <!-- filter column for dropboxes -->
               <q-select
+                outlined
                 v-if="col.filterableType === 'DropBox'"
-                color="grey-10 "
-                class="filterColumnSearch"
+                class="filterColumnSearch dropBoxFilterColumn"
                 :options="status"
                 v-model.trim="columnFilter[col.name]"
-                @input="colFilterChange"
-                @click="stopSort"
+                @change="colFilterChange"
               ></q-select>
               <!-- filter column for dates -->
               <!-- start date -->
               <div v-if="col.filterableType === 'date'">
                 <q-input
                   outlined
-                  v-model.trim="columnFilter[col.name]"
+                  v-model.trim="columnFilter.columnFilterStartdate"
                   mask="date"
                   :rules="['date']"
                   :label="$t('startDate')"
                   ref="qDateProxy"
                   name="event"
+                  @click="stopSort"
                 >
                   <template v-slot:append>
                     <q-icon name="event" class="cursor-pointer" color="black">
@@ -71,11 +72,16 @@
                         transition-hide="scale"
                       >
                         <q-date
-                          v-model.trim="columnFilter[col.name]"
-                          @input="() => $refs.qDateProxy.hide()"
+                          v-model.trim="columnFilter.columnFilterStartdate"
                           today-btn
+                          ok-label
                           calendar="persian"
-                        />
+                        >
+                          <div class="row items-center justify-end q-gutter-sm">
+                            <q-btn :label="$t('ok')" color="primary" flat v-close-popup />
+                            <q-btn :label="$t('cancel')" color="primary" flat v-close-popup />
+                          </div>
+                        </q-date>
                       </q-popup-proxy>
                     </q-icon>
                   </template>
@@ -83,10 +89,11 @@
                 <!-- end date -->
                 <q-input
                   outlined
-                  v-model.trim="columnFilter[col.name]"
+                  v-model.trim="columnFilter.columnFilterEnddate"
                   mask="date"
                   :rules="['date']"
                   :label="$t('endDate')"
+                  @click="stopSort"
                 >
                   <template v-slot:append>
                     <q-icon name="event" class="cursor-pointer" color="black">
@@ -96,11 +103,17 @@
                         transition-hide="scale"
                       >
                         <q-date
-                          v-model.trim="columnFilter[col.name]"
-                          @input="() => $refs.qDateProxy.hide()"
+                          v-model.trim="columnFilter.columnFilterEnddate"
+                          @change="() => $refs.qDateProxy.hide()"
                           today-btn
                           calendar="persian"
-                        />
+                          :options="computDate"
+                        >
+                          <div class="row items-center justify-end q-gutter-sm">
+                            <q-btn :label="$t('ok')" color="primary" flat v-close-popup />
+                            <q-btn :label="$t('cancel')" color="primary" flat v-close-popup />
+                          </div>
+                        </q-date>
                       </q-popup-proxy>
                     </q-icon>
                   </template>
@@ -177,9 +190,13 @@ export default {
   name: 'tableData',
   data() {
     return {
+      todayDate: new Date(),
       status: ['active', 'inactive '],
       separator: 'cell',
-      columnFilter: {},
+      columnFilter: {
+        columnFilterStartdate: new Date(),
+        columnFilterEnddate: new Date(),
+      },
       filter: '',
       innerPagination: this.pagination,
     };
@@ -200,6 +217,9 @@ export default {
     },
   },
   methods: {
+    computDate(columnFilterEnddate) {
+      return columnFilterEnddate >= this.columnFilter.columnFilterStartdate;
+    },
     stopSort(event) {
       event.stopPropagation();
     },
@@ -280,6 +300,7 @@ export default {
     // font-family: 'ShabnamBold';
     font-size: 16px;
     padding-top: 23px;
+    text-align: center;
   }
 }
 [dir] .my-sticky-header-column-table td:first-child {
@@ -300,11 +321,18 @@ export default {
 .filterColumnSearch {
   border-radius: 0;
   background-color: #d8d8d8b3;
-  border: 1px solid #a2a2a2;
   color: #000;
   font-size: 13px;
-  padding: 2px 4px;
   margin-top: 8px;
+}
+.columnFilterWrap {
+  .q-field__control {
+    height: unset;
+  }
+}
+.dropBoxFilterColumn {
+  padding: 0px;
+  border: none;
 }
 .columnLabel {
   padding-left: 24px;
@@ -329,5 +357,9 @@ export default {
 .userManagementListWrap .q-field__prefix,
 .userManagementListWrap .q-field__suffix {
   color: #000 !important;
+}
+.q-table--no-wrap th,
+.q-table--no-wrap td {
+  white-space: pre;
 }
 </style>

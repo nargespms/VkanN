@@ -81,6 +81,7 @@
                   @input="() => $refs.qDateProxy.hide()"
                   today-btn
                   calendar="persian"
+                  :options="computeEnddate"
                 />
               </q-popup-proxy>
             </q-icon>
@@ -241,6 +242,9 @@ export default {
     },
   },
   methods: {
+    computeEnddate(enddate) {
+      return enddate >= this.contract.startdate;
+    },
     onSubmit() {
       this.empty = !this.$v.contract.$anyDirty;
       this.errors = this.$v.contract.$anyError;
