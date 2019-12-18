@@ -17,7 +17,14 @@
     >
       <!-- search field -->
       <template v-slot:top-right>
-        <q-input borderless dense debounce="300" v-model="filter" :placeholder="$t('Search')">
+        <q-input
+          class="tableSearchInput"
+          borderless
+          dense
+          debounce="300"
+          v-model="filter"
+          :placeholder="$t('Search')"
+        >
           <template v-slot:append>
             <q-icon name="search" />
           </template>
@@ -34,6 +41,7 @@
               <!-- filter column for text -->
               <q-input
                 outlined
+                color="text-black"
                 v-if="col.filterableType === 'text'"
                 class="filterColumnSearch"
                 type="text"
@@ -47,10 +55,22 @@
                 outlined
                 v-if="col.filterableType === 'DropBox'"
                 class="filterColumnSearch dropBoxFilterColumn"
-                :options="status"
+                :options="FilterOption"
                 v-model.trim="columnFilter[col.name]"
                 @change="colFilterChange"
-              ></q-select>
+                use-input
+                hide-selected
+                fill-input
+                input-debounce="0"
+                @filter="filterFn"
+                @filter-abort="abortFilterFn"
+              >
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-grey">No results</q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
               <!-- filter column for dates -->
               <!-- start date -->
               <div v-if="col.filterableType === 'date'">
@@ -192,6 +212,7 @@ export default {
     return {
       todayDate: new Date(),
       status: ['active', 'inactive '],
+      FilterOption: this.status,
       separator: 'cell',
       columnFilter: {
         columnFilterStartdate: new Date(),
@@ -219,6 +240,26 @@ export default {
   methods: {
     computDate(columnFilterEnddate) {
       return columnFilterEnddate >= this.columnFilter.columnFilterStartdate;
+    },
+    // for auto compelete
+    filterFn(val, update) {
+      // call abort() at any time if you can't retrieve data somehow
+      setTimeout(() => {
+        update(() => {
+          if (val === '') {
+            this.FilterOption = this.status;
+          } else {
+            const needle = val.toLowerCase();
+            this.FilterOption = this.status.filter(
+              v => v.toLowerCase().indexOf(needle) > -1
+            );
+          }
+        });
+      }, 500);
+    },
+
+    abortFilterFn() {
+      console.log('delayed filter aborted');
     },
     stopSort(event) {
       event.stopPropagation();
@@ -273,11 +314,6 @@ export default {
 
 <style lang="scss">
 .userManagementListWrap {
-  .q-field__native,
-  .q-field__prefix,
-  .q-field__suffix {
-    color: #fff !important;
-  }
   .q-icon {
     color: #fff;
   }
@@ -328,6 +364,7 @@ export default {
 .columnFilterWrap {
   .q-field__control {
     height: unset;
+    color: #000 !important;
   }
 }
 .dropBoxFilterColumn {
@@ -353,13 +390,12 @@ export default {
     justify-content: space-evenly;
   }
 }
-.userManagementListWrap .q-field__native,
-.userManagementListWrap .q-field__prefix,
-.userManagementListWrap .q-field__suffix {
-  color: #000 !important;
-}
+
 .q-table--no-wrap th,
 .q-table--no-wrap td {
   white-space: pre;
+}
+.tableSearchInput * {
+  color: #fff !important;
 }
 </style>
