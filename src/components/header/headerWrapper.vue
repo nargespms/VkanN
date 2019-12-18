@@ -70,6 +70,6 @@ export default {
 </script>
 <style lang="scss">
 .headerInner {
-  padding: 24px 12px;
+  padding: 16px 12px;
 }
 </style>

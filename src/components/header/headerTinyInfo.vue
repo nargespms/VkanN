@@ -37,10 +37,11 @@ export default {
   width: 100%;
   height: 50px;
   position: fixed;
-  top: 103px;
+  top: 87px;
   background: #2f718f;
   border-bottom: 5px solid #e2e95d;
-  position: relative;
+  z-index: 999;
+  // position: relative;
 }
 .loginBut {
   float: right;

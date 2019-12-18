@@ -129,12 +129,9 @@
         <span v-if="!$v.form.Confirmpass.sameAsPassword">The passwords do not match.</span>
       </p>
       <!-- errors for pass2 -->
-
+      <!-- adding captcha -->
+      <captcha @captchaValid="captchaValid" />
       <q-btn color="primary" @click.prevent="onSubmit">{{$t('submit')}}</q-btn>
-      <p v-if="errors" class="error">
-        The form above has errors,
-        <br />please get your act together and resubmit
-      </p>
     </q-form>
   </div>
 </template>
@@ -142,10 +139,12 @@
 <script>
 import { required, email, minLength, sameAs } from 'vuelidate/lib/validators';
 import { VueTelInput } from 'vue-tel-input';
+import captcha from '../structure/captcha.vue';
 
 export default {
   components: {
     VueTelInput,
+    captcha,
   },
   data() {
     return {
@@ -167,6 +166,8 @@ export default {
         Confirmpass: '',
       },
       enableConfirm: false,
+      //  for captcha checking
+      captcha: false,
     };
   },
   validations: {
@@ -209,16 +210,28 @@ export default {
     },
   },
   methods: {
+    captchaValid() {
+      this.captcha = true;
+    },
     onSubmit() {
       this.empty = !this.$v.form.$anyDirty;
       this.errors = this.$v.form.$anyError;
       this.uiState = 'submit clicked';
       if (this.errors === false && this.empty === false) {
-        // this is where you send the responses
-        this.uiState = 'form submitted';
-        this.$router.push({
-          path: `/${this.$route.params.locale}/dashboard`,
-        });
+        if (this.captcha === false) {
+          this.$q.notify({
+            message: this.$t('incorrectcaptcha'),
+            color: 'negative',
+            icon: 'warning',
+            position: 'top',
+          });
+        } else {
+          // this is where you send the responses
+          this.uiState = 'form submitted';
+          this.$router.push({
+            path: `/${this.$route.params.locale}/dashboard`,
+          });
+        }
       } else if (this.empty === true) {
         this.$q.notify({
           message: this.$t('emptyForm'),

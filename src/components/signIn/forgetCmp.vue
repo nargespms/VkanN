@@ -33,6 +33,7 @@
             <span v-if="!$v.retrivedCode.isUnique">*{{$t('invalidCode')}}.</span>
           </p>
         </q-input>
+        <captcha @captchaValid="captchaValid" />
         <span class="resendPass" @click="resendPass">{{$t('resendPass')}}</span>
         <q-btn
           class="enterFromForgetpas"
@@ -49,10 +50,12 @@
 <script>
 import { required, minLength } from 'vuelidate/lib/validators';
 import { VueTelInput } from 'vue-tel-input';
+import captcha from '../structure/captcha.vue';
 
 export default {
   components: {
     VueTelInput,
+    captcha,
   },
   data() {
     return {
@@ -65,6 +68,8 @@ export default {
       enterMobile: true,
       entercode: false,
       retrivedCode: '',
+      //  for captcha checking
+      captcha: false,
     };
   },
   validations: {
@@ -85,6 +90,9 @@ export default {
     },
   },
   methods: {
+    captchaValid() {
+      this.captcha = true;
+    },
     onSubmit() {
       if (this.MobileNumber.length !== 0) {
         // console.log('retrive pass request');
@@ -104,9 +112,18 @@ export default {
       this.errors = this.$v.retrivedCode.$anyError;
       this.uiState = 'submit clicked';
       if (this.errors === false && this.empty === false) {
-        this.entercode = false;
-        // console.log('Submit Form');
-        this.showNotif('top-right');
+        if (this.captcha === false) {
+          this.$q.notify({
+            message: this.$t('incorrectcaptcha'),
+            color: 'negative',
+            icon: 'warning',
+            position: 'top',
+          });
+        } else {
+          this.entercode = false;
+          // console.log('Submit Form');
+          this.showNotif('top-right');
+        }
       } else if (this.empty === true) {
         this.$q.dialog({
           title: this.$t('OtpIsNotEntered'),

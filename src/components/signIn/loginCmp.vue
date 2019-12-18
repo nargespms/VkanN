@@ -72,6 +72,7 @@
             />
           </template>
         </q-input>
+        <captcha @captchaValid="captchaValid" />
         <div class="clear mt78">
           <q-btn
             class="continueToNextLevel"
@@ -106,6 +107,7 @@
             <span v-if="!$v.form.otp.isUnique">{{$t('invalidCode')}}</span>
           </p>
         </q-input>
+        <captcha @captchaValid="captchaValid" />
         <div class="clear mt78">
           <q-btn
             class="continueToNextLevel"
@@ -123,8 +125,12 @@
 
 <script>
 import { required, minLength } from 'vuelidate/lib/validators';
+import captcha from '../structure/captcha.vue';
 
 export default {
+  components: {
+    captcha,
+  },
   data() {
     return {
       // data for validation
@@ -143,6 +149,8 @@ export default {
       EnableFirstLevel: true,
       EnableOtpLevel: false,
       methodOptions: [this.$t('otp'), this.$t('password')],
+      //  for captcha checking
+      captcha: false,
     };
   },
   validations: {
@@ -180,6 +188,9 @@ export default {
     },
   },
   methods: {
+    captchaValid() {
+      this.captcha = true;
+    },
     onSubmit() {
       // console.log('Loged In');
     },
@@ -246,9 +257,18 @@ export default {
     },
     stepTwoComplete() {
       if (this.form.password.length !== 0) {
-        this.EnableSecondLevel = false;
-        // console.log('Submit Form');
-        this.showNotif('top-right');
+        if (this.captcha === false) {
+          this.$q.notify({
+            message: this.$t('incorrectcaptcha'),
+            color: 'negative',
+            icon: 'warning',
+            position: 'top',
+          });
+        } else {
+          this.EnableSecondLevel = false;
+          // console.log('Submit Form');
+          this.showNotif('top-right');
+        }
       } else {
         this.$q.dialog({
           title: 'لطفا رمز عبور خود را وارد نمایید',
@@ -260,9 +280,18 @@ export default {
       this.errors = this.$v.form.$anyError;
       if (this.errors === false && this.empty === false) {
         if (this.form.otp.length !== 0) {
-          this.EnableOtpLevel = false;
-          // console.log('Submit Form');
-          this.showNotif('top-right');
+          if (this.captcha === false) {
+            this.$q.notify({
+              message: this.$t('incorrectcaptcha'),
+              color: 'negative',
+              icon: 'warning',
+              position: 'top',
+            });
+          } else {
+            this.EnableOtpLevel = false;
+            // console.log('Submit Form');
+            this.showNotif('top-right');
+          }
         } else {
           this.$q.dialog({
             title: this.$t('OtpIsNotEntered'),

@@ -64,6 +64,7 @@
                 input-debounce="0"
                 @filter="filterFn"
                 @filter-abort="abortFilterFn"
+                style="width:50% ; margin: auto;"
               >
                 <template v-slot:no-option>
                   <q-item>
@@ -333,9 +334,7 @@ export default {
   .listNameTable,
   .q-table thead th {
     color: #000;
-    // font-family: 'ShabnamBold';
     font-size: 16px;
-    padding-top: 23px;
     text-align: center;
   }
 }

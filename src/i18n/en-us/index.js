@@ -145,4 +145,5 @@ export default {
   login: 'Login',
   ok: 'ok',
   cancel: 'Cancel',
+  incorrectcaptcha: 'Incorrect Captcha',
 };

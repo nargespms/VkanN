@@ -139,4 +139,5 @@ export default {
   login: 'ورود',
   ok : 'تایید',
   cancel:'لغو',
+  incorrectcaptcha: 'تصویر امنیتی وارد شده صحیح نمیباشد',
 };
