@@ -72,6 +72,9 @@ body * {
 .mt12 {
   margin-top: 12px;
 }
+.ml32 {
+  margin-left: 32px;
+}
 
 .flex {
   display: flex;
@@ -187,6 +190,13 @@ body {
 }
 .w50 {
   width: 50%;
+  float: left;
+}
+.pr24 {
+  padding-right: 24px;
+}
+.w30 {
+  width: calc(100% / 3 - 24px);
   float: left;
 }
 .headerTitleInPage {

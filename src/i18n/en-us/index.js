@@ -146,4 +146,10 @@ export default {
   ok: 'ok',
   cancel: 'Cancel',
   incorrectcaptcha: 'Incorrect Captcha',
+  support: 'Support',
+  information: 'Information',
+  back: 'Back',
+  ticketTitle: 'Ticket Title',
+  departman: 'Departman',
+  emergency: 'Emergency',
 };

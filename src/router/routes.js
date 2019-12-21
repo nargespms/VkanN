@@ -21,8 +21,8 @@ const routes = [
       { path: 'clients', component: () => import('pages/clients') },
       // tickets
       { path: 'tickets', component: () => import('pages/tickets')},
-      { path: 'tickets/:ticketId', component: () => import('pages/ticket')},
       { path: 'tickets/ticketsList', component: () => import('pages/ticketsList') },
+      { path: 'tickets/addTicket', component: () => import('pages/ticket')},
       // tasks
       { path: 'tasks', component: () => import('pages/tasks')},
       { path: 'tasks/:taskId', component: () => import('pages/task')},

@@ -64,7 +64,6 @@
                 input-debounce="0"
                 @filter="filterFn"
                 @filter-abort="abortFilterFn"
-                style="width:50% ; margin: auto;"
               >
                 <template v-slot:no-option>
                   <q-item>

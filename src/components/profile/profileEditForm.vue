@@ -351,7 +351,7 @@ export default {
       // data for validation
       countries: ['amrica', 'germany', 'iran', 'hind', 'japan', 'china'],
       cities: ['Finland', 'Canada', 'Berlin', 'Tehran', 'tokyo'],
-      roles: ['staff', 'client', 'Admin', 'ProductManager', 'Billing'],
+      roles: ['staff', 'client', 'Admin', 'ProductManager', 'billing'],
       states: ['state1', 'state2'],
       personality: ['jurdical', 'natural'],
       genderList: [this.$t('man'), this.$t('woman')],

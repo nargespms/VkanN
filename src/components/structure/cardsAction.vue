@@ -60,7 +60,7 @@ export default {
     width: 100%;
     height: 130px;
     i {
-      font-size: 60px;
+      font-size: 52px;
       vertical-align: middle;
       padding-right: 24px;
       @media screen and (max-width: 768px) {

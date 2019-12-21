@@ -20,7 +20,7 @@ export default {
     return {
       tickets: {
         addTickets: {
-          icon: 'system_update_alt',
+          icon: 'fas fa-edit',
           bg: '#ffa900',
           cardName: 'addTicket',
           parentUrl: 'tickets',

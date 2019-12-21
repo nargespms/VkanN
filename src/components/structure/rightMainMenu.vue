@@ -155,7 +155,7 @@
             <li class="mainMenuLi">
               <q-expansion-item
                 icon="attach_money"
-                :label="$t('Billing')"
+                :label="$t('billing')"
                 caption
                 expand-icon-toggle
                 class="expandableMenu"
