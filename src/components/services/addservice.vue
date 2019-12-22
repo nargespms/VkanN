@@ -165,10 +165,10 @@
         <q-btn class="halfw generalBut" icon="fas fa-handshake" :label="$t('contracts')" />
         <q-btn class="halfw generalBut" icon="fas fa-file-invoice" :label="$t('invoices')" />
         <div class="mr16 fullw mb16">
-          <uploadfile :showButton="false" ref="upload" :text="'attachments'" />
+          <uploadfile :UploadButton="false" ref="upload" :text="'attachments'" />
         </div>
         <div class="fullw mb16">
-          <uploadfile :showButton="false" ref="upload" :text="'avatar'" />
+          <uploadfile :UploadButton="false" ref="upload" :text="'avatar'" />
         </div>
       </div>
       <div class="saveInfo">

@@ -1,8 +1,9 @@
 <template>
-  <div class="q-pa-md q-gutter-sm">
+  <div>
     <q-editor
       v-model="qeditor"
       :dense="$q.screen.lt.md"
+      min-height="20rem"
       toolbar-text-color="white"
       toolbar-toggle-color="yellow-8"
       toolbar-bg="blue-grey-14"
@@ -15,9 +16,8 @@
             options: ['left', 'center', 'right', 'justify']
           }
         ],
-        ['bold', 'italic', 'strike', 'underline', 'subscript', 'superscript'],
+        ['bold', 'italic', 'strike', 'underline'],
         ['token', 'hr', 'link', 'custom_btn'],
-        ['print', 'fullscreen'],
         [
           {
             label: $q.lang.editor.formatting,
@@ -56,6 +56,8 @@
         ['quote', 'unordered', 'ordered'],
 
         ['undo', 'redo'],
+        ['print', 'fullscreen'],
+
         ['viewsource']
       ]"
       :fonts="{
@@ -83,3 +85,8 @@ export default {
 };
 </script>
 
+<style lang="scss">
+.editor {
+  min-height: 350px;
+}
+</style>

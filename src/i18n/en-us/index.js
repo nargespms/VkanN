@@ -152,4 +152,6 @@ export default {
   ticketTitle: 'Ticket Title',
   departman: 'Departman',
   emergency: 'Emergency',
+  addmore: 'Add More',
+  send:'Send',
 };

@@ -23,6 +23,33 @@
         />
       </div>
     </div>
+    <div class="chooseDep" v-if="!ticketFormStatus">
+      <q-select
+        filled
+        class="ticketInfoRecieve"
+        v-model.trim="ticket.customerName"
+        :options="FilterOption2"
+        :label="$t('clientName')"
+        required
+        lazy-rules
+        :rules="[ val => val && val.length > 0 ]"
+        @filter="filterFn2"
+        use-input
+        hide-selected
+        fill-input
+        input-debounce="0"
+        @input="activeClient"
+      >
+        <template v-slot:prepend>
+          <q-icon name="person" />
+        </template>
+        <template v-slot:no-option>
+          <q-item>
+            <q-item-section class="text-grey">No results</q-item-section>
+          </q-item>
+        </template>
+      </q-select>
+    </div>
     <div v-if="ticketFormStatus">
       <!-- buuton to back to choosing Departman -->
       <q-btn
@@ -32,7 +59,10 @@
         @click="activeChooseDep"
       />
       <!-- new ticket form -->
-      <ticketForm :choosedDep="this.$route.query.depid" />
+      <ticketForm
+        :choosedDep="this.$route.query.depid"
+        :choosedClient="this.$route.query.customerName"
+      />
     </div>
   </div>
 </template>
@@ -50,9 +80,21 @@ export default {
   data() {
     return {
       ticketFormStatus: false,
+      ticket: {
+        customerName: '',
+      },
+      FilterOption2: this.servicesName,
+      customerName: ['customer1', 'customer2', 'customer3', 'ابراهیمی'],
     };
   },
   methods: {
+    activeClient() {
+      this.ticketFormStatus = !this.ticketFormStatus;
+      this.$router.push({
+        path: `/${this.$route.params.locale}/tickets/addTicket`,
+        query: { customerName: this.ticket.customerName },
+      });
+    },
     activeChooseDep() {
       this.ticketFormStatus = false;
     },
@@ -81,6 +123,22 @@ export default {
         query: { depid: 'information' },
       });
     },
+    //  customer auto compelete
+    filterFn2(val, update) {
+      // call abort() at any time if you can't retrieve data somehow
+      setTimeout(() => {
+        update(() => {
+          if (val === '') {
+            this.FilterOption2 = this.customerName;
+          } else {
+            const needle = val.toLowerCase();
+            this.FilterOption2 = this.customerName.filter(
+              v => v.toLowerCase().indexOf(needle) > -1
+            );
+          }
+        });
+      }, 500);
+    },
   },
 };
 </script>
@@ -89,15 +147,24 @@ export default {
 .chooseDep {
   width: 80%;
   margin: 32px auto;
+  @media screen and (max-width: 480px) {
+    width: 95%;
+  }
 }
 .generalButWrap {
   display: flex;
   justify-content: space-around;
+  @media screen and (max-width: 480px) {
+    display: block;
+  }
 }
 .optionChooseBut {
   margin-bottom: 20px;
   padding: 15px;
   background-color: #ddd;
   width: calc(100% / 3 - 24px);
+  @media screen and (max-width: 480px) {
+    width: calc(100% - 24px);
+  }
 }
 </style>

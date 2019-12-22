@@ -146,4 +146,6 @@ export default {
   ticketTitle: 'عنوان تیکت',
   departman: 'واحد',
   emergency: 'فوری',
+  addmore:'افزودن',
+  send:'ارسال',
 };

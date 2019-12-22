@@ -181,7 +181,7 @@
           </template>
         </q-select>
         <div class="pt20 w100">
-          <uploadfile :showButton="false" ref="upload" :text="'attachments'" />
+          <uploadfile :UploadButton="false" ref="upload" :text="'attachments'" />
         </div>
       </div>
       <div class="saveInfo">

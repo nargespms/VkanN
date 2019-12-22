@@ -1,7 +1,7 @@
 <template >
   <div class="q-pa-xl">
     <div class="uploadFileWrapperPage">
-      <uploadfile :showButton="true" :text="'uploadFile'" />
+      <uploadfile :UploadButton="true" :text="'uploadFile'" />
     </div>
   </div>
 </template>

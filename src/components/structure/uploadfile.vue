@@ -1,25 +1,32 @@
 <template >
-  <div class="fileUploadWrapper">
-    <div class="fileUploadPlace">
-      <div class="fileUploadPlaceInner">
-        <div v-if="!fileValue" class="emptyFile">
-          <q-icon name="fas fa-cloud-upload-alt" />
-          <span>{{$t(this.text)}}</span>
+  <div class="clear">
+    <div class="fileUploadWrapper">
+      <div class="fileUploadPlace">
+        <div class="fileUploadPlaceInner">
+          <div v-if="!fileValue" class="emptyFile">
+            <q-icon name="fas fa-cloud-upload-alt" />
+            <span>Browse ....</span>
+            <span>{{$t(this.text)}}</span>
+          </div>
+          <div v-if="fileValue" class="uploadedFile">
+            <q-icon name="fas fa-file" />
+            <!-- <span v-for="file in fileContent" :key="file.id">{{file.name}}</span> -->
+          </div>
         </div>
-        <div v-if="fileValue" class="uploadedFile">
-          <q-icon name="fas fa-file" />
-          <!-- <span v-for="file in fileContent" :key="file.id">{{file.name}}</span> -->
-        </div>
+        <input type="file" name="filesToUpload" multiple id="upload_file" @change="fileStatus" />
       </div>
-      <input type="file" name="filesToUpload" multiple id="upload_file" @change="fileStatus" />
     </div>
     <q-btn
-      v-if="showButton"
+      v-if="UploadButton"
       class="uploadBut"
       color="primary"
       type="submit"
       @click="submit_btn"
     >{{ $t('upload') }}</q-btn>
+    <q-btn v-if="addMoreButton" class="uploadBut addMoreBut" color="primary" type="submit">
+      <q-icon name="fas fa-plus" />
+      {{ $t('addmore') }}
+    </q-btn>
   </div>
 </template>
 
@@ -27,7 +34,7 @@
 import tus from '../../../node_modules/tus-js-client/dist/tus.js';
 
 export default {
-  props: ['showButton', 'text'],
+  props: ['UploadButton', 'text', 'addMoreButton'],
   data() {
     return {
       fileValue: false,
@@ -44,6 +51,7 @@ export default {
       // this.fileContent = document.querySelector('input[type=file]').files;
       // console.log(this.fileContent[0]);
     },
+
     submit_btn() {
       const [file] = document.querySelector('input[type=file]').files;
       if (file) {
@@ -136,5 +144,11 @@ export default {
 .uploadBut {
   float: right;
   margin-top: 12px;
+}
+.addMoreBut {
+  i {
+    font-size: 15px;
+    padding-right: 12px;
+  }
 }
 </style>
