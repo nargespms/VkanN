@@ -293,3 +293,54 @@ body {
 .q-pa-xl {
   padding: 78px 48px;
 }
+// global css for tickets
+.attachments {
+  overflow: auto;
+  .fileUploadWrapper {
+    // width: 70%;
+    float: left;
+  }
+  .fileUploadWrapper input[type='file'] {
+    height: 60px;
+  }
+  .fileUploadPlace .fileUploadPlaceInner .emptyFile {
+    padding-top: 16px;
+  }
+  .attachHeader {
+    width: 100%;
+    display: block;
+    background-color: #dedede;
+    padding: 2px 12px;
+    margin-top: 12px;
+    color: #515151;
+    font-size: 17px;
+  }
+  .addMoreBut {
+    width: 25%;
+    background-color: #455a64 !important;
+  }
+  .fileUploadPlace .fileUploadPlaceInner .uploadedFile {
+    font-size: 30px;
+    padding-top: 0;
+  }
+}
+.uploadTicket {
+  width: 400px;
+  display: block;
+  margin: auto;
+  i {
+    padding-right: 12px;
+    font-size: 13px;
+  }
+}
+.q-message-text {
+  line-height: 30px;
+}
+.q-message-name,
+.q-message-stamp,
+.q-message-label {
+  font-size: larger;
+}
+.q-message-stamp {
+  text-align: right;
+}

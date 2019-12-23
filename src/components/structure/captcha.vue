@@ -19,10 +19,10 @@
           <template v-slot:prepend>
             <q-icon name="lock" />
           </template>
-          <p class="error" v-if="errors">
-            <span v-if="!$v.captcha.isUnique">{{$t('incorrectcaptcha')}}.</span>
-          </p>
         </q-input>
+        <p class="error" v-if="errors">
+          <span v-if="!$v.captcha.isUnique">{{$t('incorrectcaptcha')}}.</span>
+        </p>
       </div>
     </div>
   </div>
@@ -46,7 +46,7 @@ export default {
     captcha: {
       isUnique(value) {
         // standalone validator ideally should not assume a field is required
-        if (value === '') return true;
+        if (value === '') return false;
 
         // simulate async call, fail for all logins with even length
         return new Promise(resolve => {

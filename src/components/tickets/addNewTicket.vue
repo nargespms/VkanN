@@ -26,10 +26,10 @@
     <div class="chooseDep" v-if="!ticketFormStatus">
       <q-select
         filled
-        class="ticketInfoRecieve"
-        v-model.trim="ticket.customerName"
+        class="ticketInfoRecieve pr24"
+        v-model.trim="ticket.serviceName"
         :options="FilterOption2"
-        :label="$t('clientName')"
+        :label="$t('serviceName')"
         required
         lazy-rules
         :rules="[ val => val && val.length > 0 ]"
@@ -38,10 +38,10 @@
         hide-selected
         fill-input
         input-debounce="0"
-        @input="activeClient"
+        @input="activeService"
       >
         <template v-slot:prepend>
-          <q-icon name="person" />
+          <q-icon name="settings_applications" />
         </template>
         <template v-slot:no-option>
           <q-item>
@@ -61,7 +61,7 @@
       <!-- new ticket form -->
       <ticketForm
         :choosedDep="this.$route.query.depid"
-        :choosedClient="this.$route.query.customerName"
+        :choosedService="this.$route.query.serviceName"
       />
     </div>
   </div>
@@ -81,18 +81,18 @@ export default {
     return {
       ticketFormStatus: false,
       ticket: {
-        customerName: '',
+        serviceName: '',
       },
       FilterOption2: this.servicesName,
-      customerName: ['customer1', 'customer2', 'customer3', 'ابراهیمی'],
+      servicesName: ['service1', 'service2', 'service3', 'الکسا', 'رکنا'],
     };
   },
   methods: {
-    activeClient() {
+    activeService() {
       this.ticketFormStatus = !this.ticketFormStatus;
       this.$router.push({
         path: `/${this.$route.params.locale}/tickets/addTicket`,
-        query: { customerName: this.ticket.customerName },
+        query: { serviceName: this.ticket.serviceName },
       });
     },
     activeChooseDep() {
@@ -129,10 +129,10 @@ export default {
       setTimeout(() => {
         update(() => {
           if (val === '') {
-            this.FilterOption2 = this.customerName;
+            this.FilterOption2 = this.servicesName;
           } else {
             const needle = val.toLowerCase();
-            this.FilterOption2 = this.customerName.filter(
+            this.FilterOption2 = this.servicesName.filter(
               v => v.toLowerCase().indexOf(needle) > -1
             );
           }

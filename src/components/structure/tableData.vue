@@ -151,7 +151,7 @@
             <span v-if="prop == props.row['name']">
               <router-link
                 class="listNameTable"
-                :to="'/' +$route.params.locale "
+                :to="'/' +$route.params.locale + props.row.url"
               >#{{ props.row.name }}</router-link>
               <q-btn
                 class="expandTable"

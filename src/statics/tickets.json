@@ -58,6 +58,7 @@
     {
       "id": 1,
       "name": "ticket1",
+      "url": "/tickets/ticket",
       "email": "something@ddd.com",
       "mobileNumber": "09152369874",
       "role": "ticket",
@@ -67,6 +68,7 @@
     {
       "id": 2,
       "name": "ticket2",
+      "url": "/tickets/ticket",
       "email": "something@ddd.com",
       "mobileNumber": "09152369874",
       "role": "ticket",
@@ -76,6 +78,7 @@
     {
       "id": 3,
       "name": "ticket3",
+      "url": "/tickets/ticket",
       "email": "something@ddd.com",
       "mobileNumber": "09152369874",
       "role": "ticket",
@@ -85,6 +88,7 @@
     {
       "id": 4,
       "name": "ticket4",
+      "url": "/tickets/ticket",
       "email": "something@ddd.com",
       "mobileNumber": "09152369874",
       "role": "ticket",
@@ -94,6 +98,7 @@
     {
       "id": 5,
       "name": "ticket5",
+      "url": "/tickets/ticket",
       "email": "something@ddd.com",
       "mobileNumber": "09152369874",
       "role": "ticket",
@@ -103,6 +108,7 @@
     {
       "id": 6,
       "name": "ticket6",
+      "url": "/tickets/ticket",
       "email": "something@ddd.com",
       "mobileNumber": "09152369874",
       "role": "ticket",
@@ -112,6 +118,7 @@
     {
       "id": 7,
       "name": "ticket7",
+      "url": "/tickets/ticket",
       "email": "something@ddd.com",
       "mobileNumber": "09152369874",
       "role": "ticket",
@@ -121,6 +128,7 @@
     {
       "id": 8,
       "name": "ticket8",
+      "url": "/tickets/ticket",
       "email": "something@ddd.com",
       "mobileNumber": "09152369874",
       "role": "ticket",
@@ -130,6 +138,7 @@
     {
       "id": 9,
       "name": "ticket9",
+      "url": "/tickets/ticket",
       "email": "something@ddd.com",
       "mobileNumber": "09152369874",
       "role": "ticket",
@@ -139,6 +148,7 @@
     {
       "id": 10,
       "name": "ticket10",
+      "url": "/tickets/ticket",
       "email": "something@ddd.com",
       "mobileNumber": "09152369874",
       "role": "ticket",

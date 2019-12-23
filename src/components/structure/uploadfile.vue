@@ -62,7 +62,7 @@ export default {
           .slice(extensionArray.length - 1)
           .toString();
         // console.log(extensionArray);
-        // console.log(extension);
+        console.log(extension);
         // Create a new tus upload
         const upload = new tus.Upload(file, {
           endpoint: 'http://localhost:8083/files/',
