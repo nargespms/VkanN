@@ -45,4 +45,7 @@ export default {
 .ticketThread {
   padding: 16px;
 }
+.q-message-name {
+  padding: 12px;
+}
 </style>

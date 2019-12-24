@@ -154,4 +154,9 @@ export default {
   emergency: 'Emergency',
   addmore: 'Add More',
   send:'Send',
+  reply:'Reply',
+  edit: 'Edit',
+  delete: 'Delete',
+  areyousureyouwanttodeletethis: 'Are You Sure You Want To Delete The Ticket?',
+  deleteticket:'Delete Ticket',
 };

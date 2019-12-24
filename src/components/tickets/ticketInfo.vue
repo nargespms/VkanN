@@ -21,6 +21,10 @@
           </q-item>
         </template>
       </q-select>
+      <q-btn color="primary" @click="editorState" class="replyTicketBut">
+        <q-icon name="fas fa-edit" />
+        {{$t('reply')}}
+      </q-btn>
     </div>
   </div>
 </template>
@@ -36,6 +40,11 @@ export default {
       status: this.data.status,
     };
   },
+  methods: {
+    editorState() {
+      this.$emit('editorState');
+    },
+  },
 };
 </script>
 
@@ -49,11 +58,34 @@ export default {
   h3 {
     font-size: 18px;
     float: left;
+    @media screen and (max-width: 680px) {
+      float: none;
+      text-align: center;
+    }
   }
   .ticketStatus {
     float: left;
-    width: 200px;
+    width: 270px;
     padding-left: 24px;
+    @media screen and (max-width: 680px) {
+      float: none;
+      margin: auto;
+      width: 100%;
+      padding-left: 0;
+    }
+  }
+}
+.replyTicketBut {
+  width: 200px;
+  margin-left: 12px;
+  padding: 15px 12px;
+  i {
+    padding-right: 24px;
+    font-size: 17px;
+  }
+  @media screen and (max-width: 900px) {
+    width: 100%;
+    margin: 12px 0 !important;
   }
 }
 </style>

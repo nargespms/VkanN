@@ -148,4 +148,9 @@ export default {
   emergency: 'فوری',
   addmore:'افزودن',
   send:'ارسال',
+  reply:'پاسخ',
+  edit :'ویرایش',
+  delete: 'حذف',
+  areyousureyouwanttodeletethis:'آیا میخواهید این تیکت را حذف نمایید؟',
+  deleteticket:'حذف تیکت',
 };

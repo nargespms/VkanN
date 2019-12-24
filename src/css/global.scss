@@ -328,6 +328,9 @@ body {
   width: 400px;
   display: block;
   margin: auto;
+  @media screen and (max-width: 600px) {
+    width: 95%;
+  }
   i {
     padding-right: 12px;
     font-size: 13px;
@@ -343,4 +346,17 @@ body {
 }
 .q-message-stamp {
   text-align: right;
+}
+.q-pa-xl {
+  @media screen and (max-width: 480px) {
+    padding: 78px 12px;
+  }
+}
+// common css for dialog
+.q-dialog-plugin {
+  text-align: center;
+  .q-card__actions {
+    display: flex;
+    justify-content: space-around;
+  }
 }
