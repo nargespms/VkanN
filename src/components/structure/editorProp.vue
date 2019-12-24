@@ -21,7 +21,7 @@
         ['undo', 'redo'],
         [ 'fullscreen'],
 
-        ['viewsource']
+
       ]"
       :fonts="{
         arial: 'Arial',

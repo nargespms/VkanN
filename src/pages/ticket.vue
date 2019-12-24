@@ -11,11 +11,7 @@
       <ticketThreads :data="this.ticket" />
     </div>
     <div class="ticketThreads2Wrap">
-      <ticketThreads2
-        @deletedTickets="deletedTickets"
-        @changedText="changedText"
-        :data="this.ticket"
-      />
+      <ticketThreads2 :data="this.ticket" />
     </div>
   </div>
 </template>
@@ -44,15 +40,6 @@ export default {
   methods: {
     editorState() {
       this.replyState = !this.replyState;
-    },
-    deletedTickets(value) {
-      this.ticket.threads = value;
-      // and then it should be post to server
-      console.log(this.ticket);
-    },
-    changedText(value) {
-      this.ticket.threads = value;
-      console.log(this.ticket.threads);
     },
   },
   mounted() {
