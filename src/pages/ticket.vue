@@ -3,7 +3,7 @@
     <div class="ticketWrap">
       <ticketInfo :data="this.ticket" @editorState="editorState" />
       <template v-if="replyState">
-        <replyTicket />
+        <replyTicket :data="specificThreadToReply" @addToThreads="addToThreads" />
       </template>
     </div>
     <!--  for clients (chat) -->
@@ -11,7 +11,11 @@
       <ticketThreads :data="this.ticket" />
     </div>
     <div class="ticketThreads2Wrap">
-      <ticketThreads2 :data="this.ticket" />
+      <ticketThreads2
+        :data="this.ticket"
+        @replyThreadParent="replyThreadParent"
+        :addThread="addThread"
+      />
     </div>
   </div>
 </template>
@@ -35,18 +39,49 @@ export default {
     return {
       replyState: false,
       ticket: {},
+      specificThreadToReply: '',
+      addThread: {},
     };
   },
   methods: {
+    addToThreads(value) {
+      this.ticket.threads.push({
+        desc: value,
+        attachments: {},
+        date: new Date(),
+        // desc:
+        // id:
+        role: 'staff',
+        // status:
+        // time:
+        // user:
+      });
+      // post the thread to server
+      // console.log(value);
+      this.addThread = value;
+      this.replyState = false;
+    },
     editorState() {
       this.replyState = !this.replyState;
+    },
+    replyThreadParent(value) {
+      this.replyState = true;
+      this.specificThreadToReply = value;
+      console.log(this.specificThreadToReply);
     },
   },
   mounted() {
     this.$axios.get('/statics/ticket.json').then(Response => {
       this.ticket = Response.data;
-      console.log(this.ticket);
+      // console.log(this.ticket);
     });
+  },
+  watch: {
+    ticket(newVal) {
+      // console.log('updateTicket');
+      console.log('watchMe');
+      this.ticket = newVal;
+    },
   },
 };
 </script>

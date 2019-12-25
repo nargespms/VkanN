@@ -7,7 +7,7 @@
             :name="ticket.user"
             avatar="https://cdn.quasar.dev/img/avatar3.jpg"
             :text="[`${ticket.desc}`]"
-            :stamp="ticket.date"
+            :stamp="`${ticket.date}`"
             sent
             bg-color="yellow-2"
           />
@@ -17,7 +17,7 @@
             :name="ticket.user"
             avatar="https://cdn.quasar.dev/img/avatar2.jpg"
             :text="[ticket.desc]"
-            :stamp="ticket.date"
+            :stamp="`${ticket.date}`"
             bg-color="light-blue-1"
           />
         </div>
@@ -37,6 +37,9 @@ export default {
     tickets() {
       return this.data.threads;
     },
+    // stamp() {
+    //   return this.data.threads.date.ToString();
+    // },
   },
 };
 </script>

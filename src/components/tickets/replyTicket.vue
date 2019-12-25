@@ -1,6 +1,6 @@
 <template >
   <div class="replyTicketWrap">
-    <editor />
+    <editor :data="data" @getTextFromEditor="getTextFromEditor" />
     <div class="attachments mb16">
       <span class="attachHeader">
         <q-icon name="fas fa-paperclip" />
@@ -24,13 +24,25 @@ import uploadfile from '../structure/uploadfile.vue';
 
 export default {
   name: 'replyTicket',
+  props: ['data'],
   components: {
     editor,
     uploadfile,
   },
+  data() {
+    return {
+      textValue: '',
+      editorText: '',
+    };
+  },
   methods: {
+    getTextFromEditor(value) {
+      this.textValue = value;
+      // console.log(value);
+    },
     submitTicket() {
-      console.log('ssss');
+      console.log(this.textValue);
+      this.$emit('addToThreads', this.textValue);
     },
   },
 };

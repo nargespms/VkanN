@@ -7,6 +7,7 @@
             :data="ticket"
             @deletedTickets="deletedTickets"
             @changedText="changedText"
+            @replyThread="replyThread"
           />
         </template>
       </li>
@@ -19,7 +20,7 @@ import ticketReplyEncapsulate from './ticketReplyEncapsulate.vue';
 
 export default {
   name: 'ticketThreads2',
-  props: ['data'],
+  props: ['data', 'addThread'],
   components: {
     ticketReplyEncapsulate,
   },
@@ -39,6 +40,9 @@ export default {
       // should post value to server
       console.log(value.id, value.desc);
     },
+    replyThread(value) {
+      this.$emit('replyThreadParent', value);
+    },
   },
   computed: {
     tickets: {
@@ -49,6 +53,28 @@ export default {
         return newName;
       },
       // return this.data.threads;
+    },
+  },
+  mounted() {
+    if (this.addThread.length > 0) {
+      this.tickets.push({
+        desc: this.addThread,
+        attachments: {},
+        date: new Date(),
+        // desc:
+        // id:
+        // role:
+        // status:
+        // time:
+        // user:
+      });
+      // console.log(this.tickets);
+    }
+  },
+  watch: {
+    data(newVal) {
+      // console.log('ticketThreads2');
+      console.log(newVal);
     },
   },
 };
