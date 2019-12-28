@@ -228,6 +228,8 @@ export default {
         } else {
           // this is where you send the responses
           this.uiState = 'form submitted';
+          // should send data to server
+
           this.$router.push({
             path: `/${this.$route.params.locale}/dashboard`,
           });

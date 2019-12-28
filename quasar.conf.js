@@ -3,6 +3,7 @@
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const cors = require('cors');
 
 // eslint-disable-next-line no-unused-vars
 module.exports = function (ctx) {
@@ -130,9 +131,13 @@ module.exports = function (ctx) {
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
       // https: true,
+      before (app) {
+         app.use(cors());
+      },
       port: 8083,
       open: true, // opens browser window automatically
     },
+
 
     animations: 'all', // --- includes all animations
     // https://quasar.dev/options/animations

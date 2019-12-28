@@ -2,7 +2,8 @@
   <div class="captchaWrap">
     <div class="captcha">
       <div class="captchaImg">
-        <img class :src="this.capImg" />
+        <!-- <img class :src="this.capImg" /> -->
+        <div v-html="capImg"></div>
       </div>
       <div class="captchaEnter">
         <q-input
@@ -10,19 +11,14 @@
           required
           class="inputFieldText"
           color="light-blue-10"
-          v-model.trim="captcha"
-          lazy-rules
-          @input="$v.captcha.$touch"
-          :error="$v.captcha.$error"
-          @blur="validate"
+          v-model.trim="captcha.value"
+          @input="validate"
+          debounce="3000"
         >
           <template v-slot:prepend>
             <q-icon name="lock" />
           </template>
         </q-input>
-        <p class="error" v-if="errors">
-          <span v-if="!$v.captcha.isUnique">{{$t('incorrectcaptcha')}}.</span>
-        </p>
       </div>
     </div>
   </div>
@@ -34,56 +30,58 @@ export default {
   name: 'captcha',
   data() {
     return {
-      // data for validation
-      errors: false,
-      empty: true,
-      // end of data for validation
       capImg: '',
-      captcha: '',
+      captcha: {
+        token: '',
+        value: '',
+      },
     };
   },
-  validations: {
-    captcha: {
-      isUnique(value) {
-        // standalone validator ideally should not assume a field is required
-        if (value === '') return false;
 
-        // simulate async call, fail for all logins with even length
-        return new Promise(resolve => {
-          setTimeout(() => {
-            resolve(typeof value === 'string' && value === 'captcha');
-          }, 350 + Math.random() * 300);
-        });
-      },
-    },
-  },
   methods: {
     validate() {
-      this.empty = !this.$v.captcha.$anyDirty;
-      this.errors = this.$v.captcha.$anyError;
-      console.log(this.errors);
-      if (this.errors === false && this.empty === false) {
-        console.log('correct');
-        console.log(this.errors);
-        this.$emit('captchaValid', true);
-      } else {
-        this.$q.notify({
-          message: this.$t('incorrectcaptcha'),
-          color: 'negative',
-          icon: 'warning',
-          position: 'top',
+      this.$axios
+        .post('http://127.0.0.1:9000/v1/api/vkann/captcha', {
+          token: this.captcha.token,
+          value: this.captcha.value,
+        })
+        .then(response => {
+          console.log(response);
+          if (response.status === 204) {
+            console.log('hello');
+            this.$emit('captchaValid', this.captcha);
+          } else if (response.status === 403) {
+            this.$q.notify({
+              message: this.$t('incorrectcaptcha'),
+              color: 'negative',
+              icon: 'warning',
+              position: 'top',
+            });
+          }
         });
-      }
+      // this.empty = !this.$v.captcha.$anyDirty;
+      // this.errors = this.$v.captcha.$anyError;
+      // console.log(this.errors);
+      // if (this.errors === false && this.empty === false) {
+      //   console.log('correct');
+      //   // console.log(this.errors);
+      //   this.$emit('captchaValid', true);
+      // } else {
+      //   this.$q.notify({
+      //     message: this.$t('incorrectcaptcha'),
+      //     color: 'negative',
+      //     icon: 'warning',
+      //     position: 'top',
+      //   });
+      // }
     },
   },
   mounted() {
     this.$axios
-      .get(
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAjYCtB2w7osT7x3iaZg9Vq2PzufZ2JQqeztYNjQnY8mJoTk-7&s'
-      )
+      .get('http://127.0.0.1:9000/v1/api/vkann/captcha')
       .then(response => {
-        this.capImg = response.config.url;
-        console.log(this.capImg);
+        this.capImg = response.data.svg;
+        this.captcha.token = response.data.token;
       });
   },
 };

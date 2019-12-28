@@ -151,6 +151,7 @@ export default {
       methodOptions: [this.$t('otp'), this.$t('password')],
       //  for captcha checking
       captcha: false,
+      captchaObj: {},
     };
   },
   validations: {
@@ -188,12 +189,29 @@ export default {
     },
   },
   methods: {
-    captchaValid() {
+    captchaValid(value) {
       this.captcha = true;
+      this.captchaObj = value;
     },
     onSubmit() {
       // console.log('Loged In');
     },
+    // verify user name (mobile or email)
+    // userNameVerify() {
+    //   this.$axios.post('http://127.0.0.1:9000/', {}).then(response => {
+    //     console.log(response);
+    //     if (response.status === 204) {
+    //       console.log(response.status);
+    //     } else {
+    //       this.$q.notify({
+    //         message: this.$t('incorrectcaptcha'),
+    //         color: 'negative',
+    //         icon: 'warning',
+    //         position: 'top',
+    //       });
+    //     }
+    //   });
+    // },
     continueToNextLevel() {
       this.empty = !this.$v.form.$anyDirty;
       this.errors = this.$v.form.$anyError;
@@ -265,9 +283,27 @@ export default {
             position: 'top',
           });
         } else {
-          this.EnableSecondLevel = false;
+          this.$axios
+            .post('http://127.0.0.1:9000/v1/api/vkann/sign-in', {
+              email: this.form.UserName,
+              password: this.form.password,
+              captcha: this.captchaObj,
+            })
+            .then(response => {
+              console.log(response);
+              if (response.status === 200) {
+                this.EnableSecondLevel = false;
+                this.showNotif('top-right');
+              } else {
+                this.$q.notify({
+                  message: this.$t('Theformabovehaserrors'),
+                  color: 'negative',
+                  icon: 'warning',
+                  position: 'top',
+                });
+              }
+            });
           // console.log('Submit Form');
-          this.showNotif('top-right');
         }
       } else {
         this.$q.dialog({
