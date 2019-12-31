@@ -9,8 +9,8 @@
           color="light-blue-10"
           v-model.trim="form.UserName"
           :label="$t('EmailorPhoneNumber')"
+          debounce="3000"
           @blur="$v.form.UserName.$touch"
-          @input="$v.form.UserName.$touch"
           :error="$v.form.UserName.$error"
           lazy-rules
           autofocus
@@ -44,7 +44,7 @@
             class="continueToNextLevel"
             :label="$t('next')"
             color="primary"
-            @click="continueToNextLevel"
+            @click="userNameVerify"
           />
           <router-link to="/" class="creatNewAcc">
             <span @click="goToSignUp">{{$t('newaccount')}}</span>
@@ -172,18 +172,31 @@ export default {
       },
       UserName: {
         required,
-        isUnique(value) {
-          // standalone validator ideally should not assume a field is required
-          if (value === '') return true;
 
-          // simulate async call, fail for all logins with even length
-          return new Promise(resolve => {
-            setTimeout(() => {
-              resolve(
-                typeof value === 'string' && value !== 'narges.pm@yahoo.com'
-              );
-            }, 350 + Math.random() * 300);
-          });
+        isUnique(value) {
+          console.log(value);
+          const re = /\S+@\S+\.\S+/;
+          const re2 = /^-{0,1}\d+$/;
+          console.log(re2.test(value));
+          console.log(re.test(value));
+          if (re.test(value)) {
+            console.log('emaile');
+            this.UserName = value;
+            this.emailTrue = true;
+            this.mobileTrue = false;
+            console.log(`email :${this.emailTrue}`);
+          } else if (re2.test(value)) {
+            console.log('email nist');
+            this.UserName = value;
+            this.emailTrue = false;
+            this.mobileTrue = true;
+            console.log(`mobile :${this.mobileTrue}`);
+          } else {
+            console.log('non');
+            this.mobileTrue = false;
+            this.emailTrue = false;
+          }
+          return true;
         },
       },
     },
@@ -197,25 +210,73 @@ export default {
       // console.log('Loged In');
     },
     // verify user name (mobile or email)
-    // userNameVerify() {
-    //   this.$axios.post('http://127.0.0.1:9000/', {}).then(response => {
-    //     console.log(response);
-    //     if (response.status === 204) {
-    //       console.log(response.status);
-    //     } else {
-    //       this.$q.notify({
-    //         message: this.$t('incorrectcaptcha'),
-    //         color: 'negative',
-    //         icon: 'warning',
-    //         position: 'top',
-    //       });
-    //     }
-    //   });
-    // },
+    userNameVerify() {
+      if (this.mobileTrue) {
+        if (this.form.UserName.length !== 0) {
+          this.$axios
+            .post('/v1/api/vkann/validation/mobile', {
+              mobile: this.UserName,
+              existed: true,
+            })
+            .then(response => {
+              console.log(response);
+              if (response.status === 204) {
+                console.log('mobile valid ast');
+                if (this.form.method === 'otp') {
+                  this.EnableOtpLevel = true;
+                  this.EnableFirstLevel = false;
+                } else if (this.form.method === 'password') {
+                  this.EnableFirstLevel = false;
+                  this.EnableSecondLevel = true;
+                }
+              } else if (response.status === 404) {
+                this.$q.dialog({
+                  title: ' این نام کاربری وجود ندارد',
+                });
+                console.log('mobile valid nist');
+              }
+            });
+        } else {
+          this.$refs.formUsername.$el.focus();
+
+          this.$q.dialog({
+            title: this.$t('fillMobileOrEmail'),
+          });
+        }
+      } else if (this.emailTrue) {
+        this.$axios
+          .post('/v1/api/vkann/validation/email', {
+            email: this.UserName,
+            existed: true,
+          })
+          .then(response => {
+            console.log(response);
+            if (response.status === 204) {
+              if (this.form.method === 'otp') {
+                this.EnableOtpLevel = true;
+                this.EnableFirstLevel = false;
+              } else if (this.form.method === 'password') {
+                this.EnableFirstLevel = false;
+                this.EnableSecondLevel = true;
+              }
+              console.log('email valid ast');
+            } else {
+              console.log('email valid nist');
+            }
+          });
+      } else {
+        this.$q.notify({
+          message: this.$t('pleaseenter a valid username'),
+          color: 'negative',
+          icon: 'warning',
+          position: 'top',
+        });
+      }
+    },
     continueToNextLevel() {
       this.empty = !this.$v.form.$anyDirty;
       this.errors = this.$v.form.$anyError;
-      console.log(this.$v.form.$anyError);
+      console.log(this.$v.form.UserName.email);
       if (this.errors === false && this.empty === false) {
         if (this.form.UserName.length !== 0) {
           this.$refs.formUsername.$el.focus();
@@ -284,13 +345,14 @@ export default {
           });
         } else {
           this.$axios
-            .post('http://127.0.0.1:9000/v1/api/vkann/sign-in', {
+            .post('/v1/api/vkann/sign-in', {
               email: this.form.UserName,
+              mobile: this.form.UserName,
               password: this.form.password,
               captcha: this.captchaObj,
             })
             .then(response => {
-              console.log(response);
+              console.log(response.headers);
               if (response.status === 200) {
                 this.EnableSecondLevel = false;
                 this.showNotif('top-right');
@@ -362,6 +424,8 @@ export default {
   },
   mounted() {
     this.$refs.formUsername.$el.focus();
+    console.log(this.$axios.defaults.baseURL);
+    console.log(this.$axios.defaults.proxy);
   },
 };
 </script>

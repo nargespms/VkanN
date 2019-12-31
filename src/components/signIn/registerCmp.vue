@@ -71,8 +71,8 @@
       <!-- Gender -->
       <div class="genderRegister">
         <label>{{$t('gender')}}:</label>
-        <q-radio class="genderOpt" v-model="form.Gender" val="female">{{$t('female')}}</q-radio>
-        <q-radio class="genderOpt" v-model="form.Gender" val="male">{{$t('male')}}</q-radio>
+        <q-radio class="genderOpt" v-model="form.Gender" val="FEMALE">{{$t('female')}}</q-radio>
+        <q-radio class="genderOpt" v-model="form.Gender" val="MALE">{{$t('male')}}</q-radio>
         <p v-if="errors" class="error float">
           <span v-if="!$v.form.Gender.required">*{{$t('thisfieldisrequired')}}.</span>
         </p>
@@ -139,6 +139,7 @@
 <script>
 import { required, email, minLength, sameAs } from 'vuelidate/lib/validators';
 import { VueTelInput } from 'vue-tel-input';
+// import { Cookies } from 'quasar';
 import captcha from '../structure/captcha.vue';
 
 export default {
@@ -148,6 +149,7 @@ export default {
   },
   data() {
     return {
+      captchaObj: {},
       // data for validation
       uiState: 'submit not clicked',
       errors: false,
@@ -210,8 +212,9 @@ export default {
     },
   },
   methods: {
-    captchaValid() {
+    captchaValid(value) {
       this.captcha = true;
+      this.captchaObj = value;
     },
     onSubmit() {
       this.empty = !this.$v.form.$anyDirty;
@@ -229,10 +232,36 @@ export default {
           // this is where you send the responses
           this.uiState = 'form submitted';
           // should send data to server
-
-          this.$router.push({
-            path: `/${this.$route.params.locale}/dashboard`,
-          });
+          // req to server
+          this.$axios
+            .post('/v1/api/vkann/register', {
+              captcha: this.captchaObj,
+              firstName: this.form.FirstName,
+              lastName: this.form.LastName,
+              password: this.form.PassWord,
+              gender: this.form.Gender,
+              mobile: this.MobileNumber,
+              email: this.form.email,
+            })
+            .then(Response => {
+              if (Response.status === 200) {
+                console.log(Response);
+                this.showNotif('top-right');
+                this.$q.cookies.set(
+                  'cookie_name',
+                  Response.config.xsrfHeaderName
+                );
+              } else if (Response.status === 400) {
+                this.$q.notify({
+                  message: this.$t('user exist'),
+                  color: 'negative',
+                  icon: 'warning',
+                  position: 'top',
+                });
+                console.log('noch noch noch');
+              }
+            });
+          // req to server
         }
       } else if (this.empty === true) {
         this.$q.notify({
@@ -253,7 +282,16 @@ export default {
     EnableConf() {
       this.enableConfirm = true;
     },
-
+    showNotif(position) {
+      this.$q.notify({
+        color: 'dark',
+        icon: 'verified_user',
+        message: `Welcome ${this.form.FirstName}!`,
+        position,
+        timeout: Math.random() * 5000 + 3000,
+      });
+      this.$router.push({ path: `/${this.$route.params.locale}/dashboard` });
+    },
     // console.log('Logged In');
     // this.$router.push({
     //   path: `/${this.$route.params.locale}/dashboard`,

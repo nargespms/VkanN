@@ -39,34 +39,49 @@ export default {
   props: ['data'],
   methods: {
     addTag() {
-      if (this.newTag) {
-        // for prevent to add duplicate tag
-        let isDuplicate = false;
-        try {
-          this.mytags.forEach(tag => {
-            isDuplicate = tag.name === this.newTag;
-            console.log(`${isDuplicate}foreach`);
-            if (isDuplicate) throw this.BreakException;
-          });
-        } catch (e) {
-          if (e !== this.BreakException) throw e;
-        }
-        if (isDuplicate) {
-          this.$q.notify({
-            message: this.$t('tagIsNotValid'),
-            color: 'negative',
-            icon: 'warning',
-            position: 'top',
-          });
-        } else {
-          this.mytags.push({
-            name: this.newTag,
-            status: 'active',
-          });
-          this.newTag = '';
-          // console.log(this.mytags[1].name);
-        }
-      }
+      this.$axios
+        .post('/v1/api/vkann/tags', {
+          description: this.newTag,
+          status: 'ACTIVE',
+          title: this.newTag,
+        })
+        .then(response => {
+          console.log(response);
+          if (response.status === 200) {
+            console.log(response);
+          } else {
+            console.log(response);
+          }
+        });
+
+      // if (this.newTag) {
+      //   // for prevent to add duplicate tag
+      //   let isDuplicate = false;
+      //   try {
+      //     this.mytags.forEach(tag => {
+      //       isDuplicate = tag.name === this.newTag;
+      //       console.log(`${isDuplicate}foreach`);
+      //       if (isDuplicate) throw this.BreakException;
+      //     });
+      //   } catch (e) {
+      //     if (e !== this.BreakException) throw e;
+      //   }
+      //   if (isDuplicate) {
+      //     this.$q.notify({
+      //       message: this.$t('tagIsNotValid'),
+      //       color: 'negative',
+      //       icon: 'warning',
+      //       position: 'top',
+      //     });
+      //   } else {
+      //     this.mytags.push({
+      //       name: this.newTag,
+      //       status: 'active',
+      //     });
+      //     this.newTag = '';
+      //     // console.log(this.mytags[1].name);
+      //   }
+      // }
 
       this.$emit('addTag', this.mytags);
     },

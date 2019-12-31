@@ -17,6 +17,23 @@ export default {
     userAvatarCmp,
     userInformation,
   },
+  mounted() {
+    this.$axios
+      .patch('/v1/api/vkann/profile/5e08987475f05f318e8dbcfb')
+      .then(response => {
+        console.log(response);
+        if (response.status === 204) {
+          console.log(response.data);
+        } else {
+          this.$q.notify({
+            message: this.$t('incorrectcaptcha'),
+            color: 'negative',
+            icon: 'warning',
+            position: 'top',
+          });
+        }
+      });
+  },
 };
 </script>
 

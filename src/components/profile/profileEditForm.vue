@@ -451,6 +451,25 @@ export default {
         this.uiState = 'form submitted';
         normalizeEmail(this.form.email);
         console.log(normalizeEmail(this.form.email));
+        // req to server
+
+        this.$axios
+          .post('/v1/api/vkann/profile', {
+            form: this.form,
+          })
+          .then(response => {
+            if (response.status === 200) {
+              console.log(response.headers);
+            } else {
+              this.$q.notify({
+                message: this.$t('Theformabovehaserrors'),
+                color: 'negative',
+                icon: 'warning',
+                position: 'top',
+              });
+            }
+          });
+        // req to server
         this.$router.push({
           path: `/${this.$route.params.locale}/userManagement`,
         });

@@ -85,6 +85,7 @@ module.exports = function (ctx) {
         'Loading',
         'Notify',
         'Dialog',
+        'Cookies',
       ],
     },
 
@@ -130,12 +131,31 @@ module.exports = function (ctx) {
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
-      // https: true,
-      before (app) {
-         app.use(cors());
-      },
+       headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
+    },
+      https: true,
+      // before (app) {
+      //    app.use(cors());
+      // },
       port: 8083,
+      host:'crm.tld',
+      // pubilc: 'https://crm.tld',
       open: true, // opens browser window automatically
+    //   allowedHosts: [
+    //   'https://crm.tld',
+    // ],
+      //  proxy: {
+      //   // proxy all requests starting with /api to jsonplaceholder
+      //   '/v1/api/vkann': {
+      //     target: this.$axios.defaults.baseURL,
+      //     changeOrigin: true,
+      //     pathRewrite: {
+      //       '^/v1/api/vkann': ''
+      //     }
+      //   }
+      // }
     },
 
 

@@ -41,7 +41,7 @@ export default {
   methods: {
     validate() {
       this.$axios
-        .post('http://127.0.0.1:9000/v1/api/vkann/captcha', {
+        .post('/v1/api/vkann/captcha', {
           token: this.captcha.token,
           value: this.captcha.value,
         })
@@ -77,12 +77,10 @@ export default {
     },
   },
   mounted() {
-    this.$axios
-      .get('http://127.0.0.1:9000/v1/api/vkann/captcha')
-      .then(response => {
-        this.capImg = response.data.svg;
-        this.captcha.token = response.data.token;
-      });
+    this.$axios.get('/v1/api/vkann/captcha').then(response => {
+      this.capImg = response.data.svg;
+      this.captcha.token = response.data.token;
+    });
   },
 };
 </script>
