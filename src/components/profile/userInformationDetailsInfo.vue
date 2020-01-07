@@ -2,28 +2,30 @@
   <div class="userInfoDetails">
     <div class="item">
       <div class="item-content">
-        <span class="introParam">{{$t('tag')}}</span>
-        <span class="valueIntro">{{Details.tag}}</span>
+        <span class="introParam">{{ $t('tag') }}</span>
+        <span class="valueIntro" v-for="tag in data.tags" :key="tag.index">
+          {{ tag }}
+        </span>
       </div>
       <div class="item-content">
-        <span class="introParam">{{$t('gender')}}</span>
-        <span class="valueIntro">{{Details.gender}}</span>
+        <span class="introParam">{{ $t('gender') }}</span>
+        <span class="valueIntro">{{ data.gender }}</span>
       </div>
       <div class="item-content">
-        <span class="introParam">{{$t('nationalCode')}}</span>
-        <span class="valueIntro">{{Details.nationalId}}</span>
+        <span class="introParam">{{ $t('nationalCode') }}</span>
+        <span class="valueIntro">{{}}</span>
       </div>
       <div class="item-content">
-        <span class="introParam">{{$t('postalCode')}}</span>
-        <span class="valueIntro">{{Details.postalCode}}</span>
+        <span class="introParam">{{ $t('postalCode') }}</span>
+        <span class="valueIntro">{{}}</span>
       </div>
       <div class="item-content">
-        <span class="introParam">{{$t('linkdin')}}</span>
-        <span class="valueIntro">{{Details.linkdin}}</span>
+        <span class="introParam">{{ $t('linkdin') }}</span>
+        <span class="valueIntro">{{}}</span>
       </div>
       <div class="item-content">
-        <span class="introParam">{{$t('git')}}</span>
-        <span class="valueIntro">{{Details.git}}</span>
+        <span class="introParam">{{ $t('git') }}</span>
+        <span class="valueIntro">{{}}</span>
       </div>
     </div>
   </div>
@@ -32,6 +34,7 @@
 <script>
 export default {
   name: 'userInformationDetailsInfo',
+  props: ['data'],
   data() {
     return {
       Details: {

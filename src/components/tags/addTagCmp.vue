@@ -19,7 +19,8 @@
             v-model="showing1"
             transition-show="scale"
             transition-hide="scale"
-          >{{$t('addTag')}}</q-tooltip>
+            >{{ $t('addTag') }}</q-tooltip
+          >
         </q-icon>
       </template>
     </q-input>
@@ -46,11 +47,40 @@ export default {
           title: this.newTag,
         })
         .then(response => {
-          console.log(response);
+          // console.log(response);
           if (response.status === 200) {
-            console.log(response);
-          } else {
-            console.log(response);
+            // console.log(response);
+            this.$q.notify({
+              message: this.$t('newTagHasBeenAdded'),
+              color: 'positive',
+              icon: 'check',
+              position: 'top',
+            });
+            this.newTag = null;
+          } else if (response.status === 400) {
+            this.$q.notify({
+              message: this.$t('unvalidtag'),
+              color: 'negative',
+              icon: 'warning',
+              position: 'top',
+            });
+          }
+        })
+        .catch(e => {
+          if (e.response.status === 403) {
+            this.$q.notify({
+              message: this.$t('forbidenAccess'),
+              color: 'negative',
+              icon: 'warning',
+              position: 'top',
+            });
+          } else if (e.response.status === 400) {
+            this.$q.notify({
+              message: this.$t('reapetedtag'),
+              color: 'negative',
+              icon: 'warning',
+              position: 'top',
+            });
           }
         });
 

@@ -1,4 +1,4 @@
-<template >
+<template>
   <div class="addContractWrapper col3th">
     <q-form @submit="onSubmit" class="q-gutter-md" :error="$v.contract.$error">
       <div class="col1">
@@ -13,7 +13,7 @@
           :label="$t('serviceName')"
           class="inputStyle"
           lazy-rules
-          :rules="[ val => val && val.length > 0 ]"
+          :rules="[val => val && val.length > 0]"
         >
           <template v-slot:prepend>
             <q-icon name="settings_applications" />
@@ -29,7 +29,7 @@
           :label="$t('clientName')"
           class="inputStyle"
           lazy-rules
-          :rules="[ val => val && val.length > 0 ]"
+          :rules="[val => val && val.length > 0]"
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-user" />
@@ -51,7 +51,11 @@
         >
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
-              <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+              <q-popup-proxy
+                ref="qDateProxy"
+                transition-show="scale"
+                transition-hide="scale"
+              >
                 <q-date
                   v-model.trim="contract.startdate"
                   @input="() => $refs.qDateProxy.hide()"
@@ -75,7 +79,11 @@
         >
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
-              <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+              <q-popup-proxy
+                ref="qDateProxy"
+                transition-show="scale"
+                transition-hide="scale"
+              >
                 <q-date
                   v-model.trim="contract.enddate"
                   @input="() => $refs.qDateProxy.hide()"
@@ -90,7 +98,7 @@
         <p class="error ptb12" v-if="errors">
           <span v-if="!$v.contract.timeChecker">
             <q-icon name="warning" class="pr12 pt4" />
-            {{$t('DateUnvalid')}}
+            {{ $t('DateUnvalid') }}
           </span>
         </p>
         <!-- Duration -->
@@ -115,6 +123,7 @@
           v-model.trim="contract.number"
           :label="$t('ContractNum')"
           lazy-rules
+          mask="##########"
           :rules="[val => val && val.length > 0]"
         >
           <template v-slot:prepend>
@@ -139,6 +148,8 @@
         </q-input>
       </div>
       <div class="col2">
+        <!-- tags -->
+        <tagsSelection @addTagFn="addTagFn" />
         <!-- status -->
         <q-select
           color="light-blue-10"
@@ -146,7 +157,9 @@
           v-model.trim="contract.status"
           :options="contractStatus"
           :label="$t('status')"
-          class="inputStyle"
+          class="inputStyle pt20"
+          required
+          :rules="[val => val && val.length > 0]"
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-exclamation-circle" />
@@ -160,6 +173,8 @@
           :options="contractType"
           :label="$t('type')"
           class="inputStyle"
+          required
+          :rules="[val => val && val.length > 0]"
         >
           <template v-slot:append>
             <q-icon name />
@@ -180,8 +195,12 @@
             <q-icon name />
           </template>
         </q-select>
-        <div class="pt20 w100">
-          <uploadfile :UploadButton="false" ref="upload" :text="'attachments'" />
+        <div class="w100">
+          <uploadfile
+            :UploadButton="false"
+            ref="upload"
+            :text="'attachments'"
+          />
         </div>
       </div>
       <div class="saveInfo">
@@ -195,11 +214,13 @@
 // import { required } from 'vuelidate/lib/validators';
 
 import uploadfile from '../structure/uploadfile.vue';
+import tagsSelection from '../structure/tagsSelection.vue';
 
 export default {
   name: 'addContractCmp',
   components: {
     uploadfile,
+    tagsSelection,
   },
   data() {
     return {
@@ -210,10 +231,10 @@ export default {
       // data for validation
       servicesName: ['name1', 'name2', 'name3'],
       clients: ['client1', 'client2', 'client3'],
-      contractDuration: ['monthly', 'yearly', 'season'],
+      contractDuration: [12, 13, 14],
       contractStatus: ['status1', 'status2', 'status3'],
-      contractType: ['type1', 'type2', 'type3'],
-      contractCurrency: ['currency1', 'currency2', 'currency3'],
+      contractType: ['FORMAL', 'INFORMAL'],
+      contractCurrency: ['RIAL', 'DOLLER', 'EURO'],
       date: this.today,
       enddate: '1212112',
       enableEndDate: false,
@@ -227,6 +248,7 @@ export default {
         currency: '',
         startdate: '',
         enddate: '',
+        tags: [],
       },
     };
   },
@@ -242,6 +264,9 @@ export default {
     },
   },
   methods: {
+    addTagFn(value) {
+      this.tags = value;
+    },
     computeEnddate(enddate) {
       return enddate >= this.contract.startdate;
     },
@@ -256,9 +281,29 @@ export default {
         console.log(standardStartDate);
         console.log(standardEndDate);
         this.$refs.upload.submit_btn();
-        this.$q.dialog({
-          title: 'ThanQ u  ',
-        });
+        // send data to server
+        this.$axios
+          .post('/v1/api/vkann/contracts', {
+            service: this.contract.serviceName,
+            tags: this.tags,
+            type: this.contract.type,
+            client: this.contract.client,
+            startDate: standardStartDate,
+            duration: 12,
+            endDate: standardEndDate,
+            amount: this.contract.amount,
+            currency: this.contract.currency,
+            attachments: 'string',
+            status: this.contract.status,
+            contractNumber: this.contract.number,
+          })
+          .then(response => {
+            console.log(response);
+          })
+          .catch(e => {
+            console.log(e.response.status);
+          });
+        // send data to server
       } else {
         this.$q.notify({
           message: this.$t('Theformabovehaserrors'),

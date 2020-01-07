@@ -1,4 +1,4 @@
-<template >
+<template>
   <div class="loginWrapperCmp">
     <q-form @submit="onSubmit" class="q-gutter-md loginForm">
       <!-- step one -->
@@ -20,8 +20,12 @@
             <q-icon name="fas fa-user" />
           </template>
           <p v-if="errors" class="error">
-            <span v-if="!$v.form.UserName.required">*{{$t('thisfieldisrequired')}}.</span>
-            <span v-if="!$v.form.UserName.isUnique">*{{$t('Thisemailisalreadyregistered')}}.</span>
+            <span v-if="!$v.form.UserName.required"
+              >*{{ $t('thisfieldisrequired') }}.</span
+            >
+            <span v-if="!$v.form.UserName.isUnique"
+              >*{{ $t('Thisemailisalreadyregistered') }}.</span
+            >
           </p>
         </q-input>
         <!-- choosing how to verify acoount -->
@@ -37,7 +41,9 @@
           </template>
         </q-select>
         <router-link class="forgetUser" to="/">
-          <span @click="goToForget">{{$t('forgotEmail')}} {{$t('questionmark')}}</span>
+          <span @click="goToForget"
+            >{{ $t('forgotEmail') }} {{ $t('questionmark') }}</span
+          >
         </router-link>
         <div class="clear mt78">
           <q-btn
@@ -47,14 +53,14 @@
             @click="userNameVerify"
           />
           <router-link to="/" class="creatNewAcc">
-            <span @click="goToSignUp">{{$t('newaccount')}}</span>
+            <span @click="goToSignUp">{{ $t('newaccount') }}</span>
           </router-link>
         </div>
       </div>
       <!-- step one -->
       <!-- step two if password choosed -->
       <div v-if="EnableSecondLevel">
-        <span class="userName" @click="backToStepOne">{{form.UserName}}</span>
+        <span class="userName" @click="backToStepOne">{{ form.UserName }}</span>
         <q-input
           outlined
           class="inputFieldText passwordField"
@@ -72,7 +78,7 @@
             />
           </template>
         </q-input>
-        <captcha @captchaValid="captchaValid" />
+        <captcha @captchaValid="captchaValid" :key="componentKey" />
         <div class="clear mt78">
           <q-btn
             class="continueToNextLevel"
@@ -81,15 +87,15 @@
             @click="stepTwoComplete"
           />
           <router-link to="/" class="creatNewAcc">
-            <span @click="goToForget">{{$t('forgetpassword')}}</span>
+            <span @click="goToForget">{{ $t('forgetpassword') }}</span>
           </router-link>
         </div>
       </div>
       <!-- step two if password chose -->
       <!-- step two if OTP chosed -->
       <div v-if="EnableOtpLevel">
-        <span class="userName" @click="backToStepOne">{{form.UserName}}</span>
-        <span>{{$t('otpMessage')}}</span>
+        <span class="userName" @click="backToStepOne">{{ form.UserName }}</span>
+        <span>{{ $t('otpMessage') }}</span>
         <q-input
           filled
           v-model.trim="form.otp"
@@ -103,8 +109,10 @@
             <q-icon name />
           </template>
           <p v-if="errors" class="error">
-            <span v-if="!$v.form.otp.minLength">{{$t('Fieldmusthaveatleast4characters')}}</span>
-            <span v-if="!$v.form.otp.isUnique">{{$t('invalidCode')}}</span>
+            <span v-if="!$v.form.otp.minLength">{{
+              $t('Fieldmusthaveatleast4characters')
+            }}</span>
+            <span v-if="!$v.form.otp.isUnique">{{ $t('invalidCode') }}</span>
           </p>
         </q-input>
         <captcha @captchaValid="captchaValid" />
@@ -115,7 +123,7 @@
             color="primary"
             @click="otpStepComplete"
           />
-          <span class="resendOtp">{{$t('resendOtp')}}</span>
+          <span class="resendOtp">{{ $t('resendOtp') }}</span>
         </div>
       </div>
       <!-- step two if OTP chosed -->
@@ -133,6 +141,7 @@ export default {
   },
   data() {
     return {
+      componentKey: 0,
       // data for validation
       uiState: 'submit not clicked',
       errors: false,
@@ -229,12 +238,15 @@ export default {
                   this.EnableFirstLevel = false;
                   this.EnableSecondLevel = true;
                 }
-              } else if (response.status === 404) {
-                this.$q.dialog({
-                  title: ' این نام کاربری وجود ندارد',
-                });
-                console.log('mobile valid nist');
               }
+            })
+            .catch(() => {
+              this.$q.notify({
+                color: 'negative',
+                position: 'top',
+                message: this.$t('enteredMobileHasntRegisteredYet'),
+                icon: 'report_problem',
+              });
             });
         } else {
           this.$refs.formUsername.$el.focus();
@@ -263,6 +275,14 @@ export default {
             } else {
               console.log('email valid nist');
             }
+          })
+          .catch(() => {
+            this.$q.notify({
+              color: 'negative',
+              position: 'top',
+              message: this.$t('enteredEmailHasntRegisteredYet'),
+              icon: 'report_problem',
+            });
           });
       } else {
         this.$q.notify({
@@ -352,11 +372,17 @@ export default {
               captcha: this.captchaObj,
             })
             .then(response => {
-              console.log(response.headers);
               if (response.status === 200) {
                 this.EnableSecondLevel = false;
                 this.showNotif('top-right');
+                console.log(response.data);
+                this.$store.commit(
+                  'module1/userDataFromServer',
+                  response.data,
+                  { module: 'module1' }
+                );
               } else {
+                console.log(Response);
                 this.$q.notify({
                   message: this.$t('Theformabovehaserrors'),
                   color: 'negative',
@@ -364,7 +390,26 @@ export default {
                   position: 'top',
                 });
               }
+            })
+            .catch(() => {
+              if (this.captchaObj.value.length > 0) {
+                this.$q.notify({
+                  color: 'negative',
+                  position: 'top',
+                  message: this.$t('incorrectPass'),
+                  icon: 'report_problem',
+                });
+                this.componentKey += 1;
+              } else {
+                this.$q.notify({
+                  color: 'negative',
+                  position: 'top',
+                  message: this.$t('emptyCaptcha'),
+                  icon: 'report_problem',
+                });
+              }
             });
+
           // console.log('Submit Form');
         }
       } else {

@@ -5,21 +5,31 @@
         <q-card class="card mb12 tagList">
           <!-- action -->
           <q-card-actions class="bg-white tagAction">
-            <span>{{tag.name}}</span>
+            <span>{{ tag.name }}</span>
           </q-card-actions>
           <!-- main content -->
           <div class="tagListButtsWrapper">
             <q-card-section class="tagTxt brright">
               <q-icon name="edit" class="editTag">
-                <q-tooltip transition-show="scale" transition-hide="scale">{{$t('editTag')}}</q-tooltip>
+                <q-tooltip transition-show="scale" transition-hide="scale">{{
+                  $t('editTag')
+                }}</q-tooltip>
               </q-icon>
               <q-popup-edit v-model.trim="tag.name" buttons anchor="top left">
-                <q-input v-model.trim="tag.name" dense autofocus counter @change="setEditTag(tag)" />
+                <q-input
+                  v-model.trim="tag.name"
+                  dense
+                  autofocus
+                  counter
+                  @change="setEditTag(tag)"
+                />
               </q-popup-edit>
             </q-card-section>
             <q-card-section class="tagTxt p16 brleft" @click="deactiveTag(tag)">
               <q-icon name="fa fa-trash" class="editTag">
-                <q-tooltip transition-show="scale" transition-hide="scale">{{$t('deactiveTag')}}</q-tooltip>
+                <q-tooltip transition-show="scale" transition-hide="scale">{{
+                  $t('deactiveTag')
+                }}</q-tooltip>
               </q-icon>
             </q-card-section>
           </div>
@@ -28,14 +38,14 @@
     </ul>
     <div v-if="deactivetags.length">
       <h4 class="headerTitleInPage">
-        <span>{{$t('deletedTags')}}</span>
+        <span>{{ $t('deletedTags') }}</span>
       </h4>
       <ul class="deactiveList">
         <li v-for="tag in deactivetags" :key="tag.id">
           <q-card class="card mb12 tagList">
             <!-- action -->
             <q-card-actions class="tagAction">
-              <span class="clw">{{tag.name}}</span>
+              <span class="clw">{{ tag.name }}</span>
             </q-card-actions>
             <!-- main content -->
             <q-card-section class="tagTxt p16 brleft" @click="activeTag(tag)">

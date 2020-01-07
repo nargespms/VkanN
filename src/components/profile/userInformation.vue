@@ -1,7 +1,13 @@
 <template>
   <div class="userInformationWrapper">
     <q-card>
-      <q-tabs v-model="tab" dense class="text-grey block460" active-color="primary" align="justify">
+      <q-tabs
+        v-model="tab"
+        dense
+        class="text-grey block460"
+        active-color="primary"
+        align="justify"
+      >
         <q-tab name="profileInfo" :label="$t('profileInfo')" />
         <q-tab name="profileInfoDetails" :label="$t('profileInfoDetails')" />
         <q-tab name="editProfile" :label="$t('editProfile')" />
@@ -9,11 +15,11 @@
       <q-separator />
       <q-tab-panels v-model="tab" animated>
         <q-tab-panel name="profileInfo">
-          <userInformationInfo />
+          <userInformationInfo :data="userData" />
         </q-tab-panel>
 
         <q-tab-panel name="profileInfoDetails">
-          <userInformationDetailsInfo />
+          <userInformationDetailsInfo :data="userData" />
         </q-tab-panel>
 
         <q-tab-panel name="editProfile">
@@ -40,6 +46,11 @@ export default {
     return {
       tab: 'profileInfo',
     };
+  },
+  computed: {
+    userData() {
+      return this.$store.state.module1.userData;
+    },
   },
 };
 </script>

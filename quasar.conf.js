@@ -3,10 +3,10 @@
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const cors = require('cors');
+// const cors = require('cors');
 
 // eslint-disable-next-line no-unused-vars
-module.exports = function (ctx) {
+module.exports = function(ctx) {
   return {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
@@ -16,6 +16,7 @@ module.exports = function (ctx) {
       'axios',
       'vuelidate',
       'normalizeEmail',
+      'localStorage',
       // 'information',
     ],
 
@@ -76,17 +77,10 @@ module.exports = function (ctx) {
         // 'QTabPanels',
       ],
 
-      directives: [
-        'Ripple',
-      ],
+      directives: ['Ripple'],
 
       // Quasar plugins
-      plugins: [
-        'Loading',
-        'Notify',
-        'Dialog',
-        'Cookies',
-      ],
+      plugins: ['Loading', 'Notify', 'Dialog', 'Cookies'],
     },
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie
@@ -117,35 +111,39 @@ module.exports = function (ctx) {
         });
         cfg.module.rules.push({
           resourceQuery: /blockType=i18n/,
-          use: [{
-              loader: '@kazupon/vue-i18n-loader'
+          use: [
+            {
+              loader: '@kazupon/vue-i18n-loader',
             },
             {
-              loader: 'yaml-loader'
+              loader: 'yaml-loader',
             },
           ],
         });
-          cfg.plugins.push(new CopyWebpackPlugin([{ from: 'src/rootFolder/', to: '' }]));
+        cfg.plugins.push(
+          new CopyWebpackPlugin([{ from: 'src/rootFolder/', to: '' }])
+        );
       },
     },
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
-       headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
-    },
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers':
+          'Origin, X-Requested-With, Content-Type, Accept',
+      },
       https: true,
       // before (app) {
       //    app.use(cors());
       // },
       port: 8083,
-      host:'crm.tld',
+      host: 'crm.tld',
       // pubilc: 'https://crm.tld',
       open: true, // opens browser window automatically
-    //   allowedHosts: [
-    //   'https://crm.tld',
-    // ],
+      //   allowedHosts: [
+      //   'https://crm.tld',
+      // ],
       //  proxy: {
       //   // proxy all requests starting with /api to jsonplaceholder
       //   '/v1/api/vkann': {
@@ -157,7 +155,6 @@ module.exports = function (ctx) {
       //   }
       // }
     },
-
 
     animations: 'all', // --- includes all animations
     // https://quasar.dev/options/animations
@@ -180,7 +177,8 @@ module.exports = function (ctx) {
         orientation: 'portrait',
         background_color: '#ffffff',
         theme_color: '#027be3',
-        icons: [{
+        icons: [
+          {
             src: 'statics/icons/icon-128x128.png',
             sizes: '128x128',
             type: 'image/png',
@@ -226,20 +224,17 @@ module.exports = function (ctx) {
 
       packager: {
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
-
         // OS X / Mac App Store
         // appBundleId: '',
         // appCategoryType: '',
         // osxSign: '',
         // protocol: 'myapp://path',
-
         // Windows only
         // win32metadata: { ... }
       },
 
       builder: {
         // https://www.electron.build/configuration/configuration
-
         // appId: 'aasaam_crm'
       },
     },

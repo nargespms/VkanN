@@ -1,6 +1,10 @@
-<template >
+<template>
   <div class="registerWrapperCmp">
-    <q-form v-if="enableRegister" @submit="onSubmit" class="q-gutter-md RegisterForm">
+    <q-form
+      v-if="enableRegister"
+      @submit="onSubmit"
+      class="q-gutter-md RegisterForm"
+    >
       <!-- user name -->
       <q-input
         outlined
@@ -10,7 +14,7 @@
         v-model.trim.lazy="$v.form.FirstName.$model"
         :label="$t('firstName')"
         lazy-rules
-        :rules="[ val => val && val.length > 0 ]"
+        :rules="[val => val && val.length > 0]"
         autofocus
       >
         <template v-slot:prepend>
@@ -18,8 +22,12 @@
         </template>
         <!-- firstname validation -->
         <p v-if="errors" class="error">
-          <span v-if="!$v.form.FirstName.required">*{{$t('thisfieldisrequired')}}.</span>
-          <span v-if="!$v.form.FirstName.minLength">{{$t('Fieldmusthaveatleast3characters')}}</span>
+          <span v-if="!$v.form.FirstName.required"
+            >*{{ $t('thisfieldisrequired') }}.</span
+          >
+          <span v-if="!$v.form.FirstName.minLength">{{
+            $t('Fieldmusthaveatleast3characters')
+          }}</span>
         </p>
         <!-- firstname validation -->
       </q-input>
@@ -32,13 +40,15 @@
         v-model.trim="form.LastName"
         :label="$t('lastName')"
         lazy-rules
-        :rules="[ val => val && val.length > 0 ]"
+        :rules="[val => val && val.length > 0]"
       >
         <template v-slot:prepend>
           <q-icon name="fas fa-user" />
         </template>
         <p v-if="errors" class="error">
-          <span v-if="!$v.form.LastName.required">*{{$t('thisfieldisrequired')}}.</span>
+          <span v-if="!$v.form.LastName.required"
+            >*{{ $t('thisfieldisrequired') }}.</span
+          >
         </p>
       </q-input>
       <!-- Email -->
@@ -50,15 +60,37 @@
         @input="$v.form.email.$touch"
         @keyup.enter="submit"
         :error="$v.form.email.$error"
+        debounce="1500"
       >
         <template v-slot:prepend>
           <q-icon name="email" class="mailIcon" />
         </template>
+        <template v-if="this.form.email.length > 0" v-slot:append>
+          <q-icon
+            v-if="verifyEmail"
+            name="fas fa-check"
+            class="mailIcon text-positive"
+          />
+          <q-icon
+            v-if="!verifyEmail"
+            name="fas fa-times"
+            class="mailIcon text-negative"
+          />
+          <span v-if="!verifyEmail" class="text-negative">
+            {{ $t('enteredEmailisRegistered') }}
+          </span>
+        </template>
         <!-- email errors -->
         <p v-if="errors" class="error">
-          <span v-if="!$v.form.email.required">*{{$t('thisfieldisrequired')}}.</span>
-          <span v-if="!$v.form.email.email">* {{$t('Needstobeavalidemail')}}.</span>
-          <span v-if="!$v.form.email.isUnique">*{{$t('Thisemailisalreadyregistered')}}.</span>
+          <span v-if="!$v.form.email.required"
+            >*{{ $t('thisfieldisrequired') }}.</span
+          >
+          <span v-if="!$v.form.email.email"
+            >* {{ $t('Needstobeavalidemail') }}.</span
+          >
+          <span v-if="!$v.form.email.isUnique"
+            >*{{ $t('Thisemailisalreadyregistered') }}.</span
+          >
         </p>
         <!-- email errors -->
       </q-input>
@@ -70,11 +102,20 @@
       ></vue-tel-input>
       <!-- Gender -->
       <div class="genderRegister">
-        <label>{{$t('gender')}}:</label>
-        <q-radio class="genderOpt" v-model="form.Gender" val="FEMALE">{{$t('female')}}</q-radio>
-        <q-radio class="genderOpt" v-model="form.Gender" val="MALE">{{$t('male')}}</q-radio>
+        <label>{{ $t('gender') }}:</label>
+        <q-radio class="genderOpt" v-model="form.Gender" val="FEMALE">{{
+          $t('female')
+        }}</q-radio>
+        <q-radio class="genderOpt" v-model="form.Gender" val="MALE">{{
+          $t('male')
+        }}</q-radio>
+        <q-radio class="genderOpt" v-model="form.Gender" val="OTHER">{{
+          $t('OTHER')
+        }}</q-radio>
         <p v-if="errors" class="error float">
-          <span v-if="!$v.form.Gender.required">*{{$t('thisfieldisrequired')}}.</span>
+          <span v-if="!$v.form.Gender.required"
+            >*{{ $t('thisfieldisrequired') }}.</span
+          >
         </p>
       </div>
       <!-- password -->
@@ -97,11 +138,15 @@
           />
         </template>
         <p class="error" v-if="errors">
-          <span v-if="!$v.form.PassWord.required">*{{$t('thisfieldisrequired')}}.</span>
+          <span v-if="!$v.form.PassWord.required"
+            >*{{ $t('thisfieldisrequired') }}.</span
+          >
         </p>
       </q-input>
       <p class="error" v-if="errors">
-        <span v-if="!$v.form.PassWord.strongPassword">{{$t('Strongpasswords')}}</span>
+        <span v-if="!$v.form.PassWord.strongPassword">{{
+          $t('Strongpasswords')
+        }}</span>
       </p>
       <!-- Re enter password -->
       <q-input
@@ -114,7 +159,7 @@
         v-model.trim="$v.form.Confirmpass.$model"
         :type="isPwd1 ? 'password' : 'text'"
         lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Please type something']"
+        :rules="[val => (val && val.length > 0) || 'Please type something']"
       >
         <template v-slot:prepend>
           <q-icon
@@ -126,12 +171,16 @@
       </q-input>
       <!-- errors for pass2 -->
       <p v-if="errors" class="error">
-        <span v-if="!$v.form.Confirmpass.sameAsPassword">The passwords do not match.</span>
+        <span v-if="!$v.form.Confirmpass.sameAsPassword"
+          >The passwords do not match.</span
+        >
       </p>
       <!-- errors for pass2 -->
       <!-- adding captcha -->
-      <captcha @captchaValid="captchaValid" />
-      <q-btn color="primary" @click.prevent="onSubmit">{{$t('submit')}}</q-btn>
+      <captcha @captchaValid="captchaValid" :key="componentKey" />
+      <q-btn color="primary" @click.prevent="onSubmit">{{
+        $t('submit')
+      }}</q-btn>
     </q-form>
   </div>
 </template>
@@ -149,6 +198,8 @@ export default {
   },
   data() {
     return {
+      componentKey: 0,
+      verifyEmail: false,
       captchaObj: {},
       // data for validation
       uiState: 'submit not clicked',
@@ -179,17 +230,29 @@ export default {
         required,
         email,
         isUnique(value) {
-          // standalone validator ideally should not assume a field is required
-          if (value === '') return true;
+          this.$axios
+            .post('/v1/api/vkann/validation/email', {
+              email: value,
+              existed: false,
+            })
+            .then(response => {
+              console.log(response);
+              if (response.status === 204) {
+                console.log('lll');
+                this.verifyEmail = true;
+              }
+            })
+            .catch(() => {
+              this.verifyEmail = false;
 
-          // simulate async call, fail for all logins with even length
-          return new Promise(resolve => {
-            setTimeout(() => {
-              resolve(
-                typeof value === 'string' && value !== 'narges.pm@yahoo.com'
-              );
-            }, 350 + Math.random() * 300);
-          });
+              this.$q.notify({
+                color: 'negative',
+                position: 'top',
+                message: this.$t('enteredEmailisRegistered'),
+                icon: 'report_problem',
+              });
+            });
+          return true;
         },
       },
       FirstName: { required, minLength: minLength(3) },
@@ -233,34 +296,51 @@ export default {
           this.uiState = 'form submitted';
           // should send data to server
           // req to server
-          this.$axios
-            .post('/v1/api/vkann/register', {
-              captcha: this.captchaObj,
-              firstName: this.form.FirstName,
-              lastName: this.form.LastName,
-              password: this.form.PassWord,
-              gender: this.form.Gender,
-              mobile: this.MobileNumber,
-              email: this.form.email,
-            })
-            .then(Response => {
-              if (Response.status === 200) {
-                console.log(Response);
-                this.showNotif('top-right');
-                this.$q.cookies.set(
-                  'cookie_name',
-                  Response.config.xsrfHeaderName
-                );
-              } else if (Response.status === 400) {
+          if (this.verifyEmail) {
+            this.$axios
+              .post('/v1/api/vkann/register', {
+                captcha: this.captchaObj,
+                firstName: this.form.FirstName,
+                lastName: this.form.LastName,
+                password: this.form.PassWord,
+                gender: this.form.Gender,
+                mobile: this.MobileNumber,
+                email: this.form.email,
+              })
+              .then(Response => {
+                if (Response.status === 200) {
+                  console.log(Response);
+                  this.showNotif('top-right');
+                } else if (Response.status === 400) {
+                  this.$q.notify({
+                    message: this.$t('user exist'),
+                    color: 'negative',
+                    icon: 'warning',
+                    position: 'top',
+                  });
+                  console.log('noch noch noch');
+                }
+              })
+              .catch(() => {
                 this.$q.notify({
-                  message: this.$t('user exist'),
                   color: 'negative',
-                  icon: 'warning',
                   position: 'top',
+                  message: this.$t('error'),
+                  icon: 'report_problem',
                 });
-                console.log('noch noch noch');
-              }
+                this.componentKey += 1;
+              });
+          } else {
+            this.componentKey += 1;
+
+            this.$q.notify({
+              message: this.$t('correctTheErorrs'),
+              color: 'negative',
+              icon: 'warning',
+              position: 'top',
             });
+          }
+
           // req to server
         }
       } else if (this.empty === true) {
@@ -271,6 +351,8 @@ export default {
           position: 'top',
         });
       } else {
+        this.componentKey += 1;
+
         this.$q.notify({
           message: this.$t('Theformabovehaserrors'),
           color: 'negative',

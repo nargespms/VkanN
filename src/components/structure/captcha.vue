@@ -1,9 +1,17 @@
-<template >
+<template>
   <div class="captchaWrap">
     <div class="captcha">
       <div class="captchaImg">
         <!-- <img class :src="this.capImg" /> -->
-        <div v-html="capImg"></div>
+        <div class="captchaImgWrap" v-html="capImg"></div>
+        <q-icon class="getNewCaptcha" name="fas fa-undo" @click="getNewCaptcha">
+          <q-tooltip
+            v-model="showing1"
+            transition-show="scale"
+            transition-hide="scale"
+            >{{ $t('getNewCaptcha') }}</q-tooltip
+          >
+        </q-icon>
       </div>
       <div class="captchaEnter">
         <q-input
@@ -24,12 +32,12 @@
   </div>
 </template>
 
-
 <script>
 export default {
   name: 'captcha',
   data() {
     return {
+      showing1: false,
       capImg: '',
       captcha: {
         token: '',
@@ -75,6 +83,12 @@ export default {
       //   });
       // }
     },
+    getNewCaptcha() {
+      this.$axios.get('/v1/api/vkann/captcha').then(response => {
+        this.capImg = response.data.svg;
+        this.captcha.token = response.data.token;
+      });
+    },
   },
   mounted() {
     this.$axios.get('/v1/api/vkann/captcha').then(response => {
@@ -85,18 +99,28 @@ export default {
 };
 </script>
 
-
 <style lang="scss">
 .captchaImg {
-  width: 40%;
+  width: 45%;
   margin: auto;
+  position: relative;
+
   img {
     width: 100%;
     height: 80px;
   }
 }
 .captchaEnter {
-  width: 40%;
+  width: 45%;
   margin: auto;
+}
+
+.getNewCaptcha {
+  position: absolute;
+  bottom: 35px;
+  right: 9px;
+  font-size: 19px;
+  color: palevioletred;
+  cursor: pointer;
 }
 </style>

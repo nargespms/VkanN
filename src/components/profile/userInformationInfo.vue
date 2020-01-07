@@ -4,48 +4,48 @@
     <div class="list item-delimiter userInformationInfo">
       <div class="item">
         <div class="item-content">
-          <span class="introParam">{{$t('firstName')}}</span>
-          <span class="valueIntro">{{lists.firstName}}</span>
+          <span class="introParam">{{ $t('firstName') }}</span>
+          <span class="valueIntro">{{ data.firstName }}</span>
         </div>
         <div class="item-content">
-          <span class="introParam">{{$t('lastName')}}</span>
-          <span class="valueIntro">{{lists.lastName}}</span>
+          <span class="introParam">{{ $t('lastName') }}</span>
+          <span class="valueIntro">{{ data.lastName }}</span>
         </div>
         <div class="item-content">
-          <span class="introParam">{{$t('email')}}</span>
-          <span class="valueIntro">{{lists.email}}</span>
+          <span class="introParam">{{ $t('email') }}</span>
+          <span class="valueIntro">{{ data.email }}</span>
         </div>
         <div class="item-content">
-          <span class="introParam">{{$t('mobile')}}</span>
-          <span class="valueIntro">{{lists.mobile}}</span>
+          <span class="introParam">{{ $t('mobile') }}</span>
+          <span class="valueIntro">{{ data.mobile }}</span>
         </div>
         <div class="item-content">
-          <span class="introParam">{{$t('landLine')}}</span>
-          <span class="valueIntro">{{lists.landLine}}</span>
+          <span class="introParam">{{ $t('landLine') }}</span>
+          <span class="valueIntro">{{}}</span>
         </div>
         <div class="item-content">
-          <span class="introParam">{{$t('status')}}</span>
-          <span class="valueIntro">{{lists.status}}</span>
+          <span class="introParam">{{ $t('status') }}</span>
+          <span class="valueIntro">{{ data.status }}</span>
         </div>
         <div class="item-content">
-          <span class="introParam">{{$t('role')}}</span>
-          <span class="valueIntro">{{lists.role}}</span>
+          <span class="introParam">{{ $t('role') }}</span>
+          <span class="valueIntro">{{ data.role }}</span>
         </div>
         <div class="item-content">
-          <span class="introParam">{{$t('country')}}</span>
-          <span class="valueIntro">{{lists.country}}</span>
+          <span class="introParam">{{ $t('country') }}</span>
+          <span class="valueIntro">{{ data.country }}</span>
         </div>
         <div class="item-content">
-          <span class="introParam">{{$t('city')}}</span>
-          <span class="valueIntro">{{lists.city}}</span>
+          <span class="introParam">{{ $t('city') }}</span>
+          <span class="valueIntro">{{}}</span>
         </div>
         <div class="item-content">
-          <span class="introParam">{{$t('adress')}}</span>
-          <span class="valueIntro">{{lists.adress}}</span>
+          <span class="introParam">{{ $t('adress') }}</span>
+          <span class="valueIntro">{{}}</span>
         </div>
         <div class="item-content">
-          <span class="introParam">{{$t('spirintTime')}}</span>
-          <span class="valueIntro">{{lists.spirintTime}}</span>
+          <span class="introParam">{{ $t('spirintTime') }}</span>
+          <span class="valueIntro">{{}}</span>
         </div>
       </div>
     </div>
@@ -55,31 +55,9 @@
 <script>
 export default {
   name: 'userInformationInfo',
+  props: ['data'],
   data() {
-    return {
-      lists: {
-        firstName: 'نرگس',
-        lastName: 'پورمقدسی',
-        email: 'nargespm@gmail.com',
-        mobile: '09193802025',
-        landLine: '02144656565',
-        personality: 'natural',
-        status: 'state1',
-        role: 'teck',
-        country: 'ایران',
-        city: '',
-        adress: 'شهران',
-        spirintTime: 59,
-      },
-      Details: {
-        tag: 'tag1',
-        gender: 'man',
-        nationalId: '',
-        postalCode: 12124578,
-        linkdin: '',
-        git: '',
-      },
-    };
+    return {};
   },
 };
 </script>

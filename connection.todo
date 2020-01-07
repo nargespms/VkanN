@@ -1,0 +1,15 @@
+☐ tags -----> list of tags
+
+
+☐ addContract -----> should add tag that can choose multiple tag &
+            ☐ get list af tags (bettre to be a independent component)
+            ☐  duration is Number , WHY?
+            ☐ type is String ,WHy?
+
+
+
+☐ addUser
+          ☐ status is String ,WHy?
+          ☐ country & mobile phone need to b inhance
+          ☐ spririntTime shouldnt be string?
+          ☐ async validation for mobile ,email,nationalId
