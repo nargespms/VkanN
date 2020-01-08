@@ -81,9 +81,6 @@
           </span>
 
           <uploadfile />
-          <div class="ticketCaptchaWrap">
-            <captcha @captchaValid="captchaValid" />
-          </div>
         </div>
         <q-btn class="uploadTicket" color="primary" type="submit" @click.prevent="submitTicket">
           <q-icon name="fas fa-paper-plane " />
@@ -99,7 +96,6 @@ import { required } from 'vuelidate/lib/validators';
 
 import editor from '../structure/editor.vue';
 import uploadfile from '../structure/uploadfile.vue';
-import captcha from '../structure/captcha.vue';
 
 export default {
   name: 'ticketForm',
@@ -107,7 +103,6 @@ export default {
   components: {
     editor,
     uploadfile,
-    captcha,
   },
   data() {
     return {
@@ -117,17 +112,12 @@ export default {
       empty: true,
       // end of data for validation
       //  for captcha checking
-      captcha: false,
 
       FilterOption: this.servicesName,
       FilterOption2: this.customerName,
       servicesName: ['service1', 'service2', 'service3', 'الکسا', 'رکنا'],
       customerName: ['customer1', 'customer2', 'customer3', 'ابراهیمی'],
-      departmans: [
-        this.$t('billing'),
-        this.$t('support'),
-        this.$t('information'),
-      ],
+      departmans: ['INFO', 'SUPPORT', 'BILLING'],
       priorities: [
         this.$t('emergency'),
         this.$t('middle'),
@@ -179,9 +169,7 @@ export default {
         },
       });
     },
-    captchaValid() {
-      this.captcha = true;
-    },
+
     submitTicket() {
       this.empty = !this.$v.ticket.$anyDirty;
       this.errors = this.$v.ticket.$anyError;
@@ -189,19 +177,22 @@ export default {
       console.log(this.errors);
       console.log(this.empty);
       if (this.errors === false && this.empty === false) {
-        if (this.captcha === false) {
-          this.$q.notify({
-            message: this.$t('incorrectcaptcha'),
-            color: 'negative',
-            icon: 'warning',
-            position: 'top',
+        this.$axios
+          .post('/v1/api/vkann/tickets', {
+            service: this.ticket.serviceName,
+            department: this.ticket.departamn,
+            status: this.ticket.priority,
+            title: this.ticket.title,
+          })
+          .then(response => {
+            console.log(response);
+            this.$router.push({
+              path: `/${this.$route.params.locale}/tickets/ticketsList`,
+            });
+          })
+          .catch(e => {
+            console.log(e.response.status);
           });
-        } else {
-          console.log('submit clicked');
-          this.$router.push({
-            path: `/${this.$route.params.locale}/tickets/ticketsList`,
-          });
-        }
       } else if (this.empty === true) {
         this.$q.notify({
           message: this.$t('emptyForm'),

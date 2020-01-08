@@ -7,20 +7,16 @@
     :breakpoint="980"
     @hide="hideMenu"
   >
-    <q-img
-      class="absolute-top"
-      src="https://cdn.quasar.dev/img/material.png"
-      style="height: 150px"
-    >
-      <div
-        v-if="mobileSize || !miniState"
-        class="absolute-bottom bg-transparent"
-      >
+    <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
+      <div v-if="mobileSize || !miniState" class="absolute-bottom bg-transparent">
         <q-avatar size="56px" class="q-mb-sm">
           <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
         </q-avatar>
-        <div class="text-weight-bold">Razvan Stoenescu</div>
-        <div>@rstoenescu</div>
+        <div class="text-weight-bold">
+          {{this.userData.firstName}}
+          {{this.userData.lastName}}
+          <p>{{this.userData.role}}</p>
+        </div>
       </div>
     </q-img>
     <q-scroll-area
@@ -41,10 +37,7 @@
             <!-- home route -->
             <li class="mainMenuLi">
               <q-item class="p8">
-                <router-link
-                  class="noneExpandableMenu"
-                  :to="'/' + locale + '/' + 'dashboard'"
-                >
+                <router-link class="noneExpandableMenu" :to="'/' + locale + '/' + 'dashboard'">
                   <q-item-section avatar>
                     <q-icon name="fas fa-home" class="fn18" />
                   </q-item-section>
@@ -55,10 +48,7 @@
             <li class="mainMenuLi">
               <q-item class="p8">
                 <!-- profile route -->
-                <router-link
-                  class="noneExpandableMenu"
-                  :to="'/' + locale + '/' + 'profile'"
-                >
+                <router-link class="noneExpandableMenu" :to="'/' + locale + '/' + 'profile'">
                   <q-item-section avatar>
                     <q-icon name="fas fa-address-card" class="fn18" />
                   </q-item-section>
@@ -83,10 +73,7 @@
                   {{ $t('ticketsList') }}
                 </router-link>
                 <!-- add new tickets -->
-                <router-link
-                  class="block"
-                  :to="'/' + locale + '/' + 'tickets' + '/' + 'addTicket'"
-                >
+                <router-link class="block" :to="'/' + locale + '/' + 'tickets' + '/' + 'addTicket'">
                   <q-icon name="system_update_alt" />
                   {{ $t('addTicket') }}
                 </router-link>
@@ -101,24 +88,15 @@
                 :label="$t('tasks')"
                 :to="'/' + locale + '/' + 'tasks'"
               >
-                <router-link
-                  class="block"
-                  :to="'/' + locale + '/' + 'tasks' + '/' + 'myTasksList'"
-                >
+                <router-link class="block" :to="'/' + locale + '/' + 'tasks' + '/' + 'myTasksList'">
                   <q-icon name="play_for_work" />
                   {{ $t('mytasks') }}
                 </router-link>
-                <router-link
-                  class="block"
-                  :to="'/' + locale + '/' + 'tasks' + '/' + 'tasksList'"
-                >
+                <router-link class="block" :to="'/' + locale + '/' + 'tasks' + '/' + 'tasksList'">
                   <q-icon name="play_for_work" />
                   {{ $t('tasksList') }}
                 </router-link>
-                <router-link
-                  class="block"
-                  :to="'/' + locale + '/' + 'tasks' + '/' + 'addTask'"
-                >
+                <router-link class="block" :to="'/' + locale + '/' + 'tasks' + '/' + 'addTask'">
                   <q-icon name="play_for_work" />
                   {{ $t('addTask') }}
                 </router-link>
@@ -195,10 +173,7 @@
                 :to="'/' + locale + '/' + 'billing'"
               >
                 <!-- invoice route -->
-                <router-link
-                  class="block"
-                  :to="'/' + locale + '/' + 'billing' + '/' + 'invoices'"
-                >
+                <router-link class="block" :to="'/' + locale + '/' + 'billing' + '/' + 'invoices'">
                   <q-icon name="attach_money" />
                   {{ $t('invoices') }}
                 </router-link>
@@ -250,10 +225,7 @@
             <li class="mainMenuLi">
               <q-item class="p8">
                 <!-- tags -->
-                <router-link
-                  class="noneExpandableMenu"
-                  :to="'/' + locale + '/' + 'tags'"
-                >
+                <router-link class="noneExpandableMenu" :to="'/' + locale + '/' + 'tags'">
                   <q-item-section avatar>
                     <q-icon name="fas fa-tags" class="fn18" />
                   </q-item-section>
@@ -327,6 +299,11 @@ export default {
     hideMenu() {
       // console.log('hided');
       this.$emit('backFalse', this.leftDrawerOpen);
+    },
+  },
+  computed: {
+    userData() {
+      return this.$store.state.module1.userData;
     },
   },
 };

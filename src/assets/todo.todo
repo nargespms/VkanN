@@ -1,5 +1,5 @@
 
-☐ adding transition to pages (router-view)
+✔ adding transition to pages (router-view) @done(20-01-08 10:52)
 ✔ adding fonts @done(19-10-10 14:09)
 ☐ two bugs according to routes
   ✔ when page refresh the url stays but the page goes to defaultLocale with the same url @done(19-10-10 14:08)
@@ -18,8 +18,8 @@
 
 ☐ Register
   ☐ How to use tel input computed properties
-  ☐ specify requirement fields for register
-  ☐ captcha Register & login
+  ✔ specify requirement fields for register @done(20-01-08 11:03)
+  ✔ captcha Register & login @done(20-01-08 11:03)
   ✔ validation for form (it should check emil before password) @done(19-10-26 14:48)
 ☐ login
   ✔ otp validation [check for correct & not empty code entered] @done(19-12-14 11:25)
@@ -61,7 +61,7 @@ bugFixfor forget
   ☐ index for table
   ☐ when in mobile it dosnt have filter
 
-☐ optimization in layout
+✔ optimization in layout @done(20-01-08 11:04)
 ☐two bugs
   ☐ can not translate value in switch language
   ☐ can not use aasaam info :(

@@ -103,7 +103,7 @@ export default {
       this.ticketFormStatus = !this.ticketFormStatus;
       this.$router.push({
         path: `/${this.$route.params.locale}/tickets/addTicket`,
-        query: { depid: 'billing' },
+        query: { depid: 'BILLING' },
       });
       console.log(this.$route.query.depid);
     },
@@ -112,7 +112,7 @@ export default {
       this.ticketFormStatus = !this.ticketFormStatus;
       this.$router.push({
         path: `/${this.$route.params.locale}/tickets/addTicket`,
-        query: { depid: 'support' },
+        query: { depid: 'SUPPORT' },
       });
     },
     // activate billing ticket
@@ -120,7 +120,7 @@ export default {
       this.ticketFormStatus = !this.ticketFormStatus;
       this.$router.push({
         path: `/${this.$route.params.locale}/tickets/addTicket`,
-        query: { depid: 'information' },
+        query: { depid: 'INFO' },
       });
     },
     //  customer auto compelete

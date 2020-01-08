@@ -92,23 +92,13 @@
       </div>
       <div class="col2">
         <!-- tags -->
-        <q-select
-          color="light-blue-10"
-          outlined
-          v-model.trim="service.tag"
-          :options="servicesTag"
-          :label="$t('Tag')"
-          class="inputStyle"
-        >
-          <template v-slot:prepend>
-            <q-icon name="label" />
-          </template>
-        </q-select>
+        <tagsSelection @addTagFn="addTagFn" />
+
         <!-- voip -->
         <q-input
           outlined
           required
-          class
+          class="pt20"
           color="light-blue-10"
           v-model.trim="service.voip"
           :label="$t('voipNumber')"
@@ -181,11 +171,13 @@
 <script>
 import { required, minLength } from 'vuelidate/lib/validators';
 import uploadfile from '../structure/uploadfile.vue';
+import tagsSelection from '../structure/tagsSelection.vue';
 
 export default {
   name: 'addservice',
   components: {
     uploadfile,
+    tagsSelection,
   },
   data() {
     return {
@@ -210,6 +202,10 @@ export default {
         employee: '',
         voip: '',
         desc: '',
+        tags: [],
+        client: '',
+        bilingStatus: '',
+        status: '',
       },
     };
   },
@@ -222,6 +218,10 @@ export default {
     },
   },
   methods: {
+    addTagFn(value) {
+      this.service.tags = value;
+    },
+
     onSubmit() {
       this.empty = !this.$v.service.$anyDirty;
       this.errors = this.$v.service.$anyError;
@@ -231,6 +231,34 @@ export default {
         this.uiState = 'form submitted';
         console.log('edit service');
         this.$refs.upload.submit_btn();
+        this.$axios
+          .post('/v1/api/vkann/services', {
+            tags: ['string'],
+            name: this.service.name,
+            type: this.service.type,
+            staff: this.service.employee,
+            client: this.service.client,
+            primaryDomain: this.service.primaryDomain,
+            parkDomain: this.service.parkDomain,
+            billingStatus: this.service.bilingStatus,
+            status: this.service.status,
+            voip: this.service.voip,
+            attachments: 'string',
+          })
+          .then(response => {
+            console.log(response);
+          })
+          .catch(e => {
+            console.log(e.response.status);
+            if (e.response.status === 403) {
+              this.$q.notify({
+                message: this.$t('forbidenAccess'),
+                color: 'negative',
+                icon: 'warning',
+                position: 'top',
+              });
+            }
+          });
       } else if (this.empty === true) {
         this.$q.notify({
           message: this.$t('emptyForm'),

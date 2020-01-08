@@ -51,11 +51,7 @@
         >
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
-              <q-popup-proxy
-                ref="qDateProxy"
-                transition-show="scale"
-                transition-hide="scale"
-              >
+              <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                 <q-date
                   v-model.trim="contract.startdate"
                   @input="() => $refs.qDateProxy.hide()"
@@ -79,11 +75,7 @@
         >
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
-              <q-popup-proxy
-                ref="qDateProxy"
-                transition-show="scale"
-                transition-hide="scale"
-              >
+              <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                 <q-date
                   v-model.trim="contract.enddate"
                   @input="() => $refs.qDateProxy.hide()"
@@ -196,11 +188,7 @@
           </template>
         </q-select>
         <div class="w100">
-          <uploadfile
-            :UploadButton="false"
-            ref="upload"
-            :text="'attachments'"
-          />
+          <uploadfile :UploadButton="false" ref="upload" :text="'attachments'" />
         </div>
       </div>
       <div class="saveInfo">
@@ -265,7 +253,7 @@ export default {
   },
   methods: {
     addTagFn(value) {
-      this.tags = value;
+      this.contract.tags = value;
     },
     computeEnddate(enddate) {
       return enddate >= this.contract.startdate;
@@ -285,7 +273,7 @@ export default {
         this.$axios
           .post('/v1/api/vkann/contracts', {
             service: this.contract.serviceName,
-            tags: this.tags,
+            tags: this.contract.tags,
             type: this.contract.type,
             client: this.contract.client,
             startDate: standardStartDate,
