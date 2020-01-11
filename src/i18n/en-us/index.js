@@ -143,6 +143,7 @@ export default {
   english: 'English',
   dutch: 'Dutch',
   login: 'Login',
+  logOut: 'Logout',
   ok: 'ok',
   cancel: 'Cancel',
   incorrectcaptcha: 'Incorrect Captcha',
@@ -169,4 +170,6 @@ export default {
   newTagHasBeenAdded: 'new Tag Has Been Added',
   reapetedtag: 'Reapeted TAg',
   forbidenAccess: 'forbiden Access',
+  YouAreSignInAlready: 'You Are SignIn Already',
+  returnTo: 'return To',
 };

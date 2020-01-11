@@ -2,12 +2,22 @@
   <div class="tinyFixInfo">
     <div class="con16 clear p12">
       <div class="tinyFixInfoInner">
-        <router-link :to="'/' +locale + '/' + 'signIn'" class="loginBut text-white">
+        <router-link
+          v-if="!$store.state.module1.logedIn"
+          :to="'/' +locale + '/' + 'signIn'"
+          class="loginBut text-white"
+        >
           <span>
             <q-icon name="fas fa-user" class="pr12"></q-icon>
             {{$t('login')}}
           </span>
         </router-link>
+        <div v-if="$store.state.module1.logedIn" class="loginBut text-white" @click="logOutPannel">
+          <span>
+            <q-icon name="fas fa-sign-out-alt" class="pr12"></q-icon>
+            {{$t('logOut')}}
+          </span>
+        </div>
         <!-- seprator -->
         <q-icon name="fas fa-grip-vertical " class="text-white sepratorInfoHeader"></q-icon>
         <!-- search -->
@@ -29,6 +39,19 @@ export default {
   components: {
     searchField,
   },
+  methods: {
+    logOutPannel() {
+      this.$store.commit('module1/logedInSuccesfully', false, {
+        module: 'module1',
+      });
+      this.$store.commit('module1/userDataFromServer', null, {
+        module: 'module1',
+      });
+      this.$router.push({ path: `/${this.$route.params.locale}/signIn` });
+
+      console.log('logout');
+    },
+  },
 };
 </script>
 
@@ -49,6 +72,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  cursor: pointer;
 }
 .tinyFixInfoInner {
   float: right;

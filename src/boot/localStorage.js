@@ -2,7 +2,7 @@ import createPersistedState from 'vuex-persistedstate';
 
 export default ({ store }) => {
   createPersistedState({
-    key: 'Bag',
+    key: 'Data',
     paths: [],
   })(store);
 };

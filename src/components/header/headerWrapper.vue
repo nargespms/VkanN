@@ -20,12 +20,14 @@
       </div>
     </q-header>
     <!-- right  main menu component -->
-    <rightMainMenu
-      :locale="locale"
-      :leftDrawerOpen="leftDrawerOpen"
-      :mobileSize="mobileSize"
-      @backFalse="backFalse"
-    />
+    <div v-if="$store.state.module1.logedIn">
+      <rightMainMenu
+        :locale="locale"
+        :leftDrawerOpen="leftDrawerOpen"
+        :mobileSize="mobileSize"
+        @backFalse="backFalse"
+      />
+    </div>
     <q-resize-observer @resize="onResize" />
   </div>
 </template>

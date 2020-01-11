@@ -20,12 +20,8 @@
             <q-icon name="fas fa-user" />
           </template>
           <p v-if="errors" class="error">
-            <span v-if="!$v.form.UserName.required"
-              >*{{ $t('thisfieldisrequired') }}.</span
-            >
-            <span v-if="!$v.form.UserName.isUnique"
-              >*{{ $t('Thisemailisalreadyregistered') }}.</span
-            >
+            <span v-if="!$v.form.UserName.required">*{{ $t('thisfieldisrequired') }}.</span>
+            <span v-if="!$v.form.UserName.isUnique">*{{ $t('Thisemailisalreadyregistered') }}.</span>
           </p>
         </q-input>
         <!-- choosing how to verify acoount -->
@@ -41,9 +37,7 @@
           </template>
         </q-select>
         <router-link class="forgetUser" to="/">
-          <span @click="goToForget"
-            >{{ $t('forgotEmail') }} {{ $t('questionmark') }}</span
-          >
+          <span @click="goToForget">{{ $t('forgotEmail') }} {{ $t('questionmark') }}</span>
         </router-link>
         <div class="clear mt78">
           <q-btn
@@ -109,9 +103,11 @@
             <q-icon name />
           </template>
           <p v-if="errors" class="error">
-            <span v-if="!$v.form.otp.minLength">{{
+            <span v-if="!$v.form.otp.minLength">
+              {{
               $t('Fieldmusthaveatleast4characters')
-            }}</span>
+              }}
+            </span>
             <span v-if="!$v.form.otp.isUnique">{{ $t('invalidCode') }}</span>
           </p>
         </q-input>
@@ -381,6 +377,12 @@ export default {
                   response.data,
                   { module: 'module1' }
                 );
+                this.$store.commit('module1/logedInSuccesfully', true, {
+                  module: 'module1',
+                });
+                this.$router.push({
+                  path: `/${this.$route.params.locale}/dashboard`,
+                });
               } else {
                 console.log(Response);
                 this.$q.notify({
@@ -457,7 +459,6 @@ export default {
         position,
         timeout: Math.random() * 5000 + 3000,
       });
-      this.$router.push({ path: `/${this.$route.params.locale}/dashboard` });
     },
     goToSignUp() {
       this.$emit('changeTab');

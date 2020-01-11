@@ -11,7 +11,33 @@ Vue.use(VueRouter);
  * directly export the Router instantiation
  */
 
-export default function(/* { store, ssrContext } */) {
+// /*
+//   This will cehck to see if the user is authenticated or not.
+// */
+// function requireAuth(to, from, next) {
+//   /*
+//   Determines where we should send the user.
+// */
+//   function proceed() {
+//     /*
+//       If the user has been loaded determine where we should
+//       send the user.
+//     */
+//     if (store.getters.getUserLoadStatus() === 2) {
+//       /*
+//         If the user is not empty, that means there's a user
+//         authenticated we allow them to continue. Otherwise, we
+//         send the user back to the home page.
+//       */
+//       if (store.getters.getUser !== '') {
+//         next();
+//       } else {
+//         next('/dashboard');
+//       }
+//     }
+//   }
+// }
+export default function({ store }) {
   const Router = new VueRouter({
     scrollBehavior: () => ({ x: 0, y: 0 }),
     routes,
@@ -23,21 +49,61 @@ export default function(/* { store, ssrContext } */) {
     mode: 'history',
     base: process.env.VUE_ROUTER_BASE,
   });
-  // Router.beforeEach((to, from, next) => {
-  //   // See if any of the matched routes has meta "requiresAuth"
-  //   if (to.matched.some(route => route.meta.requiresAuth)) {
-  //     // Yes this route requires authentication. See if the user is authenticated.
-  //     if (store.getters.module1.isAuthenticated) {
-  //       // User is authenticated, we allow access.
-  //       next();
-  //     } else {
-  //       // User is not authenticated. We can redirect her to
-  //       // our login page. Or wherever we want.
-  //       next('/login');
-  //     }
-  //   } else {
-  //     next();
-  //   }
-  // });
+
+  Router.beforeEach((to, from, next) => {
+    // See if any of the matched routes has meta "requiresAuth"
+    if (to.matched.some(route => route.meta.requiresAuth)) {
+      // Yes this route requires authentication. See if the user is not authenticated.
+      if (!store.state.module1.logedIn) {
+        // User is not authenticated, so we lead him into signIn
+
+        next('/signIn');
+      } else {
+        const user = JSON.parse(localStorage.getItem('Data'));
+        console.log(user.module1.userData.role);
+        // admin permission
+        if (to.matched.some(route => route.meta.admin)) {
+          if (user.module1.userData.role === 'ADMIN') {
+            next();
+          } else {
+            next('/');
+          }
+          // billing permissions
+        } else if (to.matched.some(route => route.meta.billing)) {
+          if (user.module1.userData.role === 'BILLING') {
+            next();
+          } else {
+            next('/');
+          }
+          // teck permissions
+        } else if (to.matched.some(route => route.meta.teck)) {
+          if (user.module1.userData.role === 'TECH') {
+            next();
+          } else {
+            next('/');
+          }
+          // info permissions
+        } else if (to.matched.some(route => route.meta.info)) {
+          if (user.module1.userData.role === 'INFO') {
+            next();
+          } else {
+            next('/');
+          }
+          // SERVICEMANAGER
+        } else if (to.matched.some(route => route.meta.servicemanager)) {
+          if (user.module1.userData.role === 'SERVICEMANAGER') {
+            next();
+          } else {
+            next('/');
+          }
+        }
+        // User is not authenticated. We can redirect her to
+        // our login page. Or wherever we want.
+        next('/');
+      }
+    } else {
+      next();
+    }
+  });
   return Router;
 }
