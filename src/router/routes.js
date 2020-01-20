@@ -8,6 +8,28 @@ const routes = [
     redirect: '/fa',
   },
   {
+    path: '/:locale/print',
+    component: () => import('layouts/print.vue'),
+    children: [
+      {
+        path: 'invoice',
+        component: () => import('pages/printInvoice.vue'),
+        meta: {
+          requiresAuth: true,
+          roles: ['ADMIN', 'BILLING', 'SERVICEMANAGER'],
+        },
+      },
+      {
+        path: 'contract',
+        component: () => import('pages/printContract.vue'),
+        meta: {
+          requiresAuth: true,
+          roles: ['ADMIN', 'BILLING', 'SERVICEMANAGER'],
+        },
+      },
+    ],
+  },
+  {
     path: '/:locale',
     component: () => import('layouts/default.vue'),
     children: [
@@ -20,8 +42,7 @@ const routes = [
         component: () => import('pages/dashboard.vue'),
         meta: {
           requiresAuth: true,
-          admin: true,
-          billing: true,
+          roles: ['ADMIN', 'BILLING', 'TECH', 'INFO', 'SERVICEMANAGER', 'CLIENT'],
         },
       },
       {
@@ -29,6 +50,7 @@ const routes = [
         component: () => import('pages/search.vue'),
         meta: {
           requiresAuth: true,
+          roles: ['ADMIN', 'BILLING', 'TECH', 'INFO', 'SERVICEMANAGER', 'CLIENT'],
         },
       },
       {
@@ -45,7 +67,7 @@ const routes = [
         component: () => import('pages/profile'),
         meta: {
           requiresAuth: true,
-          teck: true,
+          roles: ['ADMIN', 'BILLING', 'TECH', 'INFO', 'SERVICEMANAGER', 'CLIENT'],
         },
       },
       {
@@ -53,6 +75,7 @@ const routes = [
         component: () => import('pages/profile'),
         meta: {
           requiresAuth: true,
+          roles: ['ADMIN', 'BILLING', 'TECH', 'INFO', 'SERVICEMANAGER', 'CLIENT'],
         },
       },
       {
@@ -60,8 +83,7 @@ const routes = [
         component: () => import('pages/clients'),
         meta: {
           requiresAuth: true,
-          servicemanager: true,
-          admin: true,
+          roles: ['ADMIN', 'BILLING', 'TECH', 'SERVICEMANAGER'],
         },
       },
       // tickets
@@ -70,7 +92,7 @@ const routes = [
         component: () => import('pages/tickets'),
         meta: {
           requiresAuth: true,
-          teck: true,
+          roles: ['ADMIN', 'BILLING', 'TECH', 'SERVICEMANAGER', 'CLIENT'],
         },
       },
       {
@@ -78,6 +100,7 @@ const routes = [
         component: () => import('pages/ticketsList'),
         meta: {
           requiresAuth: true,
+          roles: ['ADMIN', 'BILLING', 'TECH', 'SERVICEMANAGER', 'CLIENT'],
         },
       },
       {
@@ -85,7 +108,7 @@ const routes = [
         component: () => import('pages/newTicket'),
         meta: {
           requiresAuth: true,
-          admin: true,
+          roles: ['ADMIN', 'BILLING', 'TECH', 'SERVICEMANAGER', 'CLIENT'],
         },
       },
       {
@@ -93,7 +116,7 @@ const routes = [
         component: () => import('pages/ticket'),
         meta: {
           requiresAuth: true,
-          admin: true,
+          roles: ['ADMIN', 'BILLING', 'TECH', 'SERVICEMANAGER', 'CLIENT'],
         },
       },
       // tasks
@@ -102,7 +125,7 @@ const routes = [
         component: () => import('pages/tasks'),
         meta: {
           requiresAuth: true,
-          admin: true,
+          roles: ['ADMIN', 'BILLING', 'TECH', 'SERVICEMANAGER'],
         },
       },
       {
@@ -110,7 +133,7 @@ const routes = [
         component: () => import('pages/task'),
         meta: {
           requiresAuth: true,
-          admin: true,
+          roles: ['ADMIN', 'BILLING', 'TECH', 'SERVICEMANAGER'],
         },
       },
 
@@ -119,7 +142,7 @@ const routes = [
         component: () => import('pages/myTasksList'),
         meta: {
           requiresAuth: true,
-          admin: true,
+          roles: ['ADMIN', 'BILLING', 'TECH', 'SERVICEMANAGER'],
         },
       },
       {
@@ -127,7 +150,7 @@ const routes = [
         component: () => import('pages/tasksList'),
         meta: {
           requiresAuth: true,
-          admin: true,
+          roles: ['ADMIN', 'BILLING', 'TECH', 'SERVICEMANAGER'],
         },
       },
       {
@@ -135,7 +158,7 @@ const routes = [
         component: () => import('pages/addTask'),
         meta: {
           requiresAuth: true,
-          admin: true,
+          roles: ['ADMIN', 'BILLING', 'TECH', 'SERVICEMANAGER'],
         },
       },
       // files
@@ -144,7 +167,7 @@ const routes = [
         component: () => import('pages/fileManagements'),
         meta: {
           requiresAuth: true,
-          admin: true,
+          roles: ['ADMIN', 'BILLING', 'SERVICEMANAGER', 'CLIENT'],
         },
       },
       {
@@ -152,7 +175,7 @@ const routes = [
         component: () => import('pages/filesList'),
         meta: {
           requiresAuth: true,
-          admin: true,
+          roles: ['ADMIN', 'BILLING', 'TECH', 'SERVICEMANAGER', 'CLIENT'],
         },
       },
       {
@@ -160,7 +183,7 @@ const routes = [
         component: () => import('pages/uploadFile'),
         meta: {
           requiresAuth: true,
-          admin: true,
+          roles: ['ADMIN', 'BILLING', 'SERVICEMANAGER', 'CLIENT'],
         },
       },
 
@@ -170,7 +193,7 @@ const routes = [
         component: () => import('pages/services'),
         meta: {
           requiresAuth: true,
-          admin: true,
+          roles: ['ADMIN', 'BILLING', 'TECH', 'SERVICEMANAGER', 'CLIENT'],
         },
       },
 
@@ -179,7 +202,7 @@ const routes = [
         component: () => import('pages/servicesList'),
         meta: {
           requiresAuth: true,
-          admin: true,
+          roles: ['ADMIN', 'BILLING', 'TECH', 'SERVICEMANAGER', 'CLIENT'],
         },
       },
       {
@@ -187,7 +210,7 @@ const routes = [
         component: () => import('pages/addService'),
         meta: {
           requiresAuth: true,
-          admin: true,
+          roles: ['ADMIN', 'BILLING', 'SERVICEMANAGER'],
         },
       },
       {
@@ -195,7 +218,7 @@ const routes = [
         component: () => import('pages/service'),
         meta: {
           requiresAuth: true,
-          admin: true,
+          roles: ['ADMIN', 'BILLING', 'TECH', 'SERVICEMANAGER'],
         },
       },
       // userManagement
@@ -204,7 +227,7 @@ const routes = [
         component: () => import('pages/userManagement'),
         meta: {
           requiresAuth: true,
-          admin: true,
+          roles: ['ADMIN', 'BILLING', 'TECH', 'SERVICEMANAGER'],
         },
       },
       {
@@ -212,7 +235,7 @@ const routes = [
         component: () => import('pages/staffs'),
         meta: {
           requiresAuth: true,
-          admin: true,
+          roles: ['ADMIN', 'BILLING', 'SERVICEMANAGER'],
         },
       },
       {
@@ -220,7 +243,7 @@ const routes = [
         component: () => import('pages/clients'),
         meta: {
           requiresAuth: true,
-          admin: true,
+          roles: ['ADMIN', 'BILLING', 'TECH', 'SERVICEMANAGER'],
         },
       },
       {
@@ -228,7 +251,7 @@ const routes = [
         component: () => import('pages/addMember'),
         meta: {
           requiresAuth: true,
-          admin: true,
+          roles: ['ADMIN', 'BILLING', 'SERVICEMANAGER'],
         },
       },
       // contracts
@@ -237,7 +260,7 @@ const routes = [
         component: () => import('pages/contracts'),
         meta: {
           requiresAuth: true,
-          admin: true,
+          roles: ['ADMIN', 'BILLING'],
         },
       },
 
@@ -246,7 +269,7 @@ const routes = [
         component: () => import('pages/contractsList'),
         meta: {
           requiresAuth: true,
-          admin: true,
+          roles: ['ADMIN', 'BILLING'],
         },
       },
       {
@@ -254,7 +277,7 @@ const routes = [
         component: () => import('pages/addContract'),
         meta: {
           requiresAuth: true,
-          admin: true,
+          roles: ['ADMIN', 'BILLING'],
         },
       },
       {
@@ -262,7 +285,32 @@ const routes = [
         component: () => import('pages/contract'),
         meta: {
           requiresAuth: true,
-          admin: true,
+          roles: ['ADMIN', 'BILLING'],
+        },
+      },
+      // invoices
+      {
+        path: 'billing/invoices',
+        component: () => import('pages/invoices'),
+        meta: {
+          requiresAuth: true,
+          roles: ['ADMIN', 'BILLING'],
+        },
+      },
+      {
+        path: 'billing/invoices/invoicesList',
+        component: () => import('pages/invoicesList'),
+        meta: {
+          requiresAuth: true,
+          roles: ['ADMIN', 'BILLING'],
+        },
+      },
+      {
+        path: 'billing/invoices/addInvoice',
+        component: () => import('pages/addInvoice'),
+        meta: {
+          requiresAuth: true,
+          roles: ['ADMIN', 'BILLING'],
         },
       },
       {
@@ -270,7 +318,7 @@ const routes = [
         component: () => import('pages/tags'),
         meta: {
           requiresAuth: true,
-          admin: true,
+          roles: ['ADMIN', 'BILLING', 'SERVICEMANAGER'],
         },
       },
       {
@@ -278,10 +326,11 @@ const routes = [
         component: () => import('pages/billing'),
         meta: {
           requiresAuth: true,
-          billing: true,
+          roles: ['ADMIN', 'BILLING', 'SERVICEMANAGER'],
         },
       },
       { path: '*', component: () => import('pages/Error404.vue') },
+      { path: '404', component: () => import('pages/E404.vue') },
     ],
   },
 ];

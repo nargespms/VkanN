@@ -4,11 +4,8 @@
       <div v-if="enterMobile">
         <!-- step one entering phone number -->
         <!-- Phone Number -->
-        <vue-tel-input
-          required
-          v-model.trim="MobileNumber"
-          :placeholder="$t('pleaseEnterYourPhoneNumber')"
-        ></vue-tel-input>
+        <mobilePhoneWrapper />
+
         <q-btn class="RetrivePass" :label="$t('RetrivePass')" color="primary" @click="onSubmit" />
         <!-- step one entering phone number -->
       </div>
@@ -49,12 +46,12 @@
 
 <script>
 import { required, minLength } from 'vuelidate/lib/validators';
-import { VueTelInput } from 'vue-tel-input';
+import mobilePhoneWrapper from '../structure/mobilePhoneWrapper.vue';
 import captcha from '../structure/captcha.vue';
 
 export default {
   components: {
-    VueTelInput,
+    mobilePhoneWrapper,
     captcha,
   },
   data() {

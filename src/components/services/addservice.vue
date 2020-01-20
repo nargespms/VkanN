@@ -243,7 +243,7 @@ export default {
             billingStatus: this.service.bilingStatus,
             status: this.service.status,
             voip: this.service.voip,
-            attachments: 'string',
+            attachments: '5e1a30480000000000000000',
           })
           .then(response => {
             console.log(response);

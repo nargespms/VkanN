@@ -168,6 +168,9 @@ body {
 .pt16 {
   padding-top: 16px;
 }
+.pb12 {
+  padding-bottom: 12px;
+}
 .pt20 {
   padding-top: 20px;
 }
@@ -238,6 +241,9 @@ body {
 }
 .mr16 {
   margin-right: 16px;
+}
+.mr12 {
+  margin-right: 12px;
 }
 .mb16 {
   margin-bottom: 16px;
@@ -359,4 +365,11 @@ body {
     display: flex;
     justify-content: space-around;
   }
+}
+.fn11 {
+  font-size: 11px;
+}
+.boldTitle14 {
+  font-weight: bold;
+  font-size: 14px;
 }

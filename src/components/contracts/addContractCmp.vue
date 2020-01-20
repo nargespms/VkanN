@@ -281,7 +281,7 @@ export default {
             endDate: standardEndDate,
             amount: this.contract.amount,
             currency: this.contract.currency,
-            attachments: 'string',
+            attachments: '5e1a30480000000000000000',
             status: this.contract.status,
             contractNumber: this.contract.number,
           })

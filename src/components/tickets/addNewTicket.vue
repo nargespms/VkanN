@@ -2,7 +2,7 @@
   <div class="addNewTicketCmp">
     <!-- choosing departman for ticket -->
     <div class="chooseDep" v-if="!ticketFormStatus">
-      <div class="generalButWrap">
+      <div class="generalButWrap" v-if="$store.state.module1.userData.role === 'CLIENT'">
         <q-btn
           class="optionChooseBut"
           icon="attach_money"
@@ -23,7 +23,10 @@
         />
       </div>
     </div>
-    <div class="chooseDep" v-if="!ticketFormStatus">
+    <div
+      class="chooseDep"
+      v-if="!ticketFormStatus && $store.state.module1.userData.role !== 'CLIENT'"
+    >
       <q-select
         filled
         class="ticketInfoRecieve pr24"

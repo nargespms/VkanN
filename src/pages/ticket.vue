@@ -45,6 +45,7 @@ export default {
   },
   methods: {
     addToThreads(value) {
+      console.log(value);
       this.ticket.threads.push({
         desc: value,
         attachments: {},
@@ -60,6 +61,7 @@ export default {
       // console.log(value);
       this.addThread = value;
       this.replyState = false;
+      this.specificThreadToReply = '';
     },
     editorState() {
       this.replyState = !this.replyState;

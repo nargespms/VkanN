@@ -19,12 +19,12 @@
           </template>
           <!-- firstname validation -->
           <p v-if="errors" class="error">
-            <span v-if="!$v.form.FirstName.required"
-              >*{{ $t('thisfieldisrequired') }}.</span
-            >
-            <span v-if="!$v.form.FirstName.minLength">{{
+            <span v-if="!$v.form.FirstName.required">*{{ $t('thisfieldisrequired') }}.</span>
+            <span v-if="!$v.form.FirstName.minLength">
+              {{
               $t('Fieldmusthaveatleast3characters')
-            }}</span>
+              }}
+            </span>
           </p>
           <!-- firstname validation -->
         </q-input>
@@ -52,40 +52,36 @@
           @input="$v.form.email.$touch"
           @keyup.enter="submit"
           :error="$v.form.email.$error"
+          debounce="1500"
         >
           <template v-slot:prepend>
             <q-icon name="email" class="mailIcon" />
           </template>
+          <template v-if="this.form.email.length > 0" v-slot:append>
+            <q-icon v-if="verifyEmail " name="fas fa-check" class="mailIcon text-positive" />
+            <q-icon
+              v-if="!verifyEmail && $v.form.email.email"
+              name="fas fa-times"
+              class="mailIcon text-negative"
+            />
+            <span
+              v-if="!verifyEmail && $v.form.email.email"
+              class="text-negative fn11"
+            >{{ $t('enteredEmailisRegistered') }}</span>
+          </template>
           <!-- email errors -->
           <p v-if="errors" class="error">
-            <span v-if="!$v.form.email.required"
-              >*{{ $t('thisfieldisrequired') }}.</span
-            >
-            <span v-if="!$v.form.email.email"
-              >* {{ $t('Needstobeavalidemail') }}.</span
-            >
-            <span v-if="!$v.form.email.isUnique"
-              >*{{ $t('Thisemailisalreadyregistered') }}.</span
-            >
+            <span v-if="!$v.form.email.required">*{{ $t('thisfieldisrequired') }}.</span>
+            <span v-if="!$v.form.email.email">* {{ $t('Needstobeavalidemail') }}.</span>
+            <span
+              v-if="!$v.form.email.isUnique && !$v.form.email.email"
+            >*{{ $t('Thisemailisalreadyregistered') }}.</span>
           </p>
           <!-- email errors -->
         </q-input>
         <!-- Mobile Phone Number -->
-        <mobilePhone />
+        <mobilePhoneWrapper />
         <!-- Mobile Phone Number -->
-        <vue-tel-input
-          required
-          v-model.trim="form.MobileNumber"
-          class="mb20"
-          :placeholder="$t('pleaseEnterYourMobilephoneNumber')"
-        ></vue-tel-input>
-        <!-- line Phone Number -->
-        <vue-tel-input
-          required
-          v-model.trim="form.landLine"
-          class="generalInputStyles"
-          :placeholder="$t('pleaseEnterYourPhoneNumber')"
-        ></vue-tel-input>
 
         <!-- Gender -->
         <q-select
@@ -94,7 +90,7 @@
           v-model.trim="form.gender"
           :options="genderList"
           :label="$t('Gender')"
-          class="inputStyle pt20"
+          class="inputStyle"
         >
           <template v-slot:append>
             <q-icon name />
@@ -141,15 +137,15 @@
             />
           </template>
           <p class="error" v-if="errors">
-            <span v-if="!$v.form.PassWord.required"
-              >*{{ $t('thisfieldisrequired') }}.</span
-            >
+            <span v-if="!$v.form.PassWord.required">*{{ $t('thisfieldisrequired') }}.</span>
           </p>
         </q-input>
         <p class="error" v-if="errors">
-          <span v-if="!$v.form.PassWord.strongPassword">{{
+          <span v-if="!$v.form.PassWord.strongPassword">
+            {{
             $t('Strongpasswords')
-          }}</span>
+            }}
+          </span>
         </p>
         <!-- Re enter password -->
         <q-input
@@ -171,14 +167,12 @@
               @click="isPwd1 = !isPwd1"
             />
           </template>
+          <!-- errors for pass2 -->
+          <p v-if="errors" class="error">
+            <span v-if="!$v.form.Confirmpass.sameAsPassword">{{ $t('Thepasswordsdonotmatch') }}.</span>
+          </p>
+          <!-- errors for pass2 -->
         </q-input>
-        <!-- errors for pass2 -->
-        <p v-if="errors" class="error">
-          <span v-if="!$v.form.Confirmpass.sameAsPassword"
-            >The passwords do not match.</span
-          >
-        </p>
-        <!-- errors for pass2 -->
       </div>
       <div class="col2">
         <!-- NationalId -->
@@ -190,33 +184,38 @@
           class="inputStyle"
           :error="$v.form.nationalId.$error"
           mask="##########"
+          @input="$v.form.nationalId.$touch"
+          debounce="1500"
         >
-          <template v-slot:prepend>
-            <q-icon name />
+          <template v-if="this.form.nationalId.length > 0" v-slot:append>
+            <q-icon
+              v-if="nationalID && $v.form.nationalId.isValidIranianNationalCode"
+              name="fas fa-check"
+              class="mailIcon text-positive"
+            />
+            <q-icon
+              v-if="!nationalID && $v.form.nationalId.isValidIranianNationalCode"
+              name="fas fa-times"
+              class="mailIcon text-negative"
+            />
+            <span
+              v-if="!nationalID && $v.form.nationalId.isValidIranianNationalCode"
+              class="text-negative fn11"
+            >
+              {{
+              $t('enteredEmailisRegistered')
+              }}
+            </span>
           </template>
           <p v-if="errors" class="error">
-            <span v-if="!$v.form.nationalId.required"
-              >*{{ $t('thisfieldisrequired') }}.</span
-            >
+            <span v-if="!$v.form.nationalId.required">*{{ $t('thisfieldisrequired') }}.</span>
             <!-- <span v-if="!$v.form.nationalId.minLength">*{{$t('Fieldmusthaveatleast10characters')}}.</span> -->
-            <span v-if="!$v.form.nationalId.isValidIranianNationalCode"
-              >*{{ $t('invalidCode') }}.</span
-            >
+            <span
+              v-if="!$v.form.nationalId.isValidIranianNationalCode && $v.form.nationalId.required"
+            >*{{ $t('invalidCode') }}.</span>
           </p>
         </q-input>
-        <!-- Country -->
-        <q-select
-          color="light-blue-10"
-          outlined
-          v-model.trim="form.country"
-          :options="countries"
-          :label="$t('country')"
-          class="inputStyle"
-        >
-          <template v-slot:append>
-            <q-icon name />
-          </template>
-        </q-select>
+
         <!-- city -->
         <q-select
           color="light-blue-10"
@@ -249,12 +248,10 @@
             <q-icon name />
           </template>
           <p v-if="errors" class="error">
-            <span v-if="!$v.form.postalCode.required"
-              >*{{ $t('thisfieldisrequired') }}.</span
-            >
-            <span v-if="!$v.form.postalCode.minLength"
-              >*{{ $t('Fieldmusthaveatleast10characters') }}.</span
-            >
+            <span v-if="!$v.form.postalCode.required">*{{ $t('thisfieldisrequired') }}.</span>
+            <span
+              v-if="!$v.form.postalCode.minLength"
+            >*{{ $t('Fieldmusthaveatleast10characters') }}.</span>
           </p>
         </q-input>
         <!-- Role -->
@@ -285,8 +282,6 @@
         </q-select>
         <!-- tags -->
         <tagsSelection @addTagFn="addTagFn" />
-      </div>
-      <div class="col3">
         <!-- personality -->
         <q-select
           color="light-blue-10"
@@ -294,12 +289,14 @@
           v-model.trim="form.personality"
           :options="personality"
           :label="$t('personality')"
-          class="inputStyle"
+          class="inputStyle pt20"
         >
           <template v-slot:append>
             <q-icon name />
           </template>
         </q-select>
+      </div>
+      <div class="col3">
         <!-- Sprint Time -->
         <q-input
           outlined
@@ -344,8 +341,7 @@
 <script>
 import { required, email, minLength, sameAs } from 'vuelidate/lib/validators';
 // import { normalizeEmail } from 'normalize-email';
-import { VueTelInput } from 'vue-tel-input';
-import mobilePhone from '../structure/mobilePhone.vue';
+import mobilePhoneWrapper from '../structure/mobilePhoneWrapper.vue';
 import tagsSelection from '../structure/tagsSelection.vue';
 
 const normalizeEmail = require('normalize-email');
@@ -353,8 +349,7 @@ const normalizeEmail = require('normalize-email');
 export default {
   name: 'profileEditForm',
   components: {
-    VueTelInput,
-    mobilePhone,
+    mobilePhoneWrapper,
     tagsSelection,
   },
   data() {
@@ -396,6 +391,8 @@ export default {
         git: '',
       },
       enableConfirm: false,
+      nationalID: false,
+      verifyEmail: false,
     };
   },
   validations: {
@@ -415,6 +412,30 @@ export default {
               .reduce((x, y) => x + y) % 11;
           return (sum < 2 && check === sum) || (sum >= 2 && check + sum === 11);
         },
+        isUnique() {
+          if (this.$v.form.nationalId.isValidIranianNationalCode) {
+            this.$axios
+              .post('/v1/api/vkann/validation/national-id', {
+                nationalId: this.form.nationalId,
+              })
+              .then(response => {
+                console.log(response);
+                if (response.status === 204) {
+                  this.nationalID = true;
+                }
+              })
+              .catch(() => {
+                this.nationalID = false;
+                this.$q.notify({
+                  color: 'negative',
+                  position: 'top',
+                  message: this.$t('incorrectnationalID'),
+                  icon: 'report_problem',
+                });
+              });
+          }
+          return true;
+        },
       },
       postalCode: {
         required,
@@ -424,17 +445,30 @@ export default {
         required,
         email,
         isUnique(value) {
-          // standalone validator ideally should not assume a field is required
-          if (value === '') return true;
-
-          // simulate async call, fail for all logins with even length
-          return new Promise(resolve => {
-            setTimeout(() => {
-              resolve(
-                typeof value === 'string' && value !== 'narges.pm@yahoo.com'
-              );
-            }, 350 + Math.random() * 300);
-          });
+          if (this.$v.form.email.email) {
+            this.$axios
+              .post('/v1/api/vkann/validation/email', {
+                email: value,
+                existed: false,
+              })
+              .then(response => {
+                console.log(response);
+                if (response.status === 204) {
+                  console.log('lll');
+                  this.verifyEmail = true;
+                }
+              })
+              .catch(() => {
+                this.verifyEmail = false;
+                this.$q.notify({
+                  color: 'negative',
+                  position: 'top',
+                  message: this.$t('enteredEmailisRegistered'),
+                  icon: 'report_problem',
+                });
+              });
+          }
+          return true;
         },
       },
       FirstName: { required, minLength: minLength(3) },
@@ -456,6 +490,19 @@ export default {
     },
   },
   methods: {
+    verifyId() {
+      this.$axios
+        .post('/v1/api/vkann/validation/national-id', {
+          nationalId: this.form.nationalId,
+        })
+        .then(response => {
+          console.log(response);
+          this.nationalID = true;
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
     addTagFn(value) {
       this.form.tags = value;
     },
@@ -474,7 +521,9 @@ export default {
 
         // should emit to parent what t
         // req to servero do (beacause it is used in 2 place (profile & add user))
-        this.$emit('sendDataUser', this.form);
+        if (this.nationalID && this.verifyEmail) {
+          this.$emit('sendDataUser', this.form);
+        }
       } else {
         this.$q.notify({
           message: this.$t('Theformabovehaserrors'),

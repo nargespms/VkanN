@@ -7,3 +7,6 @@ export const logedInSuccesfully = (state, status) => {
   state.logedIn = status;
   console.log('is it come');
 };
+export const sendInvoiceData = (state, status) => {
+  state.invoice = status;
+};

@@ -2,7 +2,12 @@
   <div class="q-pa-xl">
     <div class="cardActionWrap">
       <cardsAction :data="services.list" />
-      <cardsAction :data="services.addService" />
+
+      <cardsAction
+        v-if="$store.state.module1.userData.role === 'BILLING' ||
+              $store.state.module1.userData.role === 'ADMIN'"
+        :data="services.addService"
+      />
     </div>
   </div>
 </template>

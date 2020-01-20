@@ -60,46 +60,17 @@ export default function({ store }) {
         next('/signIn');
       } else {
         const user = JSON.parse(localStorage.getItem('Data'));
-        console.log(user.module1.userData.role);
-        // admin permission
-        if (to.matched.some(route => route.meta.admin)) {
-          if (user.module1.userData.role === 'ADMIN') {
-            next();
-          } else {
-            next('/');
-          }
-          // billing permissions
-        } else if (to.matched.some(route => route.meta.billing)) {
-          if (user.module1.userData.role === 'BILLING') {
-            next();
-          } else {
-            next('/');
-          }
-          // teck permissions
-        } else if (to.matched.some(route => route.meta.teck)) {
-          if (user.module1.userData.role === 'TECH') {
-            next();
-          } else {
-            next('/');
-          }
-          // info permissions
-        } else if (to.matched.some(route => route.meta.info)) {
-          if (user.module1.userData.role === 'INFO') {
-            next();
-          } else {
-            next('/');
-          }
-          // SERVICEMANAGER
-        } else if (to.matched.some(route => route.meta.servicemanager)) {
-          if (user.module1.userData.role === 'SERVICEMANAGER') {
-            next();
-          } else {
-            next('/');
-          }
+        const userRole = user.module1.userData.role;
+        // console.log(user.module1.userData.role);
+        // console.log(to.meta.roles.includes(userRole));
+
+        if (to.meta.roles.includes(userRole)) {
+          console.log('happy');
+          next();
+        } else {
+          console.log('unhappy');
+          next('/');
         }
-        // User is not authenticated. We can redirect her to
-        // our login page. Or wherever we want.
-        next('/');
       }
     } else {
       next();

@@ -36,7 +36,7 @@
             >{{$t('reply')}}</q-tooltip>
           </q-icon>
         </div>
-        <p v-if="!editTicket">{{ticket.desc}}</p>
+        <p v-if="!editTicket" v-html="ticket.desc"></p>
         <p v-if="editTicket">
           <editorProp :data="ticket" @changeEditedText="changeEditedText" />
         </p>
@@ -82,7 +82,7 @@
             >{{$t('reply')}}</q-tooltip>
           </q-icon>
         </div>
-        <p v-if="!editTicket">{{ticket.desc}}</p>
+        <p v-if="!editTicket" v-html="ticket.desc"></p>
         <p v-if="editTicket">
           <editorProp :data="ticket" @changeEditedText="changeEditedText" />
         </p>

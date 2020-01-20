@@ -1,10 +1,6 @@
 <template>
   <div class="registerWrapperCmp">
-    <q-form
-      v-if="enableRegister"
-      @submit="onSubmit"
-      class="q-gutter-md RegisterForm"
-    >
+    <q-form v-if="enableRegister" @submit="onSubmit" class="q-gutter-md RegisterForm">
       <!-- user name -->
       <q-input
         outlined
@@ -22,12 +18,12 @@
         </template>
         <!-- firstname validation -->
         <p v-if="errors" class="error">
-          <span v-if="!$v.form.FirstName.required"
-            >*{{ $t('thisfieldisrequired') }}.</span
-          >
-          <span v-if="!$v.form.FirstName.minLength">{{
+          <span v-if="!$v.form.FirstName.required">*{{ $t('thisfieldisrequired') }}.</span>
+          <span v-if="!$v.form.FirstName.minLength">
+            {{
             $t('Fieldmusthaveatleast3characters')
-          }}</span>
+            }}
+          </span>
         </p>
         <!-- firstname validation -->
       </q-input>
@@ -46,9 +42,7 @@
           <q-icon name="fas fa-user" />
         </template>
         <p v-if="errors" class="error">
-          <span v-if="!$v.form.LastName.required"
-            >*{{ $t('thisfieldisrequired') }}.</span
-          >
+          <span v-if="!$v.form.LastName.required">*{{ $t('thisfieldisrequired') }}.</span>
         </p>
       </q-input>
       <!-- Email -->
@@ -67,55 +61,52 @@
         </template>
         <template v-if="this.form.email.length > 0" v-slot:append>
           <q-icon
-            v-if="verifyEmail"
+            v-if="verifyEmail && $v.form.email.email"
             name="fas fa-check"
             class="mailIcon text-positive"
           />
           <q-icon
-            v-if="!verifyEmail"
+            v-if="!verifyEmail && $v.form.email.email"
             name="fas fa-times"
             class="mailIcon text-negative"
           />
-          <span v-if="!verifyEmail" class="text-negative">
-            {{ $t('enteredEmailisRegistered') }}
-          </span>
+          <span
+            v-if="!verifyEmail && $v.form.email.email"
+            class="text-negative fn11"
+          >{{ $t('enteredEmailisRegistered') }}</span>
         </template>
         <!-- email errors -->
         <p v-if="errors" class="error">
-          <span v-if="!$v.form.email.required"
-            >*{{ $t('thisfieldisrequired') }}.</span
-          >
-          <span v-if="!$v.form.email.email"
-            >* {{ $t('Needstobeavalidemail') }}.</span
-          >
-          <span v-if="!$v.form.email.isUnique"
-            >*{{ $t('Thisemailisalreadyregistered') }}.</span
-          >
+          <span v-if="!$v.form.email.required">*{{ $t('thisfieldisrequired') }}.</span>
+          <span v-if="!$v.form.email.email">* {{ $t('Needstobeavalidemail') }}.</span>
+          <span
+            v-if="!$v.form.email.isUnique && !$v.form.email.email"
+          >*{{ $t('Thisemailisalreadyregistered') }}.</span>
         </p>
         <!-- email errors -->
       </q-input>
       <!-- Phone Number -->
-      <vue-tel-input
-        required
-        v-model.trim="MobileNumber"
-        :placeholder="$t('pleaseEnterYourPhoneNumber')"
-      ></vue-tel-input>
+      <mobilePhoneWrapper />
       <!-- Gender -->
       <div class="genderRegister">
         <label>{{ $t('gender') }}:</label>
-        <q-radio class="genderOpt" v-model="form.Gender" val="FEMALE">{{
+        <q-radio class="genderOpt" v-model="form.Gender" val="FEMALE">
+          {{
           $t('female')
-        }}</q-radio>
-        <q-radio class="genderOpt" v-model="form.Gender" val="MALE">{{
+          }}
+        </q-radio>
+        <q-radio class="genderOpt" v-model="form.Gender" val="MALE">
+          {{
           $t('male')
-        }}</q-radio>
-        <q-radio class="genderOpt" v-model="form.Gender" val="OTHER">{{
+          }}
+        </q-radio>
+        <q-radio class="genderOpt" v-model="form.Gender" val="OTHER">
+          {{
           $t('OTHER')
-        }}</q-radio>
+          }}
+        </q-radio>
         <p v-if="errors" class="error float">
-          <span v-if="!$v.form.Gender.required"
-            >*{{ $t('thisfieldisrequired') }}.</span
-          >
+          <span v-if="!$v.form.Gender.required">*{{ $t('thisfieldisrequired') }}.</span>
         </p>
       </div>
       <!-- password -->
@@ -138,15 +129,15 @@
           />
         </template>
         <p class="error" v-if="errors">
-          <span v-if="!$v.form.PassWord.required"
-            >*{{ $t('thisfieldisrequired') }}.</span
-          >
+          <span v-if="!$v.form.PassWord.required">*{{ $t('thisfieldisrequired') }}.</span>
         </p>
       </q-input>
       <p class="error" v-if="errors">
-        <span v-if="!$v.form.PassWord.strongPassword">{{
+        <span v-if="!$v.form.PassWord.strongPassword">
+          {{
           $t('Strongpasswords')
-        }}</span>
+          }}
+        </span>
       </p>
       <!-- Re enter password -->
       <q-input
@@ -168,32 +159,35 @@
             @click="isPwd1 = !isPwd1"
           />
         </template>
+        <!-- errors for pass2 -->
+        <p v-if="errors" class="error">
+          <span v-if="!$v.form.Confirmpass.required">{{$t('thisfieldisrequired')}}.</span>
+          <span
+            v-if="!$v.form.Confirmpass.sameAsPassword && $v.form.Confirmpass.required"
+          >{{$t('Thepasswordsdonotmatch')}}.</span>
+        </p>
+        <!-- errors for pass2 -->
       </q-input>
-      <!-- errors for pass2 -->
-      <p v-if="errors" class="error">
-        <span v-if="!$v.form.Confirmpass.sameAsPassword"
-          >The passwords do not match.</span
-        >
-      </p>
-      <!-- errors for pass2 -->
       <!-- adding captcha -->
       <captcha @captchaValid="captchaValid" :key="componentKey" />
-      <q-btn color="primary" @click.prevent="onSubmit">{{
+      <q-btn color="primary" @click.prevent="onSubmit">
+        {{
         $t('submit')
-      }}</q-btn>
+        }}
+      </q-btn>
     </q-form>
   </div>
 </template>
 
 <script>
 import { required, email, minLength, sameAs } from 'vuelidate/lib/validators';
-import { VueTelInput } from 'vue-tel-input';
+import mobilePhoneWrapper from '../structure/mobilePhoneWrapper.vue';
 // import { Cookies } from 'quasar';
 import captcha from '../structure/captcha.vue';
 
 export default {
   components: {
-    VueTelInput,
+    mobilePhoneWrapper,
     captcha,
   },
   data() {
@@ -230,28 +224,30 @@ export default {
         required,
         email,
         isUnique(value) {
-          this.$axios
-            .post('/v1/api/vkann/validation/email', {
-              email: value,
-              existed: false,
-            })
-            .then(response => {
-              console.log(response);
-              if (response.status === 204) {
-                console.log('lll');
-                this.verifyEmail = true;
-              }
-            })
-            .catch(() => {
-              this.verifyEmail = false;
+          if (this.$v.form.email.email && this.$v.form.email.required) {
+            this.$axios
+              .post('/v1/api/vkann/validation/email', {
+                email: value,
+                existed: false,
+              })
+              .then(response => {
+                console.log(response);
+                if (response.status === 204) {
+                  console.log('lll');
+                  this.verifyEmail = true;
+                }
+              })
+              .catch(() => {
+                this.verifyEmail = false;
 
-              this.$q.notify({
-                color: 'negative',
-                position: 'top',
-                message: this.$t('enteredEmailisRegistered'),
-                icon: 'report_problem',
+                this.$q.notify({
+                  color: 'negative',
+                  position: 'top',
+                  message: this.$t('enteredEmailisRegistered'),
+                  icon: 'report_problem',
+                });
               });
-            });
+          }
           return true;
         },
       },

@@ -1,9 +1,18 @@
 <template>
   <div class="q-pa-xl">
     <div class="cardActionWrap">
-      <cardsAction :data="users.staffs" />
-      <cardsAction :data="users.clients" />
-      <cardsAction :data="users.addMember" />
+      <cardsAction
+        v-if="$store.state.module1.userData.role !== 'CLIENT' &&
+              $store.state.module1.userData.role !== 'TECH' &&
+              $store.state.module1.userData.role !== 'INFO'"
+        :data="users.staffs"
+      />
+      <cardsAction :data="users.clients" v-if="$store.state.module1.userData.role !== 'CLIENT'" />
+      <cardsAction
+        v-if="$store.state.module1.userData.role === 'SERVICEMANAGER' ||
+              $store.state.module1.userData.role === 'ADMIN'"
+        :data="users.addMember"
+      />
     </div>
   </div>
 </template>

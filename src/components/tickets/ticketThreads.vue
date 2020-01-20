@@ -33,14 +33,17 @@ export default {
   data() {
     return {};
   },
+
   computed: {
     tickets() {
       return this.data.threads;
     },
-    // stamp() {
-    //   return this.data.threads.date.ToString();
-    // },
   },
+  // filters: {
+  //   reverse(arr) {
+  //     return arr.reverse();
+  //   },
+  // },
 };
 </script>
 
