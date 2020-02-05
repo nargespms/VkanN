@@ -187,4 +187,7 @@ export default {
   paymentMethod: 'payment Method',
   invoiceItems: 'invoice Items',
   price: 'price',
+  priod: 'priod',
+  invoiceStartDate: 'invoice Start Date',
+  invoiceEndDate: 'invoice End Date',
 };

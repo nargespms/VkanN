@@ -25,6 +25,7 @@
     "normalize-email": "^1.1.1",
     "quasar": "^1.6.0",
     "tus-js-client": "^1.8.0",
+    "uuid": "^3.4.0",
     "vue-chartjs": "^3.5.0",
     "vue-i18n": "^8.15.3",
     "vue-tel-input": "^4.1.1",

@@ -1,0 +1,28 @@
+{
+  "comments": [
+    {
+      "id": 1,
+      "name": "narges",
+      "description": "   طفا این کار را سریع تر انجام دهی  طفا این کار را سریع تر انجام دهی طفا این کار را سریع تر انجام دهی طفا این کار را سریع تر انجام دهی لطفا این کار را سریع تر انجام دهید",
+      "date": "exampleDate"
+    },
+    {
+      "id": 2,
+      "name": "khashi",
+      "description": "لطفا این کار را سریع تر انجام دهید",
+      "date": "exampleDate"
+    },
+    {
+      "id": 3,
+      "name": "mohsen",
+      "description": " سریع تر سریع تردهید",
+      "date": "exampleDate"
+    },
+    {
+      "id": 4,
+      "name": "maryam",
+      "description": "لطفا این کار را آنطور انجام  دهید",
+      "date": "exampleDate"
+    }
+  ]
+}

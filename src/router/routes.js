@@ -7,6 +7,30 @@ const routes = [
     path: '/',
     redirect: '/fa',
   },
+  // preview layout
+  {
+    path: '/:locale/preview',
+    component: () => import('layouts/preview.vue'),
+    children: [
+      {
+        path: 'invoice',
+        component: () => import('pages/previewInvoice.vue'),
+        meta: {
+          requiresAuth: true,
+          roles: ['ADMIN', 'BILLING', 'SERVICEMANAGER'],
+        },
+      },
+      {
+        path: 'contract',
+        component: () => import('pages/printContract.vue'),
+        meta: {
+          requiresAuth: true,
+          roles: ['ADMIN', 'BILLING', 'SERVICEMANAGER'],
+        },
+      },
+    ],
+  },
+  // print layout
   {
     path: '/:locale/print',
     component: () => import('layouts/print.vue'),
@@ -128,14 +152,6 @@ const routes = [
           roles: ['ADMIN', 'BILLING', 'TECH', 'SERVICEMANAGER'],
         },
       },
-      {
-        path: 'tasks/:taskId',
-        component: () => import('pages/task'),
-        meta: {
-          requiresAuth: true,
-          roles: ['ADMIN', 'BILLING', 'TECH', 'SERVICEMANAGER'],
-        },
-      },
 
       {
         path: 'tasks/myTasksList',
@@ -156,6 +172,14 @@ const routes = [
       {
         path: 'tasks/addTask',
         component: () => import('pages/addTask'),
+        meta: {
+          requiresAuth: true,
+          roles: ['ADMIN', 'BILLING', 'TECH', 'SERVICEMANAGER'],
+        },
+      },
+      {
+        path: 'tasks/:taskId',
+        component: () => import('pages/task'),
         meta: {
           requiresAuth: true,
           roles: ['ADMIN', 'BILLING', 'TECH', 'SERVICEMANAGER'],

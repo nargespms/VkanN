@@ -1,5 +1,6 @@
 <template>
   <div class="q-pa-xl">
+    <taskModal />
     <div class="cardActionWrap">
       <cardsAction :data="tickets.list" />
       <cardsAction :data="tickets.addTickets" />
@@ -9,12 +10,14 @@
 
 
 <script>
+import taskModal from '../components/structure/taskModal.vue';
 import cardsAction from '../components/structure/cardsAction.vue';
 
 export default {
   name: 'tickets',
   components: {
     cardsAction,
+    taskModal,
   },
   data() {
     return {

@@ -10,6 +10,7 @@
     <div class="ticketThreadsWrap">
       <ticketThreads :data="this.ticket" />
     </div>
+    <!-- for staffs -->
     <div class="ticketThreads2Wrap">
       <ticketThreads2
         :data="this.ticket"

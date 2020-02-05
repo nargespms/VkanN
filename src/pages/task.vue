@@ -1,3 +1,3 @@
 <template >
-  <div>{{$route.params.taskId}}</div>
+  <div class="q-pa-xl">{{$route.params.taskId}}</div>
 </template>

@@ -190,7 +190,7 @@ export default {
       serviceType: ['type1', 'type2', 'type3'],
       servicesTag: ['tag1', 'tag2', 'tag3'],
       staff: ['employee1', 'employee2', 'employee3'],
-      clients: ['clients1', 'clients2', 'clients3'],
+      clients: {},
       bilingStatusService: ['paid', 'unpaid', 'waiting'],
       servicesStatus: ['status1', 'status2', 'status3'],
       service: {
@@ -276,6 +276,12 @@ export default {
       }
     },
   },
+  // mounted() {
+  //   this.$axios.get('/v1/api/vkann/users/get-clients').then(res => {
+  //     this.clients = res.data;
+  //     console.log(res);
+  //   });
+  // },
 };
 </script>
 

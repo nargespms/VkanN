@@ -8,7 +8,7 @@
       option-value="label"
       outlined
       :options="locales"
-      :label="$t('chooseYourLang')"
+      :label="$t('lang')"
     >
       <template v-slot:option="scope">
         <q-item
@@ -20,7 +20,7 @@
             <q-icon :name="scope.opt.icon" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>{{$t(scope.opt.label)}}</q-item-label>
+            <q-item-label>{{scope.opt.label}}</q-item-label>
           </q-item-section>
         </q-item>
       </template>
@@ -36,7 +36,7 @@ export default {
       model: this.$t('persian'),
       locales: [
         {
-          label: 'persian',
+          label: 'فارسی',
           value: 'fa',
           url: '' / ' + locale.value + ' / ' +newroute"',
         },
@@ -46,12 +46,12 @@ export default {
           url: '' / ' + locale.value + ' / ' +newroute"',
         },
         {
-          label: 'arabic',
+          label: 'العربیه',
           value: 'ar',
           url: '' / ' + locale.value + ' / ' +newroute"',
         },
         {
-          label: 'dutch',
+          label: 'Dutch',
           value: 'de',
           url: '' / ' + locale.value + ' / ' +newroute"',
         },

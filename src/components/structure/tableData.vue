@@ -4,7 +4,6 @@
       :data="data"
       :columns="columns"
       row-key="name"
-      :title="$t('userManagement')"
       :filter="filter"
       :separator="separator"
       :pagination.sync="innerPagination"

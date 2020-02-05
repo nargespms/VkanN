@@ -18,8 +18,8 @@
           <template v-slot:prepend>
             <q-icon name="settings_applications" />
           </template>
-          <!-- client Name -->
         </q-select>
+        <!-- client Name -->
         <q-select
           color="light-blue-10 "
           required

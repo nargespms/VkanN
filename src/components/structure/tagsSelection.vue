@@ -5,6 +5,9 @@
       v-model="chosedTags"
       multiple
       :options="options"
+      option-label="title"
+      option-value="id"
+      map-options
       :label="$t('addTag')"
       @filter="filterFn"
       input-debounce="0"
@@ -15,12 +18,11 @@
     >
       <template v-slot:no-option>
         <q-item>
-          <q-item-section class="text-grey">
-            No results
-          </q-item-section>
+          <q-item-section class="text-grey">No results</q-item-section>
         </q-item>
       </template>
     </q-select>
+    {{options}}
   </div>
 </template>
 
@@ -30,7 +32,7 @@ export default {
   data() {
     return {
       chosedTags: [],
-      tags: ['tag1', 'tag2', 'tag3'],
+      tags: [],
       options: this.tags,
     };
   },
@@ -53,11 +55,17 @@ export default {
         } else {
           const needle = val.toLowerCase();
           this.options = this.tags.filter(
-            v => v.toLowerCase().indexOf(needle) > -1
+            v => v.title.toLowerCase().indexOf(needle) > -1
           );
         }
       });
     },
+  },
+  mounted() {
+    this.$axios.get('/v1/api/vkann/tags/get-tags').then(response => {
+      this.tags = response.data.tags;
+      console.log(this.tags);
+    });
   },
 };
 </script>

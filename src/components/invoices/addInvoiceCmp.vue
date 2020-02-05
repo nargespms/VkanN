@@ -1,4 +1,4 @@
-<template >
+<template>
   <div class="col3th">
     <q-form @submit="onSubmit" class="q-gutter-md" :error="$v.invoice.$error">
       <div class="clear w100 m0res">
@@ -45,7 +45,7 @@
             v-model.trim="invoice.startdate"
             mask="date"
             :rules="['date']"
-            :label="$t('startDate')"
+            :label="$t('invoiceStartDate')"
             ref="qDateProxy"
             name="event"
             @blur="EnableDate"
@@ -69,7 +69,7 @@
             v-model.trim.lazy="$v.invoice.enddate.$model"
             mask="date"
             :rules="['date']"
-            :label="$t('endDate')"
+            :label="$t('invoiceEndDate')"
             :disable="!this.enableEndDate"
             @blur="$v.invoice.enddate.$touch"
             :error="$v.invoice.enddate.$error"
@@ -113,21 +113,7 @@
               <q-icon name="fas fa-exclamation-circle" />
             </template>
           </q-select>
-          <!-- invoice type -->
-          <q-select
-            color="light-blue-10 "
-            outlined
-            v-model.trim="invoice.type"
-            :options="invoiceType"
-            :label="$t('type')"
-            class="inputStyle"
-            required
-            :rules="[val => val && val.length > 0]"
-          >
-            <template v-slot:append>
-              <q-icon name />
-            </template>
-          </q-select>
+
           <!-- crrency -->
           <q-select
             color="light-blue-10 "
@@ -143,6 +129,21 @@
               <q-icon name />
             </template>
           </q-select>
+          <!-- invoice type -->
+          <q-select
+            color="light-blue-10 "
+            outlined
+            v-model.trim="invoice.type"
+            :options="invoiceType"
+            :label="$t('type')"
+            class="inputStyle"
+            required
+            :rules="[val => val && val.length > 0]"
+          >
+            <template v-slot:append>
+              <q-icon name />
+            </template>
+          </q-select>
         </div>
         <div class="col3">
           <div class="w100">
@@ -151,41 +152,41 @@
         </div>
       </div>
       <div class="invoiceItemsWrap">
-        <invoiceItem @addNewItem="addNewItem" @totalAmount="totalAmount" />
+        <invoiceItems
+          @onChange="onItemsChange"
+          @totalAmount="totalAmount"
+          :invoiceType="invoice.type"
+        />
       </div>
       <div class="invoiceTotalAmountWrap">
         <h5>
-          {{$t('subTotal')}}
-          <span v-if="invoice.currency.length">({{$t(`${invoice.currency}`)}})</span>
+          {{ $t('subTotal') }}
+          <span v-if="invoice.currency.length">({{ $t(`${invoice.currency}`) }})</span>
         </h5>
-        <div class="invoiceTotalAmount">{{invoiceTotalAmount}}</div>
+        <div class="invoiceTotalAmount">{{ invoiceTotalAmount }}</div>
       </div>
       <div class="saveButtons">
-        <q-btn class="savebutton mr12" color="primary" type="submit">{{ $t('save') }}</q-btn>
-        <!-- <q-btn color="grey " icon="fas fa-search">
-          <q-tooltip
-            v-model="showing"
-            transition-show="scale"
-            transition-hide="scale"
-          >{{ $t('view') }}</q-tooltip>
-        </q-btn>-->
+        <q-btn class="savebutton mr12" color="primary" type="submit">
+          {{
+          $t('save')
+          }}
+        </q-btn>
       </div>
     </q-form>
   </div>
 </template>
 
-
 <script>
 import uploadfile from '../structure/uploadfile.vue';
 import tagsSelection from '../structure/tagsSelection.vue';
-import invoiceItem from './invoiceItem.vue';
+import invoiceItems from './invoiceItems.vue';
 
 export default {
   name: 'addInvoice',
   components: {
     uploadfile,
     tagsSelection,
-    invoiceItem,
+    invoiceItems,
   },
   data() {
     return {
@@ -202,7 +203,6 @@ export default {
       invoiceType: ['FORMAL', 'INFORMAL'],
       invoiceCurrency: ['RIAL', 'DOLLER', 'EURO'],
       date: this.today,
-      enddate: '1212112',
       enableEndDate: false,
       invoice: {
         serviceName: '',
@@ -213,9 +213,9 @@ export default {
         currency: '',
         startdate: '',
         enddate: '',
+
         tags: [],
         items: [],
-        invoiceTotalAmount: 0,
       },
       invoiceTotalAmount: 0,
     };
@@ -229,16 +229,17 @@ export default {
         );
       },
       enddate: {},
+      periosEnddate: {},
     },
   },
   methods: {
     totalAmount(value) {
       this.invoiceTotalAmount = value;
       this.invoice.invoiceTotalAmount = value;
-      console.log(this.invoice);
     },
-    addNewItem(value) {
+    onItemsChange(value) {
       this.invoice.items = value;
+
       console.log(value);
     },
     addTagFn(value) {
@@ -263,7 +264,7 @@ export default {
           module: 'module1',
         });
         this.$router.push({
-          path: `/${this.$route.params.locale}/print/invoice`,
+          path: `/${this.$route.params.locale}/preview/invoice`,
         });
 
         // send data to server
