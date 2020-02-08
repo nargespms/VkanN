@@ -219,4 +219,6 @@ export default {
   addNewComment: 'ایجاد کامنت جدید',
   commentsList: 'لیست کامنت ها',
   addNewTask: 'ایجاد تسک',
+  selectTicket: 'انتخاب تیکت',
+  kanBoard: 'کانبورد',
 };

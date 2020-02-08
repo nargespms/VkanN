@@ -7,6 +7,7 @@
       :loading="loading"
       @request="onRequest"
       :pagination="pagination"
+      @onIdClick="onIdClick"
     />
   </div>
 </template>
@@ -36,6 +37,10 @@ export default {
     };
   },
   methods: {
+    onIdClick(value) {
+      console.log(value);
+      this.$emit('pickerInfo', value);
+    },
     onRequest(props) {
       const {
         page,

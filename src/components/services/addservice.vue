@@ -50,19 +50,29 @@
           </template>
         </q-select>
         <!-- client name -->
-        <q-select
+        <!-- <q-select
           color="light-blue-10 "
           outlined
           required
           v-model.trim="service.client"
           :options="clients"
+          option-label="firstName"
+          option-value="id"
+          map-options
           :label="$t('clientName')"
           class="inputStyle"
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-user" />
           </template>
-        </q-select>
+        </q-select>-->
+        <singleAutoCompleteSelectBox
+          :options="clients"
+          :optionLable="'firstName'"
+          :optionValue="'id'"
+          :name="'clientName'"
+          label="firstName"
+        />
         <!-- primary Domain -->
         <q-input
           outlined
@@ -172,15 +182,19 @@
 import { required, minLength } from 'vuelidate/lib/validators';
 import uploadfile from '../structure/uploadfile.vue';
 import tagsSelection from '../structure/tagsSelection.vue';
+import singleAutoCompleteSelectBox from '../structure/singleAutoCompleteSelectBox.vue';
 
 export default {
   name: 'addservice',
   components: {
     uploadfile,
     tagsSelection,
+    singleAutoCompleteSelectBox,
   },
   data() {
     return {
+      clientsLable: '',
+      clientsid: '',
       // data for validation
       uiState: 'submit not clicked',
       errors: true,
@@ -276,12 +290,13 @@ export default {
       }
     },
   },
-  // mounted() {
-  //   this.$axios.get('/v1/api/vkann/users/get-clients').then(res => {
-  //     this.clients = res.data;
-  //     console.log(res);
-  //   });
-  // },
+  mounted() {
+    this.$axios.get('/v1/api/vkann/users/get-clients').then(res => {
+      this.clients = res.data.users;
+      this.clientsLable = this.clients.map(v => v.firstName);
+      this.clientsid = this.clients.map(v => v.id);
+    });
+  },
 };
 </script>
 

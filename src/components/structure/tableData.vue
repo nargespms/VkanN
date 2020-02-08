@@ -146,6 +146,9 @@
       <template v-slot:body="props">
         <q-tr :props="props">
           <q-td v-for="prop in props.row" :key="prop.id">
+            <!-- id pick -->
+            <span v-if="prop == props.row['id']" @click="recordClick(props.row)">{{props.row.id}}</span>
+            <!-- id pick -->
             <!-- names with link -->
             <span v-if="prop == props.row['name']">
               <router-link
@@ -162,7 +165,9 @@
                 @click="props.expand = !props.expand"
               />
             </span>
-            <span v-if="prop !== props.row['name'] && prop !== props.row['__index']">{{prop}}</span>
+            <span
+              v-if="prop !== props.row['name'] && prop !== props.row['__index'] && prop !== props.row['id']"
+            >{{prop}}</span>
           </q-td>
         </q-tr>
         <!-- expandable row for extra description -->
@@ -237,6 +242,9 @@ export default {
     },
   },
   methods: {
+    recordClick(value) {
+      this.$emit('onIdClick', value);
+    },
     computDate(columnFilterEnddate) {
       return columnFilterEnddate >= this.columnFilter.columnFilterStartdate;
     },

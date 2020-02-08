@@ -2,7 +2,10 @@
   <div class="q-pa-xl">
     <div class="cardActionWrap">
       <cardsAction :data="contracts.list" />
-      <cardsAction :data="contracts.addContract" />
+      <cardsAction
+        v-if="$store.state.module1.userData.role !== 'CLIENT'"
+        :data="contracts.addContract"
+      />
     </div>
   </div>
 </template>

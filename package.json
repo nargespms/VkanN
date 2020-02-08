@@ -27,6 +27,7 @@
     "tus-js-client": "^1.8.0",
     "uuid": "^3.4.0",
     "vue-chartjs": "^3.5.0",
+    "vue-draggable": "^2.0.6",
     "vue-i18n": "^8.15.3",
     "vue-tel-input": "^4.1.1",
     "vuelidate": "^0.7.4",

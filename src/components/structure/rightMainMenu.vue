@@ -175,7 +175,7 @@
             <!-- billing route -->
             <li
               class="mainMenuLi"
-              v-if="$store.state.module1.userData.role === 'BILLING' || $store.state.module1.userData.role === 'ADMIN'"
+              v-if="$store.state.module1.userData.role === 'BILLING' || $store.state.module1.userData.role === 'ADMIN' || $store.state.module1.userData.role === 'CLIENT'"
             >
               <q-expansion-item
                 icon="attach_money"
@@ -185,11 +185,25 @@
                 class="expandableMenu"
                 :to="'/' + locale + '/' + 'billing'"
               >
-                <!-- invoice route -->
-                <router-link class="block" :to="'/' + locale + '/' + 'billing' + '/' + 'invoices'">
-                  <q-icon name="attach_money" />
-                  {{ $t('invoices') }}
-                </router-link>
+                <q-expansion-item icon="attach_money" :label="$t('invoices')" expand-icon-toggle>
+                  <!-- invoice route -->
+                  <router-link
+                    class="block"
+                    :to="'/' + locale + '/' + 'billing' + '/' + 'invoices'"
+                  >
+                    <q-icon name="attach_money" />
+                    {{ $t('invoicesList') }}
+                  </router-link>
+                  <router-link
+                    v-if="$store.state.module1.userData.role !== 'CLIENT'"
+                    class="block"
+                    :to="'/' + locale + '/' + 'billing' + '/' + 'invoices' + '/' +'addInvoice'"
+                  >
+                    <q-icon name="attach_money" />
+                    {{ $t('addInvoice') }}
+                  </router-link>
+                </q-expansion-item>
+
                 <!-- contract route -->
                 <q-expansion-item
                   icon="fas fa-handshake"
@@ -200,6 +214,7 @@
                   :to="'/' + locale + '/' + 'billing' + '/' + 'contracts'"
                 >
                   <router-link
+                    v-if="$store.state.module1.userData.role !== 'CLIENT'"
                     class="block"
                     :to="
                       '/' +

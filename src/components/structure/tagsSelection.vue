@@ -22,7 +22,6 @@
         </q-item>
       </template>
     </q-select>
-    {{options}}
   </div>
 </template>
 

@@ -4,6 +4,7 @@
       <cardsAction :data="tasks.myList" />
       <cardsAction :data="tasks.addTasks" />
       <cardsAction :data="tasks.list" />
+      <cardsAction :data="tasks.kanboard" />
     </div>
   </div>
 </template>
@@ -37,6 +38,13 @@ export default {
           icon: 'play_for_work',
           bg: '#D64367',
           cardName: 'tasksList',
+          parentUrl: 'tasks',
+        },
+        kanboard: {
+          number: 100,
+          icon: 'fa fa-table',
+          bg: '#1a667e',
+          cardName: 'kanBoard',
           parentUrl: 'tasks',
         },
       },

@@ -178,6 +178,14 @@ const routes = [
         },
       },
       {
+        path: 'tasks/kanBoard',
+        component: () => import('pages/kanBoard'),
+        meta: {
+          requiresAuth: true,
+          roles: ['ADMIN', 'BILLING', 'TECH', 'SERVICEMANAGER'],
+        },
+      },
+      {
         path: 'tasks/:taskId',
         component: () => import('pages/task'),
         meta: {
@@ -284,7 +292,7 @@ const routes = [
         component: () => import('pages/contracts'),
         meta: {
           requiresAuth: true,
-          roles: ['ADMIN', 'BILLING'],
+          roles: ['ADMIN', 'BILLING', 'CLIENT'],
         },
       },
 
@@ -293,7 +301,7 @@ const routes = [
         component: () => import('pages/contractsList'),
         meta: {
           requiresAuth: true,
-          roles: ['ADMIN', 'BILLING'],
+          roles: ['ADMIN', 'BILLING', 'CLIENT'],
         },
       },
       {
@@ -309,7 +317,7 @@ const routes = [
         component: () => import('pages/contract'),
         meta: {
           requiresAuth: true,
-          roles: ['ADMIN', 'BILLING'],
+          roles: ['ADMIN', 'BILLING', 'CLIENT'],
         },
       },
       // invoices
@@ -318,7 +326,7 @@ const routes = [
         component: () => import('pages/invoices'),
         meta: {
           requiresAuth: true,
-          roles: ['ADMIN', 'BILLING'],
+          roles: ['ADMIN', 'BILLING', 'CLIENT'],
         },
       },
       {
@@ -326,7 +334,7 @@ const routes = [
         component: () => import('pages/invoicesList'),
         meta: {
           requiresAuth: true,
-          roles: ['ADMIN', 'BILLING'],
+          roles: ['ADMIN', 'BILLING', 'CLIENT'],
         },
       },
       {
@@ -350,7 +358,7 @@ const routes = [
         component: () => import('pages/billing'),
         meta: {
           requiresAuth: true,
-          roles: ['ADMIN', 'BILLING', 'SERVICEMANAGER'],
+          roles: ['ADMIN', 'BILLING', 'SERVICEMANAGER', 'CLIENT'],
         },
       },
       { path: '*', component: () => import('pages/Error404.vue') },

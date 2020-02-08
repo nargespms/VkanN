@@ -2,7 +2,11 @@
   <div class="q-pa-xl">
     <div class="cardActionWrap">
       <cardsAction :data="invoices.list" />
-      <cardsAction :data="invoices.addInvoice" />
+
+      <cardsAction
+        v-if="$store.state.module1.userData.role !== 'CLIENT'"
+        :data="invoices.addInvoice"
+      />
     </div>
   </div>
 </template>

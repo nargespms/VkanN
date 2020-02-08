@@ -17,6 +17,7 @@ module.exports = function(ctx) {
       'vuelidate',
       'normalizeEmail',
       'localStorage',
+      'draggable.js',
       // 'information',
     ],
 

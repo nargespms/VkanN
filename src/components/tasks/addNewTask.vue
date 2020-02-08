@@ -33,8 +33,31 @@
             lazy-rules
             mask="######"
           >
-            <template v-slot:prepend>
-              <q-icon name />
+            <template v-slot:append>
+              <q-icon
+                name="fa fa-table"
+                color="primary"
+                @click="ticketPicker= !ticketPicker"
+                class="ticketPicker"
+              >
+                <q-tooltip
+                  v-model="showing1"
+                  transition-show="scale"
+                  transition-hide="scale"
+                >{{ $t('selectTicket') }}</q-tooltip>
+              </q-icon>
+              <q-dialog
+                v-model="ticketPicker"
+                ref="ticketPicker"
+                transition-show="scale"
+                transition-hide="scale"
+              >
+                <tableDataWrap
+                  @pickerInfo="pickerInfo"
+                  :endpoint="'/statics/tickets.json'"
+                  style="width: 1000px; max-width: 80vw;"
+                />
+              </q-dialog>
             </template>
           </q-input>
 
@@ -216,6 +239,7 @@ import editor from '../structure/editor.vue';
 import tagsSelection from '../structure/tagsSelection.vue';
 import uploadfile from '../structure/uploadfile.vue';
 import taskComment from './taskComment.vue';
+import tableDataWrap from '../structure/tableDataWrap.vue';
 
 export default {
   name: 'addNewTask',
@@ -224,9 +248,11 @@ export default {
     tagsSelection,
     uploadfile,
     taskComment,
+    tableDataWrap,
   },
   data() {
     return {
+      ticketPicker: false,
       taskStateComment: false,
       taskStateAssign: false,
       hourOptions: [0, 1, 2],
@@ -299,6 +325,12 @@ export default {
   },
 
   methods: {
+    pickerInfo(value) {
+      this.task.ticketId = value.id;
+      this.ticketPicker = false;
+
+      console.log(value);
+    },
     getTextFromEditor(value) {
       this.task.description = value;
     },
@@ -402,5 +434,10 @@ export default {
   margin-top: 16px;
   margin-bottom: 16px;
   text-align: center;
+}
+.ticketPicker {
+  cursor: pointer;
+  font-size: 20px;
+  padding: 12px;
 }
 </style>
