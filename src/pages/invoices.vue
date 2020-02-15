@@ -16,6 +16,10 @@ import cardsAction from '../components/structure/cardsAction.vue';
 
 export default {
   name: 'invoices',
+  meta() {
+    return { title: this.$t('invoices') };
+  },
+
   components: {
     cardsAction,
   },

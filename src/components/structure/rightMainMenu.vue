@@ -9,19 +9,25 @@
   >
     <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
       <div v-if="mobileSize || !miniState" class="absolute-bottom bg-transparent">
-        <q-avatar size="56px" class="q-mb-sm">
-          <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
-        </q-avatar>
-        <div class="text-weight-bold">
-          {{this.userData.firstName}}
-          {{this.userData.lastName}}
-          <p>{{this.userData.role}}</p>
+        <router-link :to="'/' + locale + '/' + 'profile' + '/' + `${$store.state.module1.userData.id}`">
+          <q-avatar size="56px" class="q-mb-sm">
+            <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+          </q-avatar>
+        </router-link>
+
+        <div>
+          <router-link
+            class="text-weight-bold text-white"
+            :to="'/' + locale + '/' + 'profile' + '/' + `${$store.state.module1.userData.id}`"
+          >
+            {{ this.userData.firstName }}
+            {{ this.userData.lastName }}
+            <p>{{ this.userData.role }}</p>
+          </router-link>
         </div>
       </div>
     </q-img>
-    <q-scroll-area
-      style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd"
-    >
+    <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd">
       <q-list>
         <q-item-label header>{{ $t('EssentialLinks') }}</q-item-label>
         <q-btn
@@ -65,10 +71,7 @@
                 :to="'/' + locale + '/' + 'tickets'"
               >
                 <!-- tickets list-->
-                <router-link
-                  class="block"
-                  :to="'/' + locale + '/' + 'tickets' + '/' + 'ticketsList'"
-                >
+                <router-link class="block" :to="'/' + locale + '/' + 'tickets' + '/' + 'ticketsList'">
                   <q-icon name="system_update_alt" />
                   {{ $t('ticketsList') }}
                 </router-link>
@@ -103,6 +106,10 @@
                   <q-icon name="play_for_work" />
                   {{ $t('addTask') }}
                 </router-link>
+                <router-link class="block" :to="'/' + locale + '/' + 'tasks' + '/' + 'kanBoard'">
+                  <q-icon name="fa fa-table" />
+                  {{ $t('kanBoard') }}
+                </router-link>
               </q-expansion-item>
             </li>
             <!-- services route -->
@@ -114,16 +121,12 @@
                 class="expandableMenu"
                 :to="'/' + locale + '/' + 'services'"
               >
-                <router-link
-                  class="block"
-                  :to="'/' + locale + '/' + 'services' + '/' + 'servicesList'"
-                >
+                <router-link class="block" :to="'/' + locale + '/' + 'services' + '/' + 'servicesList'">
                   <q-icon name="perm_data_setting" />
                   {{ $t('servicesList') }}
                 </router-link>
                 <router-link
-                  v-if="$store.state.module1.userData.role === 'BILLING' ||
-                        $store.state.module1.userData.role === 'ADMIN'"
+                  v-if="$store.state.module1.userData.role === 'BILLING' || $store.state.module1.userData.role === 'ADMIN'"
                   class="block"
                   :to="'/' + locale + '/' + 'services' + '/' + 'addService'"
                 >
@@ -142,29 +145,27 @@
                 :to="'/' + locale + '/' + 'userManagement'"
               >
                 <router-link
-                  v-if="$store.state.module1.userData.role === 'SERVICEMANAGER' ||
-                        $store.state.module1.userData.role === 'ADMIN' ||
-                        $store.state.module1.userData.role === 'BILLING'"
+                  v-if="
+                    $store.state.module1.userData.role === 'SERVICEMANAGER' ||
+                      $store.state.module1.userData.role === 'ADMIN' ||
+                      $store.state.module1.userData.role === 'BILLING'
+                  "
                   class="block"
                   :to="'/' + locale + '/' + 'userManagement' + '/' + 'staffs'"
                 >
                   <q-icon name="supervisor_account" />
                   {{ $t('staffs') }}
                 </router-link>
-                <router-link
-                  class="block"
-                  :to="'/' + locale + '/' + 'userManagement' + '/' + 'clients'"
-                >
+                <router-link class="block" :to="'/' + locale + '/' + 'userManagement' + '/' + 'clients'">
                   <q-icon name="supervisor_account" />
                   {{ $t('clients') }}
                 </router-link>
                 <router-link
-                  v-if="$store.state.module1.userData.role === 'SERVICEMANAGER' ||
-                        $store.state.module1.userData.role === 'ADMIN'"
-                  class="block"
-                  :to="
-                    '/' + locale + '/' + 'userManagement' + '/' + 'addMember'
+                  v-if="
+                    $store.state.module1.userData.role === 'SERVICEMANAGER' || $store.state.module1.userData.role === 'ADMIN'
                   "
+                  class="block"
+                  :to="'/' + locale + '/' + 'userManagement' + '/' + 'addMember'"
                 >
                   <q-icon name="supervisor_account" />
                   {{ $t('addMember') }}
@@ -175,7 +176,11 @@
             <!-- billing route -->
             <li
               class="mainMenuLi"
-              v-if="$store.state.module1.userData.role === 'BILLING' || $store.state.module1.userData.role === 'ADMIN' || $store.state.module1.userData.role === 'CLIENT'"
+              v-if="
+                $store.state.module1.userData.role === 'BILLING' ||
+                  $store.state.module1.userData.role === 'ADMIN' ||
+                  $store.state.module1.userData.role === 'CLIENT'
+              "
             >
               <q-expansion-item
                 icon="attach_money"
@@ -187,17 +192,14 @@
               >
                 <q-expansion-item icon="attach_money" :label="$t('invoices')" expand-icon-toggle>
                   <!-- invoice route -->
-                  <router-link
-                    class="block"
-                    :to="'/' + locale + '/' + 'billing' + '/' + 'invoices'"
-                  >
+                  <router-link class="block" :to="'/' + locale + '/' + 'billing' + '/' + 'invoices'">
                     <q-icon name="attach_money" />
                     {{ $t('invoicesList') }}
                   </router-link>
                   <router-link
                     v-if="$store.state.module1.userData.role !== 'CLIENT'"
                     class="block"
-                    :to="'/' + locale + '/' + 'billing' + '/' + 'invoices' + '/' +'addInvoice'"
+                    :to="'/' + locale + '/' + 'billing' + '/' + 'invoices' + '/' + 'addInvoice'"
                   >
                     <q-icon name="attach_money" />
                     {{ $t('addInvoice') }}
@@ -216,33 +218,12 @@
                   <router-link
                     v-if="$store.state.module1.userData.role !== 'CLIENT'"
                     class="block"
-                    :to="
-                      '/' +
-                        locale +
-                        '/' +
-                        'billing' +
-                        '/' +
-                        'contracts' +
-                        '/' +
-                        'addContract'
-                    "
+                    :to="'/' + locale + '/' + 'billing' + '/' + 'contracts' + '/' + 'addContract'"
                   >
                     <q-icon name="attach_money" />
                     {{ $t('addContract') }}
                   </router-link>
-                  <router-link
-                    class="block"
-                    :to="
-                      '/' +
-                        locale +
-                        '/' +
-                        'billing' +
-                        '/' +
-                        'contracts' +
-                        '/' +
-                        'contractsList'
-                    "
-                  >
+                  <router-link class="block" :to="'/' + locale + '/' + 'billing' + '/' + 'contracts' + '/' + 'contractsList'">
                     <q-icon name="attach_money" />
                     {{ $t('contractsList') }}
                   </router-link>
@@ -252,8 +233,7 @@
             <!-- tags management -->
             <li
               class="mainMenuLi"
-              v-if="$store.state.module1.userData.role === 'SERVICEMANAGER' ||
-                    $store.state.module1.userData.role === 'ADMIN'"
+              v-if="$store.state.module1.userData.role === 'SERVICEMANAGER' || $store.state.module1.userData.role === 'ADMIN'"
             >
               <q-item class="p8">
                 <!-- tags -->
@@ -276,21 +256,11 @@
                 :to="'/' + locale + '/' + 'fileManagements'"
               >
                 <!-- filesList -->
-                <router-link
-                  class="block"
-                  :to="
-                    '/' + locale + '/' + 'fileManagements' + '/' + 'filesList'
-                  "
-                >
+                <router-link class="block" :to="'/' + locale + '/' + 'fileManagements' + '/' + 'filesList'">
                   <q-icon name="fas fa-copy" class="fn18" />
                   {{ $t('filesList') }}
                 </router-link>
-                <router-link
-                  class="block"
-                  :to="
-                    '/' + locale + '/' + 'fileManagements' + '/' + 'uploadFile'
-                  "
-                >
+                <router-link class="block" :to="'/' + locale + '/' + 'fileManagements' + '/' + 'uploadFile'">
                   <q-icon name="fa fa-upload" />
                   {{ $t('uploadFile') }}
                 </router-link>

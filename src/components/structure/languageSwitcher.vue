@@ -1,30 +1,12 @@
-<template >
+<template>
   <div class="flex">
-    <q-select
-      class="switchLangsWrap"
-      v-model.trim="model"
-      map-options
-      emit-value
-      option-value="label"
-      outlined
-      :options="locales"
-      :label="$t('lang')"
-    >
-      <template v-slot:option="scope">
-        <q-item
-          v-bind="scope.itemProps"
-          v-on="scope.itemEvents"
-          @click="changeRoute(scope.opt.value)"
-        >
-          <q-item-section avatar>
-            <q-icon :name="scope.opt.icon" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>{{scope.opt.label}}</q-item-label>
-          </q-item-section>
-        </q-item>
-      </template>
-    </q-select>
+    <ul class="localesWrap">
+      <li v-for="locale in locales" :key="locale.value" class="localeValue">
+        <span @click="changeRoute(locale.value)">
+          {{ locale.value }}
+        </span>
+      </li>
+    </ul>
   </div>
 </template>
 <script>
@@ -33,7 +15,6 @@ export default {
   name: 'languageSwitcher',
   data() {
     return {
-      model: this.$t('persian'),
       locales: [
         {
           label: 'فارسی',
@@ -79,17 +60,6 @@ export default {
 };
 </script>
 <style lang="scss">
-// switch Languages
-.switchLangsWrap {
-  background-color: #f1f7f8;
-  border-radius: 4px;
-  width: 215px;
-  // height: 39px;
-}
-// .q-field--auto-height .q-field__control,
-// .q-field--auto-height .q-field__native {
-//   min-height: 39px !important;
-// }
 .switchLangsBut {
   span {
     padding: 12px;
@@ -102,5 +72,11 @@ export default {
   &.router-link-active {
     color: #ffff03;
   }
+}
+.localeValue {
+  color: #fff;
+  display: inline-block;
+  cursor: pointer;
+  padding: 0px 12px;
 }
 </style>

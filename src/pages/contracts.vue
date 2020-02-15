@@ -1,4 +1,4 @@
-<template >
+<template>
   <div class="q-pa-xl">
     <div class="cardActionWrap">
       <cardsAction :data="contracts.list" />
@@ -15,6 +15,10 @@ import cardsAction from '../components/structure/cardsAction.vue';
 
 export default {
   name: 'contracts',
+  meta() {
+    return { title: this.$t('contracts') };
+  },
+
   components: {
     cardsAction,
   },

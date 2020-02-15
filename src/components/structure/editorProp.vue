@@ -9,19 +9,13 @@
       toolbar-toggle-color="yellow-8"
       toolbar-bg="blue-grey-14"
       :toolbar="[
-
         ['bold', 'italic', 'strike', 'underline'],
         ['token', 'hr', 'link', 'custom_btn'],
-        [
-
-          'removeFormat'
-        ],
+        ['removeFormat'],
         ['quote', 'unordered', 'ordered'],
 
         ['undo', 'redo'],
-        [ 'fullscreen'],
-
-
+        ['fullscreen'],
       ]"
       :fonts="{
         arial: 'Arial',
@@ -31,7 +25,7 @@
         impact: 'Impact',
         lucida_grande: 'Lucida Grande',
         times_new_roman: 'Times New Roman',
-        verdana: 'Verdana'
+        verdana: 'Verdana',
       }"
     />
   </div>
@@ -59,5 +53,10 @@ export default {
 <style lang="scss">
 .editor {
   min-height: 350px;
+}
+blockquote {
+  background-color: #eee;
+  padding: 12px;
+  border-radius: 12px;
 }
 </style>

@@ -15,6 +15,10 @@ import tableDataWrap from '../components/structure/tableDataWrap.vue';
 
 export default {
   name: 'clients',
+  meta() {
+    return { title: this.$t('clients') };
+  },
+
   components: {
     tableDataWrap,
   },

@@ -9,6 +9,10 @@ import addNewTicket from '../components/tickets/addNewTicket.vue';
 
 export default {
   name: 'ticket',
+  meta() {
+    return { title: this.$t('addNewTicket') };
+  },
+
   components: {
     addNewTicket,
   },

@@ -190,4 +190,6 @@ export default {
   priod: 'priod',
   invoiceStartDate: 'invoice Start Date',
   invoiceEndDate: 'invoice End Date',
+  billing: 'Billing',
+  kanBoard: 'kanboard',
 };

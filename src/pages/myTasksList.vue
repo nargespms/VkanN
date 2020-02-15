@@ -1,4 +1,4 @@
-<template >
+<template>
   <div>
     <tasksListCmp />
   </div>
@@ -9,11 +9,14 @@ import tasksListCmp from '../components/tasks/tasksListCmp.vue';
 
 export default {
   name: 'tasksList',
+  meta() {
+    return { title: this.$t('myTasksList') };
+  },
+
   components: {
     tasksListCmp,
   },
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

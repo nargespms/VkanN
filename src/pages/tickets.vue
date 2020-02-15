@@ -8,13 +8,16 @@
   </div>
 </template>
 
-
 <script>
 import taskModal from '../components/structure/taskModal.vue';
 import cardsAction from '../components/structure/cardsAction.vue';
 
 export default {
   name: 'tickets',
+  meta() {
+    return { title: this.$t('tickets') };
+  },
+
   components: {
     cardsAction,
     taskModal,
@@ -40,5 +43,4 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-</style>
+<style lang="scss"></style>

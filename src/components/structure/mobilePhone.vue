@@ -1,4 +1,4 @@
-<template >
+<template>
   <div>
     <!-- contries -->
     <q-select
@@ -12,9 +12,7 @@
       @filter="filterFn"
       v-model="con"
       :label="$t('country')"
-      required
       lazy-rules
-      :rules="[val => val && val.length > 0]"
     >
       <template v-slot:no-option>
         <q-item>
@@ -37,6 +35,7 @@
       :disable="!this.con"
       debounce="1000"
       @blur="formatter"
+      class="pt20"
     >
       <template v-slot:prepend>
         <q-icon name="fas fa-phone" />
@@ -53,25 +52,26 @@
           name="fas fa-times"
           class="mailIcon text-negative"
         />
-        <span v-if="!verifyMobile && $v.number && !wrongNumber" class="text-negative fn11">
-          {{
-          $t('enteredEmailisRegistered')
-          }}
-        </span>
+        <span
+          v-if="!verifyMobile && $v.number && !wrongNumber"
+          class="text-negative fn11"
+        >{{ $t('enteredEmailisRegistered') }}</span>
         <p class="error" v-if="wrongNumber">
-          <span class="fn11">{{$t('wrongnumber')}}</span>
+          <span class="fn11">{{ $t('wrongnumber') }}</span>
         </p>
       </template>
 
       <!-- check for async validation -->
       <p v-if="errors" class="error">
-        <span class="fn11" v-if="!$v.number.minLength">*{{$t('Fieldmusthaveatleast10characters')}}.</span>
+        <span
+          class="fn11"
+          v-if="!$v.number.minLength"
+        >*{{ $t('Fieldmusthaveatleast10characters') }}.</span>
       </p>
     </q-input>
     <!-- enter mobile phone number -->
   </div>
 </template>
-
 
 <script>
 import { minLength } from 'vuelidate/lib/validators';
@@ -90,7 +90,7 @@ export default {
       errors: false,
       empty: true,
       // data for validation
-      options: this.data,
+      options: Object.freeze(this.data),
       filterOption: '',
       number: '',
       con: '',
@@ -154,6 +154,8 @@ export default {
             });
           this.verifyMobile = true;
           this.wrongNumber = false;
+          console.log('miad inja');
+          this.$emit('mobileVerified', completeNum, this.con);
           // async validation
         } else {
           this.wrongNumber = true;

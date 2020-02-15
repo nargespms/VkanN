@@ -1,36 +1,45 @@
-<template >
+<template>
   <div class="tinyFixInfo">
     <div class="con16 clear p12">
       <div class="tinyFixInfoInner">
+        <!-- language switcher component -->
+        <languageSwitcher :locale="locale" />
+
+        <!-- seprator -->
+        <q-icon name="fas fa-ellipsis-v " class="text-white sepratorInfoHeader"></q-icon>
+
+        <!-- search -->
+        <div class="searchWrap text-white">
+          <searchField :locale="locale" />
+        </div>
+
+        <!-- seprator -->
+        <q-icon name="fas fa-ellipsis-v " class="text-white sepratorInfoHeader"></q-icon>
+
         <router-link
           v-if="!$store.state.module1.logedIn"
-          :to="'/' +locale + '/' + 'signIn'"
+          :to="'/' + locale + '/' + 'signIn'"
           class="loginBut text-white"
         >
           <span>
-            <q-icon name="fas fa-user" class="pr12"></q-icon>
-            {{$t('login')}}
+            {{ $t('login') }}
+            <q-icon name="fas fa-user" class="pl12"></q-icon>
           </span>
         </router-link>
         <div v-if="$store.state.module1.logedIn" class="loginBut text-white" @click="logOutPannel">
           <span>
-            <q-icon name="fas fa-sign-out-alt" class="pr12"></q-icon>
-            {{$t('logOut')}}
+            {{ $t('logOut') }}
+            <q-icon name="fa fa-key" class="fn12 pl12"></q-icon>
           </span>
-        </div>
-        <!-- seprator -->
-        <q-icon name="fas fa-grip-vertical " class="text-white sepratorInfoHeader"></q-icon>
-        <!-- search -->
-        <div class="searchWrap text-white">
-          <searchField :locale="locale" />
         </div>
       </div>
     </div>
   </div>
 </template>
 
-
 <script>
+import languageSwitcher from '../structure/languageSwitcher.vue';
+
 import searchField from '../structure/searchField.vue';
 
 export default {
@@ -38,6 +47,7 @@ export default {
   props: ['locale'],
   components: {
     searchField,
+    languageSwitcher,
   },
   methods: {
     logOutPannel() {
@@ -60,7 +70,7 @@ export default {
   width: 100%;
   height: 50px;
   position: fixed;
-  top: 87px;
+  top: 64px;
   background: #2f718f;
   border-bottom: 5px solid #e2e95d;
   z-index: 999;
@@ -68,7 +78,6 @@ export default {
 }
 .loginBut {
   float: right;
-  padding-left: 24px;
   display: flex;
   flex-direction: column;
   justify-content: center;

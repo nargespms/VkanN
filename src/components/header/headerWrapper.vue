@@ -13,9 +13,11 @@
             icon="menu"
             aria-label="Menu"
           />
-          <q-toolbar-title>{{$t('welcomemsg')}}</q-toolbar-title>
-          <!-- language switcher component -->
-          <languageSwitcher :locale="locale" />
+          <q-toolbar-title class="welMsgLogo">
+            <span>
+              {{ $t('welcomemsg') }}
+            </span>
+          </q-toolbar-title>
         </q-toolbar>
       </div>
     </q-header>
@@ -32,14 +34,12 @@
   </div>
 </template>
 <script>
-import languageSwitcher from '../structure/languageSwitcher.vue';
 import rightMainMenu from '../structure/rightMainMenu.vue';
 // import expandableMenu from '../structure/expandableMenu.vue';
 
 export default {
   name: 'headerWrapper',
   components: {
-    languageSwitcher,
     rightMainMenu,
     // expandableMenu,
   },
@@ -73,5 +73,14 @@ export default {
 <style lang="scss">
 .headerInner {
   padding: 16px 12px;
+}
+.welMsgLogo {
+  background-image: url('../../../node_modules/@aasaam/information/logo/aasaam-mask.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left;
+  span {
+    padding-left: 50px;
+  }
 }
 </style>

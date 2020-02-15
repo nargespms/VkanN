@@ -10,19 +10,15 @@
       toolbar-toggle-color="yellow-8"
       toolbar-bg="blue-grey-14"
       :toolbar="[
-
         ['bold', 'italic', 'strike', 'underline'],
         ['token', 'hr', 'link', 'custom_btn'],
-        [
-
-          'removeFormat'
-        ],
+        ['removeFormat'],
         ['quote', 'unordered', 'ordered'],
 
         ['undo', 'redo'],
-        [ 'fullscreen'],
+        ['fullscreen'],
 
-        ['viewsource']
+        ['viewsource'],
       ]"
       :fonts="{
         arial: 'Arial',
@@ -32,7 +28,7 @@
         impact: 'Impact',
         lucida_grande: 'Lucida Grande',
         times_new_roman: 'Times New Roman',
-        verdana: 'Verdana'
+        verdana: 'Verdana',
       }"
     ></q-editor>
   </div>
@@ -108,4 +104,33 @@ export default {
   background: #fff5f5;
   border-radius: 1px;
 }
+blockquote {
+  background-color: #eee;
+  padding: 12px;
+  border-radius: 12px;
+}
+blockquote::after {
+  content: quote-right;
+  font-family: 'FontAwesome';
+}
+// blockquote {
+//   position: relative;
+//   /* background: #ddd; */
+// }
+// blockquote:before {
+//   position: absolute;
+//   content: open-quote;
+//   font-size: 4em;
+//   margin-left: -0.6em;
+//   margin-top: -0.4em;
+// }
+// blockquote:after {
+//   position: absolute;
+//   content: close-quote;
+//   font-size: 4em;
+//   bottom: 0;
+//   right: 0;
+//   margin-right: -0.6em;
+//   margin-bottom: -0.8em;
+// }
 </style>

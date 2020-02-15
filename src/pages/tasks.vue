@@ -14,6 +14,10 @@ import cardsAction from '../components/structure/cardsAction.vue';
 
 export default {
   name: 'tasks',
+  meta() {
+    return { title: this.$t('tasks') };
+  },
+
   components: {
     cardsAction,
   },

@@ -10,6 +10,10 @@ import previewInvoiceCmp from '../components/print/previewInvoiceCmp.vue';
 
 export default {
   name: 'previewInvoice',
+  meta() {
+    return { title: this.$t('preview') };
+  },
+
   components: {
     previewInvoiceCmp,
   },

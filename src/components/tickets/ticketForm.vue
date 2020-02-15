@@ -1,4 +1,4 @@
-<template >
+<template>
   <div class="ticketFormWrap">
     <div class="ticketForm">
       <form>
@@ -10,12 +10,12 @@
           :label="$t('ticketTitle')"
           v-model.trim="ticket.title"
           lazy-rules
-          :rules="[ val => val && val.length > 0 ]"
+          :rules="[val => val && val.length > 0]"
           :error="$v.ticket.title.$error"
           @input="$v.ticket.title.$touch"
         >
           <p v-if="errors" class="error">
-            <span v-if="!$v.ticket.title.required">*{{$t('thisfieldisrequired')}}.</span>
+            <span v-if="!$v.ticket.title.required">*{{ $t('thisfieldisrequired') }}.</span>
           </p>
         </q-input>
         <div class="clear">
@@ -44,32 +44,16 @@
               <q-icon name="fas fa-sort-amount-up" />
             </template>
           </q-select>
-          <!-- choose service Name -->
-          <q-select
-            filled
-            class="ticketInfoRecieve pr24"
-            v-model.trim="ticket.serviceName"
-            :options="FilterOption"
-            :label="$t('serviceName')"
-            required
-            lazy-rules
-            :rules="[ val => val && val.length > 0 ]"
-            @filter="filterFn"
-            use-input
-            hide-selected
-            fill-input
-            input-debounce="0"
-            @input="setServiceUrl"
-          >
-            <template v-slot:prepend>
-              <q-icon name="settings_applications" />
-            </template>
-            <template v-slot:no-option>
-              <q-item>
-                <q-item-section class="text-grey">No results</q-item-section>
-              </q-item>
-            </template>
-          </q-select>
+
+          <!--  Service name -->
+          <singleAutoCompleteSelectBox
+            :options="services"
+            :optionLable="'name'"
+            :optionValue="'id'"
+            :name="'serviceName'"
+            label="firstName"
+            @getAutoCompleteValue="getAutoCompleteValueService"
+          />
         </div>
         <div class="editorWrap">
           <editor />
@@ -77,7 +61,7 @@
         <div class="attachments">
           <span class="attachHeader">
             <q-icon name="fas fa-paperclip" />
-            {{$t('attachments')}}
+            {{ $t('attachments') }}
           </span>
 
           <uploadfile />
@@ -93,6 +77,7 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators';
+import singleAutoCompleteSelectBox from '../structure/singleAutoCompleteSelectBox.vue';
 
 import editor from '../structure/editor.vue';
 import uploadfile from '../structure/uploadfile.vue';
@@ -103,6 +88,7 @@ export default {
   components: {
     editor,
     uploadfile,
+    singleAutoCompleteSelectBox,
   },
   data() {
     return {
@@ -112,22 +98,18 @@ export default {
       empty: true,
       // end of data for validation
       //  for captcha checking
+      services: [],
 
       FilterOption: this.servicesName,
       FilterOption2: this.customerName,
-      servicesName: ['service1', 'service2', 'service3', 'الکسا', 'رکنا'],
       customerName: ['customer1', 'customer2', 'customer3', 'ابراهیمی'],
       departmans: ['INFO', 'SUPPORT', 'BILLING'],
-      priorities: [
-        this.$t('emergency'),
-        this.$t('middle'),
-        this.$t('take your time'),
-      ],
+      priorities: [this.$t('emergency'), this.$t('middle'), this.$t('take your time')],
       ticket: {
         title: '',
         departamn: this.choosedDep,
         priority: '',
-        serviceName: this.choosedService,
+        serviceName: '',
       },
     };
   },
@@ -211,9 +193,7 @@ export default {
             this.FilterOption = this.servicesName;
           } else {
             const needle = val.toLowerCase();
-            this.FilterOption = this.servicesName.filter(
-              v => v.toLowerCase().indexOf(needle) > -1
-            );
+            this.FilterOption = this.servicesName.filter(v => v.toLowerCase().indexOf(needle) > -1);
           }
         });
       }, 500);
@@ -227,13 +207,22 @@ export default {
             this.FilterOption2 = this.customerName;
           } else {
             const needle = val.toLowerCase();
-            this.FilterOption2 = this.customerName.filter(
-              v => v.toLowerCase().indexOf(needle) > -1
-            );
+            this.FilterOption2 = this.customerName.filter(v => v.toLowerCase().indexOf(needle) > -1);
           }
         });
       }, 500);
     },
+    getAutoCompleteValueService(value) {
+      this.ticket.serviceName = value.id;
+    },
+  },
+  mounted() {
+    this.$axios.get('/v1/api/vkann/services/get-services').then(res => {
+      // console.log(res.data.services);
+      this.services = res.data.services;
+      this.servicesLable = this.services.map(v => v.name);
+      this.servicesid = this.services.map(v => v.id);
+    });
   },
 };
 </script>

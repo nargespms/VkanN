@@ -1,12 +1,17 @@
 <template>
   <div class="searchWrap">
     <div @click="toggleSearch" class="searchButton">
-      <span>{{$t('search')}}</span>
-      <q-icon name="fas fa-search" class="pl12" />
+      <q-icon name="fas fa-search" class="pr12" />
+      <span>{{ $t('search') }}</span>
     </div>
     <div class="fullscreenSearchWrap" :class="{ open: isOpen }">
       <form @submit="search">
-        <input type="text" required v-model.trim="searchQuery" :placeholder="$t('search')" />
+        <input
+          type="text"
+          required
+          v-model.trim="searchQuery"
+          :placeholder="$t('search')"
+        />
       </form>
       <symboleButton class="searchCloseButton" invert @click="toggleSearch" />
     </div>

@@ -1,4 +1,4 @@
-<template >
+<template>
   <div class="q-pa-xl">
     <div class="uploadFileWrapperPage">
       <uploadfile :UploadButton="true" :text="'uploadFile'" />
@@ -11,6 +11,10 @@ import uploadfile from '../components/structure/uploadfile.vue';
 
 export default {
   name: 'uploadFile',
+  meta() {
+    return { title: this.$t('uploadFile') };
+  },
+
   components: {
     uploadfile,
   },

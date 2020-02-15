@@ -40,12 +40,7 @@
           <span @click="goToForget">{{ $t('forgotEmail') }} {{ $t('questionmark') }}</span>
         </router-link>
         <div class="clear mt78">
-          <q-btn
-            class="continueToNextLevel"
-            :label="$t('next')"
-            color="primary"
-            @click="userNameVerify"
-          />
+          <q-btn class="continueToNextLevel" :label="$t('next')" color="primary" @click="userNameVerify" />
           <router-link to="/" class="creatNewAcc">
             <span @click="goToSignUp">{{ $t('newaccount') }}</span>
           </router-link>
@@ -74,12 +69,7 @@
         </q-input>
         <captcha @captchaValid="captchaValid" :key="componentKey" />
         <div class="clear mt78">
-          <q-btn
-            class="continueToNextLevel"
-            :label="$t('enter')"
-            color="primary"
-            @click="stepTwoComplete"
-          />
+          <q-btn class="continueToNextLevel" :label="$t('enter')" color="primary" @click="stepTwoComplete" />
           <router-link to="/" class="creatNewAcc">
             <span @click="goToForget">{{ $t('forgetpassword') }}</span>
           </router-link>
@@ -104,21 +94,14 @@
           </template>
           <p v-if="errors" class="error">
             <span v-if="!$v.form.otp.minLength">
-              {{
-              $t('Fieldmusthaveatleast4characters')
-              }}
+              {{ $t('Fieldmusthaveatleast4characters') }}
             </span>
             <span v-if="!$v.form.otp.isUnique">{{ $t('invalidCode') }}</span>
           </p>
         </q-input>
         <captcha @captchaValid="captchaValid" />
         <div class="clear mt78">
-          <q-btn
-            class="continueToNextLevel"
-            :label="$t('enter')"
-            color="primary"
-            @click="otpStepComplete"
-          />
+          <q-btn class="continueToNextLevel" :label="$t('enter')" color="primary" @click="otpStepComplete" />
           <span class="resendOtp">{{ $t('resendOtp') }}</span>
         </div>
       </div>
@@ -182,22 +165,22 @@ export default {
           console.log(value);
           const re = /\S+@\S+\.\S+/;
           const re2 = /^-{0,1}\d+$/;
-          console.log(re2.test(value));
-          console.log(re.test(value));
+          // console.log(re2.test(value));
+          // console.log(re.test(value));
           if (re.test(value)) {
-            console.log('emaile');
+            // console.log('emaile');
             this.UserName = value;
             this.emailTrue = true;
             this.mobileTrue = false;
-            console.log(`email :${this.emailTrue}`);
+            // console.log(`email :${this.emailTrue}`);
           } else if (re2.test(value)) {
-            console.log('email nist');
+            // console.log('email nist');
             this.UserName = value;
             this.emailTrue = false;
             this.mobileTrue = true;
-            console.log(`mobile :${this.mobileTrue}`);
+            // console.log(`mobile :${this.mobileTrue}`);
           } else {
-            console.log('non');
+            // console.log('non');
             this.mobileTrue = false;
             this.emailTrue = false;
           }
@@ -362,8 +345,7 @@ export default {
         } else {
           this.$axios
             .post('/v1/api/vkann/sign-in', {
-              email: this.form.UserName,
-              mobile: this.form.UserName,
+              ...(this.emailTrue ? { email: this.form.UserName } : { mobile: this.form.UserName }),
               password: this.form.password,
               captcha: this.captchaObj,
             })
@@ -372,11 +354,7 @@ export default {
                 this.EnableSecondLevel = false;
                 this.showNotif('top-right');
                 console.log(response.data);
-                this.$store.commit(
-                  'module1/userDataFromServer',
-                  response.data,
-                  { module: 'module1' }
-                );
+                this.$store.commit('module1/userDataFromServer', response.data, { module: 'module1' });
                 this.$store.commit('module1/logedInSuccesfully', true, {
                   module: 'module1',
                 });

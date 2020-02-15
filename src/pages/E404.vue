@@ -10,6 +10,17 @@
     <img src="~assets/signIn.png" alt />
   </div>
 </template>
+
+
+<script>
+export default {
+  meta() {
+    return { title: this.$t('welcomemsg') };
+  },
+};
+</script>
+
+
 <style lang="scss">
 .alreadySignedText {
   span {

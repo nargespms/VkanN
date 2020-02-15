@@ -1,4 +1,4 @@
-<template >
+<template>
   <div class="q-pa-xl">
     <div class="cardActionWrap">
       <cardsAction :data="files.invoices" />
@@ -12,6 +12,10 @@ import cardsAction from '../components/structure/cardsAction.vue';
 
 export default {
   name: 'fileManagements',
+  meta() {
+    return { title: this.$t('fileManagements') };
+  },
+
   components: {
     cardsAction,
   },

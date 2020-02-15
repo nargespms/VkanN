@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-xl">
-    <div class="width-1of2 lg-width-1of3 sm-auto">
+    <div class="width-1of2 lg-width-1of3 sm-auto chartsWrap">
       <lineChart :chartdata="chartData" :options="chartOptions"></lineChart>
       <barChart :chartdata="chartData" :options="chartOptions"></barChart>
       <Doughnutchart
@@ -27,6 +27,12 @@ import Bubblechart from '../components/structure/Bubblechart.vue';
 import scatterChart from '../components/structure/scatterChart.vue';
 
 export default {
+  meta() {
+    return {
+      title: this.$t('dashboard'),
+    };
+  },
+
   components: {
     lineChart,
     barChart,
@@ -99,3 +105,5 @@ export default {
   },
 };
 </script>
+
+<style lang="scss"></style>

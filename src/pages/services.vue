@@ -4,20 +4,25 @@
       <cardsAction :data="services.list" />
 
       <cardsAction
-        v-if="$store.state.module1.userData.role === 'BILLING' ||
-              $store.state.module1.userData.role === 'ADMIN'"
+        v-if="
+          $store.state.module1.userData.role === 'BILLING' ||
+            $store.state.module1.userData.role === 'ADMIN'
+        "
         :data="services.addService"
       />
     </div>
   </div>
 </template>
 
-
 <script>
 import cardsAction from '../components/structure/cardsAction.vue';
 
 export default {
   name: 'services',
+  meta() {
+    return { title: this.$t('services') };
+  },
+
   components: {
     cardsAction,
   },
@@ -42,5 +47,4 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-</style>
+<style lang="scss"></style>

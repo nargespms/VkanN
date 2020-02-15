@@ -20,6 +20,10 @@ import signInCard from '../components/signIn/signInCard.vue';
 
 export default {
   name: 'signIn',
+  meta() {
+    return { title: this.$t('welcomemsg') };
+  },
+
   components: {
     signInCard,
   },

@@ -1,18 +1,17 @@
-<template >
+<template>
   <div class="col3th addServiceWrapper">
     <q-form @submit="onSubmit">
       <div class="col1">
         <!--  Service name -->
-        <q-select
+        <q-input
           outlined
           required
           color="light-blue-10 "
           v-model.trim="service.name"
-          :options="servicesName"
           :label="$t('serviceName')"
           class="inputStyle"
           lazy-rules
-          :rules="[ val => val && val.length > 0 ]"
+          :rules="[val => val && val.length > 0]"
           autofocus
         >
           <template v-slot:prepend>
@@ -21,7 +20,7 @@
           <!-- <p v-if="errors" class="error">
             <span v-if="$v.service.name.required">*{{$t('thisfieldisrequired')}}.</span>
           </p>-->
-        </q-select>
+        </q-input>
         <!-- service type -->
         <q-select
           color="light-blue-10 "
@@ -37,7 +36,7 @@
           </template>
         </q-select>
         <!-- employee name -->
-        <q-select
+        <!-- <q-select
           color="light-blue-10 "
           outlined
           v-model.trim="service.employee"
@@ -48,7 +47,16 @@
           <template v-slot:prepend>
             <q-icon name="fas fa-user" />
           </template>
-        </q-select>
+        </q-select> -->
+        <singleAutoCompleteSelectBox
+          :options="staffs"
+          :optionLable="'firstName'"
+          :optionValue="'id'"
+          :name="'employeeName'"
+          label="firstName"
+          @getAutoCompleteValue="getAutoCompleteValuestaff"
+        />
+
         <!-- client name -->
         <!-- <q-select
           color="light-blue-10 "
@@ -72,11 +80,13 @@
           :optionValue="'id'"
           :name="'clientName'"
           label="firstName"
+          class="pt20"
+          @getAutoCompleteValue="getAutoCompleteValueclient"
         />
         <!-- primary Domain -->
         <q-input
           outlined
-          class
+          class="pt20"
           color="light-blue-10"
           v-model.trim="service.primaryDomain"
           :label="$t('primaryDomain')"
@@ -122,7 +132,9 @@
             <q-icon name="fas fa-tty" />
           </template>
           <p v-if="errors" class="error">
-            <span v-if="!$v.service.voip.minLength">*{{$t('Fieldmusthaveatleast4characters')}}.</span>
+            <span v-if="!$v.service.voip.minLength"
+              >*{{ $t('Fieldmusthaveatleast4characters') }}.</span
+            >
           </p>
         </q-input>
         <!-- description -->
@@ -160,12 +172,32 @@
         </q-select>
       </div>
       <div class="col3">
-        <q-btn class="halfw generalBut" icon="system_update_alt" :label="$t('tickets')" />
-        <q-btn class="halfw generalBut" icon="play_for_work" :label="$t('tasks')" />
-        <q-btn class="halfw generalBut" icon="fas fa-handshake" :label="$t('contracts')" />
-        <q-btn class="halfw generalBut" icon="fas fa-file-invoice" :label="$t('invoices')" />
+        <q-btn
+          class="halfw generalBut"
+          icon="system_update_alt"
+          :label="$t('tickets')"
+        />
+        <q-btn
+          class="halfw generalBut"
+          icon="play_for_work"
+          :label="$t('tasks')"
+        />
+        <q-btn
+          class="halfw generalBut"
+          icon="fas fa-handshake"
+          :label="$t('contracts')"
+        />
+        <q-btn
+          class="halfw generalBut"
+          icon="fas fa-file-invoice"
+          :label="$t('invoices')"
+        />
         <div class="mr16 fullw mb16">
-          <uploadfile :UploadButton="false" ref="upload" :text="'attachments'" />
+          <uploadfile
+            :UploadButton="false"
+            ref="upload"
+            :text="'attachments'"
+          />
         </div>
         <div class="fullw mb16">
           <uploadfile :UploadButton="false" ref="upload" :text="'avatar'" />
@@ -193,8 +225,15 @@ export default {
   },
   data() {
     return {
+      // data from server for clients
       clientsLable: '',
       clientsid: '',
+      clients: {},
+      // data from server for staffs
+      staffs: {},
+      staffsLable: '',
+      staffsid: '',
+
       // data for validation
       uiState: 'submit not clicked',
       errors: true,
@@ -203,8 +242,6 @@ export default {
       servicesName: ['name1', 'name2', 'name3'],
       serviceType: ['type1', 'type2', 'type3'],
       servicesTag: ['tag1', 'tag2', 'tag3'],
-      staff: ['employee1', 'employee2', 'employee3'],
-      clients: {},
       bilingStatusService: ['paid', 'unpaid', 'waiting'],
       servicesStatus: ['status1', 'status2', 'status3'],
       service: {
@@ -232,8 +269,14 @@ export default {
     },
   },
   methods: {
+    getAutoCompleteValuestaff(value) {
+      this.service.employee = value.id;
+    },
+    getAutoCompleteValueclient(value) {
+      this.service.client = value.id;
+    },
     addTagFn(value) {
-      this.service.tags = value;
+      this.service.tags = value.map(v => v.id);
     },
 
     onSubmit() {
@@ -247,7 +290,7 @@ export default {
         this.$refs.upload.submit_btn();
         this.$axios
           .post('/v1/api/vkann/services', {
-            tags: ['string'],
+            tags: this.service.tags,
             name: this.service.name,
             type: this.service.type,
             staff: this.service.employee,
@@ -261,6 +304,17 @@ export default {
           })
           .then(response => {
             console.log(response);
+            if (response.status === 200) {
+              this.$q.notify({
+                message: this.$t('newServiceAdded'),
+                color: 'positive',
+                icon: 'check',
+                position: 'top',
+              });
+              this.$router.push({
+                path: `/${this.$route.params.locale}/services/servicesList`,
+              });
+            }
           })
           .catch(e => {
             console.log(e.response.status);
@@ -295,6 +349,11 @@ export default {
       this.clients = res.data.users;
       this.clientsLable = this.clients.map(v => v.firstName);
       this.clientsid = this.clients.map(v => v.id);
+    });
+    this.$axios.get('v1/api/vkann/users/get-staffs').then(response => {
+      this.staffs = response.data.users;
+      this.staffsLable = this.staffs.map(v => v.firstName);
+      this.staffsid = this.staffs.map(v => v.id);
     });
   },
 };

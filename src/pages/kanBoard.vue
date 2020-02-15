@@ -13,6 +13,10 @@ import taskModal from '../components/structure/taskModal.vue';
 
 export default {
   name: 'kanBoard',
+  meta() {
+    return { title: this.$t('kanBoard') };
+  },
+
   components: {
     kanBoardTable,
     taskModal,

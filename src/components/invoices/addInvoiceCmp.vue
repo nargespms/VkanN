@@ -52,7 +52,11 @@
           >
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
-                <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                <q-popup-proxy
+                  ref="qDateProxy"
+                  transition-show="scale"
+                  transition-hide="scale"
+                >
                   <q-date
                     v-model.trim="invoice.startdate"
                     @input="() => $refs.qDateProxy.hide()"
@@ -76,7 +80,11 @@
           >
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
-                <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                <q-popup-proxy
+                  ref="qDateProxy"
+                  transition-show="scale"
+                  transition-hide="scale"
+                >
                   <q-date
                     v-model.trim="invoice.enddate"
                     @input="() => $refs.qDateProxy.hide()"
@@ -147,7 +155,11 @@
         </div>
         <div class="col3">
           <div class="w100">
-            <uploadfile :UploadButton="false" ref="upload" :text="'attachments'" />
+            <uploadfile
+              :UploadButton="false"
+              ref="upload"
+              :text="'attachments'"
+            />
           </div>
         </div>
       </div>
@@ -161,15 +173,15 @@
       <div class="invoiceTotalAmountWrap">
         <h5>
           {{ $t('subTotal') }}
-          <span v-if="invoice.currency.length">({{ $t(`${invoice.currency}`) }})</span>
+          <span v-if="invoice.currency.length"
+            >({{ $t(`${invoice.currency}`) }})</span
+          >
         </h5>
         <div class="invoiceTotalAmount">{{ invoiceTotalAmount }}</div>
       </div>
       <div class="saveButtons">
         <q-btn class="savebutton mr12" color="primary" type="submit">
-          {{
-          $t('save')
-          }}
+          {{ $t('save') }}
         </q-btn>
       </div>
     </q-form>
@@ -243,7 +255,7 @@ export default {
       console.log(value);
     },
     addTagFn(value) {
-      this.invoice.tags = value;
+      this.invoice.tags = value.map(v => v.id);
     },
     computeEnddate(enddate) {
       return enddate >= this.invoice.startdate;

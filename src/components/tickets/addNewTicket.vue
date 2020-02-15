@@ -1,31 +1,18 @@
-<template >
+<template>
   <div class="addNewTicketCmp">
     <!-- choosing departman for ticket -->
     <div class="chooseDep" v-if="!ticketFormStatus">
       <div class="generalButWrap" v-if="$store.state.module1.userData.role === 'CLIENT'">
-        <q-btn
-          class="optionChooseBut"
-          icon="attach_money"
-          :label="$t('billing')"
-          @click="activeBilling"
-        />
-        <q-btn
-          class="optionChooseBut"
-          icon="far fa-life-ring"
-          :label="$t('support')"
-          @click="activeSupport"
-        />
-        <q-btn
-          class="optionChooseBut"
-          icon="fas fa-question-circle"
-          :label="$t('information')"
-          @click="activeInfo"
-        />
+        <q-btn class="optionChooseBut" icon="attach_money" :label="$t('billing')" @click="activeBilling" />
+        <q-btn class="optionChooseBut" icon="far fa-life-ring" :label="$t('support')" @click="activeSupport" />
+        <q-btn class="optionChooseBut" icon="fas fa-question-circle" :label="$t('information')" @click="activeInfo" />
       </div>
     </div>
-    <div
+    <!-- <div
       class="chooseDep"
-      v-if="!ticketFormStatus && $store.state.module1.userData.role !== 'CLIENT'"
+      v-if="
+        !ticketFormStatus && $store.state.module1.userData.role !== 'CLIENT'
+      "
     >
       <q-select
         filled
@@ -35,7 +22,7 @@
         :label="$t('serviceName')"
         required
         lazy-rules
-        :rules="[ val => val && val.length > 0 ]"
+        :rules="[val => val && val.length > 0]"
         @filter="filterFn2"
         use-input
         hide-selected
@@ -52,30 +39,23 @@
           </q-item>
         </template>
       </q-select>
-    </div>
-    <div v-if="ticketFormStatus">
-      <!-- buuton to back to choosing Departman -->
-      <q-btn
-        class="optionChooseBut"
-        icon="fas fa-arrow-left"
-        :label="$t('back')"
-        @click="activeChooseDep"
-      />
+    </div> -->
+    <div v-if="ticketFormStatus || $store.state.module1.userData.role !== 'CLIENT'">
       <!-- new ticket form -->
-      <ticketForm
-        :choosedDep="this.$route.query.depid"
-        :choosedService="this.$route.query.serviceName"
-      />
+      <ticketForm :choosedDep="this.$route.query.depid" :choosedService="this.$route.query.serviceName" />
     </div>
   </div>
 </template>
-
 
 <script>
 import ticketForm from './ticketForm.vue';
 
 export default {
   name: 'addNewTicket',
+  meta() {
+    return { title: this.$t('addTicket') };
+  },
+
   components: {
     ticketForm,
   },
@@ -98,9 +78,7 @@ export default {
         query: { serviceName: this.ticket.serviceName },
       });
     },
-    activeChooseDep() {
-      this.ticketFormStatus = false;
-    },
+
     // activate billing ticket
     activeBilling() {
       this.ticketFormStatus = !this.ticketFormStatus;
@@ -135,9 +113,7 @@ export default {
             this.FilterOption2 = this.servicesName;
           } else {
             const needle = val.toLowerCase();
-            this.FilterOption2 = this.servicesName.filter(
-              v => v.toLowerCase().indexOf(needle) > -1
-            );
+            this.FilterOption2 = this.servicesName.filter(v => v.toLowerCase().indexOf(needle) > -1);
           }
         });
       }, 500);

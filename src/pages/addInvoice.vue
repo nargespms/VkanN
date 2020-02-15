@@ -1,19 +1,24 @@
 <template>
   <div class="q-pa-xl">
-    <h4 class="headerTitleInPage">
-      <span>{{ $t('addInvoice') }}</span>
-    </h4>
-    <addInvoiceCmp />
+    <!-- <addInvoiceCmp /> -->
+    <addInvoiceTable />
   </div>
 </template>
 
 <script>
-import addInvoiceCmp from '../components/invoices/addInvoiceCmp.vue';
+// import addInvoiceCmp from '../components/invoices/addInvoiceCmp.vue';
+import addInvoiceTable from '../components/invoices/addInvoiceTable.vue';
 
 export default {
   name: 'addInvoice',
+  meta() {
+    return { title: this.$t('addInvoice') };
+  },
+
   components: {
-    addInvoiceCmp,
+    addInvoiceTable,
+
+    // addInvoiceCmp,
   },
 };
 </script>

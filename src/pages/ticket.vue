@@ -30,6 +30,10 @@ import ticketThreads2 from '../components/tickets/ticketThreads2.vue';
 
 export default {
   name: 'ticket',
+  meta() {
+    return { title: this.$t('ticket') };
+  },
+
   components: {
     ticketInfo,
     replyTicket,

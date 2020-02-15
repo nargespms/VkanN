@@ -1,7 +1,7 @@
-<template >
+<template>
   <div class="newTaskWrapper">
     <div class="primarynewTaskInfo taskWrapper">
-      <div class="newTaskInfoHeader">{{$t('essentialInformation')}}</div>
+      <div class="newTaskInfoHeader">{{ $t('essentialInformation') }}</div>
       <div class="primarynewTaskContent">
         <div class="taskText pt20">
           <q-input
@@ -37,14 +37,15 @@
               <q-icon
                 name="fa fa-table"
                 color="primary"
-                @click="ticketPicker= !ticketPicker"
+                @click="ticketPicker = !ticketPicker"
                 class="ticketPicker"
               >
                 <q-tooltip
                   v-model="showing1"
                   transition-show="scale"
                   transition-hide="scale"
-                >{{ $t('selectTicket') }}</q-tooltip>
+                  >{{ $t('selectTicket') }}</q-tooltip
+                >
               </q-icon>
               <q-dialog
                 v-model="ticketPicker"
@@ -112,7 +113,9 @@
       <div
         class="newTaskInfoHeader"
         @click="taskStateAssign = !taskStateAssign"
-      >{{$t('assignInformation')}}</div>
+      >
+        {{ $t('assignInformation') }}
+      </div>
       <q-slide-transition>
         <div
           class="assignTaskContent mt24"
@@ -121,7 +124,7 @@
           transition-hide="scale"
         >
           <!-- assignee person -->
-          <q-select
+          <!-- <q-select
             outlined
             v-model="task.assignee"
             :label="$t('assign')"
@@ -139,7 +142,16 @@
                 <q-item-section class="text-grey">No results</q-item-section>
               </q-item>
             </template>
-          </q-select>
+          </q-select> -->
+          <singleAutoCompleteSelectBox
+            :options="staffs"
+            :optionLable="'firstName'"
+            :optionValue="'id'"
+            :name="'employeeName'"
+            label="firstName"
+            @getAutoCompleteValue="getAutoCompleteValuestaff"
+          />
+
           <!-- estimated time -->
           <q-input
             outlined
@@ -150,7 +162,11 @@
           >
             <template v-slot:prepend>
               <q-icon name="access_time" class="cursor-pointer" color="primary">
-                <q-popup-proxy ref="qTimeProxy1" transition-show="scale" transition-hide="scale">
+                <q-popup-proxy
+                  ref="qTimeProxy1"
+                  transition-show="scale"
+                  transition-hide="scale"
+                >
                   <q-time
                     v-model="task.stimateTime"
                     :minute-options="minuteOptions"
@@ -173,7 +189,11 @@
           >
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
-                <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                <q-popup-proxy
+                  ref="qDateProxy"
+                  transition-show="scale"
+                  transition-hide="scale"
+                >
                   <q-date
                     v-model.trim="task.dueDate"
                     @input="() => $refs.qDateProxy.hide()"
@@ -185,10 +205,19 @@
             </template>
           </q-input>
           <!-- done time -->
-          <q-input outlined v-model="task.doneTime" :label="$t('doneTime')" mask="time">
+          <q-input
+            outlined
+            v-model="task.doneTime"
+            :label="$t('doneTime')"
+            mask="time"
+          >
             <template v-slot:prepend>
               <q-icon name="access_time" class="cursor-pointer" color="primary">
-                <q-popup-proxy ref="qTimeProxy" transition-show="scale" transition-hide="scale">
+                <q-popup-proxy
+                  ref="qTimeProxy"
+                  transition-show="scale"
+                  transition-hide="scale"
+                >
                   <q-time
                     v-model="task.doneTime"
                     :minute-options="minuteOptions"
@@ -206,10 +235,16 @@
       <div
         class="newTaskInfoHeader"
         @click="taskStateComment = !taskStateComment"
-      >{{$t('comments')}}</div>
+      >
+        {{ $t('comments') }}
+      </div>
       <div class="taskCommentContent">
         <q-slide-transition>
-          <taskComment v-if="taskStateComment" transition-show="scale" transition-hide="scale" />
+          <taskComment
+            v-if="taskStateComment"
+            transition-show="scale"
+            transition-hide="scale"
+          />
         </q-slide-transition>
       </div>
     </div>
@@ -221,14 +256,10 @@
         type="submit"
         @click="submitTask"
       >
-        {{
-        $t('save')
-        }}
+        {{ $t('save') }}
       </q-btn>
       <q-btn class="savebutton mr12" color="primary" type="submit">
-        {{
-        $t('savenew')
-        }}
+        {{ $t('savenew') }}
       </q-btn>
     </div>
   </div>
@@ -240,18 +271,29 @@ import tagsSelection from '../structure/tagsSelection.vue';
 import uploadfile from '../structure/uploadfile.vue';
 import taskComment from './taskComment.vue';
 import tableDataWrap from '../structure/tableDataWrap.vue';
+import singleAutoCompleteSelectBox from '../structure/singleAutoCompleteSelectBox.vue';
 
 export default {
   name: 'addNewTask',
+  meta() {
+    return { title: this.$t('addNewTask') };
+  },
+
   components: {
     editor,
     tagsSelection,
     uploadfile,
     taskComment,
     tableDataWrap,
+    singleAutoCompleteSelectBox,
   },
   data() {
     return {
+      showing1: false,
+      staffs: {},
+      staffsLable: '',
+      staffsid: '',
+
       ticketPicker: false,
       taskStateComment: false,
       taskStateAssign: false,
@@ -325,6 +367,10 @@ export default {
   },
 
   methods: {
+    getAutoCompleteValuestaff(value) {
+      this.task.assignee = value.id;
+    },
+
     pickerInfo(value) {
       this.task.ticketId = value.id;
       this.ticketPicker = false;
@@ -335,7 +381,7 @@ export default {
       this.task.description = value;
     },
     addTagFn(value) {
-      this.task.tags = value;
+      this.task.tags = value.map(v => v.id);
     },
     filterFn(val, update) {
       update(() => {
@@ -364,6 +410,13 @@ export default {
         this.$emit('taskState', false);
       }
     },
+  },
+  mounted() {
+    this.$axios.get('v1/api/vkann/users/get-staffs').then(response => {
+      this.staffs = response.data.users;
+      this.staffsLable = this.staffs.map(v => v.firstName);
+      this.staffsid = this.staffs.map(v => v.id);
+    });
   },
 };
 </script>

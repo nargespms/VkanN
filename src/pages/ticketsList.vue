@@ -1,4 +1,4 @@
-<template >
+<template>
   <div>
     <ticketsListCmp />
   </div>
@@ -9,11 +9,14 @@ import ticketsListCmp from '../components/tickets/ticketsListCmp.vue';
 
 export default {
   name: 'ticketsList',
+  meta() {
+    return { title: this.$t('ticketsList') };
+  },
+
   components: {
     ticketsListCmp,
   },
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

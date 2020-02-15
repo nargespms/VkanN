@@ -81,7 +81,7 @@ module.exports = function(ctx) {
       directives: ['Ripple'],
 
       // Quasar plugins
-      plugins: ['Loading', 'Notify', 'Dialog', 'Cookies'],
+      plugins: ['Loading', 'Notify', 'Dialog', 'Cookies', 'Meta'],
     },
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie

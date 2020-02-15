@@ -7,8 +7,7 @@
       </div>
       <q-card-section class="usrInfoAvatar">
         <p>
-          <span>{{lists.fullName}}/</span>
-          <span>{{ lists.role}}</span>
+          <span>{{lists.fullName}}</span>
         </p>
       </q-card-section>
     </q-card>

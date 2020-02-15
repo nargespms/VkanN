@@ -1,9 +1,8 @@
-<template >
+<template>
   <div class="wrap">
-    <mobilePhone :data="countries" />
+    <mobilePhone @mobileVerified="mobileVerified" :data="countries" />
   </div>
 </template>
-
 
 <script>
 import mobilePhone from './mobilePhone.vue';
@@ -1228,6 +1227,11 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    mobileVerified(value, con) {
+      this.$emit('mobileVerified', value, con);
+    },
   },
 };
 </script>

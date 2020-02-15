@@ -123,4 +123,9 @@ export default {
   color: palevioletred;
   cursor: pointer;
 }
+.captchaImgWrap {
+  svg {
+    width: 100%;
+  }
+}
 </style>

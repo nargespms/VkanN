@@ -1,4 +1,4 @@
-<template >
+<template>
   <div>
     <q-select
       outlined
@@ -20,7 +20,6 @@
         </q-item>
       </template>
     </q-select>
-    {{localOptionLable}}
   </div>
 </template>
 
@@ -52,7 +51,7 @@ export default {
         } else {
           const needle = val.toLowerCase();
           this.localOptions = this.localData.filter(
-            v => v.firstName.toLowerCase().indexOf(needle) > -1
+            v => v.firstname.toLowerCase().indexOf(needle) > -1
           );
         }
       });

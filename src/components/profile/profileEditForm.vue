@@ -8,7 +8,7 @@
           required
           class="inputFieldText"
           color="light-blue-10"
-          v-model.trim="form.FirstName"
+          v-model.trim=" form.FirstName"
           :label="$t('firstName')"
           lazy-rules
           :rules="[val => val && val.length > 0]"
@@ -20,11 +20,7 @@
           <!-- firstname validation -->
           <p v-if="errors" class="error">
             <span v-if="!$v.form.FirstName.required">*{{ $t('thisfieldisrequired') }}.</span>
-            <span v-if="!$v.form.FirstName.minLength">
-              {{
-              $t('Fieldmusthaveatleast3characters')
-              }}
-            </span>
+            <span v-if="!$v.form.FirstName.minLength">{{ $t('Fieldmusthaveatleast3characters') }}</span>
           </p>
           <!-- firstname validation -->
         </q-input>
@@ -58,7 +54,7 @@
             <q-icon name="email" class="mailIcon" />
           </template>
           <template v-if="this.form.email.length > 0" v-slot:append>
-            <q-icon v-if="verifyEmail " name="fas fa-check" class="mailIcon text-positive" />
+            <q-icon v-if="verifyEmail" name="fas fa-check" class="mailIcon text-positive" />
             <q-icon
               v-if="!verifyEmail && $v.form.email.email"
               name="fas fa-times"
@@ -80,7 +76,7 @@
           <!-- email errors -->
         </q-input>
         <!-- Mobile Phone Number -->
-        <mobilePhoneWrapper />
+        <mobilePhoneWrapper @mobileVerified="mobileVerified" />
         <!-- Mobile Phone Number -->
 
         <!-- Gender -->
@@ -141,11 +137,7 @@
           </p>
         </q-input>
         <p class="error" v-if="errors">
-          <span v-if="!$v.form.PassWord.strongPassword">
-            {{
-            $t('Strongpasswords')
-            }}
-          </span>
+          <span v-if="!$v.form.PassWord.strongPassword">{{ $t('Strongpasswords') }}</span>
         </p>
         <!-- Re enter password -->
         <q-input
@@ -194,41 +186,43 @@
               class="mailIcon text-positive"
             />
             <q-icon
-              v-if="!nationalID && $v.form.nationalId.isValidIranianNationalCode"
+              v-if="
+                !nationalID && $v.form.nationalId.isValidIranianNationalCode
+              "
               name="fas fa-times"
               class="mailIcon text-negative"
             />
             <span
-              v-if="!nationalID && $v.form.nationalId.isValidIranianNationalCode"
+              v-if="
+                !nationalID && $v.form.nationalId.isValidIranianNationalCode
+              "
               class="text-negative fn11"
-            >
-              {{
-              $t('enteredEmailisRegistered')
-              }}
-            </span>
+            >{{ $t('enteredEmailisRegistered') }}</span>
           </template>
           <p v-if="errors" class="error">
             <span v-if="!$v.form.nationalId.required">*{{ $t('thisfieldisrequired') }}.</span>
             <!-- <span v-if="!$v.form.nationalId.minLength">*{{$t('Fieldmusthaveatleast10characters')}}.</span> -->
             <span
-              v-if="!$v.form.nationalId.isValidIranianNationalCode && $v.form.nationalId.required"
+              v-if="
+                !$v.form.nationalId.isValidIranianNationalCode &&
+                  $v.form.nationalId.required
+              "
             >*{{ $t('invalidCode') }}.</span>
           </p>
         </q-input>
 
         <!-- city -->
-        <q-select
+        <q-input
           color="light-blue-10"
           outlined
           v-model.trim="form.city"
-          :options="cities"
           :label="$t('city')"
           class="inputStyle"
         >
           <template v-slot:append>
             <q-icon name />
           </template>
-        </q-select>
+        </q-input>
         <!-- Adress -->
         <q-input outlined required :label="$t('adress')" v-model="form.adress">
           <template v-slot:prepend>
@@ -352,6 +346,8 @@ export default {
     mobilePhoneWrapper,
     tagsSelection,
   },
+  props: ['profileMode'],
+
   data() {
     return {
       // data for validation
@@ -362,31 +358,33 @@ export default {
       countries: ['amrica', 'germany', 'iran', 'hind', 'japan', 'china'],
       cities: ['Finland', 'Canada', 'Berlin', 'Tehran', 'tokyo'],
       roles: ['CLIENT', 'TECH', 'INFO', 'SERVICEMANAGER', 'BILLING', 'ADMIN'],
-      states: ['state1', 'state2'],
+      states: ['ACTIVE', 'DEACTIVE', 'BAN'],
       personality: ['JURDICAL', 'NATURAL'],
       genderList: ['MALE', 'FEMALE', 'OTHER'],
       tags: ['tag1', 'tag2'],
       isPwd: true,
       isPwd1: true,
+      editFormProfile: {},
       form: {
-        MobileNumber: '',
-        email: '',
         FirstName: '',
         LastName: '',
-        Gender: '',
+        gender: '',
+        personality: '',
+        email: '',
+        country: '',
+        MobileNumber: '',
         currentPass: '',
         PassWord: '',
         Confirmpass: '',
         nationalId: '',
         landLine: '',
-        country: '',
+        status: '',
         city: '',
         adress: '',
         role: '',
-        gender: '',
         tags: [],
         postalCode: '',
-        spirintTime: '',
+        spirintTime: 0,
         linkdin: '',
         git: '',
       },
@@ -504,38 +502,95 @@ export default {
         });
     },
     addTagFn(value) {
-      this.form.tags = value;
+      this.form.tags = value.map(v => v.id);
     },
 
     onSubmit() {
-      // console.log('edit profile');
-      this.empty = !this.$v.form.$anyDirty;
-      this.errors = this.$v.form.$anyError;
-      this.uiState = 'submit clicked';
-      if (this.errors === false && this.empty === false) {
-        // this is where you send the responses
-        this.uiState = 'form submitted';
-        normalizeEmail(this.form.email);
-        console.log(normalizeEmail(this.form.email));
-        // req to server
+      if (this.profileMode === 'ADD') {
+        // console.log('edit profile');
+        this.empty = !this.$v.form.$anyDirty;
+        this.errors = this.$v.form.$anyError;
+        this.uiState = 'submit clicked';
+        if (this.errors === false && this.empty === false) {
+          // this is where you send the responses
+          normalizeEmail(this.form.email);
+          console.log(normalizeEmail(this.form.email));
+          // req to server
 
-        // should emit to parent what t
-        // req to servero do (beacause it is used in 2 place (profile & add user))
-        if (this.nationalID && this.verifyEmail) {
-          this.$emit('sendDataUser', this.form);
+          // should emit to parent what t
+          // req to servero do (beacause it is used in 2 place (profile & add user))
+          if (this.nationalID && this.verifyEmail) {
+            this.$emit('sendDataUser', this.form);
+          }
+        } else {
+          this.$q.notify({
+            message: this.$t('Theformabovehaserrors'),
+            color: 'negative',
+            icon: 'warning',
+            position: 'top',
+          });
         }
-      } else {
-        this.$q.notify({
-          message: this.$t('Theformabovehaserrors'),
-          color: 'negative',
-          icon: 'warning',
-          position: 'top',
-        });
+      }
+      if (this.profileMode === 'Edit') {
+        // console.log('edit profile');
+        this.empty = !this.$v.form.$anyDirty;
+        this.errors = this.$v.form.$anyError;
+        this.uiState = 'submit clicked';
+        if (this.errors === false && this.empty === false) {
+          // this is where you send the responses
+          this.uiState = 'form submitted';
+          normalizeEmail(this.form.email);
+          console.log(normalizeEmail(this.form.email));
+          // req to server
+
+          // should emit to parent what t
+          // req to servero do (beacause it is used in 2 place (profile & add user))
+          if (this.nationalID && this.verifyEmail) {
+            this.$emit('editDataUser', this.form);
+            // for edit form
+          }
+        } else {
+          this.$q.notify({
+            message: this.$t('Theformabovehaserrors'),
+            color: 'negative',
+            icon: 'warning',
+            position: 'top',
+          });
+        }
       }
     },
     EnableConf() {
       this.enableConfirm = true;
     },
+    mobileVerified(value, con) {
+      this.form.country = con;
+      this.form.MobileNumber = value;
+      console.log('ineditform');
+    },
+  },
+  mounted() {
+    if (this.profileMode === 'Edit') {
+      this.$axios.get('/v1/api/vkann/profile').then(response => {
+        if (response.status === 200) {
+          this.form.FirstName = response.data.firstName;
+          this.form.LastName = response.data.lastName;
+          // this.form.email = response.data.email;
+          this.form.country = response.data.country;
+          this.form.MobileNumber = response.data.mobile;
+          this.form.gender = response.data.gender;
+          this.form.role = response.data.role;
+          this.form.tags = response.data.tags;
+          // this.form.nationalId = response.data.nationalId;
+        } else {
+          this.$q.notify({
+            message: this.$t('incorrectcaptcha'),
+            color: 'negative',
+            icon: 'warning',
+            position: 'top',
+          });
+        }
+      });
+    }
   },
 };
 </script>

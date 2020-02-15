@@ -7,12 +7,15 @@
   </div>
 </template>
 
-
 <script>
 import cardsAction from '../components/structure/cardsAction.vue';
 
 export default {
   name: 'billing',
+  meta() {
+    return { title: this.$t('billing') };
+  },
+
   components: {
     cardsAction,
   },

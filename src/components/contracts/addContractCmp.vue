@@ -3,41 +3,30 @@
     <q-form @submit="onSubmit" class="q-gutter-md" :error="$v.contract.$error">
       <div class="col1">
         <!--  Service name -->
-        <q-select
-          color="light-blue-10 "
-          outlined
-          required
-          autofocus
-          v-model.trim="contract.serviceName"
-          :options="servicesName"
-          :label="$t('serviceName')"
-          class="inputStyle"
-          lazy-rules
-          :rules="[val => val && val.length > 0]"
-        >
-          <template v-slot:prepend>
-            <q-icon name="settings_applications" />
-          </template>
-        </q-select>
+
+        <singleAutoCompleteSelectBox
+          :options="services"
+          :optionLable="'name'"
+          :optionValue="'id'"
+          :name="'serviceName'"
+          label="firstName"
+          @getAutoCompleteValue="getAutoCompleteValueService"
+        />
+
         <!-- client Name -->
-        <q-select
-          color="light-blue-10 "
-          required
-          outlined
-          v-model.trim="contract.client"
+
+        <singleAutoCompleteSelectBox
           :options="clients"
-          :label="$t('clientName')"
-          class="inputStyle"
-          lazy-rules
-          :rules="[val => val && val.length > 0]"
-        >
-          <template v-slot:prepend>
-            <q-icon name="fas fa-user" />
-          </template>
-        </q-select>
+          :optionLable="'firstName'"
+          :optionValue="'id'"
+          :name="'clientName'"
+          label="firstName"
+          class="pt20"
+          @getAutoCompleteValue="getAutoCompleteValueclient"
+        />
+
         <!--  start date & end date should be date picker -->
-        <!-- <q-date v-model="date" calendar="persian" today-btn></q-date> -->
-        <!-- <q-date v-model="date" minimal calendar="persian" /> -->
+
         <!-- start date -->
         <q-input
           outlined
@@ -48,6 +37,7 @@
           ref="qDateProxy"
           name="event"
           @blur="EnableDate"
+          class="pt20"
         >
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
@@ -200,7 +190,7 @@
 
 <script>
 // import { required } from 'vuelidate/lib/validators';
-
+import singleAutoCompleteSelectBox from '../structure/singleAutoCompleteSelectBox.vue';
 import uploadfile from '../structure/uploadfile.vue';
 import tagsSelection from '../structure/tagsSelection.vue';
 
@@ -209,6 +199,7 @@ export default {
   components: {
     uploadfile,
     tagsSelection,
+    singleAutoCompleteSelectBox,
   },
   data() {
     return {
@@ -217,8 +208,8 @@ export default {
       errors: false,
       empty: true,
       // data for validation
-      servicesName: ['name1', 'name2', 'name3'],
-      clients: ['client1', 'client2', 'client3'],
+      services: [],
+      clients: [],
       contractDuration: [12, 13, 14],
       contractStatus: ['status1', 'status2', 'status3'],
       contractType: ['FORMAL', 'INFORMAL'],
@@ -252,8 +243,16 @@ export default {
     },
   },
   methods: {
+    getAutoCompleteValueService(value) {
+      this.contract.serviceName = value.id;
+    },
+    getAutoCompleteValueclient(value) {
+      // console.log(value.id);
+      this.contract.client = value.id;
+    },
+
     addTagFn(value) {
-      this.contract.tags = value;
+      this.contract.tags = value.map(v => v.id);
     },
     computeEnddate(enddate) {
       return enddate >= this.contract.startdate;
@@ -263,7 +262,7 @@ export default {
       this.errors = this.$v.contract.$anyError;
       this.uiState = 'submit clicked';
       if (this.errors === false && this.empty === false) {
-        console.log(this.contract);
+        // console.log(this.contract);
         const standardStartDate = new Date(this.contract.startdate);
         const standardEndDate = new Date(this.contract.enddate);
         console.log(standardStartDate);
@@ -287,6 +286,15 @@ export default {
           })
           .then(response => {
             console.log(response);
+            this.$q.notify({
+              message: this.$t('newContractAdded'),
+              color: 'positive',
+              icon: 'check',
+              position: 'top',
+            });
+            this.$router.push({
+              path: `/${this.$route.params.locale}/billing/contracts`,
+            });
           })
           .catch(e => {
             console.log(e.response.status);
@@ -311,6 +319,19 @@ export default {
     today() {
       return new Date();
     },
+  },
+  mounted() {
+    this.$axios.get('/v1/api/vkann/services/get-services').then(res => {
+      // console.log(res.data.services);
+      this.services = res.data.services;
+      this.servicesLable = this.services.map(v => v.name);
+      this.servicesid = this.services.map(v => v.id);
+    });
+    this.$axios.get('/v1/api/vkann/users/get-clients').then(res => {
+      this.clients = res.data.users;
+      this.clientsLable = this.clients.map(v => v.firstName);
+      this.clientsid = this.clients.map(v => v.id);
+    });
   },
 };
 </script>

@@ -23,7 +23,7 @@
         </q-tab-panel>
 
         <q-tab-panel name="editProfile">
-          <profileEditForm />
+          <profileEditForm :profileMode="'Edit'" @editDataUser="editDataUser" />
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
@@ -42,10 +42,53 @@ export default {
     userInformationDetailsInfo,
     profileEditForm,
   },
+
   data() {
     return {
       tab: 'profileInfo',
+      form: {},
     };
+  },
+  methods: {
+    editDataUser(value) {
+      this.form = value;
+      console.log(this.form);
+
+      this.$axios
+        .put('/v1/api/vkann/profile', {
+          firstName: this.form.FirstName,
+          lastName: this.form.LastName,
+          gender: this.form.gender,
+          personality: this.form.personality,
+          nationalId: this.form.nationalId,
+          mobile: this.form.MobileNumber,
+          role: this.form.role,
+          status: this.form.status,
+          email: this.form.email,
+          country: this.form.country,
+          city: this.form.city,
+          zipCode: this.form.postalCode,
+          sprintTime: this.form.spirintTime,
+          tags: this.form.tags,
+          linkedin: this.form.linkdin,
+          git: this.form.git,
+          addresses: this.form.adress,
+          password: this.form.PassWord,
+        })
+        .then(res => {
+          if (res.status === 200) {
+            this.$q.notify({
+              message: this.$t('userEdited'),
+              color: 'positive',
+              icon: 'check',
+              position: 'top',
+            });
+            this.$router.push({
+              path: `/${this.$route.params.locale}/userManagement`,
+            });
+          }
+        });
+    },
   },
   computed: {
     userData() {

@@ -81,10 +81,7 @@ const routes = [
         path: 'signIn',
         component: () => import('pages/signIn.vue'),
       },
-      {
-        path: 'signUp',
-        component: () => import('pages/signUp.vue'),
-      },
+
       // user
       {
         path: 'profile',

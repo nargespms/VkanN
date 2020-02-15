@@ -6,5 +6,8 @@
 <script>
 export default {
   name: 'printContract',
+  meta() {
+    return { title: this.$t('print') };
+  },
 };
 </script>

@@ -2,26 +2,33 @@
   <div class="q-pa-xl">
     <div class="cardActionWrap">
       <cardsAction
-        v-if="$store.state.module1.userData.role !== 'CLIENT' &&
-              $store.state.module1.userData.role !== 'TECH' &&
-              $store.state.module1.userData.role !== 'INFO'"
+        v-if="
+          $store.state.module1.userData.role !== 'CLIENT' &&
+            $store.state.module1.userData.role !== 'TECH' &&
+            $store.state.module1.userData.role !== 'INFO'
+        "
         :data="users.staffs"
       />
       <cardsAction :data="users.clients" v-if="$store.state.module1.userData.role !== 'CLIENT'" />
       <cardsAction
-        v-if="$store.state.module1.userData.role === 'SERVICEMANAGER' ||
-              $store.state.module1.userData.role === 'ADMIN'"
+        v-if="
+          $store.state.module1.userData.role === 'SERVICEMANAGER' ||
+            $store.state.module1.userData.role === 'ADMIN'
+        "
         :data="users.addMember"
       />
     </div>
   </div>
 </template>
 
-
 <script>
 import cardsAction from '../components/structure/cardsAction.vue';
 
 export default {
+  meta() {
+    return { title: this.$t('userManagement') };
+  },
+
   components: {
     cardsAction,
   },
@@ -54,5 +61,4 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-</style>
+<style lang="scss"></style>

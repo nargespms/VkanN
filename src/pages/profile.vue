@@ -1,15 +1,18 @@
 <template>
   <div class="q-pa-xl">
-    {{$route.params.profileId}}
+    {{ $route.params.profileId }}
     <profileInfoCmp />
   </div>
 </template>
-
 
 <script>
 import profileInfoCmp from '../components/profile/profileInfoCmp.vue';
 
 export default {
+  meta() {
+    return { title: this.$t('profile') };
+  },
+
   data() {
     return {
       name: 'profile',
@@ -20,5 +23,4 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-</style>
+<style lang="scss"></style>

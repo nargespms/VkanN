@@ -9,6 +9,10 @@ import printInvoiceCmp from '../components/print/printInvoiceCmp.vue';
 
 export default {
   name: 'printInvoice',
+  meta() {
+    return { title: this.$t('print') };
+  },
+
   components: {
     printInvoiceCmp,
   },
