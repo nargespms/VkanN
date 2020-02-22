@@ -23,7 +23,6 @@
         <li>
           <span>{{ $t('jurdicalORNaturalNamePerson') }} :</span>
           <!-- client Name -->
-
           <singleAutoCompleteSelectBox
             :options="clients"
             :optionLable="'firstName'"

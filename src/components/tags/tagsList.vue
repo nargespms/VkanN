@@ -5,31 +5,25 @@
         <q-card class="card mb12 tagList">
           <!-- action -->
           <q-card-actions class="bg-white tagAction">
-            <span>{{ tag.name }}</span>
+            <span>{{ tag.title }}</span>
           </q-card-actions>
           <!-- main content -->
           <div class="tagListButtsWrapper">
             <q-card-section class="tagTxt brright">
               <q-icon name="edit" class="editTag">
-                <q-tooltip transition-show="scale" transition-hide="scale">{{
-                  $t('editTag')
-                }}</q-tooltip>
+                <q-tooltip transition-show="scale" transition-hide="scale">{{ $t('editTag') }}</q-tooltip>
               </q-icon>
-              <q-popup-edit v-model.trim="tag.name" buttons anchor="top left">
-                <q-input
-                  v-model.trim="tag.name"
-                  dense
-                  autofocus
-                  counter
-                  @change="setEditTag(tag)"
-                />
+              <q-popup-edit v-model.trim="tag.title" buttons anchor="top left">
+                <q-input v-model.trim="tag.title" dense autofocus counter @change="setEditTag(tag)" />
               </q-popup-edit>
             </q-card-section>
-            <q-card-section class="tagTxt p16 brleft" @click="deactiveTag(tag)">
+            <q-card-section
+              v-if="$store.state.module1.userData.role === 'MANAGER'"
+              class="tagTxt p16 brleft"
+              @click="deactiveTag(tag)"
+            >
               <q-icon name="fa fa-trash" class="editTag">
-                <q-tooltip transition-show="scale" transition-hide="scale">{{
-                  $t('deactiveTag')
-                }}</q-tooltip>
+                <q-tooltip transition-show="scale" transition-hide="scale">{{ $t('deactiveTag') }}</q-tooltip>
               </q-icon>
             </q-card-section>
           </div>
@@ -45,7 +39,7 @@
           <q-card class="card mb12 tagList">
             <!-- action -->
             <q-card-actions class="tagAction">
-              <span class="clw">{{ tag.name }}</span>
+              <span class="clw">{{ tag.title }}</span>
             </q-card-actions>
             <!-- main content -->
             <q-card-section class="tagTxt p16 brleft" @click="activeTag(tag)">
@@ -64,37 +58,51 @@ export default {
   data() {
     return {
       edittag: '',
-      tags: this.data,
+      tags: [],
       showing: false,
       showing1: false,
     };
   },
-  props: ['data'],
+
   computed: {
     activetags() {
-      return this.data.filter(item => item.status !== 'deactive');
+      return this.tags.filter(item => item.status !== 'deactive');
     },
     deactivetags() {
-      return this.data.filter(item => item.status === 'deactive');
+      return this.tags.filter(item => item.status === 'deactive');
     },
   },
   methods: {
-    setEditTag(value, initialValue) {
-      this.tags.forEach(tag => {
-        if (tag.name === initialValue) {
-          tag.name = value;
-        }
-      });
+    setEditTag(tag) {
+      console.log(tag);
+      this.$axios
+        .put(`/v1/api/vkann/tags/${tag.id}`, {
+          id: tag.id,
+          title: tag.title,
+          status: tag.status,
+        })
+        .then(res => {
+          console.log(res);
+        });
       this.$emit('addToTags', this.tags);
     },
     deactiveTag(tag) {
       tag.status = 'deactive';
+      this.$axios.delete(`/v1/api/vkann/tags/${tag.id}`).then(res => {
+        console.log(res);
+      });
       this.$emit('deleteTag', this.tags);
     },
     activeTag(tag) {
       tag.status = 'active';
       this.$emit('activeAgain', this.tag);
     },
+  },
+  mounted() {
+    this.$axios.get('/v1/api/vkann/tags/get-tags').then(res => {
+      console.log(res);
+      this.tags = res.data.tags;
+    });
   },
 };
 </script>

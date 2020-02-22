@@ -8,7 +8,7 @@
           required
           class="inputFieldText"
           color="light-blue-10"
-          v-model.trim=" form.FirstName"
+          v-model.trim="form.FirstName"
           :label="$t('firstName')"
           lazy-rules
           :rules="[val => val && val.length > 0]"
@@ -60,10 +60,11 @@
               name="fas fa-times"
               class="mailIcon text-negative"
             />
-            <span
-              v-if="!verifyEmail && $v.form.email.email"
-              class="text-negative fn11"
-            >{{ $t('enteredEmailisRegistered') }}</span>
+            <span v-if="!verifyEmail && $v.form.email.email" class="text-negative fn11">
+              {{
+              $t('enteredEmailisRegistered')
+              }}
+            </span>
           </template>
           <!-- email errors -->
           <p v-if="errors" class="error">
@@ -76,7 +77,7 @@
           <!-- email errors -->
         </q-input>
         <!-- Mobile Phone Number -->
-        <mobilePhoneWrapper @mobileVerified="mobileVerified" />
+        <mobilePhoneWrapper @mobileVerified="mobileVerified" existed="false" />
         <!-- Mobile Phone Number -->
 
         <!-- Gender -->
@@ -186,27 +187,24 @@
               class="mailIcon text-positive"
             />
             <q-icon
-              v-if="
-                !nationalID && $v.form.nationalId.isValidIranianNationalCode
-              "
+              v-if="!nationalID && $v.form.nationalId.isValidIranianNationalCode"
               name="fas fa-times"
               class="mailIcon text-negative"
             />
             <span
-              v-if="
-                !nationalID && $v.form.nationalId.isValidIranianNationalCode
-              "
+              v-if="!nationalID && $v.form.nationalId.isValidIranianNationalCode"
               class="text-negative fn11"
-            >{{ $t('enteredEmailisRegistered') }}</span>
+            >
+              {{
+              $t('enteredEmailisRegistered')
+              }}
+            </span>
           </template>
           <p v-if="errors" class="error">
             <span v-if="!$v.form.nationalId.required">*{{ $t('thisfieldisrequired') }}.</span>
             <!-- <span v-if="!$v.form.nationalId.minLength">*{{$t('Fieldmusthaveatleast10characters')}}.</span> -->
             <span
-              v-if="
-                !$v.form.nationalId.isValidIranianNationalCode &&
-                  $v.form.nationalId.required
-              "
+              v-if="!$v.form.nationalId.isValidIranianNationalCode && $v.form.nationalId.required"
             >*{{ $t('invalidCode') }}.</span>
           </p>
         </q-input>
@@ -357,7 +355,7 @@ export default {
       // data for validation
       countries: ['amrica', 'germany', 'iran', 'hind', 'japan', 'china'],
       cities: ['Finland', 'Canada', 'Berlin', 'Tehran', 'tokyo'],
-      roles: ['CLIENT', 'TECH', 'INFO', 'SERVICEMANAGER', 'BILLING', 'ADMIN'],
+      roles: ['CLIENT', 'MEMBER', 'ASSISTANT', 'MANAGER'],
       states: ['ACTIVE', 'DEACTIVE', 'BAN'],
       personality: ['JURDICAL', 'NATURAL'],
       genderList: ['MALE', 'FEMALE', 'OTHER'],

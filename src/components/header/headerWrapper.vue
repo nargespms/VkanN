@@ -1,7 +1,7 @@
 <template>
   <div class="clear">
     <q-header elevated>
-      <div class="con16">
+      <div class="con12">
         <q-toolbar class="headerInner">
           <!-- should show this only for mobile -->
           <q-btn
@@ -14,9 +14,7 @@
             aria-label="Menu"
           />
           <q-toolbar-title class="welMsgLogo">
-            <span>
-              {{ $t('welcomemsg') }}
-            </span>
+            <span>{{ $t('welcomemsg') }}</span>
           </q-toolbar-title>
         </q-toolbar>
       </div>
@@ -46,6 +44,7 @@ export default {
   props: ['locale'],
   data() {
     return {
+      timer: '',
       leftDrawerOpen: true,
       mobileSize: false,
     };
@@ -67,12 +66,31 @@ export default {
     backFalse() {
       this.leftDrawerOpen = false;
     },
+    // refresh token
+    refreshToken() {
+      this.$axios.get('/v1/api/vkann/refresh-token ').then(res => {
+        console.log(res);
+      });
+    },
+    cancelAutoUpdate() {
+      clearInterval(this.timer);
+    },
   },
+  //  refresh token
+  created() {
+    this.refreshToken();
+    this.timer = setInterval(this.refreshToken, 3600000);
+  },
+  beforeDestroy() {
+    clearInterval(this.timer);
+  },
+  //  refresh token
 };
 </script>
 <style lang="scss">
 .headerInner {
   padding: 16px 12px;
+  padding-left: 0px;
 }
 .welMsgLogo {
   background-image: url('../../../node_modules/@aasaam/information/logo/aasaam-mask.svg');

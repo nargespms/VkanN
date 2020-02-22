@@ -4,7 +4,7 @@
       <div v-if="enterMobile">
         <!-- step one entering phone number -->
         <!-- Phone Number -->
-        <mobilePhoneWrapper />
+        <mobilePhoneWrapper @mobileVerified="mobileVerified" :existed="true" />
 
         <q-btn class="RetrivePass" :label="$t('RetrivePass')" color="primary" @click="onSubmit" />
         <!-- step one entering phone number -->
@@ -65,6 +65,7 @@ export default {
       enterMobile: true,
       entercode: false,
       retrivedCode: '',
+      country: '',
       //  for captcha checking
       captcha: false,
     };
@@ -87,6 +88,11 @@ export default {
     },
   },
   methods: {
+    mobileVerified(value, con) {
+      this.country = con;
+      this.MobileNumber = value;
+      console.log('value mobile');
+    },
     captchaValid() {
       this.captcha = true;
     },
@@ -95,6 +101,9 @@ export default {
         // console.log('retrive pass request');
         this.enterMobile = false;
         this.entercode = true;
+        // this.$axios.post('', {}).then(res => {
+        //   console.log(res);
+        // });
       } else {
         this.$q.dialog({
           title: 'لطفا شماره تلفن همراه خود را وارد نمایید',

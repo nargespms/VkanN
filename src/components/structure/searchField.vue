@@ -4,17 +4,14 @@
       <q-icon name="fas fa-search" class="pr12" />
       <span>{{ $t('search') }}</span>
     </div>
-    <div class="fullscreenSearchWrap" :class="{ open: isOpen }">
-      <form @submit="search">
-        <input
-          type="text"
-          required
-          v-model.trim="searchQuery"
-          :placeholder="$t('search')"
-        />
-      </form>
-      <symboleButton class="searchCloseButton" invert @click="toggleSearch" />
-    </div>
+    <q-dialog v-model="isOpen" :maximized="maximizedToggle">
+      <div class="fullscreenSearchWrap" :class="{ open: isOpen }">
+        <form @submit="search">
+          <input type="text" required v-model.trim="searchQuery" :placeholder="$t('search')" />
+        </form>
+        <symboleButton class="searchCloseButton" invert @click="toggleSearch" />
+      </div>
+    </q-dialog>
   </div>
 </template>
 
@@ -30,6 +27,7 @@ export default {
     return {
       isOpen: false,
       searchQuery: null,
+      maximizedToggle: true,
     };
   },
 
@@ -83,12 +81,10 @@ export default {
   }
 
   background: rgba(0, 0, 0, 0.95);
-  position: fixed;
+  position: static;
   z-index: 999999 !important;
   width: 100%;
   height: 100%;
-  right: 0;
-  top: 0;
   display: flex;
   align-items: center;
   justify-content: center;

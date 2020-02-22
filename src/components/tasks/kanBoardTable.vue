@@ -25,14 +25,31 @@
         <h3 class="center">
           {{ task.name }}
         </h3>
-        <q-item
-          v-for="item in task.items"
-          :key="item.id"
-          :data-id="item.id"
-          class=" taskPacket"
-        >
-          {{ item.name }}
-        </q-item>
+        <q-card v-for="item in task.items" :key="item.id" :data-id="item.id" class=" taskPacket">
+          <q-item>
+            <q-item-section avatar>
+              <q-avatar>
+                <img src="https://cdn.quasar.dev/img/avatar2.jpg" />
+              </q-avatar>
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label>
+                {{ item.name }}
+              </q-item-label>
+              <q-item-label caption>Subhead</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-separator />
+          <q-item>
+            <q-icon name="calendar"></q-icon>
+            <q-item-section>
+              <span>
+                {{ item.dueDate }}
+              </span>
+            </q-item-section>
+          </q-item>
+        </q-card>
       </q-list>
       <!-- tasks -->
     </div>
@@ -49,11 +66,18 @@ export default {
       options: {
         multipleDropzonesItemsDraggingEnabled: false,
         dropzoneSelector: '.q-list',
-        draggableSelector: '.q-item',
+        draggableSelector: '.q-card',
       },
     };
   },
   methods: {
+    // localdate(item) {
+    //   // return item.toLocaleDateString('fa');
+    //   // console.log(item.toLocaleString(`${this.$route.params.locale}`));
+    //   // return item.toLocaleString(this.$route.params.locale);
+    //   // const standardStartDate = new Date();
+    //   // console.log(standardStartDate.toLocaleDateString(this.$route.params.locale));
+    // },
     added(event, group) {
       const newItems = this.tasks
         .map(g => g.items)
@@ -62,17 +86,11 @@ export default {
       group.items.splice(event.detail.index, 0, ...newItems);
     },
     removed(event, group) {
-      group.items = group.items.filter(
-        item => event.detail.ids.map(Number).indexOf(item.id) < 0
-      );
+      group.items = group.items.filter(item => event.detail.ids.map(Number).indexOf(item.id) < 0);
     },
     reordered(event, group) {
-      const reorderedItems = group.items.filter(
-        item => event.detail.ids.map(Number).indexOf(item.id) >= 0
-      );
-      const newItems = group.items.filter(
-        item => event.detail.ids.map(Number).indexOf(item.id) < 0
-      );
+      const reorderedItems = group.items.filter(item => event.detail.ids.map(Number).indexOf(item.id) >= 0);
+      const newItems = group.items.filter(item => event.detail.ids.map(Number).indexOf(item.id) < 0);
       newItems.splice(event.detail.index, 0, ...reorderedItems);
       group.items = newItems;
     },

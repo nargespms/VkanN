@@ -5,8 +5,12 @@
 
       <cardsAction
         v-if="
-          $store.state.module1.userData.role === 'BILLING' ||
-            $store.state.module1.userData.role === 'ADMIN'
+          ($store.state.module1.userData.role === 'MANAGER' && $store.state.module1.userData.department === 'GENERAL') ||
+            ($store.state.module1.userData.role === 'MANAGER' && $store.state.module1.userData.department === 'TECH') ||
+            ($store.state.module1.userData.role === 'MANAGER' && $store.state.module1.userData.department === 'BILLING') ||
+            ($store.state.module1.userData.role === 'ASSISTANT' && $store.state.module1.userData.department === 'GENERAL') ||
+            ($store.state.module1.userData.role === 'ASSISTANT' && $store.state.module1.userData.department === 'TECH') ||
+            ($store.state.module1.userData.role === 'ASSISTANT' && $store.state.module1.userData.department === 'BILLING')
         "
         :data="services.addService"
       />

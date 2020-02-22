@@ -13,7 +13,8 @@
       <cardsAction
         v-if="
           $store.state.module1.userData.role === 'SERVICEMANAGER' ||
-            $store.state.module1.userData.role === 'ADMIN'
+            $store.state.module1.userData.role === 'MANAGER' ||
+            $store.state.module1.userData.role === 'ASSISTANT'
         "
         :data="users.addMember"
       />

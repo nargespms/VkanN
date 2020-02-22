@@ -13,8 +13,7 @@ export default {
     'جوانانی پر انرژی و علاقه‌مند پس از سال‌ها تلاش و طبع‌آزمایی در زمینه‌‌های گوناگون وب در مجموعه‌ها و شرکت‌های مختلف تصمیم گرفتند تجربه‌ی این سال‌ها را با اشتیاق و نیروی جوانی در مجموعه‌ی خود ساخته‌ی جدیدی به نام آسام در آمیزند تا بتوانند از تمام محدودیت‌های معمول در شرکت‌های موجود گذر کنند و طرحی نو در اندازند. ',
   AboutHeader: 'درباره مجموعه آسام',
   contactmsg: 'با ما در تماس باشید',
-  welcomemsg:
-    '          سامانه پشتیبانی گروه نرم‌افزاری آســـــــــــــــــــام',
+  welcomemsg: '          سامانه پشتیبانی گروه نرم‌افزاری آســـــــــــــــــــام',
   signin: 'ورود',
   register: 'عضویت',
   forgotEmail: 'حساب کاربری خود را فراموش کرده اید',
@@ -63,8 +62,7 @@ export default {
   status: 'وضعیت',
   PleaseEnterPostalCode: 'لطفا کد پستی خود را وارد نمایید',
   PleaseEnterSpirintTime: 'لطفا ساعت کاری خود را وارد نمایید',
-  PleaseEnterGithubGitlab:
-    'لطفا حساب کاربری گیت لب یا گیتهاب خود را وارد نمایید',
+  PleaseEnterGithubGitlab: 'لطفا حساب کاربری گیت لب یا گیتهاب خود را وارد نمایید',
   PleaseEnterlinkdin: ' حساب کاربری لینکدین خود را وارد نمایید',
   save: 'ذخیره',
   landLine: 'تلفن ثابت',
@@ -158,8 +156,7 @@ export default {
   areyousureyouwanttodeletethis: 'آیا میخواهید این تیکت را حذف نمایید؟',
   deleteticket: 'حذف تیکت',
   enteredEmailHasntRegisteredYet: 'ایمیل وارد شده تا کنون ثبت نام نشده است',
-  enteredMobileHasntRegisteredYet:
-    'شماره موبایل وارد شده تا کنون ثبت نام نشده است',
+  enteredMobileHasntRegisteredYet: 'شماره موبایل وارد شده تا کنون ثبت نام نشده است',
   getNewCaptcha: 'دریافت دوباره',
   OTHER: 'غیره',
   enteredEmailisRegistered: 'ایمیل وارد شده قبلا ثبت نام کرده است',
@@ -227,4 +224,5 @@ export default {
   newUserAdded: 'کاربر جدید افزوده شد',
   newContractAdded: 'قراداد جدید افزوده شد',
   employeeName: 'نام کارمند',
+  tags: 'برچسب ها',
 };

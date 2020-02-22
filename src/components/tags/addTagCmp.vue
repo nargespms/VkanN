@@ -15,12 +15,7 @@
       </template>
       <template v-slot:append>
         <q-icon name="fas fa-plus" class="addTagIcon" @click="addTag">
-          <q-tooltip
-            v-model="showing1"
-            transition-show="scale"
-            transition-hide="scale"
-            >{{ $t('addTag') }}</q-tooltip
-          >
+          <q-tooltip v-model="showing1" transition-show="scale" transition-hide="scale">{{ $t('addTag') }}</q-tooltip>
         </q-icon>
       </template>
     </q-input>
@@ -57,6 +52,7 @@ export default {
               position: 'top',
             });
             this.newTag = null;
+            this.$emit('addTag', this.mytags);
           } else if (response.status === 400) {
             this.$q.notify({
               message: this.$t('unvalidtag'),
@@ -83,37 +79,6 @@ export default {
             });
           }
         });
-
-      // if (this.newTag) {
-      //   // for prevent to add duplicate tag
-      //   let isDuplicate = false;
-      //   try {
-      //     this.mytags.forEach(tag => {
-      //       isDuplicate = tag.name === this.newTag;
-      //       console.log(`${isDuplicate}foreach`);
-      //       if (isDuplicate) throw this.BreakException;
-      //     });
-      //   } catch (e) {
-      //     if (e !== this.BreakException) throw e;
-      //   }
-      //   if (isDuplicate) {
-      //     this.$q.notify({
-      //       message: this.$t('tagIsNotValid'),
-      //       color: 'negative',
-      //       icon: 'warning',
-      //       position: 'top',
-      //     });
-      //   } else {
-      //     this.mytags.push({
-      //       name: this.newTag,
-      //       status: 'active',
-      //     });
-      //     this.newTag = '';
-      //     // console.log(this.mytags[1].name);
-      //   }
-      // }
-
-      this.$emit('addTag', this.mytags);
     },
   },
 };

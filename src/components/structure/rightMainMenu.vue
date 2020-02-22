@@ -83,10 +83,7 @@
               </q-expansion-item>
             </li>
             <!-- my tasks route -->
-            <li
-              class="mainMenuLi"
-              v-if="$store.state.module1.userData.role !== 'INFO' && $store.state.module1.userData.role !== 'CLIENT'"
-            >
+            <li class="mainMenuLi" v-if="$store.state.module1.userData.role !== 'CLIENT'">
               <q-expansion-item
                 expand-icon-toggle
                 class="expandableMenu"
@@ -126,7 +123,20 @@
                   {{ $t('servicesList') }}
                 </router-link>
                 <router-link
-                  v-if="$store.state.module1.userData.role === 'BILLING' || $store.state.module1.userData.role === 'ADMIN'"
+                  v-if="
+                    ($store.state.module1.userData.role === 'MANAGER' &&
+                      $store.state.module1.userData.department === 'GENERAL') ||
+                      ($store.state.module1.userData.role === 'MANAGER' &&
+                        $store.state.module1.userData.department === 'TECH') ||
+                      ($store.state.module1.userData.role === 'MANAGER' &&
+                        $store.state.module1.userData.department === 'BILLING') ||
+                      ($store.state.module1.userData.role === 'ASSISTANT' &&
+                        $store.state.module1.userData.department === 'GENERAL') ||
+                      ($store.state.module1.userData.role === 'ASSISTANT' &&
+                        $store.state.module1.userData.department === 'TECH') ||
+                      ($store.state.module1.userData.role === 'ASSISTANT' &&
+                        $store.state.module1.userData.department === 'BILLING')
+                  "
                   class="block"
                   :to="'/' + locale + '/' + 'services' + '/' + 'addService'"
                 >
@@ -145,11 +155,7 @@
                 :to="'/' + locale + '/' + 'userManagement'"
               >
                 <router-link
-                  v-if="
-                    $store.state.module1.userData.role === 'SERVICEMANAGER' ||
-                      $store.state.module1.userData.role === 'ADMIN' ||
-                      $store.state.module1.userData.role === 'BILLING'
-                  "
+                  v-if="$store.state.module1.userData.role !== 'MEMBER' || $store.state.module1.userData.role !== 'CLIENT'"
                   class="block"
                   :to="'/' + locale + '/' + 'userManagement' + '/' + 'staffs'"
                 >
@@ -161,9 +167,7 @@
                   {{ $t('clients') }}
                 </router-link>
                 <router-link
-                  v-if="
-                    $store.state.module1.userData.role === 'SERVICEMANAGER' || $store.state.module1.userData.role === 'ADMIN'
-                  "
+                  v-if="$store.state.module1.userData.role !== 'MEMBER' || $store.state.module1.userData.role !== 'CLIENT'"
                   class="block"
                   :to="'/' + locale + '/' + 'userManagement' + '/' + 'addMember'"
                 >
@@ -176,11 +180,7 @@
             <!-- billing route -->
             <li
               class="mainMenuLi"
-              v-if="
-                $store.state.module1.userData.role === 'BILLING' ||
-                  $store.state.module1.userData.role === 'ADMIN' ||
-                  $store.state.module1.userData.role === 'CLIENT'
-              "
+              v-if="$store.state.module1.userData.department !== 'INFO' || $store.state.module1.userData.department !== 'TECH'"
             >
               <q-expansion-item
                 icon="attach_money"
@@ -216,7 +216,7 @@
                   :to="'/' + locale + '/' + 'billing' + '/' + 'contracts'"
                 >
                   <router-link
-                    v-if="$store.state.module1.userData.role !== 'CLIENT'"
+                    v-if="$store.state.module1.userData.role !== 'CLIENT' && $store.state.module1.userData.role !== 'MEMBER'"
                     class="block"
                     :to="'/' + locale + '/' + 'billing' + '/' + 'contracts' + '/' + 'addContract'"
                   >
@@ -233,7 +233,7 @@
             <!-- tags management -->
             <li
               class="mainMenuLi"
-              v-if="$store.state.module1.userData.role === 'SERVICEMANAGER' || $store.state.module1.userData.role === 'ADMIN'"
+              v-if="$store.state.module1.userData.role !== 'CLIENT' && $store.state.module1.userData.role !== 'MEMBER'"
             >
               <q-item class="p8">
                 <!-- tags -->

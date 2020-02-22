@@ -1,13 +1,8 @@
 <template>
   <div class="tagWrapper">
-    <h3 class="tagsHeader fnb">{{$t('tagsManagement')}}</h3>
+    <h3 class="tagsHeader fnb">{{ $t('tagsManagement') }}</h3>
     <addTagCmp :data="tags" @addTag="addToTags" />
-    <tagsList
-      :data="tags"
-      @deleteTag="deleteTag"
-      @activeAgain="activeagain"
-      @setEditTag="addToTags"
-    />
+    <tagsList :key="componentKey" @deleteTag="deleteTag" @activeAgain="activeagain" @setEditTag="addToTags" />
   </div>
 </template>
 
@@ -23,6 +18,7 @@ export default {
   },
   data() {
     return {
+      componentKey: 0,
       tags: [
         {
           name: 'tag1',
@@ -35,12 +31,11 @@ export default {
     addToTags(value) {
       this.tags = value;
       console.log(this.tags);
+      this.componentKey += 1;
       // should post to server
     },
     deleteTag(value) {
       this.tags = value;
-      // console.log('wrapper');
-      // console.log(this.tags);
       // should post to server
     },
     activeagain(value) {

@@ -34,12 +34,13 @@
         </div>
       </div>
     </div>
+    <breadCrumb />
   </div>
 </template>
 
 <script>
+import breadCrumb from '../structure/breadCrumb.vue';
 import languageSwitcher from '../structure/languageSwitcher.vue';
-
 import searchField from '../structure/searchField.vue';
 
 export default {
@@ -48,6 +49,7 @@ export default {
   components: {
     searchField,
     languageSwitcher,
+    breadCrumb,
   },
   methods: {
     logOutPannel() {
@@ -58,7 +60,7 @@ export default {
         module: 'module1',
       });
       this.$router.push({ path: `/${this.$route.params.locale}/signIn` });
-
+      // this.$axios.post('');
       console.log('logout');
     },
   },

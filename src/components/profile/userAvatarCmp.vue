@@ -3,11 +3,12 @@
     <q-card class="my-card">
       <div class="avatarWrapp">
         <img src="~assets/Default-user.png" />
-        <p class="absolute-bottom text-h6 choosePhoto">{{$t('choosePhoto')}}</p>
+        <p class="absolute-bottom text-h6 choosePhoto">{{ $t('choosePhoto') }}</p>
       </div>
       <q-card-section class="usrInfoAvatar">
         <p>
-          <span>{{lists.fullName}}</span>
+          <span>{{ $store.state.module1.userData.firstName }} </span>
+          <span>{{ $store.state.module1.userData.lastName }}</span>
         </p>
       </q-card-section>
     </q-card>
@@ -18,12 +19,7 @@
 export default {
   name: 'userAvatarCmp',
   data() {
-    return {
-      lists: {
-        fullName: 'نرگس پورمقدسی',
-        role: 'تک',
-      },
-    };
+    return {};
   },
 };
 </script>

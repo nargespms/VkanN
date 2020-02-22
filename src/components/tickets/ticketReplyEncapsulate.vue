@@ -1,39 +1,32 @@
-<template >
+<template>
   <div>
     <!-- client part -->
     <div v-if="ticket.role === 'client'" class="clientReq">
       <div class="senderName">
-        <p>{{ticket.user}}</p>
-        <p>{{ticket.role}}</p>
+        <p>{{ ticket.user }}</p>
+        <p>{{ ticket.role }}</p>
         <!-- functional buttons for admin -->
-        <q-btn class="editDesc text-grey-10" v-if="!editTicket" @click="editDesc">{{$t('edit')}}</q-btn>
+        <q-btn class="editDesc text-grey-10" v-if="!editTicket" @click="editDesc">{{ $t('edit') }}</q-btn>
+
+        <q-btn class="editDesc bg-positive" v-if="editTicket" @click="saveEditedTicket(ticket)">{{ $t('ok') }}</q-btn>
 
         <q-btn
-          class="editDesc bg-positive"
-          v-if="editTicket"
-          @click="saveEditedTicket(ticket)"
-        >{{$t('ok')}}</q-btn>
-
-        <q-btn class="deleteDesc text-white" @click="deleteTicket(ticket)">{{$t('delete')}}</q-btn>
+          v-if="$store.state.module1.userData.role === 'MANAGER'"
+          class="deleteDesc text-white"
+          @click="deleteTicket(ticket)"
+          >{{ $t('delete') }}</q-btn
+        >
       </div>
 
       <div class="requestDesc">
         <div clas="infoThreads">
           <span class="time">
-            {{ticket.date}}
+            {{ ticket.date }}
             <q-icon name="fas fa-ellipsis-v" />
-            {{ticket.time}}
+            {{ ticket.time }}
           </span>
-          <q-icon
-            name="fas fa-comments"
-            class="replyTicketIcon"
-            @click="replyToCurrentThread(ticket)"
-          >
-            <q-tooltip
-              v-model="showing1"
-              transition-show="scale"
-              transition-hide="scale"
-            >{{$t('reply')}}</q-tooltip>
+          <q-icon name="fas fa-comments" class="replyTicketIcon" @click="replyToCurrentThread(ticket)">
+            <q-tooltip v-model="showing1" transition-show="scale" transition-hide="scale">{{ $t('reply') }}</q-tooltip>
           </q-icon>
         </div>
         <p v-if="!editTicket" v-html="ticket.desc"></p>
@@ -43,43 +36,36 @@
         <div v-if="ticket.attachments.status">
           <q-separator class="mt12" />
           <div v-for="file in ticket.attachments.files" :key="file.index">
-            <p>{{file.name}}</p>
+            <p>{{ file.name }}</p>
           </div>
         </div>
       </div>
     </div>
     <!-- staff part -->
-    <div v-if="ticket.role === 'staff' " class="staffRep">
+    <div v-if="ticket.role === 'staff'" class="staffRep">
       <div class="senderName">
-        <p>{{ticket.user}}</p>
-        <p>{{ticket.role}}</p>
+        <p>{{ ticket.user }}</p>
+        <p>{{ ticket.role }}</p>
         <!-- functional buttons for admin -->
-        <q-btn class="editDesc text-grey-10" v-if="!editTicket" @click="editDesc">{{$t('edit')}}</q-btn>
+        <q-btn class="editDesc text-grey-10" v-if="!editTicket" @click="editDesc">{{ $t('edit') }}</q-btn>
 
+        <q-btn class="editDesc bg-positive" v-if="editTicket" @click="saveEditedTicket(ticket)">{{ $t('ok') }}</q-btn>
         <q-btn
-          class="editDesc bg-positive"
-          v-if="editTicket"
-          @click="saveEditedTicket(ticket)"
-        >{{$t('ok')}}</q-btn>
-        <q-btn class="deleteDesc text-white" @click="deleteTicket(ticket)">{{$t('delete')}}</q-btn>
+          v-if="$store.state.module1.userData.role === 'MANAGER'"
+          class="deleteDesc text-white"
+          @click="deleteTicket(ticket)"
+          >{{ $t('delete') }}</q-btn
+        >
       </div>
       <div class="requestDesc">
         <div clas="infoThreads">
           <span class="time">
-            {{ticket.date}}
+            {{ ticket.date }}
             <q-icon name="fas fa-ellipsis-v" />
-            {{ticket.time}}
+            {{ ticket.time }}
           </span>
-          <q-icon
-            name="fas fa-comments"
-            class="replyTicketIcon"
-            @click="replyToCurrentThread(ticket)"
-          >
-            <q-tooltip
-              v-model="showing1"
-              transition-show="scale"
-              transition-hide="scale"
-            >{{$t('reply')}}</q-tooltip>
+          <q-icon name="fas fa-comments" class="replyTicketIcon" @click="replyToCurrentThread(ticket)">
+            <q-tooltip v-model="showing1" transition-show="scale" transition-hide="scale">{{ $t('reply') }}</q-tooltip>
           </q-icon>
         </div>
         <p v-if="!editTicket" v-html="ticket.desc"></p>
@@ -89,7 +75,7 @@
         <div v-if="ticket.attachments.status">
           <q-separator class="mt12" />
           <div v-for="file in ticket.attachments.files" :key="file.index">
-            <p>{{file.name}}</p>
+            <p>{{ file.name }}</p>
           </div>
         </div>
       </div>
@@ -168,8 +154,7 @@ export default {
 .clientReq {
   background-color: #f7fafd;
   border: 1px solid #c5d8eb;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14),
-    0 3px 1px -2px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12);
   margin-top: 12px;
   display: flex;
   @media screen and (max-width: 640px) {
@@ -204,8 +189,7 @@ export default {
 .staffRep {
   border: 1px solid #efe9d3;
   background-color: #faf8f1;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14),
-    0 3px 1px -2px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12);
   margin-top: 12px;
   display: flex;
   @media screen and (max-width: 640px) {

@@ -1,15 +1,15 @@
-<template >
+<template>
   <div class="q-pa-md">
     <q-card class="myCard loginWrapperCard">
       <div class="loginImage"></div>
       <div class="tabWrapper">
         <q-tabs v-model="tab" class="tabsContainer block640">
-          <q-tab class="tabSelect" label name="login">{{$t('signin')}}</q-tab>
-          <q-tab class="tabSelect" label name="register">{{$t('register')}}</q-tab>
+          <q-tab class="tabSelect" label name="login">{{ $t('signin') }}</q-tab>
+          <q-tab class="tabSelect" label name="register">{{ $t('register') }}</q-tab>
         </q-tabs>
         <!-- titl for login Register Card -->
         <q-card-section>
-          <p class="welcomeMgs">{{$t('welcomemsg')}}</p>
+          <p class="welcomeMgs">{{ $t('welcomemsg') }}</p>
         </q-card-section>
         <q-tab-panels v-model="tab" animated>
           <q-tab-panel name="login">
@@ -127,5 +127,9 @@ export default {
 [dir='ltr'] .q-card > img:first-child {
   border-top-left-radius: inherit;
   border-top-right-radius: 0;
+}
+.loginWrapperCard .q-tab--active {
+  border-bottom: 3px solid #ffa900;
+  background-color: #d38c01;
 }
 </style>

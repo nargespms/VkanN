@@ -104,7 +104,7 @@ export default {
       FilterOption2: this.customerName,
       customerName: ['customer1', 'customer2', 'customer3', 'ابراهیمی'],
       departmans: ['INFO', 'SUPPORT', 'BILLING'],
-      priorities: [this.$t('emergency'), this.$t('middle'), this.$t('take your time')],
+      priorities: [1, 2, 3, 4, 5],
       ticket: {
         title: '',
         departamn: this.choosedDep,
@@ -163,7 +163,7 @@ export default {
           .post('/v1/api/vkann/tickets', {
             service: this.ticket.serviceName,
             department: this.ticket.departamn,
-            status: this.ticket.priority,
+            priority: this.ticket.priority,
             title: this.ticket.title,
           })
           .then(response => {
@@ -193,7 +193,9 @@ export default {
             this.FilterOption = this.servicesName;
           } else {
             const needle = val.toLowerCase();
-            this.FilterOption = this.servicesName.filter(v => v.toLowerCase().indexOf(needle) > -1);
+            this.FilterOption = this.servicesName.filter(
+              v => v.toLowerCase().indexOf(needle) > -1
+            );
           }
         });
       }, 500);
@@ -207,7 +209,9 @@ export default {
             this.FilterOption2 = this.customerName;
           } else {
             const needle = val.toLowerCase();
-            this.FilterOption2 = this.customerName.filter(v => v.toLowerCase().indexOf(needle) > -1);
+            this.FilterOption2 = this.customerName.filter(
+              v => v.toLowerCase().indexOf(needle) > -1
+            );
           }
         });
       }, 500);

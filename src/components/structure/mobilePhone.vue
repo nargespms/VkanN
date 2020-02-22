@@ -42,20 +42,9 @@
       </template>
       <!-- check for async validation -->
       <template v-if="this.number.length > 0" v-slot:append>
-        <q-icon
-          v-if="verifyMobile && $v.number"
-          name="fas fa-check"
-          class="mailIcon text-positive"
-        />
-        <q-icon
-          v-if="!verifyMobile && $v.number"
-          name="fas fa-times"
-          class="mailIcon text-negative"
-        />
-        <span
-          v-if="!verifyMobile && $v.number && !wrongNumber"
-          class="text-negative fn11"
-        >{{ $t('enteredEmailisRegistered') }}</span>
+        <q-icon v-if="verifyMobile " name="fas fa-check" class="mailIcon text-positive" />
+        <q-icon v-if="!verifyMobile " name="fas fa-times" class="mailIcon text-negative" />
+        {{verifyMobile}}
         <p class="error" v-if="wrongNumber">
           <span class="fn11">{{ $t('wrongnumber') }}</span>
         </p>
@@ -82,7 +71,7 @@ const PNF = require('google-libphonenumber').PhoneNumberFormat;
 const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 
 export default {
-  props: ['data'],
+  props: ['data', 'existed'],
   data() {
     return {
       // data for validation
@@ -134,25 +123,29 @@ export default {
         // ...........*************........................
 
         if (phoneUtil.isValidNumber(phoneUtil.parse(completeNum))) {
-          this.$q.notify({
-            message: this.$t('correct number'),
-            color: 'positive',
-            icon: 'warning',
-            position: 'top',
-          });
           // async validation
+
           this.$axios
             .post('/v1/api/vkann/validation/mobile', {
               mobile: completeNum,
-              existed: false,
+              existed: this.existed,
             })
             .then(response => {
               console.log(response);
+              if (response.status === 204) {
+                this.verifyMobile = true;
+                console.log(this.verifyMobile);
+              } else if (response.status === 404) {
+                this.verifyMobile = false;
+                console.log(this.verifyMobile);
+              }
             })
             .catch(e => {
               console.log(e.response.status);
+              console.log(this.verifyMobile);
             });
-          this.verifyMobile = true;
+          this.verifyMobile = false;
+
           this.wrongNumber = false;
           console.log('miad inja');
           this.$emit('mobileVerified', completeNum, this.con);
@@ -160,12 +153,6 @@ export default {
         } else {
           this.wrongNumber = true;
           this.verifyMobile = false;
-          this.$q.notify({
-            message: this.$t('wrongnumber'),
-            color: 'negative',
-            icon: 'warning',
-            position: 'top',
-          });
         }
       }
     },

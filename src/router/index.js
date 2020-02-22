@@ -57,14 +57,15 @@ export default function({ store }) {
       if (!store.state.module1.logedIn) {
         // User is not authenticated, so we lead him into signIn
 
-        next('/signIn');
+        next();
       } else {
         const user = JSON.parse(localStorage.getItem('Data'));
         const userRole = user.module1.userData.role;
+        const userDep = user.module1.userData.department;
         // console.log(user.module1.userData.role);
         // console.log(to.meta.roles.includes(userRole));
 
-        if (to.meta.roles.includes(userRole)) {
+        if (to.meta.roles.includes(userRole) && to.meta.dep.includes(userDep)) {
           console.log('happy');
           next();
         } else {

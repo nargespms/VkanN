@@ -3,17 +3,11 @@
     <div class="width-1of2 lg-width-1of3 sm-auto chartsWrap">
       <lineChart :chartdata="chartData" :options="chartOptions"></lineChart>
       <barChart :chartdata="chartData" :options="chartOptions"></barChart>
-      <Doughnutchart
-        :chartdata="chartData"
-        :options="chartOptions"
-      ></Doughnutchart>
+      <Doughnutchart :chartdata="chartData" :options="chartOptions"></Doughnutchart>
       <Piechart :chartdata="chartData" :options="chartOptions"></Piechart>
       <Radarchart :chartdata="chartData" :options="chartOptions"></Radarchart>
       <Bubblechart :chartdata="chartData" :options="chartOptions"></Bubblechart>
-      <scatterChart
-        :chartdata="chartData"
-        :options="chartOptions"
-      ></scatterChart>
+      <scatterChart :chartdata="chartData" :options="chartOptions"></scatterChart>
     </div>
   </div>
 </template>

@@ -19,11 +19,7 @@
         <!-- firstname validation -->
         <p v-if="errors" class="error">
           <span v-if="!$v.form.FirstName.required">*{{ $t('thisfieldisrequired') }}.</span>
-          <span v-if="!$v.form.FirstName.minLength">
-            {{
-            $t('Fieldmusthaveatleast3characters')
-            }}
-          </span>
+          <span v-if="!$v.form.FirstName.minLength">{{ $t('Fieldmusthaveatleast3characters') }}</span>
         </p>
         <!-- firstname validation -->
       </q-input>
@@ -70,10 +66,11 @@
             name="fas fa-times"
             class="mailIcon text-negative"
           />
-          <span
-            v-if="!verifyEmail && $v.form.email.email"
-            class="text-negative fn11"
-          >{{ $t('enteredEmailisRegistered') }}</span>
+          <span v-if="!verifyEmail && $v.form.email.email" class="text-negative fn11">
+            {{
+            $t('enteredEmailisRegistered')
+            }}
+          </span>
         </template>
         <!-- email errors -->
         <p v-if="errors" class="error">
@@ -86,25 +83,13 @@
         <!-- email errors -->
       </q-input>
       <!-- Phone Number -->
-      <mobilePhoneWrapper />
+      <mobilePhoneWrapper @mobileVerified="mobileVerified" />
       <!-- Gender -->
       <div class="genderRegister">
         <label>{{ $t('gender') }}:</label>
-        <q-radio class="genderOpt" v-model="form.Gender" val="FEMALE">
-          {{
-          $t('female')
-          }}
-        </q-radio>
-        <q-radio class="genderOpt" v-model="form.Gender" val="MALE">
-          {{
-          $t('male')
-          }}
-        </q-radio>
-        <q-radio class="genderOpt" v-model="form.Gender" val="OTHER">
-          {{
-          $t('OTHER')
-          }}
-        </q-radio>
+        <q-radio class="genderOpt" v-model="form.Gender" val="FEMALE">{{ $t('female') }}</q-radio>
+        <q-radio class="genderOpt" v-model="form.Gender" val="MALE">{{ $t('male') }}</q-radio>
+        <q-radio class="genderOpt" v-model="form.Gender" val="OTHER">{{ $t('OTHER') }}</q-radio>
         <p v-if="errors" class="error float">
           <span v-if="!$v.form.Gender.required">*{{ $t('thisfieldisrequired') }}.</span>
         </p>
@@ -133,11 +118,7 @@
         </p>
       </q-input>
       <p class="error" v-if="errors">
-        <span v-if="!$v.form.PassWord.strongPassword">
-          {{
-          $t('Strongpasswords')
-          }}
-        </span>
+        <span v-if="!$v.form.PassWord.strongPassword">{{ $t('Strongpasswords') }}</span>
       </p>
       <!-- Re enter password -->
       <q-input
@@ -161,20 +142,16 @@
         </template>
         <!-- errors for pass2 -->
         <p v-if="errors" class="error">
-          <span v-if="!$v.form.Confirmpass.required">{{$t('thisfieldisrequired')}}.</span>
+          <span v-if="!$v.form.Confirmpass.required">{{ $t('thisfieldisrequired') }}.</span>
           <span
             v-if="!$v.form.Confirmpass.sameAsPassword && $v.form.Confirmpass.required"
-          >{{$t('Thepasswordsdonotmatch')}}.</span>
+          >{{ $t('Thepasswordsdonotmatch') }}.</span>
         </p>
         <!-- errors for pass2 -->
       </q-input>
       <!-- adding captcha -->
       <captcha @captchaValid="captchaValid" :key="componentKey" />
-      <q-btn color="primary" @click.prevent="onSubmit">
-        {{
-        $t('submit')
-        }}
-      </q-btn>
+      <q-btn color="primary" @click.prevent="onSubmit">{{ $t('submit') }}</q-btn>
     </q-form>
   </div>
 </template>
@@ -201,16 +178,17 @@ export default {
       empty: true,
       // end of data for validation
       enableRegister: true,
-      MobileNumber: '',
       isPwd: true,
       isPwd1: true,
       form: {
+        MobileNumber: '',
         email: '',
         FirstName: '',
         LastName: '',
         Gender: '',
         PassWord: '',
         Confirmpass: '',
+        country: '',
       },
       enableConfirm: false,
       //  for captcha checking
@@ -271,6 +249,12 @@ export default {
     },
   },
   methods: {
+    mobileVerified(value, con) {
+      this.form.country = con;
+      this.form.MobileNumber = value;
+      console.log('ineditform');
+    },
+
     captchaValid(value) {
       this.captcha = true;
       this.captchaObj = value;
@@ -300,13 +284,25 @@ export default {
                 lastName: this.form.LastName,
                 password: this.form.PassWord,
                 gender: this.form.Gender,
-                mobile: this.MobileNumber,
+                mobile: this.form.MobileNumber,
                 email: this.form.email,
               })
               .then(Response => {
                 if (Response.status === 200) {
                   console.log(Response);
                   this.showNotif('top-right');
+                  this.$store.commit(
+                    'module1/userDataFromServer',
+                    Response.data,
+                    { module: 'module1' }
+                  );
+                  this.$store.commit('module1/logedInSuccesfully', true, {
+                    module: 'module1',
+                  });
+
+                  this.$router.push({
+                    path: `/${this.$route.params.locale}/dashboard`,
+                  });
                 } else if (Response.status === 400) {
                   this.$q.notify({
                     message: this.$t('user exist'),
