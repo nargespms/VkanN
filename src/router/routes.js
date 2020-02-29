@@ -46,6 +46,7 @@ const routes = [
         component: () => import('pages/signIn.vue'),
       },
       {
+        name: 'dashboard',
         path: 'dashboard',
         component: () => import('pages/dashboard.vue'),
         meta: {
@@ -55,6 +56,7 @@ const routes = [
         },
       },
       {
+        name: 'search',
         path: 'search',
         component: () => import('pages/search.vue'),
         meta: {
@@ -70,6 +72,7 @@ const routes = [
 
       // user
       {
+        name: 'profile',
         path: 'profile',
         component: () => import('pages/profile'),
         meta: {
@@ -88,6 +91,7 @@ const routes = [
         },
       },
       {
+        name: 'clients',
         path: 'clients',
         component: () => import('pages/clients'),
         meta: {
@@ -98,6 +102,7 @@ const routes = [
       },
       // tickets
       {
+        name: 'tickets',
         path: 'tickets',
         component: () => import('pages/tickets'),
         meta: {
@@ -107,6 +112,7 @@ const routes = [
         },
       },
       {
+        name: 'ticketsList',
         path: 'tickets/ticketsList',
         component: () => import('pages/ticketsList'),
         meta: {
@@ -116,6 +122,7 @@ const routes = [
         },
       },
       {
+        name: 'addTicket',
         path: 'tickets/addTicket',
         component: () => import('pages/newTicket'),
         meta: {
@@ -125,6 +132,7 @@ const routes = [
         },
       },
       {
+        name: 'ticket',
         path: 'tickets/:ticket',
         component: () => import('pages/ticket'),
         meta: {
@@ -135,6 +143,7 @@ const routes = [
       },
       // tasks
       {
+        name: 'tasks',
         path: 'tasks',
         component: () => import('pages/tasks'),
         meta: {
@@ -145,6 +154,7 @@ const routes = [
       },
 
       {
+        name: 'myTasksList',
         path: 'tasks/myTasksList',
         component: () => import('pages/myTasksList'),
         meta: {
@@ -154,6 +164,7 @@ const routes = [
         },
       },
       {
+        name: 'tasksList',
         path: 'tasks/tasksList',
         component: () => import('pages/tasksList'),
         meta: {
@@ -163,6 +174,7 @@ const routes = [
         },
       },
       {
+        name: 'addTask',
         path: 'tasks/addTask',
         component: () => import('pages/addTask'),
         meta: {
@@ -172,6 +184,7 @@ const routes = [
         },
       },
       {
+        name: 'kanBoard',
         path: 'tasks/kanBoard',
         component: () => import('pages/kanBoard'),
         meta: {
@@ -181,6 +194,7 @@ const routes = [
         },
       },
       {
+        name: 'task',
         path: 'tasks/:taskId',
         component: () => import('pages/task'),
         meta: {
@@ -191,6 +205,7 @@ const routes = [
       },
       // files
       {
+        name: 'fileManagements',
         path: 'fileManagements',
         component: () => import('pages/fileManagements'),
         meta: {
@@ -200,6 +215,7 @@ const routes = [
         },
       },
       {
+        name: 'filesList',
         path: 'fileManagements/filesList',
         component: () => import('pages/filesList'),
         meta: {
@@ -209,6 +225,7 @@ const routes = [
         },
       },
       {
+        name: 'uploadFile',
         path: 'fileManagements/uploadFile',
         component: () => import('pages/uploadFile'),
         meta: {
@@ -220,6 +237,7 @@ const routes = [
 
       // services
       {
+        name: 'services',
         path: 'services',
         component: () => import('pages/services'),
         meta: {
@@ -230,6 +248,7 @@ const routes = [
       },
 
       {
+        name: 'servicesList',
         path: 'services/servicesList',
         component: () => import('pages/servicesList'),
         meta: {
@@ -239,6 +258,7 @@ const routes = [
         },
       },
       {
+        name: 'addService',
         path: 'services/addService',
         component: () => import('pages/addService'),
         meta: {
@@ -248,6 +268,7 @@ const routes = [
         },
       },
       {
+        name: 'service',
         path: 'services/:serviceId',
         component: () => import('pages/service'),
         meta: {
@@ -258,6 +279,7 @@ const routes = [
       },
       // userManagement
       {
+        name: 'userManagement',
         path: 'userManagement',
         component: () => import('pages/userManagement'),
         meta: {
@@ -267,6 +289,7 @@ const routes = [
         },
       },
       {
+        name: 'staffs',
         path: 'userManagement/staffs',
         component: () => import('pages/staffs'),
         meta: {
@@ -276,6 +299,7 @@ const routes = [
         },
       },
       {
+        name: 'clients',
         path: 'userManagement/clients',
         component: () => import('pages/clients'),
         meta: {
@@ -285,6 +309,7 @@ const routes = [
         },
       },
       {
+        name: 'addMember',
         path: 'userManagement/addMember',
         component: () => import('pages/addMember'),
         meta: {
@@ -295,6 +320,7 @@ const routes = [
       },
       // contracts
       {
+        name: 'contracts',
         path: 'billing/contracts',
         component: () => import('pages/contracts'),
         meta: {
@@ -305,6 +331,7 @@ const routes = [
       },
 
       {
+        name: 'contractsList',
         path: 'billing/contracts/contractsList',
         component: () => import('pages/contractsList'),
         meta: {
@@ -314,6 +341,7 @@ const routes = [
         },
       },
       {
+        name: 'addContract',
         path: 'billing/contracts/addContract',
         component: () => import('pages/addContract'),
         meta: {
@@ -323,6 +351,7 @@ const routes = [
         },
       },
       {
+        name: 'contract',
         path: 'billing/contracts/:contractId',
         component: () => import('pages/contract'),
         meta: {
@@ -333,6 +362,7 @@ const routes = [
       },
       // invoices
       {
+        name: 'invoices',
         path: 'billing/invoices',
         component: () => import('pages/invoices'),
         meta: {
@@ -342,6 +372,7 @@ const routes = [
         },
       },
       {
+        name: 'invoicesList',
         path: 'billing/invoices/invoicesList',
         component: () => import('pages/invoicesList'),
         meta: {
@@ -351,6 +382,7 @@ const routes = [
         },
       },
       {
+        name: 'addInvoice',
         path: 'billing/invoices/addInvoice',
         component: () => import('pages/addInvoice'),
         meta: {
@@ -360,6 +392,7 @@ const routes = [
         },
       },
       {
+        name: 'tags',
         path: 'tags',
         component: () => import('pages/tags'),
         meta: {
@@ -369,6 +402,7 @@ const routes = [
         },
       },
       {
+        name: 'billing',
         path: 'billing',
         component: () => import('pages/billing'),
         meta: {

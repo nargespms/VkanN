@@ -2,7 +2,7 @@
   <div class="q-pa-xl">
     <!-- user management table -->
     <div class="userManagementListWrap">
-      <tableDataWrap :endpoint="'/statics/user.json'" />
+      <tableDataWrap :endpoint="'/v1/api/vkann/staff/list'" />
     </div>
   </div>
 </template>

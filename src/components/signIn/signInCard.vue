@@ -46,10 +46,7 @@ export default {
     registerCmp,
     forgetCmp,
   },
-  // mounted() {
-  // console.log(languages); // array of supported languages ['ar', 'de', ...]
-  // console.log(Organization.fa); // dump english version of organization detail
-  // },
+
   methods: {
     signUp() {
       this.tab = 'register';

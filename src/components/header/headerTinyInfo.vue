@@ -60,8 +60,10 @@ export default {
         module: 'module1',
       });
       this.$router.push({ path: `/${this.$route.params.locale}/signIn` });
-      // this.$axios.post('');
       console.log('logout');
+      this.$axios.get('/v1/api/vkann/log-out').then(res => {
+        console.log(res);
+      });
     },
   },
 };

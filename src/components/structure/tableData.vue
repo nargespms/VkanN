@@ -8,7 +8,6 @@
       :separator="separator"
       :pagination.sync="innerPagination"
       binary-state-sort
-      :loading="loading"
       class="my-sticky-header-table"
       @request="onRequest"
       :dense="$q.screen.lt.sm"
@@ -32,16 +31,16 @@
       <!-- custom header -->
       <template v-slot:header="props">
         <q-tr :props="props">
-          <q-th v-for="col in columns" :key="col.name" :props="props" class="tableHeadCell">
+          <q-th v-for="col in columns" :key="col.lable" class="tableHeadCell">
             <!-- name for each column -->
-            <span class="columnLabel">{{ col.label }}</span>
+            <span class="columnLabel">{{ $t(col.lable) }}</span>
             <!-- if filterable true in each column it will show an input -->
             <div class="columnFilterWrap" v-if="col.filterable" @click.stop="stopSort">
               <!-- filter column for text -->
               <q-input
                 outlined
                 color="text-black"
-                v-if="col.filterableType === 'text'"
+                v-if="col.filterType === 'text'"
                 class="filterColumnSearch"
                 type="text"
                 v-model.trim="columnFilter[col.name]"
@@ -52,7 +51,7 @@
               <!-- filter column for dropboxes -->
               <q-select
                 outlined
-                v-if="col.filterableType === 'DropBox'"
+                v-if="col.filterType === 'DropBox'"
                 class="filterColumnSearch dropBoxFilterColumn"
                 :options="FilterOption"
                 v-model.trim="columnFilter[col.name]"
@@ -72,7 +71,7 @@
               </q-select>
               <!-- filter column for dates -->
               <!-- start date -->
-              <div v-if="col.filterableType === 'date'">
+              <div v-if="col.filterType === 'Date'">
                 <q-input
                   outlined
                   v-model.trim="columnFilter.columnFilterStartdate"
@@ -236,7 +235,7 @@ export default {
         sortBy: 'name',
         descending: false,
         page: 1,
-        rowsPerPage: 5,
+        limit: 5,
         rowsNumber: 10,
       }),
     },
@@ -282,39 +281,6 @@ export default {
       this.innerPagination = props.pagination;
       this.$emit('request', props);
     },
-    // onRequest(props) {
-    //   const {
-    //     page,
-    //     rowsPerPage,
-    //     rowsNumber,
-    //     sortBy,
-    //     descending,
-    //   } = props.pagination;
-    //   const { filter } = props;
-    //   console.log(props);
-    //   this.loading = true;
-    //   this.$axios
-    //     .get('', {
-    //       params: {
-    //         page,
-    //         rowsPerPage,
-    //         rowsNumber,
-    //         sortBy,
-    //         descending,
-    //         filter,
-    //       },
-    //     })
-    //     .then(response => {
-    //       this.pagination.rowsNumber = response.data.rowsNumber;
-    //       this.data1.splice(0, this.data1.length, ...response.data.rows);
-    //       // don't forget to update local pagination object
-    //       this.pagination.page = page;
-    //       this.pagination.rowsPerPage = rowsPerPage;
-    //       this.pagination.sortBy = sortBy;
-    //       this.pagination.descending = descending;
-    //       this.loading = false;
-    //     });
-    // },
   },
 };
 </script>

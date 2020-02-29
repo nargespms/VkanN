@@ -15,7 +15,11 @@
       </template>
       <template v-slot:append>
         <q-icon name="fas fa-plus" class="addTagIcon" @click="addTag">
-          <q-tooltip v-model="showing1" transition-show="scale" transition-hide="scale">{{ $t('addTag') }}</q-tooltip>
+          <q-tooltip
+            v-model="showing1"
+            transition-show="scale"
+            transition-hide="scale"
+          >{{ $t('addTag') }}</q-tooltip>
         </q-icon>
       </template>
     </q-input>
@@ -70,7 +74,7 @@ export default {
               icon: 'warning',
               position: 'top',
             });
-          } else if (e.response.status === 400) {
+          } else if (e.response.status === 409) {
             this.$q.notify({
               message: this.$t('reapetedtag'),
               color: 'negative',

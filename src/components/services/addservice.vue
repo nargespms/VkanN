@@ -17,24 +17,8 @@
           <template v-slot:prepend>
             <q-icon name="settings_applications" />
           </template>
-          <!-- <p v-if="errors" class="error">
-            <span v-if="$v.service.name.required">*{{$t('thisfieldisrequired')}}.</span>
-          </p>-->
         </q-input>
-        <!-- service type -->
-        <q-select
-          color="light-blue-10 "
-          outlined
-          required
-          v-model.trim="service.type"
-          :options="serviceType"
-          :label="$t('serviceType')"
-          class="inputStyle"
-        >
-          <template v-slot:append>
-            <q-icon name />
-          </template>
-        </q-select>
+
         <!-- employee name -->
         <!-- <q-select
           color="light-blue-10 "
@@ -47,7 +31,7 @@
           <template v-slot:prepend>
             <q-icon name="fas fa-user" />
           </template>
-        </q-select> -->
+        </q-select>-->
         <singleAutoCompleteSelectBox
           :options="staffs"
           :optionLable="'firstName'"
@@ -57,23 +41,6 @@
           @getAutoCompleteValue="getAutoCompleteValuestaff"
         />
 
-        <!-- client name -->
-        <!-- <q-select
-          color="light-blue-10 "
-          outlined
-          required
-          v-model.trim="service.client"
-          :options="clients"
-          option-label="firstName"
-          option-value="id"
-          map-options
-          :label="$t('clientName')"
-          class="inputStyle"
-        >
-          <template v-slot:prepend>
-            <q-icon name="fas fa-user" />
-          </template>
-        </q-select>-->
         <singleAutoCompleteSelectBox
           :options="clients"
           :optionLable="'firstName'"
@@ -117,25 +84,16 @@
         <!-- voip -->
         <q-input
           outlined
-          required
-          class="pt20"
+          class="pt20 pb20"
           color="light-blue-10"
           v-model.trim="service.voip"
           :label="$t('voipNumber')"
           lazy-rules
-          :rules="[val => val && val.length > 0]"
-          @input="$v.service.voip.$touch"
-          :error="$v.service.voip.$error"
           mask="#####"
         >
           <template v-slot:prepend>
             <q-icon name="fas fa-tty" />
           </template>
-          <p v-if="errors" class="error">
-            <span v-if="!$v.service.voip.minLength"
-              >*{{ $t('Fieldmusthaveatleast4characters') }}.</span
-            >
-          </p>
         </q-input>
         <!-- description -->
         <textarea
@@ -172,32 +130,14 @@
         </q-select>
       </div>
       <div class="col3">
-        <q-btn
-          class="halfw generalBut"
-          icon="system_update_alt"
-          :label="$t('tickets')"
-        />
-        <q-btn
-          class="halfw generalBut"
-          icon="play_for_work"
-          :label="$t('tasks')"
-        />
-        <q-btn
-          class="halfw generalBut"
-          icon="fas fa-handshake"
-          :label="$t('contracts')"
-        />
-        <q-btn
-          class="halfw generalBut"
-          icon="fas fa-file-invoice"
-          :label="$t('invoices')"
-        />
+        <div v-if="profileMode === 'Edit'">
+          <q-btn class="halfw generalBut" icon="system_update_alt" :label="$t('tickets')" />
+          <q-btn class="halfw generalBut" icon="play_for_work" :label="$t('tasks')" />
+          <q-btn class="halfw generalBut" icon="fas fa-handshake" :label="$t('contracts')" />
+          <q-btn class="halfw generalBut" icon="fas fa-file-invoice" :label="$t('invoices')" />
+        </div>
         <div class="mr16 fullw mb16">
-          <uploadfile
-            :UploadButton="false"
-            ref="upload"
-            :text="'attachments'"
-          />
+          <uploadfile :UploadButton="false" ref="upload" :text="'attachments'" />
         </div>
         <div class="fullw mb16">
           <uploadfile :UploadButton="false" ref="upload" :text="'avatar'" />
@@ -211,13 +151,14 @@
 </template>
 
 <script>
-import { required, minLength } from 'vuelidate/lib/validators';
+import { required } from 'vuelidate/lib/validators';
 import uploadfile from '../structure/uploadfile.vue';
 import tagsSelection from '../structure/tagsSelection.vue';
 import singleAutoCompleteSelectBox from '../structure/singleAutoCompleteSelectBox.vue';
 
 export default {
   name: 'addservice',
+  props: ['profileMode'],
   components: {
     uploadfile,
     tagsSelection,
@@ -237,16 +178,14 @@ export default {
       // data for validation
       uiState: 'submit not clicked',
       errors: true,
-      empty: false,
+      empty: true,
       // end of data for validation
       servicesName: ['name1', 'name2', 'name3'],
-      serviceType: ['type1', 'type2', 'type3'],
       servicesTag: ['tag1', 'tag2', 'tag3'],
-      bilingStatusService: ['paid', 'unpaid', 'waiting'],
-      servicesStatus: ['status1', 'status2', 'status3'],
+      bilingStatusService: ['PAID', 'UNPAID', 'BLOCK'],
+      servicesStatus: ['WIP', 'LAUNCHED', 'SUPPORT', 'DEACTIVE'],
       service: {
         name: '',
-        type: '',
         primaryDomain: '',
         parkDomain: '',
         tag: '',
@@ -263,9 +202,6 @@ export default {
   validations: {
     service: {
       name: { required },
-      voip: {
-        minLength: minLength(4),
-      },
     },
   },
   methods: {
@@ -280,53 +216,84 @@ export default {
     },
 
     onSubmit() {
-      this.empty = !this.$v.service.$anyDirty;
+      this.empty = this.$v.service.$anyDirty;
       this.errors = this.$v.service.$anyError;
       this.uiState = 'submit clicked';
+      console.log(this.errors);
+      console.log(this.empty);
+
       if (this.errors === false && this.empty === false) {
         // this is where you send the responses
         this.uiState = 'form submitted';
         console.log('edit service');
         this.$refs.upload.submit_btn();
-        this.$axios
-          .post('/v1/api/vkann/services', {
-            tags: this.service.tags,
-            name: this.service.name,
-            type: this.service.type,
-            staff: this.service.employee,
-            client: this.service.client,
-            primaryDomain: this.service.primaryDomain,
-            parkDomain: this.service.parkDomain,
-            billingStatus: this.service.bilingStatus,
-            status: this.service.status,
-            voip: this.service.voip,
-            attachments: '5e1a30480000000000000000',
-          })
-          .then(response => {
-            console.log(response);
-            if (response.status === 200) {
-              this.$q.notify({
-                message: this.$t('newServiceAdded'),
-                color: 'positive',
-                icon: 'check',
-                position: 'top',
-              });
-              this.$router.push({
-                path: `/${this.$route.params.locale}/services/servicesList`,
-              });
-            }
-          })
-          .catch(e => {
-            console.log(e.response.status);
-            if (e.response.status === 403) {
-              this.$q.notify({
-                message: this.$t('forbidenAccess'),
-                color: 'negative',
-                icon: 'warning',
-                position: 'top',
-              });
-            }
-          });
+        if (this.profileMode === 'Add') {
+          this.$axios
+            .post('/v1/api/vkann/services', {
+              tags: this.service.tags,
+              name: this.service.name,
+              staff: this.service.employee,
+              client: this.service.client,
+              primaryDomain: this.service.primaryDomain,
+              parkDomain: this.service.parkDomain,
+              billingStatus: this.service.bilingStatus,
+              status: this.service.status,
+              voip: this.service.voip,
+              attachments: '5e1a30480000000000000000',
+            })
+            .then(response => {
+              console.log(response);
+              if (response.status === 200) {
+                this.$q.notify({
+                  message: this.$t('newServiceAdded'),
+                  color: 'positive',
+                  icon: 'check',
+                  position: 'top',
+                });
+                this.$router.push({
+                  path: `/${this.$route.params.locale}/services/servicesList`,
+                });
+              }
+            })
+            .catch(e => {
+              console.log(e.response.status);
+              if (e.response.status === 403) {
+                this.$q.notify({
+                  message: this.$t('forbidenAccess'),
+                  color: 'negative',
+                  icon: 'warning',
+                  position: 'top',
+                });
+              }
+            });
+        }
+        if (this.profileMode === 'Edit') {
+          this.$axios
+            .put(`/v1/api/vkann/services/${this.$route.params.serviceId}`, {
+              tags: this.service.tags,
+              name: this.service.name,
+              staff: this.service.employee,
+              client: this.service.client,
+              primaryDomain: this.service.primaryDomain,
+              parkDomain: this.service.parkDomain,
+              billingStatus: this.service.bilingStatus,
+              status: this.service.status,
+              voip: this.service.voip,
+              attachments: '5e1a30480000000000000000',
+            })
+            .then(res => {
+              console.log(res);
+              if (res.status === 200) {
+                this.$q.notify({
+                  message: this.$t('serviceEdited'),
+                  color: 'positive',
+                  icon: 'check',
+                  position: 'top',
+                });
+                this.$emit('tabChanged', 'serviceProfile');
+              }
+            });
+        }
       } else if (this.empty === true) {
         this.$q.notify({
           message: this.$t('emptyForm'),
@@ -355,6 +322,34 @@ export default {
       this.staffsLable = this.staffs.map(v => v.firstName);
       this.staffsid = this.staffs.map(v => v.id);
     });
+    if (this.profileMode === 'Edit') {
+      this.$axios
+        .get(`/v1/api/vkann/services/${this.$route.params.serviceId}`)
+        .then(res => {
+          console.log(res.data.data);
+          this.serviceData = res.data;
+          this.service.name = res.data.name;
+          this.service.primaryDomain = res.data.primaryDomain;
+          this.service.parkDomain = res.data.parkDomain;
+          this.service.tags = res.data.tags;
+          this.service.employee = res.data.staff;
+          this.service.voip = res.data.voip;
+          this.service.desc = res.data.desc;
+          this.service.client = res.data.client;
+          this.service.bilingStatus = res.data.billingStatus;
+          this.service.status = res.data.status;
+        })
+        .catch(e => {
+          if (e.response.status === 422) {
+            this.$q.notify({
+              message: this.$t('serviceUnvalid'),
+              color: 'negative',
+              icon: 'warning',
+              position: 'top',
+            });
+          }
+        });
+    }
   },
 };
 </script>

@@ -13,8 +13,21 @@
               <q-icon name="edit" class="editTag">
                 <q-tooltip transition-show="scale" transition-hide="scale">{{ $t('editTag') }}</q-tooltip>
               </q-icon>
-              <q-popup-edit v-model.trim="tag.title" buttons anchor="top left">
-                <q-input v-model.trim="tag.title" dense autofocus counter @change="setEditTag(tag)" />
+              <q-popup-edit
+                v-model.trim="tag.title"
+                buttons
+                anchor="top left"
+                :validate="checkForReapetedTags"
+              >
+                <q-input
+                  v-model.trim="tag.title"
+                  dense
+                  autofocus
+                  counter
+                  debounce="500"
+                  :error="errorValidation"
+                  @change="setEditTag(tag)"
+                />
               </q-popup-edit>
             </q-card-section>
             <q-card-section
@@ -61,20 +74,32 @@ export default {
       tags: [],
       showing: false,
       showing1: false,
+      errorValidation: false,
+      validTag: false,
     };
   },
 
   computed: {
     activetags() {
-      return this.tags.filter(item => item.status !== 'deactive');
+      return this.tags.filter(item => item.deleted === false);
     },
     deactivetags() {
-      return this.tags.filter(item => item.status === 'deactive');
+      return this.tags.filter(item => item.deleted === true);
     },
   },
+
   methods: {
+    checkForReapetedTags() {
+      console.log(this.validTag);
+
+      if (this.validTag) {
+        this.errorValidation = false;
+        return true;
+      }
+      this.errorValidation = true;
+      return false;
+    },
     setEditTag(tag) {
-      console.log(tag);
       this.$axios
         .put(`/v1/api/vkann/tags/${tag.id}`, {
           id: tag.id,
@@ -83,23 +108,87 @@ export default {
         })
         .then(res => {
           console.log(res);
+          if (res.status === 200) {
+            this.$emit('addToTags', this.tags);
+            this.validTag = true;
+            console.log(`success${this.validTag}`);
+            this.$q.notify({
+              message: this.$t('successfullTagEdit'),
+              color: 'positive',
+              icon: 'warning',
+              position: 'top',
+            });
+          }
+        })
+        .catch(e => {
+          console.log(e.response.status);
+          this.validTag = false;
+          console.log(`error${this.validTag}`);
+          this.$q.notify({
+            message: this.$t('reapetedtag'),
+            color: 'negative',
+            icon: 'warning',
+            position: 'top',
+          });
         });
-      this.$emit('addToTags', this.tags);
     },
     deactiveTag(tag) {
-      tag.status = 'deactive';
-      this.$axios.delete(`/v1/api/vkann/tags/${tag.id}`).then(res => {
-        console.log(res);
-      });
-      this.$emit('deleteTag', this.tags);
+      this.$q
+        .dialog({
+          title: this.$t('deleteTag'),
+          message: this.$t('areyousureyouwanttodeletethisTag'),
+          cancel: true,
+        })
+        .onOk(() => {
+          console.log('OK');
+          this.$axios.delete(`/v1/api/vkann/tags/${tag.id}`).then(res => {
+            console.log(res);
+          });
+          this.$q.notify({
+            message: this.$t('tagDeleted'),
+            color: 'positive',
+            icon: 'check',
+            position: 'top',
+          });
+
+          this.$emit('deleteTag', this.tags);
+        })
+        .onCancel(() => {
+          console.log('Cancel');
+        });
     },
     activeTag(tag) {
-      tag.status = 'active';
-      this.$emit('activeAgain', this.tag);
+      this.$q
+        .dialog({
+          title: this.$t('restoreTag'),
+          message: this.$t('areyousureyouwanttorestoretag'),
+          cancel: true,
+        })
+        .onOk(() => {
+          this.$axios
+            .put(`/v1/api/vkann/tags/${tag.id}`, {
+              id: tag.id,
+              status: 'ACTIVE',
+              title: tag.title,
+            })
+            .then(res => {
+              console.log(res);
+            });
+          this.$emit('activeAgain', this.tag);
+          this.$q.notify({
+            message: this.$t('tagrestored'),
+            color: 'positive',
+            icon: 'check',
+            position: 'top',
+          });
+        })
+        .onCancel(() => {
+          console.log('Cancel');
+        });
     },
   },
   mounted() {
-    this.$axios.get('/v1/api/vkann/tags/get-tags').then(res => {
+    this.$axios.get('/v1/api/vkann/tags/list').then(res => {
       console.log(res);
       this.tags = res.data.tags;
     });
@@ -158,7 +247,7 @@ export default {
         width: calc(100% - 18px);
       }
       > div {
-        background-color: #c10015;
+        background-color: #d71227;
         color: #000;
       }
     }

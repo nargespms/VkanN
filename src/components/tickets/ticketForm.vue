@@ -21,7 +21,7 @@
         <div class="clear">
           <!-- choose departman for ticet -->
           <q-select
-            filled
+            outlined
             :label="$t('departman')"
             v-model.trim="ticket.departamn"
             :options="departmans"
@@ -31,11 +31,18 @@
             <template v-slot:prepend>
               <q-icon name="far fa-building" />
             </template>
+            <template v-slot:option="scope">
+              <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                <q-item-section>
+                  <q-item-label>{{ $t(scope.opt) }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </template>
           </q-select>
           <!-- choose priority -->
           <q-select
-            filled
-            :label="$t('status')"
+            outlined
+            :label="$t('priority')"
             v-model.trim="ticket.priority"
             :options="priorities"
             class="ticketInfoRecieve pr24"
@@ -55,10 +62,10 @@
             @getAutoCompleteValue="getAutoCompleteValueService"
           />
         </div>
-        <div class="editorWrap">
-          <editor />
+        <div class="editorWrap pt20">
+          <editor @getTextFromEditor="getTextFromEditor" />
         </div>
-        <div class="attachments">
+        <div class="attachments mb16">
           <span class="attachHeader">
             <q-icon name="fas fa-paperclip" />
             {{ $t('attachments') }}
@@ -103,13 +110,16 @@ export default {
       FilterOption: this.servicesName,
       FilterOption2: this.customerName,
       customerName: ['customer1', 'customer2', 'customer3', 'ابراهیمی'],
-      departmans: ['INFO', 'SUPPORT', 'BILLING'],
-      priorities: [1, 2, 3, 4, 5],
+      departmans: ['INFO', 'TECH', 'BILLING'],
+      priorities: ['LOW', 'NORMAL', 'CRITICAL'],
       ticket: {
         title: '',
-        departamn: this.choosedDep,
-        priority: '',
+        departamn: '',
+        priority: 'LOW',
         serviceName: '',
+        thread: {
+          description: '',
+        },
       },
     };
   },
@@ -121,6 +131,10 @@ export default {
     },
   },
   methods: {
+    getTextFromEditor(value) {
+      this.ticket.thread.description = value;
+    },
+
     setDepUrl() {
       console.log(this.ticket.departamn);
       this.$router.push({
@@ -165,14 +179,39 @@ export default {
             department: this.ticket.departamn,
             priority: this.ticket.priority,
             title: this.ticket.title,
+            thread: this.ticket.thread,
           })
           .then(response => {
             console.log(response);
+            this.$q.notify({
+              message: this.$t('newTicketAdded'),
+              color: 'positive',
+              icon: 'check',
+              position: 'top',
+            });
+
             this.$router.push({
               path: `/${this.$route.params.locale}/tickets/ticketsList`,
             });
           })
           .catch(e => {
+            if (e.response.status === 400) {
+              this.$q.notify({
+                message: this.$t('fillTheTicketTextArea'),
+                color: 'negative',
+                icon: 'warning',
+                position: 'top',
+              });
+            }
+            if (e.response.status === 422) {
+              this.$q.notify({
+                message: this.$t('Theformabovehaserrors'),
+                color: 'negative',
+                icon: 'warning',
+                position: 'top',
+              });
+            }
+
             console.log(e.response.status);
           });
       } else if (this.empty === true) {
@@ -245,7 +284,6 @@ export default {
     display: block;
     width: calc(100% / 3 - 16px) !important;
     float: left;
-    padding-top: 20px;
     @media screen and (max-width: 800px) {
       width: calc(100% / 2 - 16px) !important;
     }

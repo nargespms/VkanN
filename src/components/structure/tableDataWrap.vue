@@ -31,7 +31,7 @@ export default {
         sortBy: 'name',
         descending: false,
         page: 1,
-        rowsPerPage: 5,
+        limit: 5,
         rowsNumber: 10,
       },
     };
@@ -42,13 +42,7 @@ export default {
       this.$emit('pickerInfo', value);
     },
     onRequest(props) {
-      const {
-        page,
-        rowsPerPage,
-        rowsNumber,
-        sortBy,
-        descending,
-      } = props.pagination;
+      const { page, limit, rowsNumber, sortBy, descending } = props.pagination;
       const { filter, columnFilter } = props;
       console.log(props);
       this.loading = true;
@@ -57,7 +51,7 @@ export default {
         .get(this.endpoint, {
           params: {
             page,
-            rowsPerPage,
+            limit,
             rowsNumber,
             sortBy,
             descending,
@@ -66,13 +60,14 @@ export default {
           },
         })
         .then(response => {
+          console.log(response.data);
           this.columns = response.data.columns;
-          this.data = response.data.data;
+          this.data = response.data.docs;
           this.pagination.rowsNumber = response.data.data.length;
           // this.data1.splice(0, this.data1.length, ...response.data.rows);
           // don't forget to update local pagination object
           this.pagination.page = page;
-          this.pagination.rowsPerPage = rowsPerPage;
+          this.pagination.limit = limit;
           this.pagination.sortBy = sortBy;
           this.pagination.descending = descending;
           this.loading = false;

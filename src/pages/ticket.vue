@@ -78,10 +78,11 @@ export default {
     },
   },
   mounted() {
-    this.$axios.get('/statics/ticket.json').then(Response => {
-      this.ticket = Response.data;
-      // console.log(this.ticket);
-    });
+    this.$axios
+      .get(`/v1/api/vkann/tickets/${this.$route.params.ticketId}`)
+      .then(res => {
+        console.log(res);
+      });
   },
   watch: {
     ticket(newVal) {

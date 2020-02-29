@@ -101,9 +101,6 @@ export default {
         // console.log('retrive pass request');
         this.enterMobile = false;
         this.entercode = true;
-        // this.$axios.post('', {}).then(res => {
-        //   console.log(res);
-        // });
       } else {
         this.$q.dialog({
           title: 'لطفا شماره تلفن همراه خود را وارد نمایید',
@@ -127,8 +124,37 @@ export default {
           });
         } else {
           this.entercode = false;
+          this.$axios
+            .post('/v1/api/vkann/forgot-password', {
+              mobile: this.MobileNumber,
+              verifyCode: this.retrivedCode,
+            })
+            .then(res => {
+              console.log(res);
+              if (res.status === 200) {
+                this.$store.commit('module1/userDataFromServer', res.data, {
+                  module: 'module1',
+                });
+                this.$store.commit('module1/logedInSuccesfully', true, {
+                  module: 'module1',
+                });
+
+                this.showNotif('top-right');
+              }
+            })
+            .catch(e => {
+              if (e.response.status === 404) {
+                this.entercode = true;
+                this.$q.notify({
+                  message: this.$t('notAllowed'),
+                  color: 'negative',
+                  icon: 'warning',
+                  position: 'top',
+                });
+              }
+            });
+
           // console.log('Submit Form');
-          this.showNotif('top-right');
         }
       } else if (this.empty === true) {
         this.$q.dialog({

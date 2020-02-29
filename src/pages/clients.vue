@@ -3,7 +3,7 @@
     <!-- user management table -->
     <!-- <userManagementList /> -->
     <div class="userManagementListWrap">
-      <tableDataWrap :endpoint="'/statics/clients.json'" />
+      <tableDataWrap :endpoint="'/v1/api/vkann/clients/list'" />
     </div>
   </div>
 </template>

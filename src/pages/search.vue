@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="q-pa-xl">
     <h3>your search result</h3>
   </div>
 </template>

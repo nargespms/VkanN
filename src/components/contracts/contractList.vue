@@ -1,7 +1,7 @@
 <template >
   <div class="q-pa-xl">
     <div class="userManagementListWrap">
-      <tableDataWrap :endpoint="'/statics/contract.json'" />
+      <tableDataWrap :endpoint="'/v1/api/vkann/contracts/list'" />
     </div>
   </div>
 </template>
@@ -13,6 +13,11 @@ export default {
   name: 'contractList',
   components: {
     tableDataWrap,
+  },
+  mounted() {
+    this.$axios.get('/v1/api/vkann/contracts/list').then(res => {
+      console.log(res.data);
+    });
   },
 };
 </script>

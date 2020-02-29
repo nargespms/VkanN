@@ -64,6 +64,17 @@ export default {
                 path: `/${this.$route.params.locale}/userManagement`,
               });
             }
+          })
+          .catch(e => {
+            console.log(e.response.status);
+            if (e.response.status === 400) {
+              this.$q.notify({
+                message: this.$t('Theformabovehaserrors'),
+                color: 'negative',
+                icon: 'warning',
+                position: 'top',
+              });
+            }
           });
       }
     },

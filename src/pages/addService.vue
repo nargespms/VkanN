@@ -3,7 +3,7 @@
     <h4 class="headerTitleInPage">
       <span>{{ $t('addService') }}</span>
     </h4>
-    <addservice />
+    <addservice profileMode="Add" />
   </div>
 </template>
 
@@ -19,5 +19,6 @@ export default {
   components: {
     addservice,
   },
+  methods: {},
 };
 </script>

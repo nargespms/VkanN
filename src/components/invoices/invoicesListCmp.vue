@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="userManagementListWrap">
-      <tableDataWrap :endpoint="'/statics/tickets.json'" />
+      <tableDataWrap :endpoint="'/v1/api/vkann/invoices/list'" />
     </div>
   </div>
 </template>

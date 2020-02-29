@@ -7,11 +7,11 @@
           <q-input
             autofocus
             outlined
-            required
             class="inputFieldText"
             color="light-blue-10"
             v-model.trim="task.title"
             :label="$t('title')"
+            required
             lazy-rules
             :rules="[val => val && val.length > 0]"
           >
@@ -44,8 +44,7 @@
                   v-model="showing1"
                   transition-show="scale"
                   transition-hide="scale"
-                  >{{ $t('selectTicket') }}</q-tooltip
-                >
+                >{{ $t('selectTicket') }}</q-tooltip>
               </q-icon>
               <q-dialog
                 v-model="ticketPicker"
@@ -63,30 +62,34 @@
           </q-input>
 
           <!--  Service name -->
-          <q-select
-            color="light-blue-10 "
-            outlined
-            v-model.trim="task.serviceName"
-            :options="servicesName"
-            :label="$t('serviceName')"
-            class="inputStyle pt20"
-            lazy-rules
-          >
-            <template v-slot:prepend>
-              <q-icon name="settings_applications" />
-            </template>
-          </q-select>
+          <singleAutoCompleteSelectBox
+            :options="services"
+            :optionLable="'name'"
+            :optionValue="'id'"
+            :name="'serviceName'"
+            label="firstName"
+            @getAutoCompleteValue="getAutoCompleteValueService"
+            class="pt20"
+          />
+
           <!-- choose priority -->
           <q-select
             outlined
             :label="$t('priority')"
-            v-model.trim="task.priority"
+            v-model.trim="$v.task.priority.$model"
             :options="priorities"
-            class="inputStyle"
+            class="inputStyle pt20"
+            required
+            :rules="[val => val && val.length > 0]"
+            :error="$v.task.priority.$error"
+            ref="priority"
           >
             <template v-slot:prepend>
               <q-icon name="fas fa-sort-amount-up" />
             </template>
+            <p v-if="errors" class="error">
+              <span v-if="!$v.task.priority.required">*{{ $t('thisfieldisrequired') }}.</span>
+            </p>
           </q-select>
 
           <!-- choose departman for ticet -->
@@ -96,10 +99,17 @@
             v-model.trim="task.departman"
             :options="departmans"
             class="inputStyle"
+            required
+            :rules="[val => val && val.length > 0]"
+            :error="$v.task.departman.$error"
+            ref="departman"
           >
             <template v-slot:prepend>
               <q-icon name="far fa-building" />
             </template>
+            <p v-if="errors" class="error">
+              <span v-if="!$v.task.departman.required">*{{ $t('thisfieldisrequired') }}.</span>
+            </p>
           </q-select>
           <!-- tags -->
           <tagsSelection @addTagFn="addTagFn" />
@@ -113,9 +123,7 @@
       <div
         class="newTaskInfoHeader"
         @click="taskStateAssign = !taskStateAssign"
-      >
-        {{ $t('assignInformation') }}
-      </div>
+      >{{ $t('assignInformation') }}</div>
       <q-slide-transition>
         <div
           class="assignTaskContent mt24"
@@ -123,26 +131,6 @@
           transition-show="scale"
           transition-hide="scale"
         >
-          <!-- assignee person -->
-          <!-- <q-select
-            outlined
-            v-model="task.assignee"
-            :label="$t('assign')"
-            input-debounce="0"
-            @filter="filterFn"
-            :options="options"
-            option-label="name"
-            option-value="id"
-            map-options
-            emit-value
-            use-input
-          >
-            <template v-slot:no-option>
-              <q-item>
-                <q-item-section class="text-grey">No results</q-item-section>
-              </q-item>
-            </template>
-          </q-select> -->
           <singleAutoCompleteSelectBox
             :options="staffs"
             :optionLable="'firstName'"
@@ -162,11 +150,7 @@
           >
             <template v-slot:prepend>
               <q-icon name="access_time" class="cursor-pointer" color="primary">
-                <q-popup-proxy
-                  ref="qTimeProxy1"
-                  transition-show="scale"
-                  transition-hide="scale"
-                >
+                <q-popup-proxy ref="qTimeProxy1" transition-show="scale" transition-hide="scale">
                   <q-time
                     v-model="task.stimateTime"
                     :minute-options="minuteOptions"
@@ -189,11 +173,7 @@
           >
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
-                <q-popup-proxy
-                  ref="qDateProxy"
-                  transition-show="scale"
-                  transition-hide="scale"
-                >
+                <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                   <q-date
                     v-model.trim="task.dueDate"
                     @input="() => $refs.qDateProxy.hide()"
@@ -205,19 +185,10 @@
             </template>
           </q-input>
           <!-- done time -->
-          <q-input
-            outlined
-            v-model="task.doneTime"
-            :label="$t('doneTime')"
-            mask="time"
-          >
+          <q-input outlined v-model="task.doneTime" :label="$t('doneTime')" mask="time">
             <template v-slot:prepend>
               <q-icon name="access_time" class="cursor-pointer" color="primary">
-                <q-popup-proxy
-                  ref="qTimeProxy"
-                  transition-show="scale"
-                  transition-hide="scale"
-                >
+                <q-popup-proxy ref="qTimeProxy" transition-show="scale" transition-hide="scale">
                   <q-time
                     v-model="task.doneTime"
                     :minute-options="minuteOptions"
@@ -235,16 +206,10 @@
       <div
         class="newTaskInfoHeader"
         @click="taskStateComment = !taskStateComment"
-      >
-        {{ $t('comments') }}
-      </div>
+      >{{ $t('comments') }}</div>
       <div class="taskCommentContent">
         <q-slide-transition>
-          <taskComment
-            v-if="taskStateComment"
-            transition-show="scale"
-            transition-hide="scale"
-          />
+          <taskComment v-if="taskStateComment" transition-show="scale" transition-hide="scale" />
         </q-slide-transition>
       </div>
     </div>
@@ -255,17 +220,15 @@
         color="primary"
         type="submit"
         @click="submitTask"
-      >
-        {{ $t('save') }}
-      </q-btn>
-      <q-btn class="savebutton mr12" color="primary" type="submit">
-        {{ $t('savenew') }}
-      </q-btn>
+      >{{ $t('save') }}</q-btn>
+      <q-btn class="savebutton mr12" color="primary" type="submit">{{ $t('savenew') }}</q-btn>
     </div>
   </div>
 </template>
 
 <script>
+import { required } from 'vuelidate/lib/validators';
+
 import editor from '../structure/editor.vue';
 import tagsSelection from '../structure/tagsSelection.vue';
 import uploadfile from '../structure/uploadfile.vue';
@@ -289,11 +252,13 @@ export default {
   },
   data() {
     return {
+      errors: false,
+      empty: true,
+
       showing1: false,
       staffs: {},
       staffsLable: '',
       staffsid: '',
-
       ticketPicker: false,
       taskStateComment: false,
       taskStateAssign: false,
@@ -301,47 +266,10 @@ export default {
       hourOptions1: [0, 1, 2, 3, 4, 5, 6],
       minuteOptions: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55],
       time: '',
-      staffMember: [
-        {
-          id: '1',
-          name: 'narges',
-          freeTime: 2,
-        },
-        {
-          id: '2',
-          name: 'mohsen',
-          freeTime: 2,
-        },
-        {
-          id: '3',
-          name: 'maryam',
-          freeTime: 2,
-        },
-        {
-          id: '4',
-          name: 'arash',
-          freeTime: 2,
-        },
-        {
-          id: '5',
-          name: 'khashi',
-          freeTime: 2,
-        },
-        {
-          id: '6',
-          name: 'sara',
-          freeTime: 2,
-        },
-      ],
+      services: [],
       options: this.staffMember,
-
-      servicesName: ['name1', 'name2', 'name3'],
-      departmans: ['INFO', 'SUPPORT', 'BILLING'],
-      priorities: [
-        this.$t('emergency'),
-        this.$t('middle'),
-        this.$t('take your time'),
-      ],
+      departmans: ['INFO', 'TECH', 'BILLING'],
+      priorities: ['CRITICAL', 'IMPORTANT', 'NORMAL', 'LOW'],
       task: {
         title: '',
         description: '',
@@ -365,8 +293,17 @@ export default {
       },
     };
   },
-
+  validations: {
+    task: {
+      departman: { required },
+      priority: { required },
+    },
+  },
   methods: {
+    getAutoCompleteValueService(value) {
+      this.task.serviceName = value.id;
+    },
+
     getAutoCompleteValuestaff(value) {
       this.task.assignee = value.id;
     },
@@ -392,22 +329,53 @@ export default {
       });
     },
     submitTask() {
-      if (this.task.title.length === 0) {
+      this.empty = !this.$v.task.$anyDirty;
+      this.errors = !this.$v.task.$anyError;
+      console.log(this.$v.task);
+
+      this.$refs.priority.$el.focus();
+      this.$refs.departman.$el.focus();
+
+      console.log(this.errors);
+      if (
+        this.task.priority.length !== 0 &&
+        this.task.title.length !== 0 &&
+        this.task.departman.length !== 0
+      ) {
+        this.$axios
+          .post('/v1/api/vkann/tasks', {
+            title: this.task.title,
+            department: this.task.departman,
+            service: this.task.serviceName,
+            tags: this.task.tags,
+            priority: this.task.priority,
+            ticketId: this.task.ticketId,
+            dueDate: this.task.dueDate,
+            estimateTime: this.task.stimateTime,
+          })
+          .then(res => {
+            console.log(res);
+            if (res.status === 200) {
+              console.log('submit task');
+              this.$q.notify({
+                message: this.$t('new task added'),
+                color: 'positive',
+                icon: 'check',
+                position: 'top',
+              });
+              this.$emit('taskState', false);
+              this.$router.push({
+                path: `/${this.$route.params.locale}/tasks/kanBoard`,
+              });
+            }
+          });
+      } else {
         this.$q.notify({
-          message: this.$t('emptyForm'),
+          message: this.$t('Theformabovehaserrors'),
           color: 'negative',
           icon: 'warning',
           position: 'top',
         });
-      } else {
-        console.log('submit task');
-        this.$q.notify({
-          message: this.$t('new task added'),
-          color: 'positive',
-          icon: 'check',
-          position: 'top',
-        });
-        this.$emit('taskState', false);
       }
     },
   },
@@ -416,6 +384,13 @@ export default {
       this.staffs = response.data.users;
       this.staffsLable = this.staffs.map(v => v.firstName);
       this.staffsid = this.staffs.map(v => v.id);
+    });
+    this.$axios.get('/v1/api/vkann/services/get-services').then(res => {
+      //
+      console.log(res.data.services);
+      this.services = res.data.services;
+      this.servicesLable = this.services.map(v => v.name);
+      this.servicesid = this.services.map(v => v.id);
     });
   },
 };

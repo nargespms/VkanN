@@ -192,4 +192,11 @@ export default {
   invoiceEndDate: 'invoice End Date',
   billing: 'Billing',
   kanBoard: 'kanboard',
+  successfullTagEdit: 'Tag Edited',
+  tags: 'Tags',
+  areyousureyouwanttodeletethisTag: 'Are You Sure You Want to Delete This Tag?',
+  deletedTag: 'Deleting Tag',
+  restoreTag: 'Restore Tag',
+  tagrestored: 'Tag Restored',
+  areyousureyouwanttorestoretag: 'Are You Sure You Want to Restore This Tag?',
 };
