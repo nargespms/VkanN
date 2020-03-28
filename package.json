@@ -14,7 +14,7 @@
     "build": "quasar build"
   },
   "dependencies": {
-    "@aasaam/information": "0.0.13",
+    "@aasaam/information": "0.0.16",
     "@aasaam/noto-font": "0.0.3",
     "@quasar/extras": "^1.3.3",
     "axios": "^0.18.1",
@@ -23,6 +23,7 @@
     "google-libphonenumber": "^3.2.6",
     "libphonenumber-js": "^1.7.30",
     "normalize-email": "^1.1.1",
+    "persian-date": "^1.1.0",
     "quasar": "^1.6.0",
     "tus-js-client": "^1.8.0",
     "uuid": "^3.4.0",

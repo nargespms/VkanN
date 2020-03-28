@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-xl">
     {{ $route.params.profileId }}
-    <profileInfoCmp />
+    <profileInfoCmp :data="userData" />
   </div>
 </template>
 
@@ -20,6 +20,11 @@ export default {
   },
   components: {
     profileInfoCmp,
+  },
+  computed: {
+    userData() {
+      return this.$store.state.module1.userData;
+    },
   },
 };
 </script>

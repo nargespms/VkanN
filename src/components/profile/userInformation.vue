@@ -1,13 +1,7 @@
 <template>
   <div class="userInformationWrapper">
     <q-card>
-      <q-tabs
-        v-model="tab"
-        dense
-        class="text-grey block460"
-        active-color="primary"
-        align="justify"
-      >
+      <q-tabs v-model="tab" dense class="text-grey block460" active-color="primary" align="justify">
         <q-tab name="profileInfo" :label="$t('profileInfo')" />
         <q-tab name="profileInfoDetails" :label="$t('profileInfoDetails')" />
         <q-tab name="editProfile" :label="$t('editProfile')" />
@@ -15,11 +9,11 @@
       <q-separator />
       <q-tab-panels v-model="tab" animated>
         <q-tab-panel name="profileInfo">
-          <userInformationInfo :data="userData" />
+          <userInformationInfo :data="data" />
         </q-tab-panel>
 
         <q-tab-panel name="profileInfoDetails">
-          <userInformationDetailsInfo :data="userData" />
+          <userInformationDetailsInfo :data="data" />
         </q-tab-panel>
 
         <q-tab-panel name="editProfile">
@@ -37,6 +31,7 @@ import profileEditForm from './profileEditForm.vue';
 
 export default {
   name: 'userInformation',
+  props: ['data'],
   components: {
     userInformationInfo,
     userInformationDetailsInfo,
@@ -49,50 +44,87 @@ export default {
       form: {},
     };
   },
+
   methods: {
     editDataUser(value) {
       this.form = value;
-      console.log(this.form);
-
-      this.$axios
-        .put('/v1/api/vkann/profile', {
-          firstName: this.form.FirstName,
-          lastName: this.form.LastName,
-          gender: this.form.gender,
-          personality: this.form.personality,
-          nationalId: this.form.nationalId,
-          mobile: this.form.MobileNumber,
-          role: this.form.role,
-          status: this.form.status,
-          email: this.form.email,
-          country: this.form.country,
-          city: this.form.city,
-          zipCode: this.form.postalCode,
-          sprintTime: this.form.spirintTime,
-          tags: this.form.tags,
-          linkedin: this.form.linkdin,
-          git: this.form.git,
-          addresses: this.form.adress,
-          password: this.form.PassWord,
-        })
-        .then(res => {
-          if (res.status === 200) {
-            this.$q.notify({
-              message: this.$t('userEdited'),
-              color: 'positive',
-              icon: 'check',
-              position: 'top',
-            });
-            this.$router.push({
-              path: `/${this.$route.params.locale}/userManagement`,
-            });
-          }
-        });
-    },
-  },
-  computed: {
-    userData() {
-      return this.$store.state.module1.userData;
+      if (
+        this.$route.path
+          .split('/')
+          .slice(2)
+          .toString() === 'profile'
+      ) {
+        this.$axios
+          .put('/v1/api/vkann/profile', {
+            firstName: this.form.FirstName,
+            lastName: this.form.LastName,
+            gender: this.form.gender,
+            personality: this.form.personality,
+            nationalId: this.form.nationalId,
+            mobile: this.form.MobileNumber,
+            tel: this.form.tel,
+            role: this.form.role,
+            status: this.form.status,
+            email: this.form.email,
+            country: this.form.country,
+            city: this.form.city,
+            zipCode: this.form.postalCode,
+            sprintTime: this.form.spirintTime,
+            tags: this.form.tags,
+            linkedin: this.form.linkdin,
+            git: this.form.git,
+            addresses: this.form.adress,
+            password: this.form.PassWord,
+          })
+          .then(res => {
+            if (res.status === 200) {
+              this.$q.notify({
+                message: this.$t('userEdited'),
+                color: 'positive',
+                icon: 'check',
+                position: 'top',
+              });
+              this.$router.push({
+                path: `/${this.$route.params.locale}/userManagement`,
+              });
+            }
+          });
+      } else {
+        this.$axios
+          .put(`/v1/api/vkann/users/${this.$route.params.userId}`, {
+            firstName: this.form.FirstName,
+            lastName: this.form.LastName,
+            gender: this.form.gender,
+            personality: this.form.personality,
+            nationalId: this.form.nationalId,
+            mobile: this.form.MobileNumber,
+            role: this.form.role,
+            status: this.form.status,
+            email: this.form.email,
+            country: this.form.country,
+            city: this.form.city,
+            zipCode: this.form.postalCode,
+            sprintTime: this.form.spirintTime,
+            tags: this.form.tags,
+            linkedin: this.form.linkdin,
+            git: this.form.git,
+            addresses: this.form.adress,
+            password: this.form.PassWord,
+          })
+          .then(res => {
+            if (res.status === 200) {
+              this.$q.notify({
+                message: this.$t('userEdited'),
+                color: 'positive',
+                icon: 'check',
+                position: 'top',
+              });
+              this.$router.push({
+                path: `/${this.$route.params.locale}/userManagement`,
+              });
+            }
+          });
+      }
     },
   },
 };

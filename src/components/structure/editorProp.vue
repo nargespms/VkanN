@@ -38,13 +38,21 @@ export default {
   data() {
     return {
       ticket: this.data,
-      qeditor: this.data.desc,
+      qeditor: this.data,
     };
   },
   methods: {
     sendText() {
-      this.ticket.desc = this.qeditor;
+      this.ticket = this.qeditor;
       this.$emit('changeEditedText', this.ticket);
+    },
+  },
+  watch: {
+    /* If our prop ever gets changed outside of this component then we need to update our local data version of the prop */
+    data(newVal) {
+      // this.qeditor = newVal;
+      this.qeditor = newVal;
+      // console.log('watch');
     },
   },
 };

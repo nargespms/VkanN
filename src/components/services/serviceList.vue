@@ -1,7 +1,7 @@
 <template >
   <div class="q-pa-xl">
     <div class="userManagementListWrap">
-      <tableDataWrap :endpoint="'/v1/api/vkann/services/list'" />
+      <tableDataWrap module="service" :columns="columns" :endpoint="'/v1/api/vkann/services/list'" />
     </div>
   </div>
 </template>
@@ -14,10 +14,35 @@ export default {
   components: {
     tableDataWrap,
   },
-  mounted() {
-    this.$axios.get('/v1/api/vkann/services/list').then(res => {
-      console.log(res.data);
-    });
+  data() {
+    return {
+      columns: [
+        {
+          lable: 'name',
+          filterable: true,
+          sortable: false,
+          filterType: 'text',
+        },
+        {
+          lable: 'client',
+          filterable: true,
+          sortable: true,
+          filterType: 'text',
+        },
+        {
+          lable: 'billingStatus',
+          filterable: true,
+          sortable: true,
+          filterType: 'DropBox',
+        },
+        {
+          lable: 'status',
+          filterable: true,
+          sortable: false,
+          filterType: 'DropBox',
+        },
+      ],
+    };
   },
 };
 </script>

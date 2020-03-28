@@ -58,7 +58,12 @@ export default {
   font-size: 18px;
 }
 .tagWrapper {
-  width: 60%;
   margin: auto;
+  width: 60%;
+}
+@media screen and (max-width: 1200px) {
+  .tagWrapper {
+    width: 96%;
+  }
 }
 </style>

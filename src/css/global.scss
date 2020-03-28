@@ -216,6 +216,9 @@ body {
   width: 50%;
   float: left;
 }
+.w55 {
+  width: 55%;
+}
 .pr24 {
   padding-right: 24px;
 }
@@ -256,6 +259,9 @@ body {
 }
 .pr12 {
   padding-right: 12px;
+}
+.pr8 {
+  padding-right: 8px;
 }
 .pt4 {
   padding-top: 4px;
@@ -393,6 +399,9 @@ body {
 .fn12 {
   font-size: 12px;
 }
+.fn16 {
+  font-size: 16px;
+}
 .boldTitle15 {
   font-weight: bold;
   font-size: 15px;
@@ -410,4 +419,21 @@ body {
 }
 .q-pa-xl {
   padding: 120px 48px;
+}
+.ltr {
+  direction: ltr;
+}
+.rtl {
+  direction: rtl;
+}
+.flexbet {
+  display: flex;
+  justify-content: space-between;
+}
+.pointer {
+  cursor: pointer;
+}
+.numberDir {
+  direction: rtl;
+  text-align: left;
 }

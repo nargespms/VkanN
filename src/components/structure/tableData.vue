@@ -1,4 +1,4 @@
-<template >
+<template>
   <div>
     <q-table
       :data="data"
@@ -35,7 +35,11 @@
             <!-- name for each column -->
             <span class="columnLabel">{{ $t(col.lable) }}</span>
             <!-- if filterable true in each column it will show an input -->
-            <div class="columnFilterWrap" v-if="col.filterable" @click.stop="stopSort">
+            <div
+              class="columnFilterWrap"
+              v-if="col.filterable"
+              @click.stop="stopSort"
+            >
               <!-- filter column for text -->
               <q-input
                 outlined
@@ -65,7 +69,9 @@
               >
                 <template v-slot:no-option>
                   <q-item>
-                    <q-item-section class="text-grey">No results</q-item-section>
+                    <q-item-section class="text-grey">{{
+                      $t('noResults')
+                    }}</q-item-section>
                   </q-item>
                 </template>
               </q-select>
@@ -96,8 +102,18 @@
                           calendar="persian"
                         >
                           <div class="row items-center justify-end q-gutter-sm">
-                            <q-btn :label="$t('ok')" color="primary" flat v-close-popup />
-                            <q-btn :label="$t('cancel')" color="primary" flat v-close-popup />
+                            <q-btn
+                              :label="$t('ok')"
+                              color="primary"
+                              flat
+                              v-close-popup
+                            />
+                            <q-btn
+                              :label="$t('cancel')"
+                              color="primary"
+                              flat
+                              v-close-popup
+                            />
                           </div>
                         </q-date>
                       </q-popup-proxy>
@@ -128,8 +144,18 @@
                           :options="computDate"
                         >
                           <div class="row items-center justify-end q-gutter-sm">
-                            <q-btn :label="$t('ok')" color="primary" flat v-close-popup />
-                            <q-btn :label="$t('cancel')" color="primary" flat v-close-popup />
+                            <q-btn
+                              :label="$t('ok')"
+                              color="primary"
+                              flat
+                              v-close-popup
+                            />
+                            <q-btn
+                              :label="$t('cancel')"
+                              color="primary"
+                              flat
+                              v-close-popup
+                            />
                           </div>
                         </q-date>
                       </q-popup-proxy>
@@ -146,14 +172,19 @@
         <q-tr :props="props">
           <q-td v-for="prop in props.row" :key="prop.id">
             <!-- id pick -->
-            <span v-if="prop == props.row['id']" @click="recordClick(props.row)">{{props.row.id}}</span>
+            <span
+              v-if="prop == props.row['id']"
+              @click="recordClick(props.row)"
+              >{{ props.row.id }}</span
+            >
             <!-- id pick -->
             <!-- names with link -->
             <span v-if="prop == props.row['name']">
               <router-link
                 class="listNameTable"
-                :to="'/' +$route.params.locale + props.row.url"
-              >#{{ props.row.name }}</router-link>
+                :to="'/' + $route.params.locale + props.row.url"
+                >#{{ props.row.name }}</router-link
+              >
               <q-btn
                 class="expandTable"
                 :props="props"
@@ -165,8 +196,13 @@
               />
             </span>
             <span
-              v-if="prop !== props.row['name'] && prop !== props.row['__index'] && prop !== props.row['id']"
-            >{{prop}}</span>
+              v-if="
+                prop !== props.row['name'] &&
+                  prop !== props.row['__index'] &&
+                  prop !== props.row['id']
+              "
+              >{{ prop }}</span
+            >
           </q-td>
         </q-tr>
         <!-- expandable row for extra description -->
@@ -191,12 +227,16 @@
                 <span v-if="prop == props.row['name']">
                   <router-link
                     class="listNameTable"
-                    :to="'/' +$route.params.locale + '/' + 'profile' +'/' "
-                  >#{{ props.row.name }}</router-link>
+                    :to="'/' + $route.params.locale + '/' + 'profile' + '/'"
+                    >#{{ props.row.name }}</router-link
+                  >
                 </span>
                 <q-item-label
-                  v-if="prop !== props.row['name'] && prop !== props.row['__index']"
-                >{{prop}}</q-item-label>
+                  v-if="
+                    prop !== props.row['name'] && prop !== props.row['__index']
+                  "
+                  >{{ prop }}</q-item-label
+                >
               </q-item-section>
             </q-item>
           </q-list>
@@ -287,9 +327,6 @@ export default {
 
 <style lang="scss">
 .userManagementListWrap {
-  .q-icon {
-    color: #fff;
-  }
   .expandTable {
     .q-icon {
       color: #666;

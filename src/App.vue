@@ -8,15 +8,38 @@
 export default {
   name: 'App',
   methods: {
-    // refreshToken() {
-    //   setInterval(
-    //     this.$axios.get('/v1/api/vkann/refresh-token').then(res => console.log(res)),
-    //     3000
-    //   );
-    // },
+    // refresh token
+    refreshToken() {
+      this.$axios
+        .get('/v1/api/vkann/refresh-token ')
+        .then(res => {
+          console.log(res);
+        })
+        .catch(e => {
+          if (e.response.status === 403) {
+            this.$store.commit('module1/logedInSuccesfully', false, {
+              module: 'module1',
+            });
+            this.$store.commit('module1/userDataFromServer', null, {
+              module: 'module1',
+            });
+            this.$router.push({ path: `/${this.$route.params.locale}/signIn` });
+          }
+        });
+    },
+    cancelAutoUpdate() {
+      clearInterval(this.timer);
+    },
   },
-  mounted() {
-    // this.refreshToken();
+  mounted() {},
+  //  refresh token
+  created() {
+    this.refreshToken();
+    this.timer = setInterval(this.refreshToken, 3600000);
   },
+  beforeDestroy() {
+    clearInterval(this.timer);
+  },
+  //  refresh token
 };
 </script>

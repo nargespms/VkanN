@@ -24,7 +24,7 @@ export default {
       billing: {
         invoices: {
           number: 15,
-          icon: 'attach_money',
+          icon: 'fas fa-file-invoice-dollar',
           bg: '#26A69A',
           cardName: 'invoices',
           parentUrl: 'billing',

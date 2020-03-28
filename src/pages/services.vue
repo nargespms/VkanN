@@ -35,13 +35,13 @@ export default {
       services: {
         list: {
           number: 15,
-          icon: 'settings_applications',
+          icon: 'fa fa-table',
           bg: '#26A69A',
           cardName: 'servicesList',
           parentUrl: 'services',
         },
         addService: {
-          icon: 'perm_data_setting',
+          icon: 'fas fa-plus',
           bg: '#ffa900',
           cardName: 'addService',
           parentUrl: 'services',

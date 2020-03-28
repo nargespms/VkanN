@@ -1,83 +1,152 @@
 <template>
   <div>
     <!-- client part -->
-    <div v-if="ticket.role === 'client'" class="clientReq">
+    <div v-if="ticket.createdBy.role === 'CLIENT'" class="clientReq">
       <div class="senderName">
-        <p>{{ ticket.user }}</p>
-        <p>{{ ticket.role }}</p>
+        <router-link
+          class="senderNameLink"
+          :to="
+
+                  '/' +
+                    $route.params.locale +
+                    '/' +
+                    'userManagement' +
+                    '/' +
+                    ticket.createdBy._id
+                "
+        >
+          <span>{{ ticket.createdBy.firstName }}</span>
+          &nbsp;
+          <span>{{ ticket.createdBy.firstName }}</span>
+        </router-link>
+        <p class="text-primary">{{ ticket.createdBy.role }}</p>
+        <router-link
+          class="serviceName"
+          :to="
+                  '/' +
+                    $route.params.locale +
+                    '/' +
+                    'services' +
+                    '/' +
+                    service._id
+                "
+        >
+          <p>{{service.name }}</p>
+        </router-link>
         <!-- functional buttons for admin -->
         <q-btn class="editDesc text-grey-10" v-if="!editTicket" @click="editDesc">{{ $t('edit') }}</q-btn>
 
-        <q-btn class="editDesc bg-positive" v-if="editTicket" @click="saveEditedTicket(ticket)">{{ $t('ok') }}</q-btn>
+        <q-btn
+          class="editDesc bg-positive"
+          v-if="editTicket"
+          @click="saveEditedTicket(ticket)"
+        >{{ $t('ok') }}</q-btn>
 
         <q-btn
           v-if="$store.state.module1.userData.role === 'MANAGER'"
           class="deleteDesc text-white"
           @click="deleteTicket(ticket)"
-          >{{ $t('delete') }}</q-btn
-        >
+        >{{ $t('delete') }}</q-btn>
       </div>
 
       <div class="requestDesc">
         <div clas="infoThreads">
           <span class="time">
-            {{ ticket.date }}
+            {{ creationDate }}
             <q-icon name="fas fa-ellipsis-v" />
-            {{ ticket.time }}
+            {{ creationTime }}
           </span>
-          <q-icon name="fas fa-comments" class="replyTicketIcon" @click="replyToCurrentThread(ticket)">
-            <q-tooltip v-model="showing1" transition-show="scale" transition-hide="scale">{{ $t('reply') }}</q-tooltip>
+
+          <q-icon
+            name="fas fa-comments"
+            class="replyTicketIcon"
+            @click="replyToCurrentThread(ticket)"
+          >
+            <q-tooltip
+              v-model="showing1"
+              transition-show="scale"
+              transition-hide="scale"
+            >{{ $t('reply') }}</q-tooltip>
           </q-icon>
         </div>
-        <p v-if="!editTicket" v-html="ticket.desc"></p>
+
+        <div v-if="!editTicket">
+          <p v-html="ticket.description"></p>
+        </div>
         <p v-if="editTicket">
-          <editorProp :data="ticket" @changeEditedText="changeEditedText" />
+          <editorProp :data="ticket.description" @changeEditedText="changeEditedText" />
         </p>
-        <div v-if="ticket.attachments.status">
+        <!-- <div v-if="ticket.attachments.status">
           <q-separator class="mt12" />
           <div v-for="file in ticket.attachments.files" :key="file.index">
             <p>{{ file.name }}</p>
           </div>
-        </div>
+        </div>-->
       </div>
     </div>
     <!-- staff part -->
-    <div v-if="ticket.role === 'staff'" class="staffRep">
+    <div v-else class="staffRep">
       <div class="senderName">
-        <p>{{ ticket.user }}</p>
-        <p>{{ ticket.role }}</p>
+        <router-link
+          class="senderNameLink"
+          :to="
+
+                  '/' +
+                    $route.params.locale +
+                    '/' +
+                    'userManagement' +
+                    '/' +
+                    ticket.createdBy._id
+                "
+        >
+          <span>{{ ticket.createdBy.firstName }}</span>
+          &nbsp;
+          <span>{{ ticket.createdBy.firstName }}</span>
+        </router-link>
+        <p class="text-primary">{{ ticket.createdBy.role }}</p>
         <!-- functional buttons for admin -->
         <q-btn class="editDesc text-grey-10" v-if="!editTicket" @click="editDesc">{{ $t('edit') }}</q-btn>
 
-        <q-btn class="editDesc bg-positive" v-if="editTicket" @click="saveEditedTicket(ticket)">{{ $t('ok') }}</q-btn>
+        <q-btn
+          class="editDesc bg-positive"
+          v-if="editTicket"
+          @click="saveEditedTicket(ticket)"
+        >{{ $t('ok') }}</q-btn>
         <q-btn
           v-if="$store.state.module1.userData.role === 'MANAGER'"
           class="deleteDesc text-white"
           @click="deleteTicket(ticket)"
-          >{{ $t('delete') }}</q-btn
-        >
+        >{{ $t('delete') }}</q-btn>
       </div>
       <div class="requestDesc">
         <div clas="infoThreads">
           <span class="time">
-            {{ ticket.date }}
+            {{ creationDate }}
             <q-icon name="fas fa-ellipsis-v" />
-            {{ ticket.time }}
+            {{ creationTime }}
           </span>
-          <q-icon name="fas fa-comments" class="replyTicketIcon" @click="replyToCurrentThread(ticket)">
-            <q-tooltip v-model="showing1" transition-show="scale" transition-hide="scale">{{ $t('reply') }}</q-tooltip>
+          <q-icon
+            name="fas fa-comments"
+            class="replyTicketIcon"
+            @click="replyToCurrentThread(ticket)"
+          >
+            <q-tooltip
+              v-model="showing1"
+              transition-show="scale"
+              transition-hide="scale"
+            >{{ $t('reply') }}</q-tooltip>
           </q-icon>
         </div>
-        <p v-if="!editTicket" v-html="ticket.desc"></p>
+        <p v-if="!editTicket" v-html="ticket.description"></p>
         <p v-if="editTicket">
-          <editorProp :data="ticket" @changeEditedText="changeEditedText" />
+          <editorProp :data="ticket.description" @changeEditedText="changeEditedText" />
         </p>
-        <div v-if="ticket.attachments.status">
+        <!-- <div v-if="ticket.attachments.status">
           <q-separator class="mt12" />
           <div v-for="file in ticket.attachments.files" :key="file.index">
             <p>{{ file.name }}</p>
           </div>
-        </div>
+        </div>-->
       </div>
     </div>
   </div>
@@ -88,7 +157,7 @@ import editorProp from '../structure/editorProp.vue';
 
 export default {
   name: 'ticketReplyEncapsulate',
-  props: ['data'],
+  props: ['data', 'service'],
   components: {
     editorProp,
   },
@@ -98,9 +167,26 @@ export default {
       ticket: this.data,
       showing1: false,
       showing: false,
+      creationDate: '',
+      creationTime: '',
+      changedDecs: '',
     };
   },
+  mounted() {
+    this.dateCalc();
+    this.timeCalc();
+  },
   methods: {
+    dateCalc() {
+      this.creationDate = new Date(this.data.createdAt).toLocaleDateString(
+        `${this.$route.params.locale}`
+      );
+    },
+    timeCalc() {
+      this.creationTime = new Date(this.data.createdAt).toLocaleTimeString(
+        `${this.$route.params.locale}`
+      );
+    },
     deleteTicket(ticket) {
       this.$q
         .dialog({
@@ -123,22 +209,26 @@ export default {
       // console.log(ticket);
     },
     changeEditedText(value) {
-      this.ticket = value;
-      // console.log(value);
-      // console.log(this.tickets);
-
-      // console.log('threads2');
+      console.log(value);
+      this.changedDecs = value;
     },
     saveEditedTicket() {
       this.editTicket = false;
-      this.$emit('changedText', this.ticket);
+      this.$axios
+        .put(`/v1/api/vkann/threads/${this.ticket.id}`, {
+          ticketId: this.$route.params.ticket,
+          description: this.changedDecs,
+        })
+        .then(res => {
+          this.ticket.description = res.data.description;
+        });
     },
     replyToCurrentThread(ticket) {
       window.scrollTo({
         top: 0,
         behavior: 'smooth',
       });
-      this.$emit('replyThread', ticket.desc);
+      this.$emit('replyThread', ticket.description);
     },
   },
   watch: {
@@ -154,7 +244,8 @@ export default {
 .clientReq {
   background-color: #f7fafd;
   border: 1px solid #c5d8eb;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14),
+    0 3px 1px -2px rgba(0, 0, 0, 0.12);
   margin-top: 12px;
   display: flex;
   @media screen and (max-width: 640px) {
@@ -189,7 +280,8 @@ export default {
 .staffRep {
   border: 1px solid #efe9d3;
   background-color: #faf8f1;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14),
+    0 3px 1px -2px rgba(0, 0, 0, 0.12);
   margin-top: 12px;
   display: flex;
   @media screen and (max-width: 640px) {
@@ -212,5 +304,13 @@ export default {
   color: #b7b7b7;
   float: right;
   cursor: pointer;
+}
+.senderNameLink {
+  color: #000;
+}
+.clientReq {
+  .serviceName {
+    color: #71086a;
+  }
 }
 </style>

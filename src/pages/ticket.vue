@@ -1,21 +1,21 @@
 <template >
   <div class="q-pa-xl">
     <div class="ticketWrap">
-      <ticketInfo :data="this.ticket" @editorState="editorState" />
+      <ticketInfo :data="this.ticket" @editorState="editorState" @changeStatus="changeStatus" />
       <template v-if="replyState">
         <replyTicket :data="specificThreadToReply" @addToThreads="addToThreads" />
       </template>
     </div>
     <!--  for clients (chat) -->
-    <div class="ticketThreadsWrap">
-      <ticketThreads :data="this.ticket" />
+    <div v-if="$store.state.module1.userData.role === 'CLIENT'" class="ticketThreadsWrap">
+      <ticketThreads :key="componentKey" :data="this.ticket" />
     </div>
     <!-- for staffs -->
-    <div class="ticketThreads2Wrap">
+    <div v-else class="ticketThreads2Wrap">
       <ticketThreads2
+        :key="componentKey"
         :data="this.ticket"
         @replyThreadParent="replyThreadParent"
-        :addThread="addThread"
       />
     </div>
   </div>
@@ -45,26 +45,26 @@ export default {
       replyState: false,
       ticket: {},
       specificThreadToReply: '',
-      addThread: {},
+      componentKey: 0,
     };
   },
   methods: {
     addToThreads(value) {
       console.log(value);
-      this.ticket.threads.push({
-        desc: value,
-        attachments: {},
-        date: new Date(),
-        // desc:
-        // id:
-        role: 'staff',
-        // status:
-        // time:
-        // user:
-      });
+
+      this.$axios
+        .post('/v1/api/vkann/threads', {
+          ticketId: this.ticket.id,
+          description: value,
+        })
+        .then(res => {
+          console.log(res);
+          if (res.status === 200) {
+            this.getDataTicket();
+          }
+        });
       // post the thread to server
       // console.log(value);
-      this.addThread = value;
       this.replyState = false;
       this.specificThreadToReply = '';
     },
@@ -76,13 +76,26 @@ export default {
       this.specificThreadToReply = value;
       console.log(this.specificThreadToReply);
     },
+    changeStatus(value) {
+      console.log('change status');
+      this.$axios.put(`/v1/api/vkann/tickets/${this.$route.params.ticket}`, {
+        // eslint-disable-next-line no-underscore-dangle
+        serviceId: this.ticket.service._id,
+        department: this.ticket.department,
+        status: value,
+        title: this.ticket.title,
+      });
+    },
+    getDataTicket() {
+      this.$axios
+        .get(`/v1/api/vkann/tickets/${this.$route.params.ticket}`)
+        .then(res => {
+          this.ticket = res.data.ticket;
+        });
+    },
   },
   mounted() {
-    this.$axios
-      .get(`/v1/api/vkann/tickets/${this.$route.params.ticketId}`)
-      .then(res => {
-        console.log(res);
-      });
+    this.getDataTicket();
   },
   watch: {
     ticket(newVal) {

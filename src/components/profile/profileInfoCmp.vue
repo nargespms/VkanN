@@ -1,9 +1,9 @@
 <template>
   <div class="profileInfoWrapper">
     <!-- avatar and name -->
-    <userAvatarCmp />
+    <userAvatarCmp :data="data" />
     <!-- user Data and Information -->
-    <userInformation />
+    <userInformation :data="data" />
   </div>
 </template>
 
@@ -17,9 +17,7 @@ export default {
     userAvatarCmp,
     userInformation,
   },
-  data() {
-    return {};
-  },
+  props: ['data'],
 };
 </script>
 

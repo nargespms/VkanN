@@ -1,7 +1,7 @@
 <template >
   <div class="taskCommentWrap">
     <taskCommentList />
-    <addTaskComment />
+    <addTaskComment @setCommentValue="setCommentValue" />
   </div>
 </template>
 
@@ -19,6 +19,11 @@ export default {
   components: {
     addTaskComment,
     taskCommentList,
+  },
+  methods: {
+    setCommentValue(value) {
+      this.$emit('setCommentValue', value);
+    },
   },
 };
 </script>

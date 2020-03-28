@@ -39,7 +39,13 @@ export default {
             personality: this.form.personality,
             nationalId: this.form.nationalId,
             mobile: this.form.MobileNumber,
+            tel: this.form.tel,
             role: this.form.role,
+            ...(this.form.role !== 'CLIENT'
+              ? {
+                  department: this.form.departman,
+                }
+              : ''),
             status: this.form.status,
             email: this.form.email,
             country: this.form.country,

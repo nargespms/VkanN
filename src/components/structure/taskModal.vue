@@ -1,6 +1,6 @@
 <template >
   <div>
-    <q-btn :label="$t('addNewTask')" color="primary" @click="task = true" icon="add" />
+    <q-btn :label="$t('addNewTask')" color="primary" @click="task = true" icon="add" class="float" />
     <q-dialog v-model="task" transition-show="rotate" transition-hide="rotate">
       <addNewTask
         class="bg-white q-pa-lg"

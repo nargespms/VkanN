@@ -39,50 +39,59 @@ export default {
   props: ['data'],
   methods: {
     addTag() {
-      this.$axios
-        .post('/v1/api/vkann/tags', {
-          description: this.newTag,
-          status: 'ACTIVE',
-          title: this.newTag,
-        })
-        .then(response => {
-          // console.log(response);
-          if (response.status === 200) {
+      if (this.newTag.length !== 0) {
+        this.$axios
+          .post('/v1/api/vkann/tags', {
+            description: this.newTag,
+            status: 'ACTIVE',
+            title: this.newTag,
+          })
+          .then(response => {
             // console.log(response);
-            this.$q.notify({
-              message: this.$t('newTagHasBeenAdded'),
-              color: 'positive',
-              icon: 'check',
-              position: 'top',
-            });
-            this.newTag = null;
-            this.$emit('addTag', this.mytags);
-          } else if (response.status === 400) {
-            this.$q.notify({
-              message: this.$t('unvalidtag'),
-              color: 'negative',
-              icon: 'warning',
-              position: 'top',
-            });
-          }
-        })
-        .catch(e => {
-          if (e.response.status === 403) {
-            this.$q.notify({
-              message: this.$t('forbidenAccess'),
-              color: 'negative',
-              icon: 'warning',
-              position: 'top',
-            });
-          } else if (e.response.status === 409) {
-            this.$q.notify({
-              message: this.$t('reapetedtag'),
-              color: 'negative',
-              icon: 'warning',
-              position: 'top',
-            });
-          }
+            if (response.status === 200) {
+              // console.log(response);
+              this.$q.notify({
+                message: this.$t('newTagHasBeenAdded'),
+                color: 'positive',
+                icon: 'check',
+                position: 'top',
+              });
+              this.newTag = null;
+              this.$emit('addTag', this.mytags);
+            } else if (response.status === 400) {
+              this.$q.notify({
+                message: this.$t('unvalidtag'),
+                color: 'negative',
+                icon: 'warning',
+                position: 'top',
+              });
+            }
+          })
+          .catch(e => {
+            if (e.response.status === 403) {
+              this.$q.notify({
+                message: this.$t('forbidenAccess'),
+                color: 'negative',
+                icon: 'warning',
+                position: 'top',
+              });
+            } else if (e.response.status === 409) {
+              this.$q.notify({
+                message: this.$t('reapetedtag'),
+                color: 'negative',
+                icon: 'warning',
+                position: 'top',
+              });
+            }
+          });
+      } else {
+        this.$q.notify({
+          message: this.$t('pleaseTypesomething'),
+          color: 'negative',
+          icon: 'warning',
+          position: 'top',
         });
+      }
     },
   },
 };

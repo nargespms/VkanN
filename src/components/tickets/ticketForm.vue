@@ -15,7 +15,9 @@
           @input="$v.ticket.title.$touch"
         >
           <p v-if="errors" class="error">
-            <span v-if="!$v.ticket.title.required">*{{ $t('thisfieldisrequired') }}.</span>
+            <span v-if="!$v.ticket.title.required"
+              >*{{ $t('thisfieldisrequired') }}.</span
+            >
           </p>
         </q-input>
         <div class="clear">
@@ -50,15 +52,18 @@
             <template v-slot:prepend>
               <q-icon name="fas fa-sort-amount-up" />
             </template>
+            <template v-slot:option="scope">
+              <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                <q-item-section>
+                  <q-item-label>{{ $t(scope.opt) }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </template>
           </q-select>
 
           <!--  Service name -->
-          <singleAutoCompleteSelectBox
-            :options="services"
-            :optionLable="'name'"
-            :optionValue="'id'"
-            :name="'serviceName'"
-            label="firstName"
+          <servicesAutocomplete
+            :isRequired="true"
             @getAutoCompleteValue="getAutoCompleteValueService"
           />
         </div>
@@ -73,7 +78,12 @@
 
           <uploadfile />
         </div>
-        <q-btn class="uploadTicket" color="primary" type="submit" @click.prevent="submitTicket">
+        <q-btn
+          class="uploadTicket"
+          color="primary"
+          type="submit"
+          @click.prevent="submitTicket"
+        >
           <q-icon name="fas fa-paper-plane " />
           {{ $t('send') }}
         </q-btn>
@@ -84,7 +94,7 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators';
-import singleAutoCompleteSelectBox from '../structure/singleAutoCompleteSelectBox.vue';
+import servicesAutocomplete from '../structure/servicesAutocomplete.vue';
 
 import editor from '../structure/editor.vue';
 import uploadfile from '../structure/uploadfile.vue';
@@ -95,7 +105,7 @@ export default {
   components: {
     editor,
     uploadfile,
-    singleAutoCompleteSelectBox,
+    servicesAutocomplete,
   },
   data() {
     return {
@@ -104,17 +114,11 @@ export default {
       errors: false,
       empty: true,
       // end of data for validation
-      //  for captcha checking
-      services: [],
-
-      FilterOption: this.servicesName,
-      FilterOption2: this.customerName,
-      customerName: ['customer1', 'customer2', 'customer3', 'ابراهیمی'],
       departmans: ['INFO', 'TECH', 'BILLING'],
       priorities: ['LOW', 'NORMAL', 'CRITICAL'],
       ticket: {
         title: '',
-        departamn: '',
+        departamn: this.choosedDep,
         priority: 'LOW',
         serviceName: '',
         thread: {
@@ -171,11 +175,11 @@ export default {
       this.errors = this.$v.ticket.$anyError;
       this.uiState = 'submit clicked';
       console.log(this.errors);
-      console.log(this.empty);
+      // console.log(this.empty);
       if (this.errors === false && this.empty === false) {
         this.$axios
           .post('/v1/api/vkann/tickets', {
-            service: this.ticket.serviceName,
+            serviceId: this.ticket.serviceName,
             department: this.ticket.departamn,
             priority: this.ticket.priority,
             title: this.ticket.title,
@@ -223,49 +227,9 @@ export default {
         });
       }
     },
-    // for auto compelete
-    filterFn(val, update) {
-      // call abort() at any time if you can't retrieve data somehow
-      setTimeout(() => {
-        update(() => {
-          if (val === '') {
-            this.FilterOption = this.servicesName;
-          } else {
-            const needle = val.toLowerCase();
-            this.FilterOption = this.servicesName.filter(
-              v => v.toLowerCase().indexOf(needle) > -1
-            );
-          }
-        });
-      }, 500);
-    },
-    //  customer auto compelete
-    filterFn2(val, update) {
-      // call abort() at any time if you can't retrieve data somehow
-      setTimeout(() => {
-        update(() => {
-          if (val === '') {
-            this.FilterOption2 = this.customerName;
-          } else {
-            const needle = val.toLowerCase();
-            this.FilterOption2 = this.customerName.filter(
-              v => v.toLowerCase().indexOf(needle) > -1
-            );
-          }
-        });
-      }, 500);
-    },
     getAutoCompleteValueService(value) {
       this.ticket.serviceName = value.id;
     },
-  },
-  mounted() {
-    this.$axios.get('/v1/api/vkann/services/get-services').then(res => {
-      // console.log(res.data.services);
-      this.services = res.data.services;
-      this.servicesLable = this.services.map(v => v.name);
-      this.servicesid = this.services.map(v => v.id);
-    });
   },
 };
 </script>
@@ -282,13 +246,14 @@ export default {
   margin: 24px auto;
   .ticketInfoRecieve {
     display: block;
-    width: calc(100% / 3 - 16px) !important;
     float: left;
-    @media screen and (max-width: 800px) {
-      width: calc(100% / 2 - 16px) !important;
+    @media screen and (min-width: 800px) {
+      width: calc(100% / 3 - 16px) !important;
     }
-    @media screen and (max-width: 480px) {
+    @media screen and (max-width: 799px) {
       width: calc(100% - 16px) !important;
+      padding: 0;
+      margin: 12px auto;
       float: none;
     }
   }

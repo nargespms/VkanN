@@ -6,8 +6,8 @@
           <ticketReplyEncapsulate
             :data="ticket"
             @deletedTickets="deletedTickets"
-            @changedText="changedText"
             @replyThread="replyThread"
+            :service="data.service"
           />
         </template>
       </li>
@@ -20,7 +20,7 @@ import ticketReplyEncapsulate from './ticketReplyEncapsulate.vue';
 
 export default {
   name: 'ticketThreads2',
-  props: ['data', 'addThread'],
+  props: ['data'],
   components: {
     ticketReplyEncapsulate,
   },
@@ -29,17 +29,14 @@ export default {
   },
   methods: {
     deletedTickets(value) {
-      this.tickets = value;
       // and then it should be post to server
-      console.log(value.id, value.status);
+      console.log(value);
+      this.$axios.delete(`/v1/api/vkann/threads/${value.id}`).then(res => {
+        console.log(res);
+      });
       // should post value to server to server
     },
-    changedText(value) {
-      // this.ticket.push(value);
-      this.tickets = value;
-      // should post value to server
-      console.log(value.id, value.desc);
-    },
+
     replyThread(value) {
       this.$emit('replyThreadParent', value);
     },
@@ -52,24 +49,10 @@ export default {
       set(newName) {
         return newName;
       },
-      // return this.data.threads;
     },
   },
   mounted() {
-    if (this.addThread.length > 0) {
-      this.tickets.push({
-        desc: this.addThread,
-        attachments: {},
-        date: new Date(),
-        // desc:
-        // id:
-        // role:
-        // status:
-        // time:
-        // user:
-      });
-      // console.log(this.tickets);
-    }
+    console.log(this.data);
   },
   watch: {
     data(newVal) {
@@ -81,7 +64,7 @@ export default {
 </script>
 
 <style lang="scss">
-.ticketThread2 {
-  padding: 16px;
+.ticketThread2 .closeReply {
+  display: none;
 }
 </style>

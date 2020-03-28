@@ -15,15 +15,7 @@
 <script>
 export default {
   name: 'breadCrumb',
-  watch: {
-    arraySize() {
-      if (this.newroute.length === 2) {
-        console.log('2tayie');
-      } else if (this.newroute.length === 3) {
-        console.log('3tayie');
-      }
-    },
-  },
+
   computed: {
     currentRoute() {
       return this.$route.path

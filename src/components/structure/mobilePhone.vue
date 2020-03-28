@@ -42,9 +42,16 @@
       </template>
       <!-- check for async validation -->
       <template v-if="this.number.length > 0" v-slot:append>
-        <q-icon v-if="verifyMobile " name="fas fa-check" class="mailIcon text-positive" />
-        <q-icon v-if="!verifyMobile " name="fas fa-times" class="mailIcon text-negative" />
-        {{verifyMobile}}
+        <q-icon
+          v-if="verifyMobile"
+          name="fas fa-check"
+          class="mailIcon text-positive"
+        />
+        <q-icon
+          v-if="!verifyMobile"
+          name="fas fa-times"
+          class="mailIcon text-negative"
+        />
         <p class="error" v-if="wrongNumber">
           <span class="fn11">{{ $t('wrongnumber') }}</span>
         </p>
@@ -52,10 +59,9 @@
 
       <!-- check for async validation -->
       <p v-if="errors" class="error">
-        <span
-          class="fn11"
-          v-if="!$v.number.minLength"
-        >*{{ $t('Fieldmusthaveatleast10characters') }}.</span>
+        <span class="fn11" v-if="!$v.number.minLength"
+          >*{{ $t('Fieldmusthaveatleast10characters') }}.</span
+        >
       </p>
     </q-input>
     <!-- enter mobile phone number -->

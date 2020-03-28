@@ -28,13 +28,13 @@ export default {
       invoices: {
         list: {
           number: 15,
-          icon: 'fas fa-handshake',
+          icon: 'fa fa-table',
           bg: '#26A69A',
           cardName: 'invoicesList',
           parentUrl: 'billing/invoices',
         },
         addInvoice: {
-          icon: 'fas fa-handshake',
+          icon: 'fas fa-plus',
           bg: '#ffa900',
           cardName: 'addInvoice',
           parentUrl: 'billing/invoices',

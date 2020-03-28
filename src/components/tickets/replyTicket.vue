@@ -38,6 +38,7 @@ export default {
   methods: {
     getTextFromEditor(value) {
       this.textValue = value;
+      console.log(value);
       // console.log(value);
     },
     submitTicket() {

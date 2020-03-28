@@ -3,7 +3,7 @@
     <h4 class="headerTitleInPage">
       <span>{{ $t('addContract') }}</span>
     </h4>
-    <addContractCmp />
+    <addContractCmp profileMode="Add" />
   </div>
 </template>
 

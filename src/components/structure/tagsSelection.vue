@@ -14,11 +14,11 @@
       use-input
       use-chips
       @new-value="createValue"
-      @blur="sendTags"
+      @input="sendTags"
     >
       <template v-slot:no-option>
         <q-item>
-          <q-item-section class="text-grey">No results</q-item-section>
+          <q-item-section class="text-grey">{{ $t('noResults') }}</q-item-section>
         </q-item>
       </template>
     </q-select>
@@ -28,6 +28,7 @@
 <script>
 export default {
   name: 'tagsSelection',
+  props: ['editData'],
   data() {
     return {
       chosedTags: [],
@@ -63,8 +64,13 @@ export default {
   mounted() {
     this.$axios.get('/v1/api/vkann/tags/get-tags').then(response => {
       this.tags = response.data.tags;
-      console.log(this.tags);
+      // console.log(this.tags);
     });
+  },
+  watch: {
+    editData(newVal) {
+      this.chosedTags = newVal;
+    },
   },
 };
 </script>

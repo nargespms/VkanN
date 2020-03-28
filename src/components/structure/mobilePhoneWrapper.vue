@@ -1232,6 +1232,7 @@ export default {
   methods: {
     mobileVerified(value, con) {
       this.$emit('mobileVerified', value, con);
+      console.log(value, con);
     },
   },
 };

@@ -66,25 +66,7 @@ export default {
     backFalse() {
       this.leftDrawerOpen = false;
     },
-    // refresh token
-    refreshToken() {
-      this.$axios.get('/v1/api/vkann/refresh-token ').then(res => {
-        console.log(res);
-      });
-    },
-    cancelAutoUpdate() {
-      clearInterval(this.timer);
-    },
   },
-  //  refresh token
-  created() {
-    this.refreshToken();
-    this.timer = setInterval(this.refreshToken, 3600000);
-  },
-  beforeDestroy() {
-    clearInterval(this.timer);
-  },
-  //  refresh token
 };
 </script>
 <style lang="scss">

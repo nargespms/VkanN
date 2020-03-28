@@ -11,7 +11,9 @@
           <div class="tagListButtsWrapper">
             <q-card-section class="tagTxt brright">
               <q-icon name="edit" class="editTag">
-                <q-tooltip transition-show="scale" transition-hide="scale">{{ $t('editTag') }}</q-tooltip>
+                <q-tooltip transition-show="scale" transition-hide="scale">{{
+                  $t('editTag')
+                }}</q-tooltip>
               </q-icon>
               <q-popup-edit
                 v-model.trim="tag.title"
@@ -36,7 +38,9 @@
               @click="deactiveTag(tag)"
             >
               <q-icon name="fa fa-trash" class="editTag">
-                <q-tooltip transition-show="scale" transition-hide="scale">{{ $t('deactiveTag') }}</q-tooltip>
+                <q-tooltip transition-show="scale" transition-hide="scale">{{
+                  $t('deactiveTag')
+                }}</q-tooltip>
               </q-icon>
             </q-card-section>
           </div>
@@ -56,7 +60,11 @@
             </q-card-actions>
             <!-- main content -->
             <q-card-section class="tagTxt p16 brleft" @click="activeTag(tag)">
-              <q-icon name="restore" class="editTag positive clb" />
+              <q-icon name="restore" class="editTag positive clb">
+                <q-tooltip transition-show="scale" transition-hide="scale">{{
+                  $t('restoreTag')
+                }}</q-tooltip>
+              </q-icon>
             </q-card-section>
           </q-card>
         </li>
@@ -165,15 +173,9 @@ export default {
           cancel: true,
         })
         .onOk(() => {
-          this.$axios
-            .put(`/v1/api/vkann/tags/${tag.id}`, {
-              id: tag.id,
-              status: 'ACTIVE',
-              title: tag.title,
-            })
-            .then(res => {
-              console.log(res);
-            });
+          this.$axios.patch(`/v1/api/vkann/tags/${tag.id}`).then(res => {
+            console.log(res);
+          });
           this.$emit('activeAgain', this.tag);
           this.$q.notify({
             message: this.$t('tagrestored'),
@@ -227,7 +229,7 @@ export default {
     display: flex;
     margin-right: -18px;
     li {
-      width: calc(100% / 4 - 18px);
+      width: calc(100% / 3 - 18px);
       @media screen and (max-width: 800px) {
         width: calc(100% / 2 - 18px);
       }
@@ -239,7 +241,7 @@ export default {
   }
   .deactiveList {
     li {
-      width: calc(100% / 4 - 18px);
+      width: calc(100% / 3 - 18px);
       @media screen and (max-width: 800px) {
         width: calc(100% / 2 - 18px);
       }

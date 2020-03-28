@@ -3,7 +3,7 @@
     <!-- user management table -->
     <!-- <userManagementList /> -->
     <div class="userManagementListWrap">
-      <tableDataWrap :endpoint="'/v1/api/vkann/clients/list'" />
+      <tableDataWrap module="clients" :columns="columns" :endpoint="'/v1/api/vkann/clients/list'" />
     </div>
   </div>
 </template>
@@ -18,9 +18,47 @@ export default {
   meta() {
     return { title: this.$t('clients') };
   },
-
   components: {
     tableDataWrap,
+  },
+  data() {
+    return {
+      columns: [
+        {
+          lable: 'firstName',
+          filterable: true,
+          sortable: false,
+          filterType: 'Text',
+        },
+        {
+          lable: 'lastName',
+          filterable: true,
+          sortable: false,
+          filterType: 'Text',
+        },
+
+        {
+          lable: 'mobile',
+          filterable: true,
+          sortable: false,
+          filterType: 'Text',
+        },
+        {
+          lable: 'services',
+          filterable: true,
+          sortable: false,
+          filterType: 'Text',
+        },
+
+        {
+          lable: 'status',
+          filterable: true,
+          sortable: false,
+          filterType: 'DropBox',
+        },
+        { lable: 'avatar', filterable: false, sortable: false, filterType: '' },
+      ],
+    };
   },
 };
 </script>

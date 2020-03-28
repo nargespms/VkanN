@@ -1,8 +1,8 @@
 <template>
   <div class="q-pa-xl">
-    <div class="flex">
+    <taskModal v-if="$store.state.module1.userData.role !== 'CLIENT'" style="overflow:auto;" />
+    <div class="flex mt12">
       <kanBoardTable />
-      <taskModal style="margin-right:24px" />
     </div>
   </div>
 </template>

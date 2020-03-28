@@ -27,13 +27,13 @@ export default {
       contracts: {
         list: {
           number: 15,
-          icon: 'fas fa-handshake',
+          icon: 'fa fa-table',
           bg: '#26A69A',
           cardName: 'contractsList',
           parentUrl: 'billing/contracts',
         },
         addContract: {
-          icon: 'fas fa-handshake',
+          icon: 'fas fa-plus',
           bg: '#ffa900',
           cardName: 'addContract',
           parentUrl: 'billing/contracts',

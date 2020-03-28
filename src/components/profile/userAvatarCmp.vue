@@ -7,8 +7,8 @@
       </div>
       <q-card-section class="usrInfoAvatar">
         <p>
-          <span>{{ $store.state.module1.userData.firstName }} </span>
-          <span>{{ $store.state.module1.userData.lastName }}</span>
+          <span>{{ this.data.firstName }}</span>
+          <span>{{ this.data.lastName }}</span>
         </p>
       </q-card-section>
     </q-card>
@@ -18,9 +18,7 @@
 <script>
 export default {
   name: 'userAvatarCmp',
-  data() {
-    return {};
-  },
+  props: ['data'],
 };
 </script>
 

@@ -3,6 +3,7 @@
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+require('persian-date');
 // const cors = require('cors');
 
 // eslint-disable-next-line no-unused-vars
@@ -18,6 +19,7 @@ module.exports = function(ctx) {
       'normalizeEmail',
       'localStorage',
       'draggable.js',
+      'persian-date.js',
       // 'information',
     ],
 

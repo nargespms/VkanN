@@ -17,15 +17,15 @@
         </div>
         <div class="item-content">
           <span class="introParam">{{ $t('mobile') }}</span>
-          <span class="valueIntro">{{ data.mobile }}</span>
+          <span class="valueIntro numberDir">{{ data.mobile }}</span>
         </div>
         <div class="item-content">
           <span class="introParam">{{ $t('landLine') }}</span>
-          <span class="valueIntro">{{}}</span>
+          <span class="valueIntro">{{ data.tel }}</span>
         </div>
         <div class="item-content">
           <span class="introParam">{{ $t('status') }}</span>
-          <span class="valueIntro">{{ data.status }}</span>
+          <span class="valueIntro">{{ $t(data.status) }}</span>
         </div>
         <div class="item-content">
           <span class="introParam">{{ $t('role') }}</span>
@@ -37,15 +37,29 @@
         </div>
         <div class="item-content">
           <span class="introParam">{{ $t('city') }}</span>
-          <span class="valueIntro">{{}}</span>
+          <span class="valueIntro">{{ data.city }}</span>
         </div>
         <div class="item-content">
           <span class="introParam">{{ $t('adress') }}</span>
-          <span class="valueIntro">{{}}</span>
+          <span class="valueIntro">{{ data.addresses }}</span>
         </div>
         <div class="item-content">
-          <span class="introParam">{{ $t('spirintTime') }}</span>
-          <span class="valueIntro">{{}}</span>
+          <span class="introParam">{{ $t('Service') }}</span>
+          <p v-for="service in services" :key="service.id">
+            <router-link
+              class="valueIntro"
+              :to="
+                '/' +
+                  $route.params.locale +
+                  '/' +
+                  'services' +
+                  '/' +
+                  data.service._id
+              "
+            >
+              <span class="valueIntro">{{ data.service.name }}</span>
+            </router-link>
+          </p>
         </div>
       </div>
     </div>

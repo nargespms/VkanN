@@ -1,7 +1,62 @@
 <template>
   <div>
     <!-- table data -->
-    <tableData
+    <staffTableData
+      v-if="this.module === 'staff'"
+      :data="data"
+      :columns="columns"
+      :loading="loading"
+      @request="onRequest"
+      :pagination="pagination"
+      @onIdClick="onIdClick"
+    />
+    <clientsTableData
+      v-if="this.module === 'clients'"
+      :data="data"
+      :columns="columns"
+      :loading="loading"
+      @request="onRequest"
+      :pagination="pagination"
+      @onIdClick="onIdClick"
+    />
+    <serviceTableData
+      v-if="this.module === 'service'"
+      :data="data"
+      :columns="columns"
+      :loading="loading"
+      @request="onRequest"
+      :pagination="pagination"
+      @onIdClick="onIdClick"
+    />
+    <ticketTableData
+      v-if="this.module === 'ticket'"
+      :data="data"
+      :columns="columns"
+      :loading="loading"
+      @request="onRequest"
+      :pagination="pagination"
+      @onIdClick="onIdClick"
+    />
+    <invoiceTableData
+      v-if="this.module === 'invoice'"
+      :data="data"
+      :columns="columns"
+      :loading="loading"
+      @request="onRequest"
+      :pagination="pagination"
+      @onIdClick="onIdClick"
+    />
+    <contractTableData
+      v-if="this.module === 'contract'"
+      :data="data"
+      :columns="columns"
+      :loading="loading"
+      @request="onRequest"
+      :pagination="pagination"
+      @onIdClick="onIdClick"
+    />
+    <taskTableData
+      v-if="this.module === 'task'"
       :data="data"
       :columns="columns"
       :loading="loading"
@@ -13,25 +68,36 @@
 </template>
 
 <script>
-import tableData from './tableData.vue';
+import staffTableData from '../userMangement/staffTableData.vue';
+import clientsTableData from '../userMangement/clientsTableData.vue';
+import serviceTableData from '../services/serviceTableData.vue';
+import ticketTableData from '../tickets/ticketTableData.vue';
+import invoiceTableData from '../invoices/invoiceTableData.vue';
+import contractTableData from '../contracts/contractTableData.vue';
+import taskTableData from '../tasks/taskTableData.vue';
 
 export default {
   name: 'tableDataWrap',
   components: {
-    tableData,
+    staffTableData,
+    clientsTableData,
+    serviceTableData,
+    ticketTableData,
+    invoiceTableData,
+    contractTableData,
+    taskTableData,
   },
-  props: ['endpoint'],
+  props: ['endpoint', 'columns', 'module'],
   data() {
     return {
       data: [],
-      columns: [],
-      loading: true,
-      filter: '',
+      loading: false,
+      tableSearch: '',
       pagination: {
         sortBy: 'name',
         descending: false,
         page: 1,
-        limit: 5,
+        limit: 10,
         rowsNumber: 10,
       },
     };
@@ -43,7 +109,7 @@ export default {
     },
     onRequest(props) {
       const { page, limit, rowsNumber, sortBy, descending } = props.pagination;
-      const { filter, columnFilter } = props;
+      const { tableSearch, filter } = props;
       console.log(props);
       this.loading = true;
       console.log(props);
@@ -55,16 +121,15 @@ export default {
             rowsNumber,
             sortBy,
             descending,
+            tableSearch,
             filter,
-            columnFilter,
           },
         })
         .then(response => {
           console.log(response.data);
-          this.columns = response.data.columns;
-          this.data = response.data.docs;
-          this.pagination.rowsNumber = response.data.data.length;
-          // this.data1.splice(0, this.data1.length, ...response.data.rows);
+          // this.columns = response.data.columns;
+          this.data = response.data.result.docs;
+          this.pagination.rowsNumber = response.data.result.length;
           // don't forget to update local pagination object
           this.pagination.page = page;
           this.pagination.limit = limit;
@@ -72,8 +137,6 @@ export default {
           this.pagination.descending = descending;
           this.loading = false;
           // this.$forceUpdate();
-          console.log(this.data);
-          console.log(this.columns);
           // test sort by
           if (sortBy) {
             this.data.sort((a, b) => {
@@ -93,22 +156,15 @@ export default {
             });
           }
           // test sort by
-        })
-        .catch(() => {
-          this.$q.notify({
-            color: 'negative',
-            position: 'top',
-            message: 'Loading failed',
-            icon: 'report_problem',
-          });
         });
     },
   },
   mounted() {
     this.onRequest({
       pagination: this.pagination,
-      filter: undefined,
+      tableSearch: undefined,
     });
+    console.log(this.endpoint);
   },
 };
 </script>

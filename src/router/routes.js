@@ -28,7 +28,7 @@ const routes = [
     component: () => import('layouts/print.vue'),
     children: [
       {
-        path: 'invoice',
+        path: 'invoice/:invoiceId',
         component: () => import('pages/printInvoice.vue'),
       },
       {
@@ -318,6 +318,16 @@ const routes = [
           dep: ['GENERAL', 'BILLING', 'TECH', 'INFO'],
         },
       },
+      {
+        name: 'userPro',
+        path: 'userManagement/:userId',
+        component: () => import('pages/userProfile'),
+        meta: {
+          requiresAuth: true,
+          roles: ['MANAGER', 'ASSISTANT'],
+          dep: ['GENERAL', 'BILLING', 'TECH', 'INFO'],
+        },
+      },
       // contracts
       {
         name: 'contracts',
@@ -325,7 +335,7 @@ const routes = [
         component: () => import('pages/contracts'),
         meta: {
           requiresAuth: true,
-          roles: ['MANAGER', 'ASSISTANT', 'MEMBER'],
+          roles: ['MANAGER', 'ASSISTANT', 'MEMBER', 'CLIENT'],
           dep: ['GENERAL', 'BILLING'],
         },
       },
@@ -388,6 +398,16 @@ const routes = [
         meta: {
           requiresAuth: true,
           roles: ['MANAGER', 'ASSISTANT', 'MEMBER'],
+          dep: ['GENERAL', 'BILLING'],
+        },
+      },
+      {
+        name: 'invoice',
+        path: 'billing/invoices/:invoiceId',
+        component: () => import('pages/invoice'),
+        meta: {
+          requiresAuth: true,
+          roles: ['MANAGER', 'ASSISTANT', 'CLIENT', 'MEMBER'],
           dep: ['GENERAL', 'BILLING'],
         },
       },

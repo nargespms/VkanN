@@ -1,7 +1,7 @@
 <template>
-  <div class="q-pa-xl">
+  <div class="q-pa-xl addInvoicePage">
     <!-- <addInvoiceCmp /> -->
-    <addInvoiceTable />
+    <addInvoiceTable profileMode="Add" />
   </div>
 </template>
 

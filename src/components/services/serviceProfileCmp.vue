@@ -5,29 +5,50 @@
         <span class="introParam">{{ $t('Service') }}</span>
         <span class="valueIntro">{{ data.name }}</span>
       </div>
-      <div class="item-content">
-        <span class="introParam">{{ $t('employeeName') }}</span>
-        <span class="valueIntro">{{ data.staff }}</span>
-      </div>
+
       <div class="item-content">
         <span class="introParam">{{ $t('clientName') }}</span>
-        <span class="valueIntro">{{ data.client }}</span>
+        <router-link
+          class="valueIntro"
+          :to=" '/' + $route.params.locale + '/' + 'userManagement' + '/' +data.client._id "
+        >
+          <span class="valueIntro">
+            {{ data.client.firstName}}
+            &nbsp;
+            {{ data.client.firstName}}
+          </span>
+        </router-link>
       </div>
       <div class="item-content">
         <span class="introParam">{{ $t('status') }}</span>
-        <span class="valueIntro">{{ data.status }}</span>
+        <span class="valueIntro">{{ $t(data.status) }}</span>
       </div>
-      <div class="item-content">
-        <span class="introParam">{{ $t('type') }}</span>
-        <span class="valueIntro">{{data.type}}</span>
-      </div>
+
       <div class="item-content">
         <span class="introParam">{{ $t('tags') }}</span>
-        <span class="valueIntro">{{ data.tags }}</span>
+        <div class="valueIntro">
+          <p v-for="tag in data.tags" :key="tag._id">{{ tag.title }}</p>
+        </div>
+      </div>
+      <!-- <div class="item-content">
+        <span class="introParam">{{ $t('voip') }}</span>
+        <span class="valueIntro">{{ data.voip }}</span>
+      </div>-->
+      <div class="item-content">
+        <span class="introParam">{{ $t('primaryDomain') }}</span>
+        <span class="valueIntro">{{ data.primaryDomain }}</span>
       </div>
       <div class="item-content">
-        <span class="introParam">{{ $t('bilingStatus') }}</span>
-        <span class="valueIntro">{{ data.billingStatus }}</span>
+        <span class="introParam">{{ $t('parkDomain') }}</span>
+        <span class="valueIntro">{{ data.parkDomain }}</span>
+      </div>
+      <div class="item-content">
+        <span class="introParam">{{ $t('billingStatus') }}</span>
+        <span class="valueIntro">{{ $t(data.billingStatus) }}</span>
+      </div>
+      <div class="item-content">
+        <span class="introParam">{{ $t('description') }}</span>
+        <span class="valueIntro">{{ data.description }}</span>
       </div>
       <div class="item-content">
         <span class="introParam">{{ $t('attachments') }}</span>
@@ -41,16 +62,27 @@
 export default {
   name: 'serviceProfileCmp',
   props: ['data'],
+  data() {
+    return {};
+  },
 };
 </script>
 
 <style lang="scss">
 .serviceProfileCmpWrap {
+  @media screen and (max-width: 800px) {
+    width: 100%;
+  }
+  @media screen and (min-width: 800px) {
+    width: 80%;
+    padding-left: 16px;
+  }
   .item {
     display: flex;
     flex-wrap: wrap;
     border: 1px solid #f3f3f3;
     padding: 12px;
+    float: right;
     .item-content {
       display: flex;
       width: calc(100%);

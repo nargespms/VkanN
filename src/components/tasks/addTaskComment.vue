@@ -28,20 +28,24 @@ export default {
       componentKey: 0,
       showing: false,
       comment: {
-        writer: this.$store.state.module1.userData.firstName,
         description: '',
+        createdAt: new Date(),
+        createdBy: {
+          id: this.$store.state.module1.userData.id,
+          firstName: this.$store.state.module1.userData.firstName,
+          lastName: this.$store.state.module1.userData.lastName,
+        },
       },
     };
   },
   methods: {
     getTextFromEditor(value) {
       this.comment.description = value;
-      console.log(value);
     },
     sendComment() {
       //  post to server
-      console.log('sending comment');
       console.log(this.comment);
+      this.$emit('setCommentValue', this.comment);
       this.$q.dialog({ title: 'ارسال شد ' });
       this.componentKey += 1;
     },

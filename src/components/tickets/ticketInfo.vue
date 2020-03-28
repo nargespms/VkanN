@@ -1,34 +1,36 @@
-<template >
+<template>
   <div class="ticketInfoWrap">
     <div class="ticketInfo">
       <h3>
-        <span>#{{data.id}}</span>
-        - {{data.title}}
+        <span>#{{ data.id }}</span
+        >- {{ data.title }}
       </h3>
       <q-select
         outlined
         class="ticketStatus"
-        v-model.trim="status"
+        v-model.trim="localStatus"
         :label="$t('status')"
         :options="ticketStatus"
+        @input="changeStatusTicket"
       >
         <template v-slot:prepend>
           <q-icon name="settings_applications" />
         </template>
-        <template v-slot:no-option>
-          <q-item>
-            <q-item-section class="text-grey">No results</q-item-section>
+        <template v-slot:option="scope">
+          <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+            <q-item-section>
+              <q-item-label>{{ $t(scope.opt) }}</q-item-label>
+            </q-item-section>
           </q-item>
         </template>
       </q-select>
       <q-btn color="primary" @click="editorState" class="replyTicketBut">
         <q-icon name="fas fa-edit" />
-        {{$t('reply')}}
+        {{ $t('reply') }}
       </q-btn>
     </div>
   </div>
 </template>
-
 
 <script>
 export default {
@@ -36,14 +38,43 @@ export default {
   props: ['data'],
   data() {
     return {
-      ticketStatus: ['OnHold', 'Answered', 'CustomerReply'],
-      status: this.data.status,
+      ticketStatus: [
+        'CLOSED',
+        'OPEN',
+        'ANSEWRED',
+        'UNANSWERD',
+        'INPROGRESS',
+        'ONHOLD',
+        'CUSTOMERREPLY',
+      ],
+      localStatus: this.status,
     };
+  },
+  computed: {
+    status: {
+      get() {
+        return this.data.status;
+      },
+      set(newVal) {
+        return newVal;
+      },
+    },
+  },
+  watch: {
+    status(newVal) {
+      this.localStatus = newVal;
+    },
   },
   methods: {
     editorState() {
       this.$emit('editorState');
     },
+    changeStatusTicket() {
+      this.$emit('changeStatus', this.localStatus);
+    },
+  },
+  mounted() {
+    console.log(this.data.ticket);
   },
 };
 </script>

@@ -18,38 +18,13 @@
             <q-icon name="settings_applications" />
           </template>
         </q-input>
-
-        <!-- employee name -->
-        <!-- <q-select
-          color="light-blue-10 "
-          outlined
-          v-model.trim="service.employee"
-          :options="staff"
-          :label="$t('employeeName')"
-          class="inputStyle"
-        >
-          <template v-slot:prepend>
-            <q-icon name="fas fa-user" />
-          </template>
-        </q-select>-->
-        <singleAutoCompleteSelectBox
-          :options="staffs"
-          :optionLable="'firstName'"
-          :optionValue="'id'"
-          :name="'employeeName'"
-          label="firstName"
-          @getAutoCompleteValue="getAutoCompleteValuestaff"
-        />
-
-        <singleAutoCompleteSelectBox
-          :options="clients"
-          :optionLable="'firstName'"
-          :optionValue="'id'"
-          :name="'clientName'"
-          label="firstName"
-          class="pt20"
+        <clientsAutocomplete
+          :editData="profileMode === 'Edit' ? clientEdit : ''"
+          :isRequired="true"
           @getAutoCompleteValue="getAutoCompleteValueclient"
         />
+        <!-- employee name -->
+
         <!-- primary Domain -->
         <q-input
           outlined
@@ -76,10 +51,19 @@
             <q-icon name />
           </template>
         </q-input>
+        <!-- <div class="clear" v-if="profileMode === 'Edit'">
+          <q-btn class="halfw generalBut" icon="system_update_alt" :label="$t('tickets')" />
+          <q-btn class="halfw generalBut" icon="play_for_work" :label="$t('tasks')" />
+          <q-btn class="halfw generalBut" icon="fas fa-handshake" :label="$t('contracts')" />
+          <q-btn class="halfw generalBut" icon="fas fa-file-invoice" :label="$t('invoices')" />
+        </div>-->
+        <div class="clear">
+          <img src="../../assets/customer-service.png" class="servicPic" />
+        </div>
       </div>
       <div class="col2">
         <!-- tags -->
-        <tagsSelection @addTagFn="addTagFn" />
+        <tagsSelection :editData="profileMode === 'Edit' ? tagEdit : ''" @addTagFn="addTagFn" />
 
         <!-- voip -->
         <q-input
@@ -98,7 +82,7 @@
         <!-- description -->
         <textarea
           rows="5"
-          v-model="service.desc"
+          v-model="service.description"
           :placeholder="$t('description')"
           class="w100 p8 description"
         ></textarea>
@@ -106,19 +90,32 @@
         <q-select
           color="light-blue-10"
           outlined
-          v-model.trim="service.bilingStatus"
-          :options="bilingStatusService"
-          :label="$t('bilingStatus')"
+          required
+          lazy-rules
+          :rules="[val => val && val.length > 0]"
+          v-model.trim="service.billingStatus"
+          :options="billingStatusService"
+          :label="$t('billingStatus')"
           class="inputStyle pt16"
         >
           <template v-slot:prepend>
             <q-icon name="attach_money" />
+          </template>
+          <template v-slot:option="scope">
+            <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+              <q-item-section>
+                <q-item-label>{{ $t(scope.opt) }}</q-item-label>
+              </q-item-section>
+            </q-item>
           </template>
         </q-select>
         <!-- status -->
         <q-select
           color="light-blue-10"
           outlined
+          required
+          lazy-rules
+          :rules="[val => val && val.length > 0]"
           v-model.trim="service.status"
           :options="servicesStatus"
           :label="$t('status')"
@@ -127,15 +124,16 @@
           <template v-slot:prepend>
             <q-icon name="fas fa-exclamation-circle" />
           </template>
+          <template v-slot:option="scope">
+            <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+              <q-item-section>
+                <q-item-label>{{ $t(scope.opt) }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </template>
         </q-select>
       </div>
       <div class="col3">
-        <div v-if="profileMode === 'Edit'">
-          <q-btn class="halfw generalBut" icon="system_update_alt" :label="$t('tickets')" />
-          <q-btn class="halfw generalBut" icon="play_for_work" :label="$t('tasks')" />
-          <q-btn class="halfw generalBut" icon="fas fa-handshake" :label="$t('contracts')" />
-          <q-btn class="halfw generalBut" icon="fas fa-file-invoice" :label="$t('invoices')" />
-        </div>
         <div class="mr16 fullw mb16">
           <uploadfile :UploadButton="false" ref="upload" :text="'attachments'" />
         </div>
@@ -154,7 +152,7 @@
 import { required } from 'vuelidate/lib/validators';
 import uploadfile from '../structure/uploadfile.vue';
 import tagsSelection from '../structure/tagsSelection.vue';
-import singleAutoCompleteSelectBox from '../structure/singleAutoCompleteSelectBox.vue';
+import clientsAutocomplete from '../structure/clientsAutocomplete.vue';
 
 export default {
   name: 'addservice',
@@ -162,19 +160,10 @@ export default {
   components: {
     uploadfile,
     tagsSelection,
-    singleAutoCompleteSelectBox,
+    clientsAutocomplete,
   },
   data() {
     return {
-      // data from server for clients
-      clientsLable: '',
-      clientsid: '',
-      clients: {},
-      // data from server for staffs
-      staffs: {},
-      staffsLable: '',
-      staffsid: '',
-
       // data for validation
       uiState: 'submit not clicked',
       errors: true,
@@ -182,7 +171,7 @@ export default {
       // end of data for validation
       servicesName: ['name1', 'name2', 'name3'],
       servicesTag: ['tag1', 'tag2', 'tag3'],
-      bilingStatusService: ['PAID', 'UNPAID', 'BLOCK'],
+      billingStatusService: ['PAID', 'UNPAID', 'BLOCK'],
       servicesStatus: ['WIP', 'LAUNCHED', 'SUPPORT', 'DEACTIVE'],
       service: {
         name: '',
@@ -191,12 +180,14 @@ export default {
         tag: '',
         employee: '',
         voip: '',
-        desc: '',
+        description: '',
         tags: [],
         client: '',
-        bilingStatus: '',
+        billingStatus: '',
         status: '',
       },
+      clientEdit: '',
+      tagEdit: '',
     };
   },
   validations: {
@@ -205,9 +196,6 @@ export default {
     },
   },
   methods: {
-    getAutoCompleteValuestaff(value) {
-      this.service.employee = value.id;
-    },
     getAutoCompleteValueclient(value) {
       this.service.client = value.id;
     },
@@ -232,13 +220,14 @@ export default {
             .post('/v1/api/vkann/services', {
               tags: this.service.tags,
               name: this.service.name,
-              staff: this.service.employee,
+              // staff: this.service.employee,
               client: this.service.client,
               primaryDomain: this.service.primaryDomain,
               parkDomain: this.service.parkDomain,
-              billingStatus: this.service.bilingStatus,
+              billingStatus: this.service.billingStatus,
               status: this.service.status,
               voip: this.service.voip,
+              description: this.service.description,
               attachments: '5e1a30480000000000000000',
             })
             .then(response => {
@@ -272,14 +261,15 @@ export default {
             .put(`/v1/api/vkann/services/${this.$route.params.serviceId}`, {
               tags: this.service.tags,
               name: this.service.name,
-              staff: this.service.employee,
-              client: this.service.client,
+              // eslint-disable-next-line no-underscore-dangle
+              client: this.service.client._id,
               primaryDomain: this.service.primaryDomain,
               parkDomain: this.service.parkDomain,
-              billingStatus: this.service.bilingStatus,
+              billingStatus: this.service.billingStatus,
               status: this.service.status,
-              voip: this.service.voip,
-              attachments: '5e1a30480000000000000000',
+              VOIP: this.service.voip,
+              description: this.service.description,
+              // attachments: '5e1a30480000000000000000',
             })
             .then(res => {
               console.log(res);
@@ -312,32 +302,35 @@ export default {
     },
   },
   mounted() {
-    this.$axios.get('/v1/api/vkann/users/get-clients').then(res => {
-      this.clients = res.data.users;
-      this.clientsLable = this.clients.map(v => v.firstName);
-      this.clientsid = this.clients.map(v => v.id);
-    });
-    this.$axios.get('v1/api/vkann/users/get-staffs').then(response => {
-      this.staffs = response.data.users;
-      this.staffsLable = this.staffs.map(v => v.firstName);
-      this.staffsid = this.staffs.map(v => v.id);
-    });
     if (this.profileMode === 'Edit') {
       this.$axios
         .get(`/v1/api/vkann/services/${this.$route.params.serviceId}`)
         .then(res => {
-          console.log(res.data.data);
-          this.serviceData = res.data;
-          this.service.name = res.data.name;
-          this.service.primaryDomain = res.data.primaryDomain;
-          this.service.parkDomain = res.data.parkDomain;
-          this.service.tags = res.data.tags;
-          this.service.employee = res.data.staff;
-          this.service.voip = res.data.voip;
-          this.service.desc = res.data.desc;
-          this.service.client = res.data.client;
-          this.service.bilingStatus = res.data.billingStatus;
-          this.service.status = res.data.status;
+          this.service.name = res.data.service.name;
+          this.service.primaryDomain = res.data.service.primaryDomain;
+          this.service.parkDomain = res.data.service.parkDomain;
+          // this.service.employee = res.data.staff;
+          this.service.voip = res.data.service.VOIP;
+          this.service.description = res.data.service.description;
+          this.service.client = res.data.service.client;
+          this.service.billingStatus = res.data.service.billingStatus;
+          this.service.status = res.data.service.status;
+          this.service.client = res.data.service.client;
+          // eslint-disable-next-line no-underscore-dangle
+          this.service.tags = res.data.service.tags._id;
+          this.tagEdit = res.data.service.tags;
+          this.clientEdit = this.service.client;
+          // for tags
+          const serverItems = res.data.service.tags.map(item => ({
+            // eslint-disable-next-line no-underscore-dangle
+            id: item._id,
+            title: item.title,
+          }));
+          this.tagEdit = serverItems;
+          this.service.tags = serverItems.map(item => {
+            // eslint-disable-next-line no-underscore-dangle
+            return item.id;
+          });
         })
         .catch(e => {
           if (e.response.status === 422) {
@@ -371,5 +364,10 @@ export default {
   @media screen and (max-width: 360px) {
     width: calc(100% - 16px) !important;
   }
+}
+.servicPic {
+  width: 33%;
+  margin: auto;
+  display: flex;
 }
 </style>

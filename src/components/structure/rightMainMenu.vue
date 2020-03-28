@@ -7,9 +7,25 @@
     :breakpoint="980"
     @hide="hideMenu"
   >
-    <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
-      <div v-if="mobileSize || !miniState" class="absolute-bottom bg-transparent">
-        <router-link :to="'/' + locale + '/' + 'profile' + '/' + `${$store.state.module1.userData.id}`">
+    <q-img
+      class="absolute-top"
+      src="https://cdn.quasar.dev/img/material.png"
+      style="height: 150px"
+    >
+      <div
+        v-if="mobileSize || !miniState"
+        class="absolute-bottom bg-transparent"
+      >
+        <router-link
+          :to="
+            '/' +
+              locale +
+              '/' +
+              'profile' +
+              '/' +
+              `${$store.state.module1.userData.id}`
+          "
+        >
           <q-avatar size="56px" class="q-mb-sm">
             <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
           </q-avatar>
@@ -18,7 +34,14 @@
         <div>
           <router-link
             class="text-weight-bold text-white"
-            :to="'/' + locale + '/' + 'profile' + '/' + `${$store.state.module1.userData.id}`"
+            :to="
+              '/' +
+                locale +
+                '/' +
+                'profile' +
+                '/' +
+                `${$store.state.module1.userData.id}`
+            "
           >
             {{ this.userData.firstName }}
             {{ this.userData.lastName }}
@@ -27,7 +50,9 @@
         </div>
       </div>
     </q-img>
-    <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd">
+    <q-scroll-area
+      style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd"
+    >
       <q-list>
         <q-item-label header>{{ $t('EssentialLinks') }}</q-item-label>
         <q-btn
@@ -43,7 +68,10 @@
             <!-- home route -->
             <li class="mainMenuLi">
               <q-item class="p8">
-                <router-link class="noneExpandableMenu" :to="'/' + locale + '/' + 'dashboard'">
+                <router-link
+                  class="noneExpandableMenu"
+                  :to="'/' + locale + '/' + 'dashboard'"
+                >
                   <q-item-section avatar>
                     <q-icon name="fas fa-home" class="fn18" />
                   </q-item-section>
@@ -54,7 +82,10 @@
             <li class="mainMenuLi">
               <q-item class="p8">
                 <!-- profile route -->
-                <router-link class="noneExpandableMenu" :to="'/' + locale + '/' + 'profile'">
+                <router-link
+                  class="noneExpandableMenu"
+                  :to="'/' + locale + '/' + 'profile'"
+                >
                   <q-item-section avatar>
                     <q-icon name="fas fa-address-card" class="fn18" />
                   </q-item-section>
@@ -62,6 +93,52 @@
                 </router-link>
               </q-item>
             </li>
+            <!-- userManagement route -->
+            <li
+              class="mainMenuLi"
+              v-if="$store.state.module1.userData.role !== 'CLIENT'"
+            >
+              <q-expansion-item
+                icon="supervisor_account"
+                :label="$t('userManagement')"
+                expand-icon-toggle
+                class="expandableMenu"
+                :to="'/' + locale + '/' + 'userManagement'"
+              >
+                <router-link
+                  v-if="
+                    $store.state.module1.userData.role !== 'MEMBER' ||
+                      $store.state.module1.userData.role !== 'CLIENT'
+                  "
+                  class="block"
+                  :to="'/' + locale + '/' + 'userManagement' + '/' + 'staffs'"
+                >
+                  <q-icon name="fa fa-table pr12" />
+                  {{ $t('staffs') }}
+                </router-link>
+                <router-link
+                  class="block"
+                  :to="'/' + locale + '/' + 'userManagement' + '/' + 'clients'"
+                >
+                  <q-icon name="fa fa-table pr12" />
+                  {{ $t('clients') }}
+                </router-link>
+                <router-link
+                  v-if="
+                    $store.state.module1.userData.role !== 'MEMBER' ||
+                      $store.state.module1.userData.role !== 'CLIENT'
+                  "
+                  class="block"
+                  :to="
+                    '/' + locale + '/' + 'userManagement' + '/' + 'addMember'
+                  "
+                >
+                  <q-icon name="fas fa-plus pr1" />
+                  {{ $t('addMember') }}
+                </router-link>
+              </q-expansion-item>
+            </li>
+
             <li class="mainMenuLi">
               <q-expansion-item
                 expand-icon-toggle
@@ -71,19 +148,28 @@
                 :to="'/' + locale + '/' + 'tickets'"
               >
                 <!-- tickets list-->
-                <router-link class="block" :to="'/' + locale + '/' + 'tickets' + '/' + 'ticketsList'">
+                <router-link
+                  class="block"
+                  :to="'/' + locale + '/' + 'tickets' + '/' + 'ticketsList'"
+                >
                   <q-icon name="system_update_alt" />
                   {{ $t('ticketsList') }}
                 </router-link>
                 <!-- add new tickets -->
-                <router-link class="block" :to="'/' + locale + '/' + 'tickets' + '/' + 'addTicket'">
+                <router-link
+                  class="block"
+                  :to="'/' + locale + '/' + 'tickets' + '/' + 'addTicket'"
+                >
                   <q-icon name="system_update_alt" />
                   {{ $t('addTicket') }}
                 </router-link>
               </q-expansion-item>
             </li>
             <!-- my tasks route -->
-            <li class="mainMenuLi" v-if="$store.state.module1.userData.role !== 'CLIENT'">
+            <li
+              class="mainMenuLi"
+              v-if="$store.state.module1.userData.role !== 'CLIENT'"
+            >
               <q-expansion-item
                 expand-icon-toggle
                 class="expandableMenu"
@@ -91,19 +177,31 @@
                 :label="$t('tasks')"
                 :to="'/' + locale + '/' + 'tasks'"
               >
-                <router-link class="block" :to="'/' + locale + '/' + 'tasks' + '/' + 'myTasksList'">
+                <router-link
+                  class="block"
+                  :to="'/' + locale + '/' + 'tasks' + '/' + 'myTasksList'"
+                >
                   <q-icon name="play_for_work" />
                   {{ $t('mytasks') }}
                 </router-link>
-                <router-link class="block" :to="'/' + locale + '/' + 'tasks' + '/' + 'tasksList'">
+                <router-link
+                  class="block"
+                  :to="'/' + locale + '/' + 'tasks' + '/' + 'tasksList'"
+                >
                   <q-icon name="play_for_work" />
                   {{ $t('tasksList') }}
                 </router-link>
-                <router-link class="block" :to="'/' + locale + '/' + 'tasks' + '/' + 'addTask'">
+                <router-link
+                  class="block"
+                  :to="'/' + locale + '/' + 'tasks' + '/' + 'addTask'"
+                >
                   <q-icon name="play_for_work" />
                   {{ $t('addTask') }}
                 </router-link>
-                <router-link class="block" :to="'/' + locale + '/' + 'tasks' + '/' + 'kanBoard'">
+                <router-link
+                  class="block"
+                  :to="'/' + locale + '/' + 'tasks' + '/' + 'kanBoard'"
+                >
                   <q-icon name="fa fa-table" />
                   {{ $t('kanBoard') }}
                 </router-link>
@@ -118,8 +216,11 @@
                 class="expandableMenu"
                 :to="'/' + locale + '/' + 'services'"
               >
-                <router-link class="block" :to="'/' + locale + '/' + 'services' + '/' + 'servicesList'">
-                  <q-icon name="perm_data_setting" />
+                <router-link
+                  class="block"
+                  :to="'/' + locale + '/' + 'services' + '/' + 'servicesList'"
+                >
+                  <q-icon name="fa fa-table pr12" />
                   {{ $t('servicesList') }}
                 </router-link>
                 <router-link
@@ -129,9 +230,11 @@
                       ($store.state.module1.userData.role === 'MANAGER' &&
                         $store.state.module1.userData.department === 'TECH') ||
                       ($store.state.module1.userData.role === 'MANAGER' &&
-                        $store.state.module1.userData.department === 'BILLING') ||
+                        $store.state.module1.userData.department ===
+                          'BILLING') ||
                       ($store.state.module1.userData.role === 'ASSISTANT' &&
-                        $store.state.module1.userData.department === 'GENERAL') ||
+                        $store.state.module1.userData.department ===
+                          'GENERAL') ||
                       ($store.state.module1.userData.role === 'ASSISTANT' &&
                         $store.state.module1.userData.department === 'TECH') ||
                       ($store.state.module1.userData.role === 'ASSISTANT' &&
@@ -140,39 +243,8 @@
                   class="block"
                   :to="'/' + locale + '/' + 'services' + '/' + 'addService'"
                 >
-                  <q-icon name="perm_data_setting" />
+                  <q-icon name="fas fa-plus pr12" />
                   {{ $t('addService') }}
-                </router-link>
-              </q-expansion-item>
-            </li>
-            <!-- userManagement route -->
-            <li class="mainMenuLi" v-if="$store.state.module1.userData.role !== 'CLIENT'">
-              <q-expansion-item
-                icon="supervisor_account"
-                :label="$t('userManagement')"
-                expand-icon-toggle
-                class="expandableMenu"
-                :to="'/' + locale + '/' + 'userManagement'"
-              >
-                <router-link
-                  v-if="$store.state.module1.userData.role !== 'MEMBER' || $store.state.module1.userData.role !== 'CLIENT'"
-                  class="block"
-                  :to="'/' + locale + '/' + 'userManagement' + '/' + 'staffs'"
-                >
-                  <q-icon name="supervisor_account" />
-                  {{ $t('staffs') }}
-                </router-link>
-                <router-link class="block" :to="'/' + locale + '/' + 'userManagement' + '/' + 'clients'">
-                  <q-icon name="supervisor_account" />
-                  {{ $t('clients') }}
-                </router-link>
-                <router-link
-                  v-if="$store.state.module1.userData.role !== 'MEMBER' || $store.state.module1.userData.role !== 'CLIENT'"
-                  class="block"
-                  :to="'/' + locale + '/' + 'userManagement' + '/' + 'addMember'"
-                >
-                  <q-icon name="supervisor_account" />
-                  {{ $t('addMember') }}
                 </router-link>
               </q-expansion-item>
             </li>
@@ -180,7 +252,10 @@
             <!-- billing route -->
             <li
               class="mainMenuLi"
-              v-if="$store.state.module1.userData.department !== 'INFO' || $store.state.module1.userData.department !== 'TECH'"
+              v-if="
+                $store.state.module1.userData.department !== 'INFO' ||
+                  $store.state.module1.userData.department !== 'TECH'
+              "
             >
               <q-expansion-item
                 icon="attach_money"
@@ -190,18 +265,43 @@
                 class="expandableMenu"
                 :to="'/' + locale + '/' + 'billing'"
               >
-                <q-expansion-item icon="attach_money" :label="$t('invoices')" expand-icon-toggle>
+                <q-expansion-item
+                  icon="fas fa-file-invoice-dollar"
+                  :label="$t('invoices')"
+                  expand-icon-toggle
+                >
                   <!-- invoice route -->
-                  <router-link class="block" :to="'/' + locale + '/' + 'billing' + '/' + 'invoices'">
-                    <q-icon name="attach_money" />
+                  <router-link
+                    class="block"
+                    :to="
+                      '/' +
+                        locale +
+                        '/' +
+                        'billing' +
+                        '/' +
+                        'invoices' +
+                        '/' +
+                        'invoicesList'
+                    "
+                  >
+                    <q-icon name="fa fa-table pr12" />
                     {{ $t('invoicesList') }}
                   </router-link>
                   <router-link
                     v-if="$store.state.module1.userData.role !== 'CLIENT'"
                     class="block"
-                    :to="'/' + locale + '/' + 'billing' + '/' + 'invoices' + '/' + 'addInvoice'"
+                    :to="
+                      '/' +
+                        locale +
+                        '/' +
+                        'billing' +
+                        '/' +
+                        'invoices' +
+                        '/' +
+                        'addInvoice'
+                    "
                   >
-                    <q-icon name="attach_money" />
+                    <q-icon name="fas fa-plus pr12" />
                     {{ $t('addInvoice') }}
                   </router-link>
                 </q-expansion-item>
@@ -216,15 +316,39 @@
                   :to="'/' + locale + '/' + 'billing' + '/' + 'contracts'"
                 >
                   <router-link
-                    v-if="$store.state.module1.userData.role !== 'CLIENT' && $store.state.module1.userData.role !== 'MEMBER'"
+                    v-if="
+                      $store.state.module1.userData.role !== 'CLIENT' &&
+                        $store.state.module1.userData.role !== 'MEMBER'
+                    "
                     class="block"
-                    :to="'/' + locale + '/' + 'billing' + '/' + 'contracts' + '/' + 'addContract'"
+                    :to="
+                      '/' +
+                        locale +
+                        '/' +
+                        'billing' +
+                        '/' +
+                        'contracts' +
+                        '/' +
+                        'addContract'
+                    "
                   >
-                    <q-icon name="attach_money" />
+                    <q-icon name="fas fa-plus pr12" />
                     {{ $t('addContract') }}
                   </router-link>
-                  <router-link class="block" :to="'/' + locale + '/' + 'billing' + '/' + 'contracts' + '/' + 'contractsList'">
-                    <q-icon name="attach_money" />
+                  <router-link
+                    class="block"
+                    :to="
+                      '/' +
+                        locale +
+                        '/' +
+                        'billing' +
+                        '/' +
+                        'contracts' +
+                        '/' +
+                        'contractsList'
+                    "
+                  >
+                    <q-icon name="fa fa-table pr12" />
                     {{ $t('contractsList') }}
                   </router-link>
                 </q-expansion-item>
@@ -233,11 +357,17 @@
             <!-- tags management -->
             <li
               class="mainMenuLi"
-              v-if="$store.state.module1.userData.role !== 'CLIENT' && $store.state.module1.userData.role !== 'MEMBER'"
+              v-if="
+                $store.state.module1.userData.role !== 'CLIENT' &&
+                  $store.state.module1.userData.role !== 'MEMBER'
+              "
             >
               <q-item class="p8">
                 <!-- tags -->
-                <router-link class="noneExpandableMenu" :to="'/' + locale + '/' + 'tags'">
+                <router-link
+                  class="noneExpandableMenu"
+                  :to="'/' + locale + '/' + 'tags'"
+                >
                   <q-item-section avatar>
                     <q-icon name="fas fa-tags" class="fn18" />
                   </q-item-section>
@@ -256,11 +386,21 @@
                 :to="'/' + locale + '/' + 'fileManagements'"
               >
                 <!-- filesList -->
-                <router-link class="block" :to="'/' + locale + '/' + 'fileManagements' + '/' + 'filesList'">
+                <router-link
+                  class="block"
+                  :to="
+                    '/' + locale + '/' + 'fileManagements' + '/' + 'filesList'
+                  "
+                >
                   <q-icon name="fas fa-copy" class="fn18" />
                   {{ $t('filesList') }}
                 </router-link>
-                <router-link class="block" :to="'/' + locale + '/' + 'fileManagements' + '/' + 'uploadFile'">
+                <router-link
+                  class="block"
+                  :to="
+                    '/' + locale + '/' + 'fileManagements' + '/' + 'uploadFile'
+                  "
+                >
                   <q-icon name="fa fa-upload" />
                   {{ $t('uploadFile') }}
                 </router-link>
@@ -279,7 +419,7 @@ export default {
   data() {
     return {
       localLeftDrawerOpen: false,
-      miniState: true,
+      miniState: false,
     };
   },
   watch: {

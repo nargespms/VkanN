@@ -15,7 +15,13 @@
     >
       <!-- search field -->
       <template v-slot:top-right>
-        <q-input borderless dense debounce="300" v-model.trim="filter" :placeholder="$t('Search')">
+        <q-input
+          borderless
+          dense
+          debounce="300"
+          v-model.trim="filter"
+          :placeholder="$t('Search')"
+        >
           <template v-slot:append>
             <q-icon name="search" />
           </template>
@@ -29,7 +35,8 @@
             <router-link
               class="listNameTable"
               :to="'/' + $route.params.locale + '/' + 'profile'"
-            >{{ props.row.name }}</router-link>
+              >{{ props.row.name }}</router-link
+            >
             <q-btn
               class="expandTable"
               :props="props"
@@ -44,17 +51,13 @@
           </q-td>
           <q-td key="email" :props="props">{{ props.row.email }}</q-td>
           <q-td key="mobileNumber" :props="props">
-            {{
-            props.row.mobileNumber
-            }}
+            {{ props.row.mobileNumber }}
           </q-td>
           <q-td key="role" :props="props">{{ props.row.role }}</q-td>
           <q-td key="todoTask" :props="props">{{ props.row.todoTask }}</q-td>
           <q-td key="freeTime" :props="props">{{ props.row.freeTime }}</q-td>
           <q-td key="weeklyTime" :props="props">
-            {{
-            props.row.weeklyTime
-            }}
+            {{ props.row.weeklyTime }}
           </q-td>
           <q-td key="status" :props="props">{{ props.row.status }}</q-td>
         </q-tr>
@@ -79,7 +82,7 @@ export default {
   data() {
     return {
       filter: '',
-      loading: false,
+      loading: true,
       pagination: {
         sortBy: 'name',
         descending: false,
@@ -622,21 +625,6 @@ export default {
     });
   },
   methods: {
-    // loadData() {
-    //   this.$axios
-    //     .get('/statics/user.json')
-    //     .then(response => {
-    //       this.data = response.data;
-    //     })
-    //     .catch(() => {
-    //       this.$q.notify({
-    //         color: 'negative',
-    //         position: 'top',
-    //         message: 'Loading failed',
-    //         icon: 'report_problem',
-    //       });
-    //     });
-    // },
     onRequest(props) {
       const { page, limit, rowsNumber, sortBy, descending } = props.pagination;
       const { filter } = props;
@@ -665,7 +653,7 @@ export default {
           this.pagination.sortBy = sortBy;
           this.pagination.descending = descending;
 
-          this.loading = false;
+          this.loading = true;
         });
 
       // emulate server
@@ -788,9 +776,7 @@ export default {
   .q-field__suffix {
     color: #fff !important;
   }
-  .q-icon {
-    color: #fff;
-  }
+
   .expandTable {
     .q-icon {
       color: #666;

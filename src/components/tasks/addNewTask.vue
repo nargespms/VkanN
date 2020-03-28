@@ -1,228 +1,327 @@
 <template>
   <div class="newTaskWrapper">
-    <div class="primarynewTaskInfo taskWrapper">
-      <div class="newTaskInfoHeader">{{ $t('essentialInformation') }}</div>
-      <div class="primarynewTaskContent">
-        <div class="taskText pt20">
-          <q-input
-            autofocus
-            outlined
-            class="inputFieldText"
-            color="light-blue-10"
-            v-model.trim="task.title"
-            :label="$t('title')"
-            required
-            lazy-rules
-            :rules="[val => val && val.length > 0]"
-          >
-            <template v-slot:prepend>
-              <q-icon name />
-            </template>
-          </q-input>
-          <!-- description -->
-          <editor @getTextFromEditor="getTextFromEditor" />
-        </div>
-        <div class="taskDetail pt20">
-          <!-- ticketId -->
-          <q-input
-            outlined
-            class="inputFieldText"
-            color="light-blue-10"
-            v-model.trim="task.ticketId"
-            :label="$t('ticketId')"
-            lazy-rules
-            mask="######"
-          >
-            <template v-slot:append>
-              <q-icon
-                name="fa fa-table"
-                color="primary"
-                @click="ticketPicker = !ticketPicker"
-                class="ticketPicker"
-              >
-                <q-tooltip
-                  v-model="showing1"
+    <q-form @submit="submitTask">
+      <div class="primarynewTaskInfo taskWrapper">
+        <div class="newTaskInfoHeader">{{ $t('essentialInformation') }}</div>
+        <div class="primarynewTaskContent">
+          <div class="taskText pt20">
+            <q-input
+              autofocus
+              outlined
+              class="inputFieldText"
+              color="light-blue-10"
+              v-model.trim="task.title"
+              :label="$t('title')"
+              required
+              lazy-rules
+              :rules="[val => val && val.length > 0]"
+            >
+              <template v-slot:prepend>
+                <q-icon name />
+              </template>
+            </q-input>
+            <!-- description -->
+            <editor
+              v-if="profileMode !== 'Edit'"
+              @getTextFromEditor="getTextFromEditor"
+            />
+            <editorProp
+              v-if="profileMode === 'Edit'"
+              :data="task.description"
+              @changeEditedText="getTextFromEditor"
+            />
+          </div>
+          <div class="taskDetail pt20">
+            <!-- ticketId -->
+            <q-input
+              outlined
+              class="inputFieldText"
+              color="light-blue-10"
+              v-model.trim="task.ticketId"
+              :label="$t('ticketId')"
+              lazy-rules
+            >
+              <template v-slot:append>
+                <q-icon
+                  name="fa fa-table"
+                  color="primary"
+                  @click="ticketPicker = !ticketPicker"
+                  class="ticketPicker"
+                >
+                  <q-tooltip
+                    v-model="showing1"
+                    transition-show="scale"
+                    transition-hide="scale"
+                    content-style="font-size: 16px"
+                    >{{ $t('selectTicket') }}</q-tooltip
+                  >
+                </q-icon>
+                <q-dialog
+                  v-model="ticketPicker"
+                  ref="ticketPicker"
                   transition-show="scale"
                   transition-hide="scale"
-                >{{ $t('selectTicket') }}</q-tooltip>
-              </q-icon>
-              <q-dialog
-                v-model="ticketPicker"
-                ref="ticketPicker"
-                transition-show="scale"
-                transition-hide="scale"
-              >
-                <tableDataWrap
-                  @pickerInfo="pickerInfo"
-                  :endpoint="'/statics/tickets.json'"
-                  style="width: 1000px; max-width: 80vw;"
-                />
-              </q-dialog>
-            </template>
-          </q-input>
+                >
+                  <tableDataWrap
+                    @pickerInfo="pickerInfo"
+                    module="ticket"
+                    :columns="columns"
+                    :endpoint="'/v1/api/vkann/tickets/list'"
+                    style="width: 1000px; max-width: 80vw;"
+                  />
+                </q-dialog>
+              </template>
+            </q-input>
 
-          <!--  Service name -->
-          <singleAutoCompleteSelectBox
-            :options="services"
-            :optionLable="'name'"
-            :optionValue="'id'"
-            :name="'serviceName'"
-            label="firstName"
-            @getAutoCompleteValue="getAutoCompleteValueService"
-            class="pt20"
+            <!--  Service name -->
+            <servicesAutocomplete
+              :editData="profileMode === 'Edit' ? serviceEdit : ''"
+              class="pt20"
+              :isRequired="false"
+              @getAutoCompleteValue="getAutoCompleteValueService"
+            />
+
+            <!-- choose priority -->
+            <q-select
+              outlined
+              :label="$t('priority')"
+              v-model.trim="$v.task.priority.$model"
+              :options="priorities"
+              class="inputStyle pt20"
+              required
+              :rules="[val => val && val.length > 0]"
+              :error="$v.task.priority.$error"
+              ref="priority"
+            >
+              <template v-slot:prepend>
+                <q-icon name="fas fa-sort-amount-up" />
+              </template>
+              <template v-slot:option="scope">
+                <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                  <q-item-section>
+                    <q-item-label>{{ $t(scope.opt) }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </template>
+
+              <p v-if="errors" class="error">
+                <span v-if="!$v.task.priority.required"
+                  >*{{ $t('thisfieldisrequired') }}.</span
+                >
+              </p>
+            </q-select>
+
+            <!-- choose departman for ticet -->
+            <q-select
+              outlined
+              :label="$t('departman')"
+              v-model.trim="task.departman"
+              :options="departmans"
+              class="inputStyle"
+              required
+              :rules="[val => val && val.length > 0]"
+              :error="$v.task.departman.$error"
+              ref="departman"
+            >
+              <template v-slot:prepend>
+                <q-icon name="far fa-building" />
+              </template>
+              <template v-slot:option="scope">
+                <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                  <q-item-section>
+                    <q-item-label>{{ $t(scope.opt) }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </template>
+
+              <p v-if="errors" class="error">
+                <span v-if="!$v.task.departman.required"
+                  >*{{ $t('thisfieldisrequired') }}.</span
+                >
+              </p>
+            </q-select>
+            <!-- tags -->
+            <tagsSelection
+              :editData="profileMode === 'Edit' ? tagEdit : ''"
+              @addTagFn="addTagFn"
+            />
+          </div>
+        </div>
+        <div class="w100 mt12">
+          <uploadfile
+            :UploadButton="false"
+            ref="upload"
+            :text="'attachments'"
           />
-
-          <!-- choose priority -->
-          <q-select
-            outlined
-            :label="$t('priority')"
-            v-model.trim="$v.task.priority.$model"
-            :options="priorities"
-            class="inputStyle pt20"
-            required
-            :rules="[val => val && val.length > 0]"
-            :error="$v.task.priority.$error"
-            ref="priority"
-          >
-            <template v-slot:prepend>
-              <q-icon name="fas fa-sort-amount-up" />
-            </template>
-            <p v-if="errors" class="error">
-              <span v-if="!$v.task.priority.required">*{{ $t('thisfieldisrequired') }}.</span>
-            </p>
-          </q-select>
-
-          <!-- choose departman for ticet -->
-          <q-select
-            outlined
-            :label="$t('departman')"
-            v-model.trim="task.departman"
-            :options="departmans"
-            class="inputStyle"
-            required
-            :rules="[val => val && val.length > 0]"
-            :error="$v.task.departman.$error"
-            ref="departman"
-          >
-            <template v-slot:prepend>
-              <q-icon name="far fa-building" />
-            </template>
-            <p v-if="errors" class="error">
-              <span v-if="!$v.task.departman.required">*{{ $t('thisfieldisrequired') }}.</span>
-            </p>
-          </q-select>
-          <!-- tags -->
-          <tagsSelection @addTagFn="addTagFn" />
         </div>
       </div>
-      <div class="w100 mt12">
-        <uploadfile :UploadButton="false" ref="upload" :text="'attachments'" />
-      </div>
-    </div>
-    <div class="taskWrapper mt32">
-      <div
-        class="newTaskInfoHeader"
-        @click="taskStateAssign = !taskStateAssign"
-      >{{ $t('assignInformation') }}</div>
-      <q-slide-transition>
+      <div class="taskWrapper mt32">
         <div
-          class="assignTaskContent mt24"
-          v-if="taskStateAssign"
-          transition-show="scale"
-          transition-hide="scale"
+          class="newTaskInfoHeader"
+          @click="taskStateAssign = !taskStateAssign"
         >
-          <singleAutoCompleteSelectBox
-            :options="staffs"
-            :optionLable="'firstName'"
-            :optionValue="'id'"
-            :name="'employeeName'"
-            label="firstName"
-            @getAutoCompleteValue="getAutoCompleteValuestaff"
-          />
-
-          <!-- estimated time -->
-          <q-input
-            outlined
-            :label="$t('stimateTime')"
-            mask="time"
-            v-model="task.stimateTime"
-            class="pb0"
-          >
-            <template v-slot:prepend>
-              <q-icon name="access_time" class="cursor-pointer" color="primary">
-                <q-popup-proxy ref="qTimeProxy1" transition-show="scale" transition-hide="scale">
-                  <q-time
-                    v-model="task.stimateTime"
-                    :minute-options="minuteOptions"
-                    :hour-options="hourOptions"
-                    @input="() => $refs.qTimeProxy1.hide()"
-                  />
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
-
-          <!-- Due Date -->
-          <q-input
-            outlined
-            v-model.trim="task.dueDate"
-            mask="date"
-            :label="$t('dueDate')"
-            name="event"
-            class="pb0"
-          >
-            <template v-slot:append>
-              <q-icon name="event" class="cursor-pointer">
-                <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                  <q-date
-                    v-model.trim="task.dueDate"
-                    @input="() => $refs.qDateProxy.hide()"
-                    today-btn
-                    calendar="persian"
-                  />
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
-          <!-- done time -->
-          <q-input outlined v-model="task.doneTime" :label="$t('doneTime')" mask="time">
-            <template v-slot:prepend>
-              <q-icon name="access_time" class="cursor-pointer" color="primary">
-                <q-popup-proxy ref="qTimeProxy" transition-show="scale" transition-hide="scale">
-                  <q-time
-                    v-model="task.doneTime"
-                    :minute-options="minuteOptions"
-                    :hour-options="hourOptions1"
-                    @input="() => $refs.qTimeProxy.hide()"
-                  />
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
+          <span class="pr12">
+            <q-icon
+              v-if="!taskStateAssign"
+              class="text-blue-grey-8"
+              name="fa fa-arrow-down"
+            />
+            <q-icon
+              v-if="taskStateAssign"
+              class="text-blue-grey-8"
+              name="fa fa-arrow-up"
+            />
+          </span>
+          {{ $t('assignInformation') }}
         </div>
-      </q-slide-transition>
-    </div>
-    <div class="taskWrapper mt32">
-      <div
-        class="newTaskInfoHeader"
-        @click="taskStateComment = !taskStateComment"
-      >{{ $t('comments') }}</div>
-      <div class="taskCommentContent">
         <q-slide-transition>
-          <taskComment v-if="taskStateComment" transition-show="scale" transition-hide="scale" />
+          <div
+            class="assignTaskContent mt24"
+            v-if="taskStateAssign"
+            transition-show="scale"
+            transition-hide="scale"
+          >
+            <staffsAutocomplete
+              :editData="profileMode === 'Edit' ? staffEdit : ''"
+              isRequired="false"
+              @getAutoCompleteValue="getAutoCompleteValuestaff"
+            />
+
+            <!-- estimated time -->
+            <q-input
+              outlined
+              :label="$t('stimateTime')"
+              mask="time"
+              v-model="task.stimateTime"
+              class="pb0"
+            >
+              <template v-slot:prepend>
+                <q-icon
+                  name="access_time"
+                  class="cursor-pointer"
+                  color="primary"
+                >
+                  <q-popup-proxy
+                    ref="qTimeProxy1"
+                    transition-show="scale"
+                    transition-hide="scale"
+                  >
+                    <q-time
+                      v-model="task.stimateTime"
+                      :minute-options="minuteOptions"
+                      :hour-options="hourOptions"
+                      @input="() => $refs.qTimeProxy1.hide()"
+                    />
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+
+            <!-- Due Date -->
+            <q-input
+              outlined
+              v-model.trim="task.dueDate"
+              mask="date"
+              :label="$t('dueDate')"
+              name="event"
+              class="pb0"
+            >
+              <template v-slot:append>
+                <q-icon name="event" class="cursor-pointer">
+                  <q-popup-proxy
+                    ref="qDateProxy"
+                    transition-show="scale"
+                    transition-hide="scale"
+                  >
+                    <q-date
+                      v-model.trim="task.dueDate"
+                      @input="() => $refs.qDateProxy.hide()"
+                      today-btn
+                      calendar="persian"
+                    />
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+            <!-- done time -->
+            <q-input
+              outlined
+              v-model="task.doneTime"
+              :label="$t('doneTime')"
+              mask="time"
+            >
+              <template v-slot:prepend>
+                <q-icon
+                  name="access_time"
+                  class="cursor-pointer"
+                  color="primary"
+                >
+                  <q-popup-proxy
+                    ref="qTimeProxy"
+                    transition-show="scale"
+                    transition-hide="scale"
+                  >
+                    <q-time
+                      v-model="task.doneTime"
+                      :minute-options="minuteOptions"
+                      :hour-options="hourOptions1"
+                      @input="() => $refs.qTimeProxy.hide()"
+                    />
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+          </div>
         </q-slide-transition>
       </div>
-    </div>
-    <div class="saveButTask">
-      <q-btn
-        style="width:250px;"
-        class="savebutton mr12"
-        color="primary"
-        type="submit"
-        @click="submitTask"
-      >{{ $t('save') }}</q-btn>
-      <q-btn class="savebutton mr12" color="primary" type="submit">{{ $t('savenew') }}</q-btn>
-    </div>
+      <div class="taskWrapper mt32">
+        <div
+          class="newTaskInfoHeader"
+          @click="taskStateComment = !taskStateComment"
+        >
+          <span class="pr12">
+            <q-icon
+              v-if="!taskStateComment"
+              class="text-blue-grey-8"
+              name="fa fa-arrow-down"
+            />
+            <q-icon
+              v-if="taskStateComment"
+              class="text-blue-grey-8"
+              name="fa fa-arrow-up"
+            />
+          </span>
+          {{ $t('comments') }}
+        </div>
+        <div class="taskCommentContent">
+          <q-slide-transition>
+            <taskComment
+              @setCommentValue="setCommentValue"
+              v-if="taskStateComment"
+              transition-show="scale"
+              transition-hide="scale"
+            />
+          </q-slide-transition>
+        </div>
+      </div>
+      <div class="saveButTask">
+        <q-btn
+          style="width:250px;"
+          class="savebutton mr12"
+          color="primary"
+          type="submit"
+          >{{ $t('save') }}</q-btn
+        >
+        <q-btn
+          v-if="profileMode !== 'Edit'"
+          @click="newTicket = !newTicket"
+          class="savebutton mr12"
+          color="primary"
+          type="submit"
+          >{{ $t('savenew') }}</q-btn
+        >
+      </div>
+    </q-form>
   </div>
 </template>
 
@@ -230,35 +329,39 @@
 import { required } from 'vuelidate/lib/validators';
 
 import editor from '../structure/editor.vue';
+import editorProp from '../structure/editorProp.vue';
 import tagsSelection from '../structure/tagsSelection.vue';
 import uploadfile from '../structure/uploadfile.vue';
 import taskComment from './taskComment.vue';
+import servicesAutocomplete from '../structure/servicesAutocomplete.vue';
+import staffsAutocomplete from '../structure/staffsAutocomplete.vue';
 import tableDataWrap from '../structure/tableDataWrap.vue';
-import singleAutoCompleteSelectBox from '../structure/singleAutoCompleteSelectBox.vue';
+// import ticketListCmp from '../tickets/ticketTableData.vue';
 
 export default {
   name: 'addNewTask',
   meta() {
     return { title: this.$t('addNewTask') };
   },
+  props: ['profileMode'],
 
   components: {
     editor,
+    editorProp,
     tagsSelection,
     uploadfile,
     taskComment,
+    servicesAutocomplete,
+    // ticketListCmp,
     tableDataWrap,
-    singleAutoCompleteSelectBox,
+    staffsAutocomplete,
   },
   data() {
     return {
+      newTicket: false,
       errors: false,
       empty: true,
-
       showing1: false,
-      staffs: {},
-      staffsLable: '',
-      staffsid: '',
       ticketPicker: false,
       taskStateComment: false,
       taskStateAssign: false,
@@ -266,7 +369,6 @@ export default {
       hourOptions1: [0, 1, 2, 3, 4, 5, 6],
       minuteOptions: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55],
       time: '',
-      services: [],
       options: this.staffMember,
       departmans: ['INFO', 'TECH', 'BILLING'],
       priorities: ['CRITICAL', 'IMPORTANT', 'NORMAL', 'LOW'],
@@ -278,19 +380,66 @@ export default {
         tags: [],
         priority: '',
         ticketId: '',
-        assigner: this.$store.state.module1.userData.firstName,
+        assigner: this.$store.state.module1.userData.id,
         assignee: '',
         stimateTime: '',
         doneTime: '',
         dueDate: '',
-        comments: [
-          {
-            writerName: '',
-            description: '',
-          },
-        ],
+        comments: [],
         attachments: '',
       },
+      serviceEdit: '',
+      tagEdit: '',
+      staffEdit: '',
+      columns: [
+        {
+          lable: 'ticketNumber',
+          filterable: true,
+          sortable: false,
+          filterType: 'Text',
+        },
+        {
+          lable: 'title',
+          filterable: true,
+          sortable: false,
+          filterType: 'Text',
+        },
+        {
+          lable: 'departman',
+          filterable: true,
+          sortable: false,
+          filterType: 'Text',
+        },
+        {
+          lable: 'Service',
+          filterable: true,
+          sortable: false,
+          filterType: 'Text',
+        },
+        {
+          lable: 'priority',
+          filterable: true,
+          sortable: false,
+          filterType: 'Text',
+        },
+        {
+          lable: 'clientName',
+          filterable: true,
+          sortable: true,
+          filterType: 'Text',
+        },
+        {
+          lable: 'status',
+          filterable: true,
+          sortable: true,
+          filterType: 'DropBox',
+        },
+        // {
+        //   lable: 'operation',
+        //   filterable: false,
+        //   sortable: false,
+        // },
+      ],
     };
   },
   validations: {
@@ -320,6 +469,9 @@ export default {
     addTagFn(value) {
       this.task.tags = value.map(v => v.id);
     },
+    setCommentValue(value) {
+      this.task.comments = value;
+    },
     filterFn(val, update) {
       update(() => {
         const needle = val.toLowerCase();
@@ -335,63 +487,164 @@ export default {
 
       this.$refs.priority.$el.focus();
       this.$refs.departman.$el.focus();
-
+      const dueDate = this.persionToGregorian(this.task.dueDate);
       console.log(this.errors);
-      if (
-        this.task.priority.length !== 0 &&
-        this.task.title.length !== 0 &&
-        this.task.departman.length !== 0
-      ) {
-        this.$axios
-          .post('/v1/api/vkann/tasks', {
-            title: this.task.title,
-            department: this.task.departman,
-            service: this.task.serviceName,
-            tags: this.task.tags,
-            priority: this.task.priority,
-            ticketId: this.task.ticketId,
-            dueDate: this.task.dueDate,
-            estimateTime: this.task.stimateTime,
-          })
-          .then(res => {
-            console.log(res);
-            if (res.status === 200) {
-              console.log('submit task');
-              this.$q.notify({
-                message: this.$t('new task added'),
-                color: 'positive',
-                icon: 'check',
-                position: 'top',
-              });
-              this.$emit('taskState', false);
-              this.$router.push({
-                path: `/${this.$route.params.locale}/tasks/kanBoard`,
-              });
-            }
+      if (this.profileMode !== 'Edit') {
+        if (
+          this.task.priority.length !== 0 &&
+          this.task.title.length !== 0 &&
+          this.task.departman.length !== 0
+        ) {
+          this.$axios
+            .post('/v1/api/vkann/tasks', {
+              title: this.task.title,
+              department: this.task.departman,
+              service: this.task.serviceName,
+              tags: this.task.tags,
+              priority: this.task.priority,
+              ticketId: this.task.ticketId,
+              dueDate,
+              estimateTime: this.task.stimateTime,
+              asignee: this.task.assignee,
+              asigner: this.task.assigner,
+              doneTime: this.task.doneTime,
+              description: this.task.description,
+              // comments: this.task.comments,
+            })
+            .then(res => {
+              console.log(res);
+              if (res.status === 200) {
+                console.log('submit task');
+                this.$q.notify({
+                  message: this.$t('newTaskAdded'),
+                  color: 'positive',
+                  icon: 'check',
+                  position: 'top',
+                });
+                this.$emit('taskState', false);
+                if (this.newTicket) {
+                  this.task = {};
+                } else {
+                  this.$router.push({
+                    path: `/${this.$route.params.locale}/tasks/tasksList`,
+                  });
+                }
+              }
+            });
+        } else {
+          this.$q.notify({
+            message: this.$t('Theformabovehaserrors'),
+            color: 'negative',
+            icon: 'warning',
+            position: 'top',
           });
-      } else {
-        this.$q.notify({
-          message: this.$t('Theformabovehaserrors'),
-          color: 'negative',
-          icon: 'warning',
-          position: 'top',
-        });
+        }
+      } else if (this.profileMode === 'Edit') {
+        if (
+          this.task.priority.length !== 0 &&
+          this.task.title.length !== 0 &&
+          this.task.departman.length !== 0
+        ) {
+          this.$axios
+            .put(`/v1/api/vkann/tasks/${this.$route.params.taskId}`, {
+              title: this.task.title,
+              department: this.task.departman,
+              service: this.task.serviceName,
+              tags: this.task.tags,
+              priority: this.task.priority,
+              ticketId: this.task.ticketId,
+              dueDate: new Date(this.task.dueDate),
+              estimateTime: this.task.stimateTime,
+              // eslint-disable-next-line no-underscore-dangle
+              asignee: this.task.assignee,
+              asigner: this.task.assigner,
+              doneTime: this.task.doneTime,
+              description: this.task.description,
+              // comments: this.task.comments,
+            })
+            .then(res => {
+              console.log(res);
+              if (res.status === 200) {
+                console.log('submit task');
+                this.$q.notify({
+                  message: this.$t('taskEdited'),
+                  color: 'positive',
+                  icon: 'check',
+                  position: 'top',
+                });
+                this.$emit('taskState', false);
+                if (this.newTicket) {
+                  this.task = {};
+                } else {
+                  this.$emit('tabChanged', 'taskProfile');
+                }
+              }
+            });
+        } else {
+          this.$q.notify({
+            message: this.$t('Theformabovehaserrors'),
+            color: 'negative',
+            icon: 'warning',
+            position: 'top',
+          });
+        }
       }
+    },
+    persionToGregorian(value) {
+      const dateValue = value.split('/').map(i => parseInt(i, 10));
+      return new this.$persianDate(dateValue).toDate().toISOString();
     },
   },
   mounted() {
-    this.$axios.get('v1/api/vkann/users/get-staffs').then(response => {
-      this.staffs = response.data.users;
-      this.staffsLable = this.staffs.map(v => v.firstName);
-      this.staffsid = this.staffs.map(v => v.id);
-    });
-    this.$axios.get('/v1/api/vkann/services/get-services').then(res => {
-      //
-      console.log(res.data.services);
-      this.services = res.data.services;
-      this.servicesLable = this.services.map(v => v.name);
-      this.servicesid = this.services.map(v => v.id);
-    });
+    if (this.profileMode === 'Edit') {
+      this.$axios
+        .get(`/v1/api/vkann/tasks/${this.$route.params.taskId}`)
+        .then(res => {
+          console.log(res);
+          this.task.title = res.data.task.title;
+          this.task.description = res.data.task.description;
+          this.task.departman = res.data.task.department;
+          this.task.priority = res.data.task.priority;
+          this.task.ticketId = res.data.task.ticket;
+          this.serviceEdit = res.data.task.service;
+          // eslint-disable-next-line no-underscore-dangle
+          this.task.serviceName = res.data.task.service._id;
+          const serverItems = res.data.task.tags.map(item => ({
+            // eslint-disable-next-line no-underscore-dangle
+            id: item._id,
+            title: item.title,
+          }));
+          this.tagEdit = serverItems;
+          this.task.tags = serverItems.map(item => {
+            // eslint-disable-next-line no-underscore-dangle
+            return item.id;
+          });
+          this.staffEdit = res.data.task.asignee;
+          this.task.assignee = res.data.task.asignee;
+
+          // serviceName: '',
+          // tags: [],
+          // priority: '',
+          // ticketId: '',
+          // assigner: this.$store.state.module1.userData.id,
+          // assignee: '',
+          // stimateTime: '',
+          // doneTime: '',
+          // dueDate: '',
+          // comments: [],
+          // attachments: '',
+        })
+        .catch(e => {
+          if (e.response.status === 422) {
+            this.$q.notify({
+              message: this.$t('tasksUnvalid'),
+              color: 'negative',
+              icon: 'warning',
+              position: 'top',
+            });
+          }
+        });
+    }
   },
 };
 </script>
@@ -467,5 +720,20 @@ export default {
   cursor: pointer;
   font-size: 20px;
   padding: 12px;
+}
+.listNameTable,
+.q-table thead th {
+  color: #000;
+  font-size: 16px;
+  text-align: center;
+}
+
+.ticketTable tr:hover {
+  .idPicker {
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14),
+      0 3px 1px -2px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+    transition: ease-in 0.25s;
+  }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-xl">
-    <taskModal />
+    <taskModal v-if="$store.state.module1.userData.role !== 'CLIENT'" />
     <div class="cardActionWrap">
       <cardsAction :data="tickets.list" />
       <cardsAction :data="tickets.addTickets" />

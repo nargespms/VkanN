@@ -19,8 +19,12 @@
           </template>
           <!-- firstname validation -->
           <p v-if="errors" class="error">
-            <span v-if="!$v.form.FirstName.required">*{{ $t('thisfieldisrequired') }}.</span>
-            <span v-if="!$v.form.FirstName.minLength">{{ $t('Fieldmusthaveatleast3characters') }}</span>
+            <span v-if="!$v.form.FirstName.required"
+              >*{{ $t('thisfieldisrequired') }}.</span
+            >
+            <span v-if="!$v.form.FirstName.minLength">{{
+              $t('Fieldmusthaveatleast3characters')
+            }}</span>
           </p>
           <!-- firstname validation -->
         </q-input>
@@ -54,30 +58,42 @@
             <q-icon name="email" class="mailIcon" />
           </template>
           <template v-if="this.form.email.length > 0" v-slot:append>
-            <q-icon v-if="verifyEmail" name="fas fa-check" class="mailIcon text-positive" />
+            <q-icon
+              v-if="verifyEmail"
+              name="fas fa-check"
+              class="mailIcon text-positive"
+            />
             <q-icon
               v-if="!verifyEmail && $v.form.email.email"
               name="fas fa-times"
               class="mailIcon text-negative"
             />
-            <span v-if="!verifyEmail && $v.form.email.email" class="text-negative fn11">
-              {{
-              $t('enteredEmailisRegistered')
-              }}
+            <span
+              v-if="!verifyEmail && $v.form.email.email"
+              class="text-negative fn11"
+            >
+              {{ $t('enteredEmailisRegistered') }}
             </span>
           </template>
           <!-- email errors -->
           <p v-if="errors" class="error">
-            <span v-if="!$v.form.email.required">*{{ $t('thisfieldisrequired') }}.</span>
-            <span v-if="!$v.form.email.email">* {{ $t('Needstobeavalidemail') }}.</span>
-            <span
-              v-if="!$v.form.email.isUnique && !$v.form.email.email"
-            >*{{ $t('Thisemailisalreadyregistered') }}.</span>
+            <span v-if="!$v.form.email.required"
+              >*{{ $t('thisfieldisrequired') }}.</span
+            >
+            <span v-if="!$v.form.email.email"
+              >* {{ $t('Needstobeavalidemail') }}.</span
+            >
+            <span v-if="!$v.form.email.isUnique && !$v.form.email.email"
+              >*{{ $t('Thisemailisalreadyregistered') }}.</span
+            >
           </p>
           <!-- email errors -->
         </q-input>
         <!-- Mobile Phone Number -->
-        <mobilePhoneWrapper @mobileVerified="mobileVerified" existed="false" />
+        <mobilePhoneWrapper
+          @mobileVerified="mobileVerified"
+          :existed="this.profileMode === 'ADD' ? false : false"
+        />
         <!-- Mobile Phone Number -->
 
         <!-- Gender -->
@@ -93,26 +109,7 @@
             <q-icon name />
           </template>
         </q-select>
-        <!-- current password
-        <q-input
-          outlined
-          required
-          class="inputFieldText passwordField"
-          color="light-blue-10"
-          :label="$t('EnterYourCurrentPassword')"
-          v-model="form.currentPass"
-          :type="isPwd ? 'password' : 'text'"
-          lazy-rules
-          :rules="[val => (val && val.length > 0) || 'Please type something']"
-        >
-          <template v-slot:prepend>
-            <q-icon
-              :name="isPwd ? 'visibility_off' : 'visibility'"
-              class="cursor-pointer visibilityPass"
-              @click="isPwd = !isPwd"
-            />
-          </template>
-        </q-input>-->
+
         <!--New  password -->
         <q-input
           outlined
@@ -134,11 +131,15 @@
             />
           </template>
           <p class="error" v-if="errors">
-            <span v-if="!$v.form.PassWord.required">*{{ $t('thisfieldisrequired') }}.</span>
+            <span v-if="!$v.form.PassWord.required"
+              >*{{ $t('thisfieldisrequired') }}.</span
+            >
           </p>
         </q-input>
         <p class="error" v-if="errors">
-          <span v-if="!$v.form.PassWord.strongPassword">{{ $t('Strongpasswords') }}</span>
+          <span v-if="!$v.form.PassWord.strongPassword">{{
+            $t('Strongpasswords')
+          }}</span>
         </p>
         <!-- Re enter password -->
         <q-input
@@ -162,7 +163,9 @@
           </template>
           <!-- errors for pass2 -->
           <p v-if="errors" class="error">
-            <span v-if="!$v.form.Confirmpass.sameAsPassword">{{ $t('Thepasswordsdonotmatch') }}.</span>
+            <span v-if="!$v.form.Confirmpass.sameAsPassword"
+              >{{ $t('Thepasswordsdonotmatch') }}.</span
+            >
           </p>
           <!-- errors for pass2 -->
         </q-input>
@@ -187,25 +190,25 @@
               class="mailIcon text-positive"
             />
             <q-icon
-              v-if="!nationalID && $v.form.nationalId.isValidIranianNationalCode"
+              v-if="
+                !nationalID && $v.form.nationalId.isValidIranianNationalCode
+              "
               name="fas fa-times"
               class="mailIcon text-negative"
             />
-            <span
-              v-if="!nationalID && $v.form.nationalId.isValidIranianNationalCode"
-              class="text-negative fn11"
-            >
-              {{
-              $t('enteredEmailisRegistered')
-              }}
-            </span>
           </template>
           <p v-if="errors" class="error">
-            <span v-if="!$v.form.nationalId.required">*{{ $t('thisfieldisrequired') }}.</span>
+            <span v-if="!$v.form.nationalId.required"
+              >*{{ $t('thisfieldisrequired') }}.</span
+            >
             <!-- <span v-if="!$v.form.nationalId.minLength">*{{$t('Fieldmusthaveatleast10characters')}}.</span> -->
             <span
-              v-if="!$v.form.nationalId.isValidIranianNationalCode && $v.form.nationalId.required"
-            >*{{ $t('invalidCode') }}.</span>
+              v-if="
+                !$v.form.nationalId.isValidIranianNationalCode &&
+                  $v.form.nationalId.required
+              "
+              >*{{ $t('invalidCode') }}.</span
+            >
           </p>
         </q-input>
 
@@ -240,10 +243,12 @@
             <q-icon name />
           </template>
           <p v-if="errors" class="error">
-            <span v-if="!$v.form.postalCode.required">*{{ $t('thisfieldisrequired') }}.</span>
-            <span
-              v-if="!$v.form.postalCode.minLength"
-            >*{{ $t('Fieldmusthaveatleast10characters') }}.</span>
+            <span v-if="!$v.form.postalCode.required"
+              >*{{ $t('thisfieldisrequired') }}.</span
+            >
+            <span v-if="!$v.form.postalCode.minLength"
+              >*{{ $t('Fieldmusthaveatleast10characters') }}.</span
+            >
           </p>
         </q-input>
         <!-- Role -->
@@ -257,6 +262,27 @@
         >
           <template v-slot:append>
             <q-icon name />
+          </template>
+        </q-select>
+        <!-- if role user was staff we should choose departman -->
+        <q-select
+          v-if="form.role.length > 0 && form.role !== 'CLIENT'"
+          outlined
+          :label="$t('departman')"
+          v-model.trim="form.departman"
+          :options="departmans"
+          class="inputStyle"
+          required
+        >
+          <template v-slot:prepend>
+            <q-icon name="far fa-building" />
+          </template>
+          <template v-slot:option="scope">
+            <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+              <q-item-section>
+                <q-item-label>{{ $t(scope.opt) }}</q-item-label>
+              </q-item-section>
+            </q-item>
           </template>
         </q-select>
         <!-- status -->
@@ -289,6 +315,20 @@
         </q-select>
       </div>
       <div class="col3">
+        <!-- landline -->
+        <q-input
+          outlined
+          v-model.trim="form.tel"
+          :label="$t('PleaseEnterLandLine')"
+          class="inputStyle"
+          mask="#####-#####"
+        >
+          <template v-slot:prepend>
+            <q-icon name />
+          </template>
+        </q-input>
+
+        <!-- landline -->
         <!-- Sprint Time -->
         <q-input
           outlined
@@ -353,13 +393,11 @@ export default {
       errors: false,
       empty: true,
       // data for validation
-      countries: ['amrica', 'germany', 'iran', 'hind', 'japan', 'china'],
-      cities: ['Finland', 'Canada', 'Berlin', 'Tehran', 'tokyo'],
+      departmans: ['INFO', 'TECH', 'BILLING'],
       roles: ['CLIENT', 'MEMBER', 'ASSISTANT', 'MANAGER'],
       states: ['ACTIVE', 'DEACTIVE', 'BAN'],
       personality: ['JURDICAL', 'NATURAL'],
       genderList: ['MALE', 'FEMALE', 'OTHER'],
-      tags: ['tag1', 'tag2'],
       isPwd: true,
       isPwd1: true,
       editFormProfile: {},
@@ -375,11 +413,12 @@ export default {
         PassWord: '',
         Confirmpass: '',
         nationalId: '',
-        landLine: '',
+        tel: '',
         status: '',
         city: '',
         adress: '',
         role: '',
+        departman: '',
         tags: [],
         postalCode: '',
         spirintTime: 0,
@@ -445,6 +484,10 @@ export default {
             this.$axios
               .post('/v1/api/vkann/validation/email', {
                 email: value,
+                ...(this.profileMode === 'ADD'
+                  ? { existed: false }
+                  : { existed: false }),
+
                 existed: false,
               })
               .then(response => {
@@ -509,6 +552,9 @@ export default {
         this.empty = !this.$v.form.$anyDirty;
         this.errors = this.$v.form.$anyError;
         this.uiState = 'submit clicked';
+        console.log(this.empty);
+        console.log(this.errors);
+
         if (this.errors === false && this.empty === false) {
           // this is where you send the responses
           normalizeEmail(this.form.email);
@@ -519,6 +565,7 @@ export default {
           // req to servero do (beacause it is used in 2 place (profile & add user))
           if (this.nationalID && this.verifyEmail) {
             this.$emit('sendDataUser', this.form);
+            console.log(this.form);
           }
         } else {
           this.$q.notify({
@@ -533,6 +580,9 @@ export default {
         // console.log('edit profile');
         this.empty = !this.$v.form.$anyDirty;
         this.errors = this.$v.form.$anyError;
+        console.log(this.empty);
+        console.log(this.errors);
+
         this.uiState = 'submit clicked';
         if (this.errors === false && this.empty === false) {
           // this is where you send the responses
@@ -563,31 +613,62 @@ export default {
     mobileVerified(value, con) {
       this.form.country = con;
       this.form.MobileNumber = value;
-      console.log('ineditform');
+      console.log(value, con);
     },
   },
   mounted() {
-    if (this.profileMode === 'Edit') {
+    if (
+      this.profileMode === 'Edit' &&
+      this.$route.path
+        .split('/')
+        .slice(2)
+        .toString() === 'profile'
+    ) {
+      console.log('profilenist');
       this.$axios.get('/v1/api/vkann/profile').then(response => {
         if (response.status === 200) {
           this.form.FirstName = response.data.firstName;
           this.form.LastName = response.data.lastName;
-          // this.form.email = response.data.email;
+          this.form.email = response.data.email;
           this.form.country = response.data.country;
           this.form.MobileNumber = response.data.mobile;
+          this.form.tel = response.data.tel;
           this.form.gender = response.data.gender;
+          this.form.status = response.data.status;
+          this.form.status = response.data.status;
+          this.form.personality = response.data.personality;
           this.form.role = response.data.role;
           this.form.tags = response.data.tags;
+          this.form.city = response.data.city;
           // this.form.nationalId = response.data.nationalId;
-        } else {
-          this.$q.notify({
-            message: this.$t('incorrectcaptcha'),
-            color: 'negative',
-            icon: 'warning',
-            position: 'top',
-          });
         }
       });
+    } else if (
+      this.profileMode === 'Edit' &&
+      this.$route.path
+        .split('/')
+        .slice(2)
+        .toString() !== 'profile'
+    ) {
+      this.$axios
+        .get(`/v1/api/vkann/users/${this.$route.params.userId}`)
+        .then(response => {
+          if (response.status === 200) {
+            this.form.FirstName = response.data.firstName;
+            this.form.LastName = response.data.lastName;
+            this.form.email = response.data.email;
+            this.form.country = response.data.country;
+            this.form.MobileNumber = response.data.mobile;
+            this.form.tel = response.data.tel;
+            this.form.gender = response.data.gender;
+            this.form.role = response.data.role;
+            this.form.tags = response.data.tags;
+            // this.form.nationalId = response.data.nationalId;
+          }
+        })
+        .catch(e => {
+          console.log(e.response.status);
+        });
     }
   },
 };
