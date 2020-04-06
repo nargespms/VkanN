@@ -1,9 +1,8 @@
-<template >
+<template>
   <div>
     <profileInfoCmp :data="userData" />
   </div>
 </template>
-
 
 <script>
 import profileInfoCmp from '../profile/profileInfoCmp.vue';
@@ -23,7 +22,7 @@ export default {
       .get(`/v1/api/vkann/users/${this.$route.params.userId}`)
       .then(res => {
         console.log(res);
-        this.userData = res.data;
+        this.userData = res.data.user;
       });
   },
 };

@@ -123,9 +123,7 @@ module.exports = function(ctx) {
             },
           ],
         });
-        cfg.plugins.push(
-          new CopyWebpackPlugin([{ from: 'src/rootFolder/', to: '' }])
-        );
+        cfg.plugins.push(new CopyWebpackPlugin([{ from: 'src/rootFolder/', to: '' }]));
       },
     },
 
@@ -133,8 +131,7 @@ module.exports = function(ctx) {
     devServer: {
       headers: {
         'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers':
-          'Origin, X-Requested-With, Content-Type, Accept',
+        'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
       },
       https: true,
       // before (app) {

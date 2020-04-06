@@ -1,6 +1,11 @@
 <template>
   <div class="wrap">
-    <mobilePhone @mobileVerified="mobileVerified" :data="countries" :existed="existed" />
+    <mobilePhone
+      @mobileVerified="mobileVerified"
+      :data="countries"
+      :existed="existed"
+      :editData="data"
+    />
   </div>
 </template>
 
@@ -9,7 +14,7 @@ import mobilePhone from './mobilePhone.vue';
 
 export default {
   name: 'mobilePhoneWrapper',
-  props: ['existed'],
+  props: ['existed', 'data'],
   components: {
     mobilePhone,
   },

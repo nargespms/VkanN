@@ -1,115 +1,105 @@
 <template>
   <div>
-    <!-- table for tasks -->
     <table class="ticketsKanBoard">
-      <thead>
+      <!-- <thead>
         <tr>
-          <!-- <th>{{$t('tickets')}}</th> -->
-          <th>{{$t('toDo')}}</th>
-          <th>{{$t('firstSpirint')}}</th>
-          <th>{{$t('secondSpirint')}}</th>
-          <th>{{$t('draft')}}</th>
-          <th>{{$t('WIP')}}</th>
-          <th>{{$t('test')}}</th>
-          <th>{{$t('done')}}</th>
+          <th>{{ $t('toDo') }}</th>
+          <th>{{ $t('firstSpirint') }}</th>
+          <th>{{ $t('secondSpirint') }}</th>
+          <th>{{ $t('draft') }}</th>
+          <th>{{ $t('WIP') }}</th>
+          <th>{{ $t('test') }}</th>
+          <th>{{ $t('done') }}</th>
         </tr>
-      </thead>
+      </thead>-->
       <tbody>
-        <tr v-drag-and-drop="options">
-          <!-- rticket cell -->
-          <!-- rticket cell -->
-          <td
-            v-for="task in tasks"
-            :key="task.id"
-            class="tasksListState"
-            :data-id="task.id"
-            @added="added($event, task)"
-            @removed="removed($event, task)"
-            @reordered="reordered($event, task)"
-          >
-            <q-card v-for="item in task.items" :key="item.id" :data-id="item.id" class="taskPacket">
-              <q-item>
-                <q-item-section avatar>
-                  <q-avatar>
-                    <img src="https://cdn.quasar.dev/img/avatar2.jpg" />
-                  </q-avatar>
-                </q-item-section>
-
-                <q-item-section>
-                  <q-item-label>{{ item.title }}</q-item-label>
-                  <q-item-label caption>Subhead</q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-separator />
-              <q-item>
-                <q-icon name="calendar"></q-icon>
-                <q-item-section>
-                  <span>{{ item.dueDate }}</span>
-                </q-item-section>
-              </q-item>
-            </q-card>
+        <tr class="flex">
+          <td>
+            <todoTasks :key="todoKey" @reloadCmp="reloadTodo" />
+          </td>
+          <td>
+            <firstSpirint :key="spirint1Key" @reloadCmp="reloadSpirint1" />
+          </td>
+          <td>
+            <secondSpirint :key="spirint2Key" @reloadCmp="reloadSpirint2" />
+          </td>
+          <td>
+            <drafts :key="draftsKey" @reloadCmp="reloadDrafts" />
+          </td>
+          <td>
+            <WIP :key="wipKey" @reloadCmp="reloadWIP" />
+          </td>
+          <!-- <td>
+            <kanboardTest :key="testKey" @reloadCmp="reloadTest" />
+          </td>-->
+          <td>
+            <kanboardDone :key="doneKey" @reloadCmp="reloadDone" />
           </td>
         </tr>
       </tbody>
     </table>
-    <!-- table for tasks -->
   </div>
 </template>
 
 <script>
+import todoTasks from '../kanboard/todoTasks.vue';
+import firstSpirint from '../kanboard/firstSpirint.vue';
+import secondSpirint from '../kanboard/secondSpirint.vue';
+import drafts from '../kanboard/drafts.vue';
+import WIP from '../kanboard/WIP.vue';
+import kanboardDone from '../kanboard/kanboardDone.vue';
+
 export default {
   name: 'kanBoardTable',
+  components: {
+    todoTasks,
+    firstSpirint,
+    secondSpirint,
+    drafts,
+    WIP,
+    kanboardDone,
+  },
   data() {
     return {
       tickets: [],
       tasks: [],
-      options: {
-        multipleDropzonesItemsDraggingEnabled: false,
-        dropzoneSelector: 'td',
-        draggableSelector: '.q-card',
-      },
+      todoKey: 0,
+      spirint1Key: 0,
+      spirint2Key: 0,
+      draftsKey: 0,
+      wipKey: 0,
+      doneKey: 0,
     };
   },
   methods: {
-    // localdate(item) {
-    //   // return item.toLocaleDateString('fa');
-    //   // console.log(item.toLocaleString(`${this.$route.params.locale}`));
-    //   // return item.toLocaleString(this.$route.params.locale);
-    //   // const standardStartDate = new Date();
-    //   // console.log(standardStartDate.toLocaleDateString(this.$route.params.locale));
-    // },
-    added(event, group) {
-      const newItems = this.tasks
-        .map(g => g.items)
-        .reduce((prev, curr) => [...prev, ...curr], [])
-        .filter(item => event.detail.ids.map(Number).indexOf(item.id) >= 0);
-      group.items.splice(event.detail.index, 0, ...newItems);
+    reloadTodo(value) {
+      console.log(value);
+      this.todoKey += 1;
     },
-    removed(event, group) {
-      group.items = group.items.filter(
-        item => event.detail.ids.map(Number).indexOf(item.id) < 0
-      );
+    reloadSpirint1(value) {
+      console.log(value);
+      console.log('umad to reload sprint1');
+
+      this.spirint1Key += 1;
     },
-    reordered(event, group) {
-      const reorderedItems = group.items.filter(
-        item => event.detail.ids.map(Number).indexOf(item.id) >= 0
-      );
-      const newItems = group.items.filter(
-        item => event.detail.ids.map(Number).indexOf(item.id) < 0
-      );
-      newItems.splice(event.detail.index, 0, ...reorderedItems);
-      group.items = newItems;
+    reloadSpirint2(value) {
+      console.log(value);
+      this.spirint2Key += 1;
+    },
+    reloadDrafts(value) {
+      console.log(value);
+      this.draftsKey += 1;
+    },
+    reloadWIP(value) {
+      console.log(value);
+      this.wipKey += 1;
+    },
+    reloadDone(value) {
+      console.log(value);
+      this.doneKey += 1;
     },
   },
-  mounted() {
-    this.$axios.get('/statics/tickets.json').then(res => {
-      this.tickets = res.data.data;
-    });
-    this.$axios.get('/statics/kanBoardTasks.json').then(res => {
-      console.log(res.data);
-      this.tasks = res.data;
-    });
-  },
+  mounted() {},
 };
 </script>
 
@@ -166,5 +156,11 @@ h3 {
   font-size: 15px;
   font-weight: bold;
   padding: 4px 8px;
+}
+.kanboardColumns {
+  border: 1px solid red;
+  background-color: pink;
+  width: 200px;
+  min-height: 550px;
 }
 </style>

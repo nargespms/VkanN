@@ -37,7 +37,7 @@ export default {
           lable: 'clientName',
           filterable: true,
           sortable: false,
-          filterType: 'Text',
+          filterType: 'text',
         },
         {
           lable: 'startDate',

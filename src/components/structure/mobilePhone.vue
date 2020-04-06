@@ -77,7 +77,7 @@ const PNF = require('google-libphonenumber').PhoneNumberFormat;
 const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 
 export default {
-  props: ['data', 'existed'],
+  props: ['data', 'existed', 'editData'],
   data() {
     return {
       // data for validation
@@ -162,6 +162,18 @@ export default {
         }
       }
     },
+  },
+  mounted() {
+    if (this.existed) {
+      this.con = this.editData.con;
+      this.number = this.editData.mobile;
+      console.log(this.existed);
+      console.log(this.editData);
+      this.verifyMobile = true;
+    } else {
+      this.con = '';
+      this.number = '';
+    }
   },
 };
 </script>

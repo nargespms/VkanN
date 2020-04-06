@@ -1,11 +1,7 @@
 <template>
   <div class="q-pa-xl">
     <div class="userManagementListWrap">
-      <tableDataWrap
-        module="ticket"
-        :columns="columns"
-        :endpoint="'/v1/api/vkann/tickets/list'"
-      />
+      <tableDataWrap module="ticket" :columns="columns" :endpoint="'/v1/api/vkann/tickets/list'" />
     </div>
   </div>
 </template>
@@ -25,38 +21,39 @@ export default {
           lable: 'ticketNumber',
           filterable: true,
           sortable: false,
-          filterType: 'Text',
+          filterType: 'text',
         },
         {
           lable: 'title',
           filterable: true,
           sortable: false,
-          filterType: 'Text',
-        },
-        {
-          lable: 'departman',
-          filterable: true,
-          sortable: false,
-          filterType: 'Text',
-        },
-        {
-          lable: 'Service',
-          filterable: true,
-          sortable: false,
-          filterType: 'Text',
-        },
-        {
-          lable: 'priority',
-          filterable: true,
-          sortable: false,
-          filterType: 'Text',
+          filterType: 'text',
         },
         {
           lable: 'clientName',
           filterable: true,
           sortable: true,
-          filterType: 'Text',
+          filterType: 'text',
         },
+        {
+          lable: 'departman',
+          filterable: true,
+          sortable: false,
+          filterType: 'DropBox',
+        },
+        {
+          lable: 'Service',
+          filterable: true,
+          sortable: false,
+          filterType: 'text',
+        },
+        {
+          lable: 'priority',
+          filterable: true,
+          sortable: false,
+          filterType: 'DropBox',
+        },
+
         {
           lable: 'status',
           filterable: true,

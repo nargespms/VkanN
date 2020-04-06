@@ -1,11 +1,7 @@
 <template>
   <div>
     <div class="userManagementListWrap">
-      <tableDataWrap
-        module="invoice"
-        :columns="columns"
-        :endpoint="'/v1/api/vkann/invoices/list'"
-      />
+      <tableDataWrap module="invoice" :columns="columns" :endpoint="'/v1/api/vkann/invoices/list'" />
     </div>
   </div>
 </template>
@@ -23,7 +19,7 @@ export default {
       columns: [
         {
           lable: 'invoiceNumber',
-          filterable: false,
+          filterable: true,
           sortable: false,
           filterType: 'text',
         },
@@ -39,7 +35,7 @@ export default {
           lable: 'clientName',
           filterable: true,
           sortable: false,
-          filterType: 'Text',
+          filterType: 'text',
         },
         {
           lable: 'startDate',
@@ -61,7 +57,7 @@ export default {
         },
         {
           lable: 'invoiceOfficial',
-          filterable: false,
+          filterable: true,
           sortable: true,
           filterType: '',
         },

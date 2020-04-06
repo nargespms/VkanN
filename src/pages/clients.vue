@@ -28,26 +28,32 @@ export default {
           lable: 'firstName',
           filterable: true,
           sortable: false,
-          filterType: 'Text',
+          filterType: 'text',
         },
         {
           lable: 'lastName',
           filterable: true,
           sortable: false,
-          filterType: 'Text',
+          filterType: 'text',
         },
 
         {
           lable: 'mobile',
           filterable: true,
           sortable: false,
-          filterType: 'Text',
+          filterType: 'text',
         },
         {
           lable: 'services',
           filterable: true,
           sortable: false,
-          filterType: 'Text',
+          filterType: 'text',
+        },
+        {
+          lable: 'email',
+          filterable: true,
+          sortable: false,
+          filterType: 'text',
         },
 
         {
@@ -63,5 +69,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

@@ -35,11 +35,7 @@
             <!-- name for each column -->
             <span class="columnLabel">{{ $t(col.lable) }}</span>
             <!-- if filterable true in each column it will show an input -->
-            <div
-              class="columnFilterWrap"
-              v-if="col.filterable"
-              @click.stop="stopSort"
-            >
+            <div class="columnFilterWrap" v-if="col.filterable" @click.stop="stopSort">
               <!-- filter column for text -->
               <q-input
                 outlined
@@ -48,30 +44,45 @@
                 class="filterColumnSearch"
                 type="text"
                 v-model.trim="filter[col.lable]"
-                @blur="colFilterChange"
+                @input="colFilterChange"
+                debounce="1000"
                 @click="stopSort"
                 :placeholder="$t('search')"
               />
               <!-- filter column for dropboxes -->
               <q-select
                 outlined
-                v-if="col.filterType === 'DropBox'"
+                v-if="col.lable === 'billingStatus'"
                 class="filterColumnSearch dropBoxFilterColumn"
-                :options="FilterOption"
+                :options="billingStatusService"
                 v-model.trim="filter[col.lable]"
-                @change="colFilterChange"
+                @input="colFilterChange"
                 use-input
-                hide-selected
-                fill-input
-                input-debounce="0"
-                @filter="filterFn"
-                @filter-abort="abortFilterFn"
+                debounce="1000"
               >
-                <template v-slot:no-option>
-                  <q-item>
-                    <q-item-section class="text-grey">{{
-                      $t('noResults')
-                    }}</q-item-section>
+                <template v-slot:option="scope">
+                  <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                    <q-item-section>
+                      <q-item-label>{{ $t(scope.opt) }}</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
+              <q-select
+                outlined
+                v-if="col.lable === 'status'"
+                class="filterColumnSearch dropBoxFilterColumn"
+                :options="servicesStatus"
+                v-model.trim="filter[col.lable]"
+                @input="colFilterChange"
+                use-input
+                debounce="1000"
+              >
+                <template v-slot:option="scope">
+                  <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                    <q-item-section>
+                      <q-item-label>{{ $t(scope.opt) }}</q-item-label>
+                    </q-item-section>
                   </q-item>
                 </template>
               </q-select>
@@ -102,18 +113,8 @@
                           calendar="persian"
                         >
                           <div class="row items-center justify-end q-gutter-sm">
-                            <q-btn
-                              :label="$t('ok')"
-                              color="primary"
-                              flat
-                              v-close-popup
-                            />
-                            <q-btn
-                              :label="$t('cancel')"
-                              color="primary"
-                              flat
-                              v-close-popup
-                            />
+                            <q-btn :label="$t('ok')" color="primary" flat v-close-popup />
+                            <q-btn :label="$t('cancel')" color="primary" flat v-close-popup />
                           </div>
                         </q-date>
                       </q-popup-proxy>
@@ -144,18 +145,8 @@
                           :options="computDate"
                         >
                           <div class="row items-center justify-end q-gutter-sm">
-                            <q-btn
-                              :label="$t('ok')"
-                              color="primary"
-                              flat
-                              v-close-popup
-                            />
-                            <q-btn
-                              :label="$t('cancel')"
-                              color="primary"
-                              flat
-                              v-close-popup
-                            />
+                            <q-btn :label="$t('ok')" color="primary" flat v-close-popup />
+                            <q-btn :label="$t('cancel')" color="primary" flat v-close-popup />
                           </div>
                         </q-date>
                       </q-popup-proxy>
@@ -183,8 +174,7 @@
                     '/' +
                     props.row.id
                 "
-                >{{ props.row.name }}</router-link
-              >
+              >{{ props.row.name }}</router-link>
             </span>
           </q-td>
           <q-td>
@@ -223,15 +213,13 @@
                   <router-link
                     class="listNameTable"
                     :to="'/' + $route.params.locale + '/' + 'profile' + '/'"
-                    >#{{ props.row.name }}</router-link
-                  >
+                  >#{{ props.row.name }}</router-link>
                 </span>
                 <q-item-label
                   v-if="
                     prop !== props.row['name'] && prop !== props.row['__index']
                   "
-                  >{{ prop }}</q-item-label
-                >
+                >{{ prop }}</q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
@@ -250,7 +238,8 @@ export default {
     return {
       todayDate: new Date(),
       status: ['active', 'inactive '],
-      FilterOption: this.status,
+      billingStatusService: ['PAID', 'UNPAID', 'BLOCK'],
+      servicesStatus: ['WIP', 'LAUNCHED', 'SUPPORT', 'DEACTIVE'],
       separator: 'cell',
       filter: {},
       tableSearch: '',
@@ -267,7 +256,7 @@ export default {
         sortBy: 'name',
         descending: false,
         page: 1,
-        limit: 5,
+        limit: 10,
         rowsNumber: 10,
       }),
     },
@@ -280,25 +269,25 @@ export default {
       return columnFilterEnddate >= this.filter.columnFilterStartdate;
     },
     // for auto compelete
-    filterFn(val, update) {
-      // call abort() at any time if you can't retrieve data somehow
-      setTimeout(() => {
-        update(() => {
-          if (val === '') {
-            this.FilterOption = this.status;
-          } else {
-            const needle = val.toLowerCase();
-            this.FilterOption = this.status.filter(
-              v => v.toLowerCase().indexOf(needle) > -1
-            );
-          }
-        });
-      }, 500);
-    },
+    // filterFn(val, update) {
+    //   // call abort() at any time if you can't retrieve data somehow
+    //   setTimeout(() => {
+    //     update(() => {
+    //       if (val === '') {
+    //         this.FilterOption = this.status;
+    //       } else {
+    //         const needle = val.toLowerCase();
+    //         this.FilterOption = this.status.filter(
+    //           v => v.toLowerCase().indexOf(needle) > -1
+    //         );
+    //       }
+    //     });
+    //   }, 500);
+    // },
 
-    abortFilterFn() {
-      console.log('delayed filter aborted');
-    },
+    // abortFilterFn() {
+    //   console.log('delayed filter aborted');
+    // },
     stopSort(event) {
       event.stopPropagation();
     },

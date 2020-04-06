@@ -43,9 +43,14 @@
           <span class="introParam">{{ $t('adress') }}</span>
           <span class="valueIntro">{{ data.addresses }}</span>
         </div>
-        <div class="item-content">
+        <div class="item-content wrap">
           <span class="introParam">{{ $t('Service') }}</span>
-          <p v-for="service in services" :key="service.id">
+          <!-- {{ data.services }} -->
+          <p
+            v-for="service in data.services"
+            :key="service._id"
+            class="valueIntro "
+          >
             <router-link
               class="valueIntro"
               :to="
@@ -54,10 +59,10 @@
                   '/' +
                   'services' +
                   '/' +
-                  data.service._id
+                  service._id
               "
             >
-              <span class="valueIntro">{{ data.service.name }}</span>
+              <span class="valueIntro">{{ service.name }}</span>
             </router-link>
           </p>
         </div>

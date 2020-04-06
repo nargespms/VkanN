@@ -19,12 +19,12 @@
           </template>
           <!-- firstname validation -->
           <p v-if="errors" class="error">
-            <span v-if="!$v.form.FirstName.required"
-              >*{{ $t('thisfieldisrequired') }}.</span
-            >
-            <span v-if="!$v.form.FirstName.minLength">{{
+            <span v-if="!$v.form.FirstName.required">*{{ $t('thisfieldisrequired') }}.</span>
+            <span v-if="!$v.form.FirstName.minLength">
+              {{
               $t('Fieldmusthaveatleast3characters')
-            }}</span>
+              }}
+            </span>
           </p>
           <!-- firstname validation -->
         </q-input>
@@ -52,17 +52,13 @@
           @input="$v.form.email.$touch"
           @keyup.enter="submit"
           :error="$v.form.email.$error"
-          debounce="1500"
+          debounce="11000"
         >
           <template v-slot:prepend>
             <q-icon name="email" class="mailIcon" />
           </template>
           <template v-if="this.form.email.length > 0" v-slot:append>
-            <q-icon
-              v-if="verifyEmail"
-              name="fas fa-check"
-              class="mailIcon text-positive"
-            />
+            <q-icon v-if="verifyEmail" name="fas fa-check" class="mailIcon text-positive" />
             <q-icon
               v-if="!verifyEmail && $v.form.email.email"
               name="fas fa-times"
@@ -71,29 +67,26 @@
             <span
               v-if="!verifyEmail && $v.form.email.email"
               class="text-negative fn11"
-            >
-              {{ $t('enteredEmailisRegistered') }}
-            </span>
+            >{{ $t('enteredEmailisRegistered') }}</span>
           </template>
           <!-- email errors -->
           <p v-if="errors" class="error">
-            <span v-if="!$v.form.email.required"
-              >*{{ $t('thisfieldisrequired') }}.</span
-            >
-            <span v-if="!$v.form.email.email"
-              >* {{ $t('Needstobeavalidemail') }}.</span
-            >
-            <span v-if="!$v.form.email.isUnique && !$v.form.email.email"
-              >*{{ $t('Thisemailisalreadyregistered') }}.</span
-            >
+            <span v-if="!$v.form.email.required">*{{ $t('thisfieldisrequired') }}.</span>
+            <span v-if="!$v.form.email.email">* {{ $t('Needstobeavalidemail') }}.</span>
+            <span
+              v-if="!$v.form.email.isUnique && !$v.form.email.email"
+            >*{{ $t('Thisemailisalreadyregistered') }}.</span>
           </p>
           <!-- email errors -->
         </q-input>
         <!-- Mobile Phone Number -->
         <mobilePhoneWrapper
+          v-if="this.profileMode === 'ADD' || !this.mobileLoading"
           @mobileVerified="mobileVerified"
-          :existed="this.profileMode === 'ADD' ? false : false"
+          :existed="this.profileMode === 'ADD' ? false : true"
+          :data="this.profileMode === 'Edit' ? mobileData : ''"
         />
+
         <!-- Mobile Phone Number -->
 
         <!-- Gender -->
@@ -131,15 +124,15 @@
             />
           </template>
           <p class="error" v-if="errors">
-            <span v-if="!$v.form.PassWord.required"
-              >*{{ $t('thisfieldisrequired') }}.</span
-            >
+            <span v-if="!$v.form.PassWord.required">*{{ $t('thisfieldisrequired') }}.</span>
           </p>
         </q-input>
         <p class="error" v-if="errors">
-          <span v-if="!$v.form.PassWord.strongPassword">{{
+          <span v-if="!$v.form.PassWord.strongPassword">
+            {{
             $t('Strongpasswords')
-          }}</span>
+            }}
+          </span>
         </p>
         <!-- Re enter password -->
         <q-input
@@ -163,9 +156,7 @@
           </template>
           <!-- errors for pass2 -->
           <p v-if="errors" class="error">
-            <span v-if="!$v.form.Confirmpass.sameAsPassword"
-              >{{ $t('Thepasswordsdonotmatch') }}.</span
-            >
+            <span v-if="!$v.form.Confirmpass.sameAsPassword">{{ $t('Thepasswordsdonotmatch') }}.</span>
           </p>
           <!-- errors for pass2 -->
         </q-input>
@@ -181,7 +172,7 @@
           :error="$v.form.nationalId.$error"
           mask="##########"
           @input="$v.form.nationalId.$touch"
-          debounce="1500"
+          debounce="11000"
         >
           <template v-if="this.form.nationalId.length > 0" v-slot:append>
             <q-icon
@@ -198,17 +189,14 @@
             />
           </template>
           <p v-if="errors" class="error">
-            <span v-if="!$v.form.nationalId.required"
-              >*{{ $t('thisfieldisrequired') }}.</span
-            >
+            <span v-if="!$v.form.nationalId.required">*{{ $t('thisfieldisrequired') }}.</span>
             <!-- <span v-if="!$v.form.nationalId.minLength">*{{$t('Fieldmusthaveatleast10characters')}}.</span> -->
             <span
               v-if="
                 !$v.form.nationalId.isValidIranianNationalCode &&
                   $v.form.nationalId.required
               "
-              >*{{ $t('invalidCode') }}.</span
-            >
+            >*{{ $t('invalidCode') }}.</span>
           </p>
         </q-input>
 
@@ -243,12 +231,10 @@
             <q-icon name />
           </template>
           <p v-if="errors" class="error">
-            <span v-if="!$v.form.postalCode.required"
-              >*{{ $t('thisfieldisrequired') }}.</span
-            >
-            <span v-if="!$v.form.postalCode.minLength"
-              >*{{ $t('Fieldmusthaveatleast10characters') }}.</span
-            >
+            <span v-if="!$v.form.postalCode.required">*{{ $t('thisfieldisrequired') }}.</span>
+            <span
+              v-if="!$v.form.postalCode.minLength"
+            >*{{ $t('Fieldmusthaveatleast10characters') }}.</span>
           </p>
         </q-input>
         <!-- Role -->
@@ -428,6 +414,8 @@ export default {
       enableConfirm: false,
       nationalID: false,
       verifyEmail: false,
+      mobileData: {},
+      mobileLoading: true,
     };
   },
   validations: {
@@ -487,8 +475,6 @@ export default {
                 ...(this.profileMode === 'ADD'
                   ? { existed: false }
                   : { existed: false }),
-
-                existed: false,
               })
               .then(response => {
                 console.log(response);
@@ -627,20 +613,25 @@ export default {
       console.log('profilenist');
       this.$axios.get('/v1/api/vkann/profile').then(response => {
         if (response.status === 200) {
-          this.form.FirstName = response.data.firstName;
-          this.form.LastName = response.data.lastName;
-          this.form.email = response.data.email;
-          this.form.country = response.data.country;
-          this.form.MobileNumber = response.data.mobile;
-          this.form.tel = response.data.tel;
-          this.form.gender = response.data.gender;
-          this.form.status = response.data.status;
-          this.form.status = response.data.status;
-          this.form.personality = response.data.personality;
-          this.form.role = response.data.role;
-          this.form.tags = response.data.tags;
-          this.form.city = response.data.city;
-          // this.form.nationalId = response.data.nationalId;
+          this.form.FirstName = response.data.user.firstName;
+          this.form.LastName = response.data.user.lastName;
+          this.form.email = response.data.user.email;
+          this.form.country = response.data.user.country;
+          this.form.MobileNumber = response.data.user.mobile;
+          this.form.tel = response.data.user.tel;
+          this.form.gender = response.data.user.gender;
+          this.form.status = response.data.user.status;
+          this.form.status = response.data.user.status;
+          this.form.personality = response.data.user.personality;
+          this.form.role = response.data.user.role;
+          this.form.tags = response.data.user.tags;
+          this.form.city = response.data.user.city;
+          this.form.nationalId = response.data.user.nationalId;
+          this.nationalID = true;
+          this.verifyEmail = true;
+          this.mobileData.con = response.data.user.country;
+          this.mobileData.mobile = response.data.user.mobile;
+          this.mobileLoading = false;
         }
       });
     } else if (
@@ -654,16 +645,21 @@ export default {
         .get(`/v1/api/vkann/users/${this.$route.params.userId}`)
         .then(response => {
           if (response.status === 200) {
-            this.form.FirstName = response.data.firstName;
-            this.form.LastName = response.data.lastName;
-            this.form.email = response.data.email;
-            this.form.country = response.data.country;
-            this.form.MobileNumber = response.data.mobile;
-            this.form.tel = response.data.tel;
-            this.form.gender = response.data.gender;
-            this.form.role = response.data.role;
-            this.form.tags = response.data.tags;
-            // this.form.nationalId = response.data.nationalId;
+            this.form.FirstName = response.data.user.firstName;
+            this.form.LastName = response.data.user.lastName;
+            this.form.email = response.data.user.email;
+            this.form.country = response.data.user.country;
+            this.form.MobileNumber = response.data.user.mobile;
+            this.form.tel = response.data.user.tel;
+            this.form.gender = response.data.user.gender;
+            this.form.role = response.data.user.role;
+            this.form.tags = response.data.user.tags;
+            this.form.nationalId = response.data.user.nationalId;
+            this.nationalID = true;
+            this.verifyEmail = true;
+            this.mobileData.con = response.data.user.country;
+            this.mobileData.mobile = response.data.user.mobile;
+            this.mobileLoading = false;
           }
         })
         .catch(e => {

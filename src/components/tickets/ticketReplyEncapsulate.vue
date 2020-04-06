@@ -41,9 +41,14 @@
           v-if="editTicket"
           @click="saveEditedTicket(ticket)"
         >{{ $t('ok') }}</q-btn>
+        <q-btn
+          class="editDesc bg-grey"
+          v-if="editTicket"
+          @click="editTicket=!editTicket"
+        >{{ $t('cancel') }}</q-btn>
 
         <q-btn
-          v-if="$store.state.module1.userData.role === 'MANAGER'"
+          v-if="$store.state.module1.userData.role === 'MANAGER' && !editTicket"
           class="deleteDesc text-white"
           @click="deleteTicket(ticket)"
         >{{ $t('delete') }}</q-btn>
@@ -113,7 +118,13 @@
           @click="saveEditedTicket(ticket)"
         >{{ $t('ok') }}</q-btn>
         <q-btn
-          v-if="$store.state.module1.userData.role === 'MANAGER'"
+          class="editDesc bg-grey"
+          v-if="editTicket"
+          @click="editTicket=!editTicket"
+        >{{ $t('cancel') }}</q-btn>
+
+        <q-btn
+          v-if="$store.state.module1.userData.role === 'MANAGER' && !editTicket"
           class="deleteDesc text-white"
           @click="deleteTicket(ticket)"
         >{{ $t('delete') }}</q-btn>

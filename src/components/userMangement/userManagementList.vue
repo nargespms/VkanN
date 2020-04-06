@@ -15,13 +15,7 @@
     >
       <!-- search field -->
       <template v-slot:top-right>
-        <q-input
-          borderless
-          dense
-          debounce="300"
-          v-model.trim="filter"
-          :placeholder="$t('Search')"
-        >
+        <q-input borderless dense debounce="300" v-model.trim="filter" :placeholder="$t('Search')">
           <template v-slot:append>
             <q-icon name="search" />
           </template>
@@ -35,8 +29,7 @@
             <router-link
               class="listNameTable"
               :to="'/' + $route.params.locale + '/' + 'profile'"
-              >{{ props.row.name }}</router-link
-            >
+            >{{ props.row.name }}</router-link>
             <q-btn
               class="expandTable"
               :props="props"
@@ -50,15 +43,11 @@
             />
           </q-td>
           <q-td key="email" :props="props">{{ props.row.email }}</q-td>
-          <q-td key="mobileNumber" :props="props">
-            {{ props.row.mobileNumber }}
-          </q-td>
+          <q-td key="mobileNumber" :props="props">{{ props.row.mobileNumber }}</q-td>
           <q-td key="role" :props="props">{{ props.row.role }}</q-td>
           <q-td key="todoTask" :props="props">{{ props.row.todoTask }}</q-td>
           <q-td key="freeTime" :props="props">{{ props.row.freeTime }}</q-td>
-          <q-td key="weeklyTime" :props="props">
-            {{ props.row.weeklyTime }}
-          </q-td>
+          <q-td key="weeklyTime" :props="props">{{ props.row.weeklyTime }}</q-td>
           <q-td key="status" :props="props">{{ props.row.status }}</q-td>
         </q-tr>
         <q-tr v-show="props.expand" :props="props">
@@ -87,7 +76,7 @@ export default {
         sortBy: 'name',
         descending: false,
         page: 1,
-        limit: 5,
+        limit: 10,
         rowsNumber: 10,
       },
       separator: 'cell',

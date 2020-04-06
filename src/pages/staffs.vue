@@ -28,19 +28,19 @@ export default {
           lable: 'firstName',
           filterable: true,
           sortable: false,
-          filterType: 'Text',
+          filterType: 'text',
         },
         {
           lable: 'lastName',
           filterable: true,
           sortable: false,
-          filterType: 'Text',
+          filterType: 'text',
         },
         {
           lable: 'mobile',
           filterable: true,
           sortable: false,
-          filterType: 'Text',
+          filterType: 'text',
         },
         {
           lable: 'role',
@@ -54,12 +54,13 @@ export default {
           sortable: true,
           filterType: 'DropBox',
         },
-        // {
-        //   lable: 'Todo Task',
-        //   filterable: true,
-        //   sortable: true,
-        //   filterType: 'Number',
-        // },
+        {
+          lable: 'email',
+          filterable: true,
+          sortable: true,
+          filterType: 'text',
+        },
+
         {
           lable: 'status',
           filterable: true,
@@ -73,5 +74,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

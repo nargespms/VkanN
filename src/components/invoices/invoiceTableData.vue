@@ -4,7 +4,7 @@
       :data="data"
       :columns="columns"
       row-key="name"
-      :filter="filter"
+      :filter="tableSearch"
       :separator="separator"
       :pagination.sync="innerPagination"
       binary-state-sort
@@ -20,7 +20,7 @@
           borderless
           dense
           debounce="300"
-          v-model="filter"
+          v-model="tableSearch"
           :placeholder="$t('Search')"
         >
           <template v-slot:append>
@@ -35,11 +35,7 @@
             <!-- name for each column -->
             <span class="columnLabel">{{ $t(col.lable) }}</span>
             <!-- if filterable true in each column it will show an input -->
-            <div
-              class="columnFilterWrap"
-              v-if="col.filterable"
-              @click.stop="stopSort"
-            >
+            <div class="columnFilterWrap" v-if="col.filterable" @click.stop="stopSort">
               <!-- filter column for text -->
               <q-input
                 outlined
@@ -47,40 +43,60 @@
                 v-if="col.filterType === 'text'"
                 class="filterColumnSearch"
                 type="text"
-                v-model.trim="columnFilter[col.lable]"
+                v-model.trim="filter[col.lable]"
                 @input="colFilterChange"
+                debounce="1000"
                 @click="stopSort"
                 :placeholder="$t('search')"
               />
-              <!-- filter column for dropboxes -->
+              <!-- filter column for status -->
               <q-select
                 outlined
-                v-if="col.filterType === 'DropBox'"
+                v-if="col.lable === 'status'"
                 class="filterColumnSearch dropBoxFilterColumn"
-                :options="FilterOption"
-                v-model.trim="columnFilter[col.lable]"
-                @change="colFilterChange"
+                :options="status"
+                v-model.trim="filter[col.lable]"
+                @input="colFilterChange"
                 use-input
                 hide-selected
                 fill-input
-                input-debounce="0"
-                @filter="filterFn"
-                @filter-abort="abortFilterFn"
+                debounce="1000"
               >
-                <template v-slot:no-option>
-                  <q-item>
-                    <q-item-section class="text-grey">{{
-                      $t('noResults')
-                    }}</q-item-section>
+                <template v-slot:option="scope">
+                  <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                    <q-item-section>
+                      <q-item-label>{{ $t(scope.opt) }}</q-item-label>
+                    </q-item-section>
                   </q-item>
                 </template>
               </q-select>
+              <q-select
+                outlined
+                v-if="col.lable === 'type'"
+                class="filterColumnSearch dropBoxFilterColumn"
+                :options="type"
+                v-model.trim="filter[col.lable]"
+                @input="colFilterChange"
+                use-input
+                hide-selected
+                fill-input
+                debounce="1000"
+              >
+                <template v-slot:option="scope">
+                  <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                    <q-item-section>
+                      <q-item-label>{{ $t(scope.opt) }}</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
+
               <!-- filter column for dates -->
               <!-- start date -->
               <div v-if="col.filterType === 'Date'">
                 <q-input
                   outlined
-                  v-model.trim="columnFilter.columnFilterStartdate"
+                  v-model.trim="filter.columnFilterStartdate"
                   mask="date"
                   :rules="['date']"
                   :label="$t('startDate')"
@@ -96,24 +112,14 @@
                         transition-hide="scale"
                       >
                         <q-date
-                          v-model.trim="columnFilter.columnFilterStartdate"
+                          v-model.trim="filter.columnFilterStartdate"
                           today-btn
                           ok-label
                           calendar="persian"
                         >
                           <div class="row items-center justify-end q-gutter-sm">
-                            <q-btn
-                              :label="$t('ok')"
-                              color="primary"
-                              flat
-                              v-close-popup
-                            />
-                            <q-btn
-                              :label="$t('cancel')"
-                              color="primary"
-                              flat
-                              v-close-popup
-                            />
+                            <q-btn :label="$t('ok')" color="primary" flat v-close-popup />
+                            <q-btn :label="$t('cancel')" color="primary" flat v-close-popup />
                           </div>
                         </q-date>
                       </q-popup-proxy>
@@ -123,7 +129,7 @@
                 <!-- end date -->
                 <q-input
                   outlined
-                  v-model.trim="columnFilter.columnFilterEnddate"
+                  v-model.trim="filter.columnFilterEnddate"
                   mask="date"
                   :rules="['date']"
                   :label="$t('endDate')"
@@ -137,25 +143,15 @@
                         transition-hide="scale"
                       >
                         <q-date
-                          v-model.trim="columnFilter.columnFilterEnddate"
+                          v-model.trim="filter.columnFilterEnddate"
                           @change="() => $refs.qDateProxy.hide()"
                           today-btn
                           calendar="persian"
                           :options="computDate"
                         >
                           <div class="row items-center justify-end q-gutter-sm">
-                            <q-btn
-                              :label="$t('ok')"
-                              color="primary"
-                              flat
-                              v-close-popup
-                            />
-                            <q-btn
-                              :label="$t('cancel')"
-                              color="primary"
-                              flat
-                              v-close-popup
-                            />
+                            <q-btn :label="$t('ok')" color="primary" flat v-close-popup />
+                            <q-btn :label="$t('cancel')" color="primary" flat v-close-popup />
                           </div>
                         </q-date>
                       </q-popup-proxy>
@@ -183,9 +179,7 @@
                   '/' +
                   props.row.id
               "
-            >
-              {{ props.row.number }}
-            </router-link>
+            >{{ props.row.number }}</router-link>
           </q-td>
           <q-td>
             <router-link
@@ -225,36 +219,38 @@
           </q-td>
 
           <q-td>
-            <span>{{
+            <span>
+              {{
               new Date(props.row.issueDate).toLocaleDateString(
-                `${$route.params.locale}`
+              `${$route.params.locale}`
               )
-            }}</span>
+              }}
+            </span>
           </q-td>
           <q-td v-if="props.row.dueDate">
-            <span>{{
+            <span>
+              {{
               new Date(props.row.dueDate).toLocaleDateString(
-                `${$route.params.locale}`
+              `${$route.params.locale}`
               )
-            }}</span>
+              }}
+            </span>
           </q-td>
           <q-td v-if="props.row.validUntil">
-            <span>{{
+            <span>
+              {{
               new Date(props.row.validUntil).toLocaleDateString(
-                `${$route.params.locale}`
+              `${$route.params.locale}`
               )
-            }}</span>
+              }}
+            </span>
           </q-td>
           <q-td>
             <span>{{ $t(props.row.status) }}</span>
           </q-td>
           <q-td>
             <span class="center block" v-if="props.row.official">
-              <q-icon
-                class="fn18 fnb"
-                name="fa fa-check-circle"
-                color="positive"
-              />
+              <q-icon class="fn18 fnb" name="fa fa-check-circle" color="positive" />
             </span>
             <span class="center block" v-if="!props.row.official">
               <q-icon class="fn16" name="fa fa-times" color="negative" />
@@ -266,33 +262,6 @@
         </q-tr>
         <!-- expandable row for extra description -->
       </template>
-      <!-- for responsive  -->
-
-      <template v-slot:item="props">
-        <q-card class="q-ma-xs q-pa-sm">
-          <q-list dense class="mobileList">
-            <q-item class="mobileItem" v-for="prop in props.row" :key="prop.id">
-              <q-item-section>
-                <span v-if="prop == props.row['name']">
-                  <router-link
-                    class="listNameTable"
-                    :to="'/' + $route.params.locale + '/' + 'profile' + '/'"
-                    >#{{ props.row.name }}</router-link
-                  >
-                </span>
-                <q-item-label
-                  v-if="
-                    prop !== props.row['name'] && prop !== props.row['__index']
-                  "
-                  >{{ prop }}</q-item-label
-                >
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-card>
-      </template>
-
-      <!-- for responsive  -->
     </q-table>
   </div>
 </template>
@@ -303,14 +272,12 @@ export default {
   data() {
     return {
       todayDate: new Date(),
-      status: ['active', 'inactive '],
-      FilterOption: this.status,
+      status: ['VALID', 'INVALID', 'PAID', 'UNPAID', 'PENDING'],
+      official: ['invoiceOfficial', 'invoiceUnOfficial'],
+      type: ['QUOTE', 'INVOICE'],
       separator: 'cell',
-      columnFilter: {
-        columnFilterStartdate: new Date(),
-        columnFilterEnddate: new Date(),
-      },
-      filter: '',
+      filter: {},
+      tableSearch: '',
       innerPagination: this.pagination,
     };
   },
@@ -324,7 +291,7 @@ export default {
         sortBy: 'name',
         descending: false,
         page: 1,
-        limit: 5,
+        limit: 10,
         rowsNumber: 10,
       }),
     },
@@ -334,28 +301,9 @@ export default {
       this.$emit('onIdClick', value);
     },
     computDate(columnFilterEnddate) {
-      return columnFilterEnddate >= this.columnFilter.columnFilterStartdate;
-    },
-    // for auto compelete
-    filterFn(val, update) {
-      // call abort() at any time if you can't retrieve data somehow
-      setTimeout(() => {
-        update(() => {
-          if (val === '') {
-            this.FilterOption = this.status;
-          } else {
-            const needle = val.toLowerCase();
-            this.FilterOption = this.status.filter(
-              v => v.toLowerCase().indexOf(needle) > -1
-            );
-          }
-        });
-      }, 500);
+      return columnFilterEnddate >= this.filter.columnFilterStartdate;
     },
 
-    abortFilterFn() {
-      console.log('delayed filter aborted');
-    },
     stopSort(event) {
       event.stopPropagation();
     },
@@ -366,7 +314,7 @@ export default {
       });
     },
     onRequest(props) {
-      props.columnFilter = this.columnFilter;
+      props.filter = this.filter;
       this.innerPagination = props.pagination;
       this.$emit('request', props);
     },

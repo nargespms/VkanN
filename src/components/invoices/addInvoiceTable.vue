@@ -806,11 +806,11 @@ export default {
     getUserInfo(value) {
       this.$axios.get(`/v1/api/vkann/users/${value}`).then(response => {
         // console.log(response.data);
-        this.invoice.telephoneNumberORfax = response.data.mobile;
+        this.invoice.telephoneNumberORfax = response.data.user.mobile;
         // this.invoice.economyCode = response.data;
-        this.invoice.nationalIdORregisterNum = response.data.nationalId;
+        this.invoice.nationalIdORregisterNum = response.data.user.nationalId;
         // this.invoice.fullAdress = response.data;
-        this.invoice.postalCode = response.data.zipCode;
+        this.invoice.postalCode = response.data.user.zipCode;
       });
     },
     // for showing localize number

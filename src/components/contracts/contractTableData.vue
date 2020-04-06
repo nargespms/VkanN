@@ -4,7 +4,7 @@
       :data="data"
       :columns="columns"
       row-key="name"
-      :filter="filter"
+      :filter="tableSearch"
       :separator="separator"
       :pagination.sync="innerPagination"
       binary-state-sort
@@ -18,7 +18,7 @@
           borderless
           dense
           debounce="300"
-          v-model="filter"
+          v-model="tableSearch"
           :placeholder="$t('Search')"
         >
           <template v-slot:append>
@@ -33,11 +33,7 @@
             <!-- name for each column -->
             <span class="columnLabel">{{ $t(col.lable) }}</span>
             <!-- if filterable true in each column it will show an input -->
-            <div
-              class="columnFilterWrap"
-              v-if="col.filterable"
-              @click.stop="stopSort"
-            >
+            <div class="columnFilterWrap" v-if="col.filterable" @click.stop="stopSort">
               <!-- filter column for text -->
               <q-input
                 outlined
@@ -45,31 +41,51 @@
                 v-if="col.filterType === 'text'"
                 class="filterColumnSearch"
                 type="text"
-                v-model.trim="columnFilter[col.lable]"
+                v-model.trim="filter[col.lable]"
                 @input="colFilterChange"
+                debounce="1000"
                 @click="stopSort"
                 :placeholder="$t('search')"
               />
-              <!-- filter column for dropboxes -->
+              <!-- filter column for type -->
               <q-select
                 outlined
-                v-if="col.filterType === 'DropBox'"
+                v-if="col.lable === 'type'"
                 class="filterColumnSearch dropBoxFilterColumn"
-                :options="FilterOption"
-                v-model.trim="columnFilter[col.lable]"
-                @change="colFilterChange"
+                :options="contractType"
+                v-model.trim="filter[col.lable]"
+                @input="colFilterChange"
                 use-input
                 hide-selected
                 fill-input
-                input-debounce="0"
-                @filter="filterFn"
-                @filter-abort="abortFilterFn"
+                debounce="1000"
               >
-                <template v-slot:no-option>
-                  <q-item>
-                    <q-item-section class="text-grey">{{
-                      $t('noResults')
-                    }}</q-item-section>
+                <template v-slot:option="scope">
+                  <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                    <q-item-section>
+                      <q-item-label>{{ $t(scope.opt) }}</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
+              <!-- filter column for status -->
+              <q-select
+                outlined
+                v-if="col.lable === 'status'"
+                class="filterColumnSearch dropBoxFilterColumn"
+                :options="contractStatus"
+                v-model.trim="filter[col.lable]"
+                @input="colFilterChange"
+                use-input
+                hide-selected
+                fill-input
+                debounce="1000"
+              >
+                <template v-slot:option="scope">
+                  <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                    <q-item-section>
+                      <q-item-label>{{ $t(scope.opt) }}</q-item-label>
+                    </q-item-section>
                   </q-item>
                 </template>
               </q-select>
@@ -78,7 +94,7 @@
               <div v-if="col.filterType === 'Date'">
                 <q-input
                   outlined
-                  v-model.trim="columnFilter.columnFilterStartdate"
+                  v-model.trim="filter.columnFilterStartdate"
                   mask="date"
                   :rules="['date']"
                   :label="$t('startDate')"
@@ -94,24 +110,14 @@
                         transition-hide="scale"
                       >
                         <q-date
-                          v-model.trim="columnFilter.columnFilterStartdate"
+                          v-model.trim="filter.columnFilterStartdate"
                           today-btn
                           ok-label
                           calendar="persian"
                         >
                           <div class="row items-center justify-end q-gutter-sm">
-                            <q-btn
-                              :label="$t('ok')"
-                              color="primary"
-                              flat
-                              v-close-popup
-                            />
-                            <q-btn
-                              :label="$t('cancel')"
-                              color="primary"
-                              flat
-                              v-close-popup
-                            />
+                            <q-btn :label="$t('ok')" color="primary" flat v-close-popup />
+                            <q-btn :label="$t('cancel')" color="primary" flat v-close-popup />
                           </div>
                         </q-date>
                       </q-popup-proxy>
@@ -121,7 +127,7 @@
                 <!-- end date -->
                 <q-input
                   outlined
-                  v-model.trim="columnFilter.columnFilterEnddate"
+                  v-model.trim="filter.columnFilterEnddate"
                   mask="date"
                   :rules="['date']"
                   :label="$t('endDate')"
@@ -135,25 +141,15 @@
                         transition-hide="scale"
                       >
                         <q-date
-                          v-model.trim="columnFilter.columnFilterEnddate"
+                          v-model.trim="filter.filterEnddate"
                           @change="() => $refs.qDateProxy.hide()"
                           today-btn
                           calendar="persian"
                           :options="computDate"
                         >
                           <div class="row items-center justify-end q-gutter-sm">
-                            <q-btn
-                              :label="$t('ok')"
-                              color="primary"
-                              flat
-                              v-close-popup
-                            />
-                            <q-btn
-                              :label="$t('cancel')"
-                              color="primary"
-                              flat
-                              v-close-popup
-                            />
+                            <q-btn :label="$t('ok')" color="primary" flat v-close-popup />
+                            <q-btn :label="$t('cancel')" color="primary" flat v-close-popup />
                           </div>
                         </q-date>
                       </q-popup-proxy>
@@ -223,18 +219,18 @@
           <q-td>
             <span>
               {{
-                new Date(props.row.startDate).toLocaleDateString(
-                  `${$route.params.locale}`
-                )
+              new Date(props.row.startDate).toLocaleDateString(
+              `${$route.params.locale}`
+              )
               }}
             </span>
           </q-td>
           <q-td>
             <span>
               {{
-                new Date(props.row.endDate).toLocaleDateString(
-                  `${$route.params.locale}`
-                )
+              new Date(props.row.endDate).toLocaleDateString(
+              `${$route.params.locale}`
+              )
               }}
             </span>
           </q-td>
@@ -260,15 +256,12 @@ export default {
   name: 'contractTableData',
   data() {
     return {
-      todayDate: new Date(),
-      status: ['active', 'inactive '],
+      contractType: ['FORMAL', 'INFORMAL'],
+      contractStatus: ['VALID', 'TERMINATED', 'EXPIRED'],
       FilterOption: this.status,
       separator: 'cell',
-      columnFilter: {
-        columnFilterStartdate: new Date(),
-        columnFilterEnddate: new Date(),
-      },
-      filter: '',
+      filter: {},
+      tableSearch: '',
       innerPagination: this.pagination,
     };
   },
@@ -282,7 +275,7 @@ export default {
         sortBy: 'name',
         descending: false,
         page: 1,
-        limit: 5,
+        limit: 10,
         rowsNumber: 10,
       }),
     },
@@ -294,26 +287,7 @@ export default {
     computDate(columnFilterEnddate) {
       return columnFilterEnddate >= this.columnFilter.columnFilterStartdate;
     },
-    // for auto compelete
-    filterFn(val, update) {
-      // call abort() at any time if you can't retrieve data somehow
-      setTimeout(() => {
-        update(() => {
-          if (val === '') {
-            this.FilterOption = this.status;
-          } else {
-            const needle = val.toLowerCase();
-            this.FilterOption = this.status.filter(
-              v => v.toLowerCase().indexOf(needle) > -1
-            );
-          }
-        });
-      }, 500);
-    },
 
-    abortFilterFn() {
-      console.log('delayed filter aborted');
-    },
     stopSort(event) {
       event.stopPropagation();
     },
@@ -324,7 +298,7 @@ export default {
       });
     },
     onRequest(props) {
-      props.columnFilter = this.columnFilter;
+      props.filter = this.filter;
       this.innerPagination = props.pagination;
       this.$emit('request', props);
     },

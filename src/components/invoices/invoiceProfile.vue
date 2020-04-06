@@ -1,28 +1,26 @@
 <template>
   <div class="invoiceProfileWrap">
-    <q-btn
-      color="primary"
-      icon="print"
-      @click="goToPrint"
-      class="printInvoiceBut"
-    >
+    <q-btn color="primary" icon="print" @click="goToPrint" class="printInvoiceBut">
       <q-tooltip
         v-model="showing"
         transition-show="scale"
         transition-hide="scale"
-        >{{ $t('print') }}&nbsp;{{ $t('invoice') }}</q-tooltip
-      >
+      >{{ $t('print') }}&nbsp;{{ $t('invoice') }}</q-tooltip>
     </q-btn>
 
     <q-card class="clearme">
       <div>
         <q-tabs v-model="tab" class="block640">
-          <q-tab class="tabSelect" label name="invoiceProfile">{{
+          <q-tab class="tabSelect" label name="invoiceProfile">
+            {{
             $t('invoiceInformation')
-          }}</q-tab>
-          <q-tab class="tabSelect" label name="invoiceEdit">{{
+            }}
+          </q-tab>
+          <q-tab class="tabSelect" label name="invoiceEdit">
+            {{
             $t('edit')
-          }}</q-tab>
+            }}
+          </q-tab>
         </q-tabs>
 
         <q-tab-panels v-if="!isLoading" v-model="tab" animated>

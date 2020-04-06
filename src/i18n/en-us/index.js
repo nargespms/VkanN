@@ -269,4 +269,7 @@ export default {
   TERMINATED: 'terminated',
   EXPIRED: 'expired',
   month: 'mounth',
+  INACTIVE: 'INACTIVE',
+  BAN: ' BAN',
+  DELETED: ' DELETED',
 };

@@ -11,9 +11,11 @@
           <div class="tagListButtsWrapper">
             <q-card-section class="tagTxt brright">
               <q-icon name="edit" class="editTag">
-                <q-tooltip transition-show="scale" transition-hide="scale">{{
+                <q-tooltip transition-show="scale" transition-hide="scale">
+                  {{
                   $t('editTag')
-                }}</q-tooltip>
+                  }}
+                </q-tooltip>
               </q-icon>
               <q-popup-edit
                 v-model.trim="tag.title"
@@ -26,7 +28,7 @@
                   dense
                   autofocus
                   counter
-                  debounce="500"
+                  debounce="1000"
                   :error="errorValidation"
                   @change="setEditTag(tag)"
                 />
@@ -38,9 +40,11 @@
               @click="deactiveTag(tag)"
             >
               <q-icon name="fa fa-trash" class="editTag">
-                <q-tooltip transition-show="scale" transition-hide="scale">{{
+                <q-tooltip transition-show="scale" transition-hide="scale">
+                  {{
                   $t('deactiveTag')
-                }}</q-tooltip>
+                  }}
+                </q-tooltip>
               </q-icon>
             </q-card-section>
           </div>
@@ -61,9 +65,11 @@
             <!-- main content -->
             <q-card-section class="tagTxt p16 brleft" @click="activeTag(tag)">
               <q-icon name="restore" class="editTag positive clb">
-                <q-tooltip transition-show="scale" transition-hide="scale">{{
+                <q-tooltip transition-show="scale" transition-hide="scale">
+                  {{
                   $t('restoreTag')
-                }}</q-tooltip>
+                  }}
+                </q-tooltip>
               </q-icon>
             </q-card-section>
           </q-card>
