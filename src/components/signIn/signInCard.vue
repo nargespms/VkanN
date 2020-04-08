@@ -7,7 +7,7 @@
           <q-tab class="tabSelect" label name="login">{{ $t('signin') }}</q-tab>
           <q-tab class="tabSelect" label name="register">{{ $t('register') }}</q-tab>
         </q-tabs>
-        <!-- titl for login Register Card -->
+        <!-- title for login Register Card -->
         <q-card-section>
           <p class="welcomeMgs">{{ $t('welcomemsg') }}</p>
         </q-card-section>

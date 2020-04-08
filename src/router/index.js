@@ -41,7 +41,6 @@ export default function({ store }) {
   const Router = new VueRouter({
     scrollBehavior: () => ({ x: 0, y: 0 }),
     routes,
-
     // Leave these as is and change from quasar.conf.js instead!
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
@@ -62,14 +61,11 @@ export default function({ store }) {
         const user = JSON.parse(localStorage.getItem('Data'));
         const userRole = user.module1.userData.role;
         const userDep = user.module1.userData.department;
-        // console.log(user.module1.userData.role);
-        // console.log(to.meta.roles.includes(userRole));
-
         if (to.meta.roles.includes(userRole) && to.meta.dep.includes(userDep)) {
-          console.log('happy');
+          // console.log('happy');
           next();
         } else {
-          console.log('unhappy');
+          // console.log('unhappy');
           next('/');
         }
       }

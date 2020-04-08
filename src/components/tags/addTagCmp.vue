@@ -47,9 +47,7 @@ export default {
             title: this.newTag,
           })
           .then(response => {
-            // console.log(response);
             if (response.status === 200) {
-              // console.log(response);
               this.$q.notify({
                 message: this.$t('newTagHasBeenAdded'),
                 color: 'positive',

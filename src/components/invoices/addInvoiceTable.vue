@@ -29,11 +29,7 @@
             >
               <template v-slot:prepend>
                 <q-icon name="event" class="cursor-pointer">
-                  <q-popup-proxy
-                    ref="qDateProxy2"
-                    transition-show="scale"
-                    transition-hide="scale"
-                  >
+                  <q-popup-proxy ref="qDateProxy2" transition-show="scale" transition-hide="scale">
                     <q-date
                       v-model.trim="invoice.date"
                       @input="() => $refs.qDateProxy2.hide()"
@@ -99,11 +95,7 @@
             >
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer" color="primary">
-                  <q-popup-proxy
-                    ref="qDateProxy1"
-                    transition-show="scale"
-                    transition-hide="scale"
-                  >
+                  <q-popup-proxy ref="qDateProxy1" transition-show="scale" transition-hide="scale">
                     <q-date
                       v-model.trim="invoice.quoteStartDate"
                       @input="() => $refs.qDateProxy1.hide()"
@@ -129,11 +121,7 @@
             >
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer" color="primary">
-                  <q-popup-proxy
-                    ref="qDateProxy1"
-                    transition-show="scale"
-                    transition-hide="scale"
-                  >
+                  <q-popup-proxy ref="qDateProxy1" transition-show="scale" transition-hide="scale">
                     <q-date
                       v-model.trim="invoice.startdate"
                       @input="() => $refs.qDateProxy1.hide()"
@@ -176,7 +164,7 @@
             </q-select>
           </li>
 
-          <li>
+          <li v-if="invoice.type !== 'QUOTE'">
             <div class="flexSEL w100">
               <span class="flexSEL">
                 <q-radio
@@ -212,11 +200,7 @@
             >
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer" color="primary">
-                  <q-popup-proxy
-                    ref="qDateProxy"
-                    transition-show="scale"
-                    transition-hide="scale"
-                  >
+                  <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                     <q-date
                       v-model.trim="invoice.quoteEndDate"
                       @input="() => $refs.qDateProxy.hide()"
@@ -244,11 +228,7 @@
             >
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer" color="primary">
-                  <q-popup-proxy
-                    ref="qDateProxy"
-                    transition-show="scale"
-                    transition-hide="scale"
-                  >
+                  <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                     <q-date
                       v-model.trim="invoice.enddate"
                       @input="() => $refs.qDateProxy.hide()"
@@ -264,7 +244,6 @@
         </ul>
       </div>
 
-      <!-- invoice Details -->
       <!-- customer -->
       <div class="border8bl">
         <span class="boldTitle15">{{ $t('customerDetails') }}</span>
@@ -273,7 +252,6 @@
         <ul class="invoiceDetailsList">
           <li>
             <span>{{ $t('jurdicalORNaturalNamePerson') }} :</span>
-            <!-- client Name -->
             <clientsAutocomplete
               :editData="profileMode === 'Edit' ? clientEdit : ''"
               :isRequired="true"
@@ -309,11 +287,9 @@
             transition-show="scale"
             transition-hide="scale"
             content-style="font-size: 16px"
-            >{{ $t('invoiceGuidMsg') }}</q-tooltip
-          >
+          >{{ $t('invoiceGuidMsg') }}</q-tooltip>
         </q-icon>
       </div>
-      <!-- table for services -->
       <table class="servicesTable">
         <tr>
           <th>{{ `${this.localizeNumber(1)}` }}</th>
@@ -347,26 +323,26 @@
           <th colspan="6">نحوه محاسبه بر اساس شماره ستون</th>
           <th>
             {{
-              `${this.localizeNumber(4)}` + '*' + `${this.localizeNumber(6)}`
+            `${this.localizeNumber(4)}` + '*' + `${this.localizeNumber(6)}`
             }}
           </th>
           <th></th>
           <th>
             {{
-              `${this.localizeNumber(7)}` + '-' + `${this.localizeNumber(8)}`
+            `${this.localizeNumber(7)}` + '-' + `${this.localizeNumber(8)}`
             }}
           </th>
           <th>
             {{
-              `${this.localizeNumber(9)}` +
-                '%' +
-                '*' +
-                `${this.localizeNumber(9)}`
+            `${this.localizeNumber(9)}` +
+            '%' +
+            '*' +
+            `${this.localizeNumber(9)}`
             }}
           </th>
           <th>
             {{
-              `${this.localizeNumber(9)} ` + '+' + `${this.localizeNumber(10)}`
+            `${this.localizeNumber(9)} ` + '+' + `${this.localizeNumber(10)}`
             }}
           </th>
         </tr>
@@ -383,8 +359,6 @@
           />
         </template>
 
-        <!-- data in invoice -->
-
         <tr style="background-color: #a8a8a8;">
           <td colspan="6">جمع کل</td>
           <td></td>
@@ -393,13 +367,13 @@
           <td></td>
           <td>{{ invoiceTotalTax }}{{ $t(invoice.currency) }}</td>
         </tr>
+
         <q-btn class="mt12" color="primary" @click="addNewItem">
           <q-tooltip
             v-model="showing"
             transition-show="scale"
             transition-hide="scale"
-            >{{ $t('savenew') }}</q-tooltip
-          >
+          >{{ $t('savenew') }}</q-tooltip>
           {{ $t('CreatNewItem') }}
         </q-btn>
       </table>
@@ -443,21 +417,10 @@
       <div class="border8bl mt8 left desc clear">
         <div class="descriptionColumn">
           <div class="invoiceTxtWrap">
-            <span
-              class="block mb16 invoiceTxtTitle"
-              @click="descriptionTrue = !descriptionTrue"
-            >
+            <span class="block mb16 invoiceTxtTitle" @click="descriptionTrue = !descriptionTrue">
               <span class="pr12">
-                <q-icon
-                  v-if="!descriptionTrue"
-                  class="text-blue-grey-8"
-                  name="fa fa-arrow-down"
-                />
-                <q-icon
-                  v-if="descriptionTrue"
-                  class="text-blue-grey-8"
-                  name="fa fa-arrow-up"
-                />
+                <q-icon v-if="!descriptionTrue" class="text-blue-grey-8" name="fa fa-arrow-down" />
+                <q-icon v-if="descriptionTrue" class="text-blue-grey-8" name="fa fa-arrow-up" />
               </span>
               {{ $t('description') }} :
             </span>
@@ -476,61 +439,47 @@
           </div>
 
           <div class="invoiceTxtWrap">
-            <span
-              class="block mb16 invoiceTxtTitle"
-              @click="notesTrue = !notesTrue"
-            >
+            <span class="block mb16 invoiceTxtTitle" @click="notesTrue = !notesTrue">
               <span class="pr12">
-                <q-icon
-                  v-if="!notesTrue"
-                  class="text-blue-grey-8"
-                  name="fa fa-arrow-down"
-                />
-                <q-icon
-                  v-if="notesTrue"
-                  class="text-blue-grey-8"
-                  name="fa fa-arrow-up"
-                />
+                <q-icon v-if="!notesTrue" class="text-blue-grey-8" name="fa fa-arrow-down" />
+                <q-icon v-if="notesTrue" class="text-blue-grey-8" name="fa fa-arrow-up" />
               </span>
               {{ $t('notes') }} :
             </span>
             <q-slide-transition>
-              <editor
-                v-if="notesTrue"
-                @getTextFromEditor="getTextFromEditorNotes"
-              />
+              <editor v-if="notesTrue" @getTextFromEditor="getTextFromEditorNotes" />
             </q-slide-transition>
           </div>
         </div>
 
         <div class="descriptionColumn pl16">
           <div class="w100 invoiceTxtWrap">
-            <span class="block mb16 invoiceTxtTitle"
-              >{{ $t('attachments') }} :</span
-            >
-            <uploadfile
-              :UploadButton="false"
-              ref="upload"
-              :text="'attachments'"
-            />
+            <span class="block mb16 invoiceTxtTitle">{{ $t('attachments') }} :</span>
+            <uploadfile :UploadButton="false" ref="upload" :text="'attachments'" />
           </div>
         </div>
       </div>
       <div class="saveButTask">
         <q-btn
+          v-if="profileMode !== 'Edit'"
           class="justSave"
           style="width:250px; "
           color="primary"
-          type="submit"
-          >{{ $t('save') }}</q-btn
-        >
+          @click="onSubmit"
+        >{{ $t('save') }}</q-btn>
+        <q-btn
+          v-if="profileMode === 'Edit'"
+          class="justSave"
+          style="width:250px; "
+          color="primary"
+          @click="editSubmit"
+        >{{ $t('save') }}</q-btn>
         <q-btn
           style="width:250px;"
           color="primary"
           type="submit"
           @click="print = true"
-          >{{ $t('saveandPreview') }}</q-btn
-        >
+        >{{ $t('saveandPreview') }}</q-btn>
       </div>
     </q-form>
   </div>
@@ -625,14 +574,25 @@ export default {
 
   methods: {
     getFromItemEncapsulate(value) {
-      // console.log(value);
-      const foundItemIndex = this.invoice.items.findIndex(
-        item => item.id === value.id
-      );
-      if (foundItemIndex !== -1) {
-        this.invoice.items[foundItemIndex] = value;
+      if (this.profileMode !== 'Edit') {
+        const foundItemIndex = this.invoice.items.findIndex(
+          // eslint-disable-next-line no-underscore-dangle
+          item => item.id === value.id
+        );
+        if (foundItemIndex !== -1) {
+          this.invoice.items[foundItemIndex] = value;
+        }
+      } else {
+        // eslint-disable-next-line no-underscore-dangle
+        const foundItemIndex = this.invoice.items.findIndex(
+          // eslint-disable-next-line no-underscore-dangle
+          item => item._id === value.id
+        );
+        if (foundItemIndex !== -1) {
+          this.invoice.items[foundItemIndex] = value;
+        }
       }
-      // console.log(this.invoice.items);
+
       this.invoiceTotalAmount();
       this.invoiceTotalAmountTaxIncluded();
     },
@@ -647,6 +607,7 @@ export default {
     onSubmit() {
       // map items to server
       const serverItems = this.invoice.items.map(item => ({
+        rowNumber: item.number,
         code: item.itemCode,
         description: item.itemDescription,
         quantity: item.itemNumber,
@@ -659,12 +620,8 @@ export default {
         finalTotal: item.itemTotalAmountTaxIncluded,
       }));
 
-      // map items to server
-      // this.empty = !this.$v.invoice.$anyDirty;
       this.errors = this.$v.invoice.$anyError;
-      this.uiState = 'submit clicked';
       if (this.errors === false) {
-        console.log(this.invoice);
         const standardStartDate = this.persionToGregorian(
           this.invoice.startdate
         );
@@ -707,7 +664,10 @@ export default {
               currency: this.invoice.currency,
               cash: this.invoice.cash,
               // validUntil: 'string',
-              official: this.invoice.official,
+              ...(this.invoice.official
+                ? { official: this.invoice.official }
+                : ''),
+
               description: this.invoice.description,
               cardNumber: this.invoice.cardNumber,
               note: this.invoice.notes,
@@ -734,56 +694,81 @@ export default {
         }
         if (this.profileMode === 'Edit') {
           console.log('edit');
-          this.$axios
-            .put(`/v1/api/vkann/invoices/${this.$route.params.invoiceId}`, {
-              number: this.invoice.serialNumber,
-              type: this.invoice.type,
-              client: this.invoice.client,
-
-              ...(this.invoice.official
-                ? { total: this.invoiceTotalTax }
-                : { total: this.invoiceTotal }),
-
-              ...(this.invoice.type === 'INVOICE'
-                ? {
-                    dueDate: standardEndDate,
-                    issueDate: standardStartDate,
-                  }
-                : {
-                    validUntil: standardQuoteEndDate,
-                    issueDate: standardQuoteStartDate,
-                  }),
-
-              service: this.invoice.serviceName,
-              currency: this.invoice.currency,
-              cash: this.invoice.cash,
-              // validUntil: 'string',
-              official: this.invoice.official,
-              description: this.invoice.description,
-              cardNumber: this.invoice.cardNumber,
-              note: this.invoice.notes,
-              status: 'VALID',
-              items: this.invoice.items,
-              // attachments: 'string',
-            })
-            .then(res => {
-              if (res.status === 200) {
-                this.$q.notify({
-                  message: this.$t('invoiceAdded'),
-                  color: 'positive',
-                  icon: 'check',
-                  position: 'top',
-                });
-                const invoiceId = res.data.id;
-                if (this.print) {
-                  this.pushToPrint(invoiceId);
-                } else {
-                  this.pushToLIst();
-                }
-              }
-            });
         }
       }
+    },
+    editSubmit() {
+      console.log('edit submit');
+      // const standardStartDate = this.persionToGregorian(this.invoice.startdate);
+      // const standardQuoteStartDate = this.persionToGregorian(
+      //   this.invoice.quoteStartDate
+      // );
+
+      // const standardEndDate = this.persionToGregorian(this.invoice.enddate);
+      // const standardQuoteEndDate = this.persionToGregorian(
+      //   this.invoice.quoteEndDate
+      // );
+      const serverItems = this.invoice.items.map(item => ({
+        rowNumber: item.number,
+        code: item.itemCode,
+        description: item.itemDescription,
+        quantity: item.itemNumber,
+        unit: item.itemUnit,
+        fee: item.itemAmount,
+        total: item.itemTotalAmount,
+        discount: item.itemDiscount,
+        totalAfterDiscount: item.itemTotalWithDiscount,
+        TAX: 9,
+        finalTotal: item.itemTotalAmountTaxIncluded,
+      }));
+      const standardInvoiceDate = this.persionToGregorian(this.invoice.date);
+      this.$axios
+        .put(`/v1/api/vkann/invoices/${this.$route.params.invoiceId}`, {
+          number: this.invoice.serialNumber,
+          type: this.invoice.type,
+          client: this.invoice.client,
+          invoiceDate: standardInvoiceDate,
+          ...(this.invoice.official
+            ? { total: this.invoiceTotalTax }
+            : { total: this.invoiceTotal }),
+
+          ...(this.invoice.type === 'INVOICE'
+            ? {
+                dueDate: this.invoice.enddate,
+                issueDate: this.invoice.startdate,
+              }
+            : {
+                validUntil: '2020-04-05T19:30:00.000Z',
+                issueDate: '2020-04-05T19:30:00.000Z',
+              }),
+
+          service: this.invoice.serviceName,
+          currency: this.invoice.currency,
+          cash: this.invoice.cash,
+          official: this.invoice.official,
+          description: this.invoice.description,
+          cardNumber: this.invoice.cardNumber,
+          note: this.invoice.notes,
+          status: 'VALID',
+          items: serverItems,
+          // attachments: 'string',
+        })
+        .then(res => {
+          if (res.status === 200) {
+            this.$q.notify({
+              message: this.$t('invoiceEdited'),
+              color: 'positive',
+              icon: 'check',
+              position: 'top',
+            });
+            const invoiceId = res.data.id;
+            if (this.print) {
+              this.pushToPrint(invoiceId);
+            } else {
+              this.pushToLIst();
+            }
+          }
+        });
     },
     pushToLIst() {
       this.$router.push({
@@ -805,7 +790,6 @@ export default {
 
     getUserInfo(value) {
       this.$axios.get(`/v1/api/vkann/users/${value}`).then(response => {
-        // console.log(response.data);
         this.invoice.telephoneNumberORfax = response.data.user.mobile;
         // this.invoice.economyCode = response.data;
         this.invoice.nationalIdORregisterNum = response.data.user.nationalId;
@@ -813,7 +797,7 @@ export default {
         this.invoice.postalCode = response.data.user.zipCode;
       });
     },
-    // for showing localize number
+    //  showing localize number
     localizeNumber(value) {
       return value.toLocaleString(`${this.$route.params.locale}`);
     },
@@ -864,6 +848,7 @@ export default {
       return enddate >= this.invoice.quoteStartDate;
     },
     invoiceTotalAmount() {
+      console.log(this.invoice.items);
       this.invoiceTotal = this.invoice.items
         .map(item => item.itemTotalWithDiscount)
         .reduce((prev, next) => Number(prev) + Number(next));
@@ -922,7 +907,6 @@ export default {
           this.invoice.cash = res.data.cash;
           this.invoice.description = res.data.description;
           this.invoice.notes = res.data.note;
-          this.invoice.items = res.data.items;
           // dates convertor
           this.invoice.date = this.gregorianTopersianString(
             res.data.invoiceDate
@@ -944,6 +928,22 @@ export default {
           } else {
             this.invoiceTotal = res.data.total;
           }
+          // reverse map
+          const localItems = res.data.items.map(item => ({
+            number: item.rowNumber,
+            itemCode: item.code,
+            itemDescription: item.description,
+            itemNumber: item.quantity,
+            itemUnit: item.unit,
+            itemAmount: item.fee,
+            itemTotalAmount: item.total,
+            itemDiscount: item.discount,
+            itemTotalWithDiscount: item.totalAfterDiscount,
+            TAX: 9,
+            itemTotalAmountTaxIncluded: item.finalTotal,
+          }));
+          // reverse map
+          this.invoice.items = localItems;
         });
     }
   },

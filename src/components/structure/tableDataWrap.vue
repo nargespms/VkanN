@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- table data -->
     <staffTableData
       v-if="this.module === 'staff'"
       :data="data"
@@ -127,7 +126,6 @@ export default {
         })
         .then(response => {
           console.log(response.data);
-          // this.columns = response.data.columns;
           this.data = response.data.result.docs;
           this.pagination.rowsNumber = response.data.result.length;
           // don't forget to update local pagination object
@@ -136,7 +134,6 @@ export default {
           this.pagination.sortBy = sortBy;
           this.pagination.descending = descending;
           this.loading = false;
-          // this.$forceUpdate();
           // test sort by
           if (sortBy) {
             this.data.sort((a, b) => {
@@ -155,7 +152,6 @@ export default {
               return parseFloat(x[sortBy]) - parseFloat(y[sortBy]);
             });
           }
-          // test sort by
         });
     },
   },

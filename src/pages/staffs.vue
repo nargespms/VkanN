@@ -1,15 +1,12 @@
 <template>
   <div class="q-pa-xl">
-    <!-- user management table -->
     <div class="userManagementListWrap">
-      <tableDataWrap module="staff" :columns="columns" :endpoint="'/v1/api/vkann/staff/list'" />
+      <tableDataWrap module="staff" :columns="columns" :endpoint="'/v1/api/vkann/staffs/list'" />
     </div>
   </div>
 </template>
 
 <script>
-// import axios from 'axios';
-
 import tableDataWrap from '../components/structure/tableDataWrap.vue';
 
 export default {
@@ -49,7 +46,7 @@ export default {
           filterType: 'DropBox',
         },
         {
-          lable: 'departman',
+          lable: 'department',
           filterable: true,
           sortable: true,
           filterType: 'DropBox',

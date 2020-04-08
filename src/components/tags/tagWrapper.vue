@@ -37,13 +37,10 @@ export default {
       this.tags = value;
       console.log(this.tags);
       this.componentKey += 1;
-      // should post to server
     },
     deleteTag(value) {
       this.tags = value;
       this.componentKey += 1;
-
-      // should post to server
     },
     activeagain(value) {
       this.tag = value;

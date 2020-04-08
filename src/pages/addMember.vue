@@ -1,14 +1,15 @@
 <template>
   <div class="q-pa-xl">
-    <h4 class="headerTitle">
-      <span>{{ $t('addMember') }}</span>
-    </h4>
-    <profileEditForm :profileMode="'ADD'" @sendDataUser="sendDataUser" />
+    <div class="addMemberPage">
+      <userAvatarCmp :data="data" />
+      <profileEditForm :profileMode="'ADD'" @sendDataUser="sendDataUser" />
+    </div>
   </div>
 </template>
 
 <script>
 import profileEditForm from '../components/profile/profileEditForm.vue';
+import userAvatarCmp from '../components/profile/userAvatarCmp.vue';
 
 export default {
   name: 'addMember',
@@ -18,6 +19,7 @@ export default {
 
   components: {
     profileEditForm,
+    userAvatarCmp,
   },
   data() {
     return {
@@ -55,7 +57,7 @@ export default {
             tags: this.form.tags,
             linkedin: this.form.linkdin,
             git: this.form.git,
-            addresses: this.form.adress,
+            address: this.form.address,
             password: this.form.PassWord,
           })
           .then(res => {
@@ -95,5 +97,18 @@ export default {
 .headerTitle {
   font-size: 25px;
   margin: 12px;
+}
+.addMemberPage {
+  display: flex;
+
+  @media screen and (max-width: 800px) {
+    display: block;
+    .userAvatar {
+      margin: 12px auto;
+    }
+    .editProfileWrap {
+      width: 100%;
+    }
+  }
 }
 </style>

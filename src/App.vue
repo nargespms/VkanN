@@ -12,9 +12,7 @@ export default {
     refreshToken() {
       this.$axios
         .get('/v1/api/vkann/refresh-token ')
-        .then(res => {
-          console.log(res);
-        })
+
         .catch(e => {
           if (e.response.status === 403) {
             this.$store.commit('module1/logedInSuccesfully', false, {

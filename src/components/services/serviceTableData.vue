@@ -36,7 +36,6 @@
             <span class="columnLabel">{{ $t(col.lable) }}</span>
             <!-- if filterable true in each column it will show an input -->
             <div class="columnFilterWrap" v-if="col.filterable" @click.stop="stopSort">
-              <!-- filter column for text -->
               <q-input
                 outlined
                 color="text-black"
@@ -49,7 +48,7 @@
                 @click="stopSort"
                 :placeholder="$t('search')"
               />
-              <!-- filter column for dropboxes -->
+
               <q-select
                 outlined
                 v-if="col.lable === 'billingStatus'"
@@ -68,6 +67,7 @@
                   </q-item>
                 </template>
               </q-select>
+
               <q-select
                 outlined
                 v-if="col.lable === 'status'"
@@ -86,8 +86,7 @@
                   </q-item>
                 </template>
               </q-select>
-              <!-- filter column for dates -->
-              <!-- start date -->
+
               <div v-if="col.filterType === 'Date'">
                 <q-input
                   outlined
@@ -121,7 +120,7 @@
                     </q-icon>
                   </template>
                 </q-input>
-                <!-- end date -->
+
                 <q-input
                   outlined
                   v-model.trim="filter.columnFilterEnddate"
@@ -161,7 +160,6 @@
       <!-- custom rows -->
       <template v-slot:body="props">
         <q-tr>
-          <!-- {{props.row}} -->
           <q-td>
             <span>
               <router-link
@@ -202,31 +200,6 @@
         </q-tr>
         <!-- expandable row for extra description -->
       </template>
-      <!-- for responsive  -->
-
-      <template v-slot:item="props">
-        <q-card class="q-ma-xs q-pa-sm">
-          <q-list dense class="mobileList">
-            <q-item class="mobileItem" v-for="prop in props.row" :key="prop.id">
-              <q-item-section>
-                <span v-if="prop == props.row['name']">
-                  <router-link
-                    class="listNameTable"
-                    :to="'/' + $route.params.locale + '/' + 'profile' + '/'"
-                  >#{{ props.row.name }}</router-link>
-                </span>
-                <q-item-label
-                  v-if="
-                    prop !== props.row['name'] && prop !== props.row['__index']
-                  "
-                >{{ prop }}</q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-card>
-      </template>
-
-      <!-- for responsive  -->
     </q-table>
   </div>
 </template>
@@ -268,26 +241,7 @@ export default {
     computDate(columnFilterEnddate) {
       return columnFilterEnddate >= this.filter.columnFilterStartdate;
     },
-    // for auto compelete
-    // filterFn(val, update) {
-    //   // call abort() at any time if you can't retrieve data somehow
-    //   setTimeout(() => {
-    //     update(() => {
-    //       if (val === '') {
-    //         this.FilterOption = this.status;
-    //       } else {
-    //         const needle = val.toLowerCase();
-    //         this.FilterOption = this.status.filter(
-    //           v => v.toLowerCase().indexOf(needle) > -1
-    //         );
-    //       }
-    //     });
-    //   }, 500);
-    // },
 
-    // abortFilterFn() {
-    //   console.log('delayed filter aborted');
-    // },
     stopSort(event) {
       event.stopPropagation();
     },

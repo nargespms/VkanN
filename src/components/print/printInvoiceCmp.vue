@@ -1,17 +1,13 @@
 <template>
   <div v-if="!isLoading" class="printInvoiceWrapper">
-    <p v-if="printData.type === 'QUOTE'" class="invoiceTypeShow">
-      {{ $t(printData.type) }}
-    </p>
+    <p v-if="printData.type === 'QUOTE'" class="invoiceTypeShow">{{ $t(printData.type) }}</p>
     <div class="printHeaderInvoice">
       <div class="invoiceLogo">
         <img src="../../assets/aasaam.png" alt />
       </div>
       <div class="invoiceName">
         <p class="beginningMsg boldTitle14 mb16">{{ $t('inTheNameOfGod') }}</p>
-        <p class="beginningMsg boldTitle14">
-          {{ $t('invoice') }} {{ $t('aasaam') }}
-        </p>
+        <p class="beginningMsg boldTitle14">{{ $t('invoice') }} {{ $t('aasaam') }}</p>
       </div>
       <div class="invoiceDateWrapper">
         <div class="invoiceNumber">
@@ -21,11 +17,13 @@
 
         <div class="invoiceDate">
           <span class="pr24">{{ $t('date') }} :</span>
-          <span class="serialNumberBox">{{
+          <span class="serialNumberBox">
+            {{
             new Date(printData.issueDate).toLocaleDateString(
-              `${$route.params.locale}`
+            `${$route.params.locale}`
             )
-          }}</span>
+            }}
+          </span>
         </div>
       </div>
     </div>
@@ -38,18 +36,17 @@
         <li>
           <span>{{ $t('jurdicalNamePerson') }} :</span>
           &nbsp;
-
           <span>{{ aasaamInfo.legalName }}</span>
         </li>
         <li>
           <span>{{ $t('economyCode') }} :</span>
           &nbsp;
-          <span class="rtl float pl16">{{ aasaamInfo.taxID }} </span>
+          <span class="rtl float pl16">{{ aasaamInfo.taxID }}</span>
         </li>
         <li>
           <span>{{ $t('nationalIdORregisterNum') }} :</span>
           &nbsp;
-          <span class="rtl float pl16">{{ aasaamInfo.leiCode }} </span>
+          <span class="rtl float pl16">{{ aasaamInfo.leiCode }}</span>
         </li>
         <li>
           <span>{{ $t('fullAdress') }} :</span>
@@ -59,16 +56,20 @@
         <li>
           <span>{{ $t('postalCode') }} :</span>
           &nbsp;
-          <span class="rtl float pl16">{{
+          <span class="rtl float pl16">
+            {{
             aasaamInfo.address.postalCode
-          }}</span>
+            }}
+          </span>
         </li>
         <li>
           <span>{{ $t('telephoneNumberORfax') }} :</span>
           &nbsp;
-          <span class="rtl float pl16">{{
+          <span class="rtl float pl16">
+            {{
             aasaamInfo.contactPoint.telephone
-          }}</span>
+            }}
+          </span>
         </li>
       </ul>
     </div>
@@ -80,10 +81,9 @@
       <ul class="invoiceDetailsList">
         <li>
           <span>{{ $t('jurdicalORNaturalNamePerson') }} :</span>
-          <span class="pl16">{{ printData.client.firstName }} </span>
+          <span class="pl16">{{ printData.client.firstName }}</span>
           &nbsp;
-
-          <span>{{ printData.client.lastName }} </span>
+          <span>{{ printData.client.lastName }}</span>
           <span></span>
         </li>
         <li>
@@ -108,7 +108,6 @@
     <div class="border8bl mb8">
       <span class="boldTitle15">{{ $t('productDetailsORService') }}</span>
     </div>
-    <!-- table for services -->
     <table class="servicesTable">
       <tr>
         <th>{{ `${this.localizeNumber(1)}` }}</th>
@@ -138,24 +137,20 @@
       </tr>
       <tr>
         <th colspan="6">نحوه محاسبه بر اساس شماره ستون</th>
-        <th>
-          {{ `${this.localizeNumber(4)}` + '*' + `${this.localizeNumber(6)}` }}
-        </th>
+        <th>{{ `${this.localizeNumber(4)}` + '*' + `${this.localizeNumber(6)}` }}</th>
         <th></th>
-        <th>
-          {{ `${this.localizeNumber(7)}` + '-' + `${this.localizeNumber(8)}` }}
-        </th>
+        <th>{{ `${this.localizeNumber(7)}` + '-' + `${this.localizeNumber(8)}` }}</th>
         <th>
           {{
-            `${this.localizeNumber(9)}` +
-              '%' +
-              '*' +
-              `${this.localizeNumber(9)}`
+          `${this.localizeNumber(9)}` +
+          '%' +
+          '*' +
+          `${this.localizeNumber(9)}`
           }}
         </th>
         <th>
           {{
-            `${this.localizeNumber(9)} ` + '+' + `${this.localizeNumber(10)}`
+          `${this.localizeNumber(9)} ` + '+' + `${this.localizeNumber(10)}`
           }}
         </th>
       </tr>
@@ -222,7 +217,7 @@
     </div>
     <div class="border8bl mt8 left desc">
       <span>{{ $t('description') }} :</span>
-      <span>{{ printData.description }}</span>
+      <span v-html="printData.description"></span>
     </div>
     <div class="flexbet mt8">
       <div class="border8w50">
@@ -232,14 +227,11 @@
         <span>مهر و امضا فروشنده :</span>
       </div>
     </div>
-
-    <!-- description Wrapper -->
   </div>
 </template>
 
 <script>
 import faOrganization from '../../../node_modules/@aasaam/information/info/fa/Organization.json';
-// import { enOrganization } from '../../../node_modules/@aasaam/information/info/en';
 import showItemsTable from '../invoices/showItemsTable.vue';
 
 export default {
@@ -260,17 +252,14 @@ export default {
   },
 
   methods: {
-    // for showing localize number
     localizeNumber(value) {
       return value.toLocaleString(`${this.$route.params.locale}`);
     },
   },
   mounted() {
-    console.log(this.$route.params.invoiceId);
     this.$axios
       .get(`/v1/api/vkann/invoices/${this.$route.params.invoiceId}`)
       .then(res => {
-        console.log(res.data);
         this.printData = res.data;
         this.invoice.cash = res.data.cash;
         this.invoice.currency = res.data.currency;
@@ -285,6 +274,7 @@ export default {
 .printInvoiceWrapper {
   width: 95%;
   margin: 12px auto;
+  clear: both;
 }
 .printHeaderInvoice {
   display: flex;

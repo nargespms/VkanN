@@ -1,6 +1,5 @@
 <template>
   <div class="q-pa-xl">
-    {{ $route.params.profileId }}
     <profileInfoCmp :data="userData" />
   </div>
 </template>

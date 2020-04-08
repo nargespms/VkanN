@@ -444,6 +444,5 @@ if (process.env.MODE !== 'ssr') {
     component: () => import('pages/Error404.vue'),
   });
 }
-// console.log(Quasar.lang.isoName);
 
 export default routes;

@@ -90,22 +90,6 @@ export default {
         query: { depid: 'INFO' },
       });
     },
-    //  customer auto compelete
-    filterFn2(val, update) {
-      // call abort() at any time if you can't retrieve data somehow
-      setTimeout(() => {
-        update(() => {
-          if (val === '') {
-            this.FilterOption2 = this.servicesName;
-          } else {
-            const needle = val.toLowerCase();
-            this.FilterOption2 = this.servicesName.filter(
-              v => v.toLowerCase().indexOf(needle) > -1
-            );
-          }
-        });
-      }, 500);
-    },
   },
 };
 </script>

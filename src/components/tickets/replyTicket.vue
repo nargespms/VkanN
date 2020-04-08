@@ -39,7 +39,6 @@ export default {
     getTextFromEditor(value) {
       this.textValue = value;
       console.log(value);
-      // console.log(value);
     },
     submitTicket() {
       console.log(this.textValue);

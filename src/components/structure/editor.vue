@@ -50,7 +50,6 @@ export default {
   },
   methods: {
     sendText() {
-      // console.log(this.qeditor);
       this.$emit('getTextFromEditor', this.qeditor);
     },
     add(name) {
@@ -67,15 +66,12 @@ export default {
   mounted() {
     if (this.data.length > 0) {
       this.add(this.data);
-      // console.log('mounted');
     }
   },
   watch: {
     /* If our prop ever gets changed outside of this component then we need to update our local data version of the prop */
     data(newVal) {
-      // this.qeditor = newVal;
       this.add(newVal);
-      // console.log('watch');
     },
   },
 };

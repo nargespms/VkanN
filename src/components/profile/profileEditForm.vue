@@ -2,7 +2,6 @@
   <div class="editProfileWrap col3th">
     <q-form @submit="onSubmit" class="q-gutter-md RegisterForm">
       <div class="col1">
-        <!-- user name -->
         <q-input
           outlined
           required
@@ -26,9 +25,7 @@
               }}
             </span>
           </p>
-          <!-- firstname validation -->
         </q-input>
-        <!-- last name -->
         <q-input
           outlined
           required
@@ -43,7 +40,6 @@
             <q-icon name="fas fa-user" />
           </template>
         </q-input>
-        <!-- Email -->
         <q-input
           outlined
           required
@@ -77,19 +73,15 @@
               v-if="!$v.form.email.isUnique && !$v.form.email.email"
             >*{{ $t('Thisemailisalreadyregistered') }}.</span>
           </p>
-          <!-- email errors -->
         </q-input>
-        <!-- Mobile Phone Number -->
         <mobilePhoneWrapper
           v-if="this.profileMode === 'ADD' || !this.mobileLoading"
           @mobileVerified="mobileVerified"
           :existed="this.profileMode === 'ADD' ? false : true"
           :data="this.profileMode === 'Edit' ? mobileData : ''"
+          :mode="this.profileMode"
         />
 
-        <!-- Mobile Phone Number -->
-
-        <!-- Gender -->
         <q-select
           color="light-blue-10"
           outlined
@@ -103,7 +95,6 @@
           </template>
         </q-select>
 
-        <!--New  password -->
         <q-input
           outlined
           required
@@ -134,7 +125,6 @@
             }}
           </span>
         </p>
-        <!-- Re enter password -->
         <q-input
           outlined
           required
@@ -158,11 +148,9 @@
           <p v-if="errors" class="error">
             <span v-if="!$v.form.Confirmpass.sameAsPassword">{{ $t('Thepasswordsdonotmatch') }}.</span>
           </p>
-          <!-- errors for pass2 -->
         </q-input>
       </div>
       <div class="col2">
-        <!-- NationalId -->
         <q-input
           outlined
           required
@@ -200,7 +188,6 @@
           </p>
         </q-input>
 
-        <!-- city -->
         <q-input
           color="light-blue-10"
           outlined
@@ -212,13 +199,13 @@
             <q-icon name />
           </template>
         </q-input>
-        <!-- Adress -->
-        <q-input outlined required :label="$t('adress')" v-model="form.adress">
+
+        <q-input outlined required :label="$t('address')" v-model="form.address">
           <template v-slot:prepend>
             <q-icon name="my_location" />
           </template>
         </q-input>
-        <!-- Postal Code  -->
+
         <q-input
           outlined
           v-model.trim="form.postalCode"
@@ -237,7 +224,7 @@
             >*{{ $t('Fieldmusthaveatleast10characters') }}.</span>
           </p>
         </q-input>
-        <!-- Role -->
+
         <q-select
           color="light-blue-10"
           outlined
@@ -271,7 +258,7 @@
             </q-item>
           </template>
         </q-select>
-        <!-- status -->
+
         <q-select
           color="light-blue-10"
           outlined
@@ -284,9 +271,9 @@
             <q-icon name />
           </template>
         </q-select>
-        <!-- tags -->
-        <tagsSelection @addTagFn="addTagFn" />
-        <!-- personality -->
+
+        <tagsSelection :editData="profileMode === 'Edit' ? tagEdit : ''" @addTagFn="addTagFn" />
+
         <q-select
           color="light-blue-10"
           outlined
@@ -301,7 +288,6 @@
         </q-select>
       </div>
       <div class="col3">
-        <!-- landline -->
         <q-input
           outlined
           v-model.trim="form.tel"
@@ -314,8 +300,6 @@
           </template>
         </q-input>
 
-        <!-- landline -->
-        <!-- Sprint Time -->
         <q-input
           outlined
           v-model.trim="form.spirintTime"
@@ -326,7 +310,7 @@
             <q-icon name />
           </template>
         </q-input>
-        <!-- linkdin Url -->
+
         <q-input
           outlined
           v-model.trim="form.linkdin"
@@ -337,7 +321,7 @@
             <q-icon name="fab fa-linkedin-in" />
           </template>
         </q-input>
-        <!-- github  -->
+
         <q-input
           outlined
           v-model.trim="form.git"
@@ -374,11 +358,8 @@ export default {
 
   data() {
     return {
-      // data for validation
-      uiState: 'submit not clicked',
       errors: false,
       empty: true,
-      // data for validation
       departmans: ['INFO', 'TECH', 'BILLING'],
       roles: ['CLIENT', 'MEMBER', 'ASSISTANT', 'MANAGER'],
       states: ['ACTIVE', 'DEACTIVE', 'BAN'],
@@ -387,6 +368,7 @@ export default {
       isPwd: true,
       isPwd1: true,
       editFormProfile: {},
+      userId: '',
       form: {
         FirstName: '',
         LastName: '',
@@ -402,7 +384,7 @@ export default {
         tel: '',
         status: '',
         city: '',
-        adress: '',
+        address: '',
         role: '',
         departman: '',
         tags: [],
@@ -416,6 +398,7 @@ export default {
       verifyEmail: false,
       mobileData: {},
       mobileLoading: true,
+      tagEdit: '',
     };
   },
   validations: {
@@ -423,7 +406,6 @@ export default {
       nationalId: {
         required,
         // minLength: minLength(10),
-        // national id check
         isValidIranianNationalCode(input) {
           if (!/^\d{10}$/.test(input)) return false;
 
@@ -436,26 +418,29 @@ export default {
           return (sum < 2 && check === sum) || (sum >= 2 && check + sum === 11);
         },
         isUnique() {
-          if (this.$v.form.nationalId.isValidIranianNationalCode) {
-            this.$axios
-              .post('/v1/api/vkann/validation/national-id', {
-                nationalId: this.form.nationalId,
-              })
-              .then(response => {
-                console.log(response);
-                if (response.status === 204) {
-                  this.nationalID = true;
-                }
-              })
-              .catch(() => {
-                this.nationalID = false;
-                this.$q.notify({
-                  color: 'negative',
-                  position: 'top',
-                  message: this.$t('incorrectnationalID'),
-                  icon: 'report_problem',
+          if (this.form.nationalId.length > 0) {
+            if (this.$v.form.nationalId.isValidIranianNationalCode) {
+              this.$axios
+                .post('/v1/api/vkann/validation/national-id', {
+                  nationalId: this.form.nationalId,
+                  ...(this.profileMode === 'ADD' ? '' : { id: this.userId }),
+                })
+                .then(response => {
+                  console.log(response);
+                  if (response.status === 204) {
+                    this.nationalID = true;
+                  }
+                })
+                .catch(() => {
+                  this.nationalID = false;
+                  this.$q.notify({
+                    color: 'negative',
+                    position: 'top',
+                    message: this.$t('incorrectnationalID'),
+                    icon: 'report_problem',
+                  });
                 });
-              });
+            }
           }
           return true;
         },
@@ -474,7 +459,7 @@ export default {
                 email: value,
                 ...(this.profileMode === 'ADD'
                   ? { existed: false }
-                  : { existed: false }),
+                  : { existed: false, id: this.userId }),
               })
               .then(response => {
                 console.log(response);
@@ -534,7 +519,6 @@ export default {
 
     onSubmit() {
       if (this.profileMode === 'ADD') {
-        // console.log('edit profile');
         this.empty = !this.$v.form.$anyDirty;
         this.errors = this.$v.form.$anyError;
         this.uiState = 'submit clicked';
@@ -542,13 +526,11 @@ export default {
         console.log(this.errors);
 
         if (this.errors === false && this.empty === false) {
-          // this is where you send the responses
           normalizeEmail(this.form.email);
           console.log(normalizeEmail(this.form.email));
-          // req to server
 
-          // should emit to parent what t
-          // req to servero do (beacause it is used in 2 place (profile & add user))
+          // should emit to parent
+          //  (beacause it is used in 2 place (profile & add user))
           if (this.nationalID && this.verifyEmail) {
             this.$emit('sendDataUser', this.form);
             console.log(this.form);
@@ -563,25 +545,21 @@ export default {
         }
       }
       if (this.profileMode === 'Edit') {
-        // console.log('edit profile');
         this.empty = !this.$v.form.$anyDirty;
         this.errors = this.$v.form.$anyError;
         console.log(this.empty);
         console.log(this.errors);
 
         this.uiState = 'submit clicked';
-        if (this.errors === false && this.empty === false) {
-          // this is where you send the responses
+        if (this.errors === false) {
           this.uiState = 'form submitted';
           normalizeEmail(this.form.email);
           console.log(normalizeEmail(this.form.email));
-          // req to server
 
           // should emit to parent what t
-          // req to servero do (beacause it is used in 2 place (profile & add user))
+          //  (beacause it is used in 2 place (profile & add user))
           if (this.nationalID && this.verifyEmail) {
             this.$emit('editDataUser', this.form);
-            // for edit form
           }
         } else {
           this.$q.notify({
@@ -607,59 +585,101 @@ export default {
       this.profileMode === 'Edit' &&
       this.$route.path
         .split('/')
-        .slice(2)
+        .slice(2, 3)
         .toString() === 'profile'
     ) {
-      console.log('profilenist');
+      console.log('profile ast');
       this.$axios.get('/v1/api/vkann/profile').then(response => {
         if (response.status === 200) {
-          this.form.FirstName = response.data.user.firstName;
-          this.form.LastName = response.data.user.lastName;
-          this.form.email = response.data.user.email;
-          this.form.country = response.data.user.country;
-          this.form.MobileNumber = response.data.user.mobile;
-          this.form.tel = response.data.user.tel;
-          this.form.gender = response.data.user.gender;
-          this.form.status = response.data.user.status;
-          this.form.status = response.data.user.status;
-          this.form.personality = response.data.user.personality;
-          this.form.role = response.data.user.role;
-          this.form.tags = response.data.user.tags;
-          this.form.city = response.data.user.city;
-          this.form.nationalId = response.data.user.nationalId;
+          this.userId = response.data.id;
+          this.form.FirstName = response.data.firstName;
+          this.form.LastName = response.data.lastName;
+          this.form.email = response.data.email;
+          this.form.country = response.data.country;
+          this.form.MobileNumber = response.data.mobile;
+          this.form.tel = response.data.tel;
+          this.form.gender = response.data.gender;
+          this.form.role = response.data.role;
+          this.form.city = response.data.city;
+          this.form.address = response.data.address;
+          this.form.postalCode = response.data.zipCode;
+          this.form.git = response.data.git;
+          this.form.linkdin = response.data.linkedin;
+
+          this.form.nationalId = response.data.nationalId;
+          this.form.departman = response.data.department;
+          this.form.status = response.data.status;
+          this.form.personality = response.data.personality;
           this.nationalID = true;
           this.verifyEmail = true;
-          this.mobileData.con = response.data.user.country;
-          this.mobileData.mobile = response.data.user.mobile;
+          this.mobileData.con = response.data.country;
+          this.mobileData.mobile = response.data.mobile;
           this.mobileLoading = false;
+          console.log(response.tags);
+
+          if (response.data.tags.length > 1) {
+            // for tags
+            const serverItems = response.data.tags.map(item => ({
+              // eslint-disable-next-line no-underscore-dangle
+              id: item._id,
+              title: item.title,
+            }));
+            this.tagEdit = serverItems;
+            this.form.tags = serverItems.map(item => {
+              // eslint-disable-next-line no-underscore-dangle
+              return item.id;
+            });
+          }
         }
       });
     } else if (
       this.profileMode === 'Edit' &&
       this.$route.path
         .split('/')
-        .slice(2)
+        .slice(2, 3)
         .toString() !== 'profile'
     ) {
       this.$axios
         .get(`/v1/api/vkann/users/${this.$route.params.userId}`)
         .then(response => {
           if (response.status === 200) {
+            this.userId = response.data.user.id;
             this.form.FirstName = response.data.user.firstName;
             this.form.LastName = response.data.user.lastName;
             this.form.email = response.data.user.email;
             this.form.country = response.data.user.country;
+            this.form.city = response.data.user.city;
+            this.form.address = response.data.user.address;
+            this.form.postalCode = response.data.user.zipCode;
+            this.form.departman = response.data.user.department;
+            this.form.status = response.data.user.status;
+            this.form.git = response.data.user.git;
+            this.form.linkdin = response.data.user.linkedin;
+
             this.form.MobileNumber = response.data.user.mobile;
             this.form.tel = response.data.user.tel;
             this.form.gender = response.data.user.gender;
             this.form.role = response.data.user.role;
-            this.form.tags = response.data.user.tags;
             this.form.nationalId = response.data.user.nationalId;
+            this.form.personality = response.data.user.personality;
             this.nationalID = true;
             this.verifyEmail = true;
             this.mobileData.con = response.data.user.country;
             this.mobileData.mobile = response.data.user.mobile;
             this.mobileLoading = false;
+            if (response.data.user.tags.length > 1) {
+              // for tags
+              const serverItems = response.data.user.tags.map(item => ({
+                // eslint-disable-next-line no-underscore-dangle
+                id: item._id,
+                title: item.title,
+              }));
+              this.tagEdit = serverItems;
+              this.form.tags = serverItems.map(item => {
+                // eslint-disable-next-line no-underscore-dangle
+                return item.id;
+              });
+            }
           }
         })
         .catch(e => {

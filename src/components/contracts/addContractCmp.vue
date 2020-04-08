@@ -2,14 +2,12 @@
   <div class="addContractWrapper col3th">
     <q-form @submit="onSubmit" class="q-gutter-md" :error="$v.contract.$error">
       <div class="col1">
-        <!--  Service name -->
-
         <servicesAutocomplete
           :editData="profileMode === 'Edit' ? serviceEdit : ''"
           :isRequired="true"
           @getAutoCompleteValue="getAutoCompleteValueService"
         />
-        <!-- client Name -->
+
         <clientsAutocomplete
           :editData="profileMode === 'Edit' ? clientEdit : ''"
           class="pt20"
@@ -17,9 +15,6 @@
           @getAutoCompleteValue="getAutoCompleteValueclient"
         />
 
-        <!--  start date & end date should be date picker -->
-
-        <!-- start date -->
         <q-input
           outlined
           v-model.trim="contract.startdate"
@@ -32,11 +27,7 @@
         >
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
-              <q-popup-proxy
-                ref="qDateProxy1"
-                transition-show="scale"
-                transition-hide="scale"
-              >
+              <q-popup-proxy ref="qDateProxy1" transition-show="scale" transition-hide="scale">
                 <q-date
                   v-model.trim="contract.startdate"
                   @input="() => $refs.qDateProxy1.hide()"
@@ -47,7 +38,7 @@
             </q-icon>
           </template>
         </q-input>
-        <!-- end date -->
+
         <q-input
           outlined
           v-model.trim.lazy="$v.contract.enddate.$model"
@@ -60,11 +51,7 @@
         >
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
-              <q-popup-proxy
-                ref="qDateProxy"
-                transition-show="scale"
-                transition-hide="scale"
-              >
+              <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                 <q-date
                   v-model.trim="contract.enddate"
                   @input="() => $refs.qDateProxy.hide()"
@@ -83,7 +70,7 @@
             {{ $t('DateUnvalid') }}
           </span>
         </p>
-        <!-- Duration -->
+
         <div class="flex">
           <q-select
             color="light-blue-10 "
@@ -101,7 +88,6 @@
           <span class="durationPriod">{{ $t('month') }}</span>
         </div>
 
-        <!-- contract Number -->
         <q-input
           outlined
           required
@@ -117,7 +103,7 @@
             <q-icon name />
           </template>
         </q-input>
-        <!-- Amount -->
+
         <q-input
           outlined
           required
@@ -135,19 +121,15 @@
         </q-input>
       </div>
       <div class="col2">
-        <!-- tags -->
-        <tagsSelection
-          :editData="profileMode === 'Edit' ? tagEdit : ''"
-          @addTagFn="addTagFn"
-        />
-        <!-- status -->
+        <tagsSelection :editData="profileMode === 'Edit' ? tagEdit : ''" @addTagFn="addTagFn" />
+
         <q-select
           color="light-blue-10"
           outlined
           v-model.trim="contract.status"
           :options="contractStatus"
           :label="$t('status')"
-          class="inputStyle pt20 "
+          class="inputStyle pt20"
           required
           :rules="[val => val && val.length > 0]"
         >
@@ -162,7 +144,7 @@
             </q-item>
           </template>
         </q-select>
-        <!-- contract type -->
+
         <q-select
           color="light-blue-10 "
           outlined
@@ -177,7 +159,7 @@
             <q-icon name />
           </template>
         </q-select>
-        <!-- crrency -->
+
         <q-select
           color="light-blue-10 "
           outlined
@@ -198,11 +180,7 @@
           </template>
         </q-select>
         <div class="w100 pt20">
-          <uploadfile
-            :UploadButton="false"
-            ref="upload"
-            :text="'attachments'"
-          />
+          <uploadfile :UploadButton="false" ref="upload" :text="'attachments'" />
         </div>
       </div>
       <div class="col3 flex">
@@ -216,7 +194,6 @@
 </template>
 
 <script>
-// import { required } from 'vuelidate/lib/validators';
 import servicesAutocomplete from '../structure/servicesAutocomplete.vue';
 import clientsAutocomplete from '../structure/clientsAutocomplete.vue';
 
@@ -235,11 +212,9 @@ export default {
 
   data() {
     return {
-      // data for validation
       uiState: 'submit not clicked',
       errors: false,
       empty: true,
-      // data for validation
       contractDuration: [
         '1',
         '2',
@@ -315,7 +290,6 @@ export default {
       this.errors = this.$v.contract.$anyError;
       this.uiState = 'submit clicked';
       if (this.errors === false && this.empty === false) {
-        // console.log(this.contract);
         const standardStartDate = this.persionToGregorian(
           this.contract.startdate
         );
@@ -383,7 +357,6 @@ export default {
               }
             });
         }
-        // send data to server
       } else {
         this.$q.notify({
           message: this.$t('Theformabovehaserrors'),

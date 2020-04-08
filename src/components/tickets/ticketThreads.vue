@@ -2,7 +2,6 @@
   <div class="ticketThread">
     <ul>
       <li v-for="ticket in tickets" :key="ticket.id">
-        <!-- {{ ticket }} -->
         <div v-if="ticket.createdBy.role === 'CLIENT'">
           <q-chat-message
             :name="`${ticket.createdBy.firstName} ${ticket.createdBy.lastName}`"

@@ -1,7 +1,13 @@
 <template>
   <div>
     todo
-    <draggable class="kanboardColumns" @change="log" @add="add" group="task">
+    <draggable
+      :emptyInsertThreshold="100"
+      class="kanboardColumns"
+      @change="log"
+      @add="add"
+      group="task"
+    >
       <transition-group name="list-complete">
         <template v-for="item in data">
           <taskCard :data="item" :key="item.id" />

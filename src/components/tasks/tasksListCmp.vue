@@ -30,13 +30,13 @@ export default {
           filterType: 'text',
         },
         {
-          lable: 'departman',
+          lable: 'department',
           filterable: true,
           sortable: false,
           filterType: 'DropBox',
         },
         {
-          lable: 'Service',
+          lable: 'service',
           filterable: true,
           sortable: false,
           filterType: 'text',
@@ -48,22 +48,17 @@ export default {
           filterType: 'DropBox',
         },
         {
-          lable: 'assignee',
+          lable: 'asignee',
           filterable: true,
           sortable: true,
           filterType: 'text',
         },
         {
-          lable: 'status',
+          lable: 'state',
           filterable: true,
           sortable: true,
           filterType: 'DropBox',
         },
-        // {
-        //   lable: 'operation',
-        //   filterable: false,
-        //   sortable: false,
-        // },
       ],
     };
   },

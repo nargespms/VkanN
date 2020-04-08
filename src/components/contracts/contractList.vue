@@ -28,13 +28,13 @@ export default {
           filterType: 'text',
         },
         {
-          lable: 'Service',
+          lable: 'service',
           filterable: true,
           sortable: false,
           filterType: 'text',
         },
         {
-          lable: 'clientName',
+          lable: 'client',
           filterable: true,
           sortable: false,
           filterType: 'text',

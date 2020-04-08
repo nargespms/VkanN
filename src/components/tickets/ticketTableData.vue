@@ -36,7 +36,6 @@
             <span class="columnLabel">{{ $t(col.lable) }}</span>
             <!-- if filterable true in each column it will show an input -->
             <div class="columnFilterWrap" v-if="col.filterable" @click.stop="stopSort">
-              <!-- filter column for text -->
               <q-input
                 outlined
                 color="text-black"
@@ -49,10 +48,10 @@
                 debounce="1000"
                 :placeholder="$t('search')"
               />
-              <!-- filter column for dropboxes -->
+
               <q-select
                 outlined
-                v-if="col.lable === 'departman'"
+                v-if="col.lable === 'department'"
                 class="filterColumnSearch dropBoxFilterColumn"
                 :options="departmans"
                 v-model.trim="filter[col.lable]"
@@ -70,7 +69,7 @@
                   </q-item>
                 </template>
               </q-select>
-              <!-- priority -->
+
               <q-select
                 outlined
                 v-if="col.lable === 'priority'"
@@ -91,6 +90,7 @@
                   </q-item>
                 </template>
               </q-select>
+
               <q-select
                 outlined
                 v-if="col.lable === 'status'"
@@ -111,8 +111,7 @@
                   </q-item>
                 </template>
               </q-select>
-              <!-- filter column for dates -->
-              <!-- start date -->
+
               <div v-if="col.filterType === 'Date'">
                 <q-input
                   outlined
@@ -146,7 +145,7 @@
                     </q-icon>
                   </template>
                 </q-input>
-                <!-- end date -->
+
                 <q-input
                   outlined
                   v-model.trim="filter.columnFilterEnddate"
@@ -186,7 +185,6 @@
       <!-- custom rows -->
       <template v-slot:body="props">
         <q-tr>
-          <!-- {{props.row}} -->
           <q-td class="idPicker" @click="recordClick(props.row)">
             <span>{{ $t(props.row.id) }}</span>
           </q-td>
@@ -264,7 +262,6 @@
             </q-btn>
           </q-td>-->
         </q-tr>
-        <!-- expandable row for extra description -->
       </template>
     </q-table>
   </div>

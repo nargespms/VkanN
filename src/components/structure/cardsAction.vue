@@ -31,7 +31,6 @@ export default {
     };
   },
   computed: {
-    // for showing localize number
     localizeNumber() {
       return this.localizeNum.toLocaleString(`${this.$route.params.locale}`);
     },
@@ -41,7 +40,6 @@ export default {
 
 <style lang="scss">
 .cardAction {
-  // width: calc(100% / 4 - 24px);
   @media screen and (min-width: 980px) {
     width: 310px;
   }
@@ -52,7 +50,6 @@ export default {
     width: 100%;
     padding: 0 !important;
   }
-  // min-width: 320px;
   float: left;
   margin-bottom: 12px;
   padding: 0px 24px;

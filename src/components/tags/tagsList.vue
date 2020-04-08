@@ -3,11 +3,10 @@
     <ul>
       <li v-for="tag in activetags" :key="tag.id">
         <q-card class="card mb12 tagList">
-          <!-- action -->
           <q-card-actions class="bg-white tagAction">
             <span>{{ tag.title }}</span>
           </q-card-actions>
-          <!-- main content -->
+
           <div class="tagListButtsWrapper">
             <q-card-section class="tagTxt brright">
               <q-icon name="edit" class="editTag">
@@ -34,6 +33,7 @@
                 />
               </q-popup-edit>
             </q-card-section>
+
             <q-card-section
               v-if="$store.state.module1.userData.role === 'MANAGER'"
               class="tagTxt p16 brleft"

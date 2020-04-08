@@ -20,11 +20,9 @@
                 <q-icon name />
               </template>
             </q-input>
-            <!-- description -->
-            <editor
-              v-if="profileMode !== 'Edit'"
-              @getTextFromEditor="getTextFromEditor"
-            />
+
+            <editor v-if="profileMode !== 'Edit'" @getTextFromEditor="getTextFromEditor" />
+
             <editorProp
               v-if="profileMode === 'Edit'"
               :data="task.description"
@@ -32,7 +30,6 @@
             />
           </div>
           <div class="taskDetail pt20">
-            <!-- ticketId -->
             <q-input
               outlined
               class="inputFieldText"
@@ -53,8 +50,7 @@
                     transition-show="scale"
                     transition-hide="scale"
                     content-style="font-size: 16px"
-                    >{{ $t('selectTicket') }}</q-tooltip
-                  >
+                  >{{ $t('selectTicket') }}</q-tooltip>
                 </q-icon>
                 <q-dialog
                   v-model="ticketPicker"
@@ -73,7 +69,6 @@
               </template>
             </q-input>
 
-            <!--  Service name -->
             <servicesAutocomplete
               :editData="profileMode === 'Edit' ? serviceEdit : ''"
               class="pt20"
@@ -81,7 +76,6 @@
               @getAutoCompleteValue="getAutoCompleteValueService"
             />
 
-            <!-- choose priority -->
             <q-select
               outlined
               :label="$t('priority')"
@@ -105,13 +99,10 @@
               </template>
 
               <p v-if="errors" class="error">
-                <span v-if="!$v.task.priority.required"
-                  >*{{ $t('thisfieldisrequired') }}.</span
-                >
+                <span v-if="!$v.task.priority.required">*{{ $t('thisfieldisrequired') }}.</span>
               </p>
             </q-select>
 
-            <!-- choose departman for ticet -->
             <q-select
               outlined
               :label="$t('departman')"
@@ -135,42 +126,23 @@
               </template>
 
               <p v-if="errors" class="error">
-                <span v-if="!$v.task.departman.required"
-                  >*{{ $t('thisfieldisrequired') }}.</span
-                >
+                <span v-if="!$v.task.departman.required">*{{ $t('thisfieldisrequired') }}.</span>
               </p>
             </q-select>
-            <!-- tags -->
-            <tagsSelection
-              :editData="profileMode === 'Edit' ? tagEdit : ''"
-              @addTagFn="addTagFn"
-            />
+
+            <tagsSelection :editData="profileMode === 'Edit' ? tagEdit : ''" @addTagFn="addTagFn" />
           </div>
         </div>
+
         <div class="w100 mt12">
-          <uploadfile
-            :UploadButton="false"
-            ref="upload"
-            :text="'attachments'"
-          />
+          <uploadfile :UploadButton="false" ref="upload" :text="'attachments'" />
         </div>
       </div>
       <div class="taskWrapper mt32">
-        <div
-          class="newTaskInfoHeader"
-          @click="taskStateAssign = !taskStateAssign"
-        >
+        <div class="newTaskInfoHeader" @click="taskStateAssign = !taskStateAssign">
           <span class="pr12">
-            <q-icon
-              v-if="!taskStateAssign"
-              class="text-blue-grey-8"
-              name="fa fa-arrow-down"
-            />
-            <q-icon
-              v-if="taskStateAssign"
-              class="text-blue-grey-8"
-              name="fa fa-arrow-up"
-            />
+            <q-icon v-if="!taskStateAssign" class="text-blue-grey-8" name="fa fa-arrow-down" />
+            <q-icon v-if="taskStateAssign" class="text-blue-grey-8" name="fa fa-arrow-up" />
           </span>
           {{ $t('assignInformation') }}
         </div>
@@ -187,7 +159,6 @@
               @getAutoCompleteValue="getAutoCompleteValuestaff"
             />
 
-            <!-- estimated time -->
             <q-input
               outlined
               :label="$t('stimateTime')"
@@ -196,16 +167,8 @@
               class="pb0"
             >
               <template v-slot:prepend>
-                <q-icon
-                  name="access_time"
-                  class="cursor-pointer"
-                  color="primary"
-                >
-                  <q-popup-proxy
-                    ref="qTimeProxy1"
-                    transition-show="scale"
-                    transition-hide="scale"
-                  >
+                <q-icon name="access_time" class="cursor-pointer" color="primary">
+                  <q-popup-proxy ref="qTimeProxy1" transition-show="scale" transition-hide="scale">
                     <q-time
                       v-model="task.stimateTime"
                       :minute-options="minuteOptions"
@@ -217,7 +180,6 @@
               </template>
             </q-input>
 
-            <!-- Due Date -->
             <q-input
               outlined
               v-model.trim="task.dueDate"
@@ -228,11 +190,7 @@
             >
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer">
-                  <q-popup-proxy
-                    ref="qDateProxy"
-                    transition-show="scale"
-                    transition-hide="scale"
-                  >
+                  <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                     <q-date
                       v-model.trim="task.dueDate"
                       @input="() => $refs.qDateProxy.hide()"
@@ -243,24 +201,11 @@
                 </q-icon>
               </template>
             </q-input>
-            <!-- done time -->
-            <q-input
-              outlined
-              v-model="task.doneTime"
-              :label="$t('doneTime')"
-              mask="time"
-            >
+
+            <q-input outlined v-model="task.doneTime" :label="$t('doneTime')" mask="time">
               <template v-slot:prepend>
-                <q-icon
-                  name="access_time"
-                  class="cursor-pointer"
-                  color="primary"
-                >
-                  <q-popup-proxy
-                    ref="qTimeProxy"
-                    transition-show="scale"
-                    transition-hide="scale"
-                  >
+                <q-icon name="access_time" class="cursor-pointer" color="primary">
+                  <q-popup-proxy ref="qTimeProxy" transition-show="scale" transition-hide="scale">
                     <q-time
                       v-model="task.doneTime"
                       :minute-options="minuteOptions"
@@ -275,21 +220,10 @@
         </q-slide-transition>
       </div>
       <div class="taskWrapper mt32">
-        <div
-          class="newTaskInfoHeader"
-          @click="taskStateComment = !taskStateComment"
-        >
+        <div class="newTaskInfoHeader" @click="taskStateComment = !taskStateComment">
           <span class="pr12">
-            <q-icon
-              v-if="!taskStateComment"
-              class="text-blue-grey-8"
-              name="fa fa-arrow-down"
-            />
-            <q-icon
-              v-if="taskStateComment"
-              class="text-blue-grey-8"
-              name="fa fa-arrow-up"
-            />
+            <q-icon v-if="!taskStateComment" class="text-blue-grey-8" name="fa fa-arrow-down" />
+            <q-icon v-if="taskStateComment" class="text-blue-grey-8" name="fa fa-arrow-up" />
           </span>
           {{ $t('comments') }}
         </div>
@@ -310,16 +244,14 @@
           class="savebutton mr12"
           color="primary"
           type="submit"
-          >{{ $t('save') }}</q-btn
-        >
+        >{{ $t('save') }}</q-btn>
         <q-btn
           v-if="profileMode !== 'Edit'"
           @click="newTicket = !newTicket"
           class="savebutton mr12"
           color="primary"
           type="submit"
-          >{{ $t('savenew') }}</q-btn
-        >
+        >{{ $t('savenew') }}</q-btn>
       </div>
     </q-form>
   </div>
@@ -336,7 +268,6 @@ import taskComment from './taskComment.vue';
 import servicesAutocomplete from '../structure/servicesAutocomplete.vue';
 import staffsAutocomplete from '../structure/staffsAutocomplete.vue';
 import tableDataWrap from '../structure/tableDataWrap.vue';
-// import ticketListCmp from '../tickets/ticketTableData.vue';
 
 export default {
   name: 'addNewTask',
@@ -352,7 +283,6 @@ export default {
     uploadfile,
     taskComment,
     servicesAutocomplete,
-    // ticketListCmp,
     tableDataWrap,
     staffsAutocomplete,
   },
@@ -434,11 +364,6 @@ export default {
           sortable: true,
           filterType: 'DropBox',
         },
-        // {
-        //   lable: 'operation',
-        //   filterable: false,
-        //   sortable: false,
-        // },
       ],
     };
   },
@@ -621,18 +546,6 @@ export default {
           });
           this.staffEdit = res.data.task.asignee;
           this.task.assignee = res.data.task.asignee;
-
-          // serviceName: '',
-          // tags: [],
-          // priority: '',
-          // ticketId: '',
-          // assigner: this.$store.state.module1.userData.id,
-          // assignee: '',
-          // stimateTime: '',
-          // doneTime: '',
-          // dueDate: '',
-          // comments: [],
-          // attachments: '',
         })
         .catch(e => {
           if (e.response.status === 422) {

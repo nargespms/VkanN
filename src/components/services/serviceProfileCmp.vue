@@ -30,10 +30,7 @@
           <p v-for="tag in data.tags" :key="tag._id">{{ tag.title }}</p>
         </div>
       </div>
-      <!-- <div class="item-content">
-        <span class="introParam">{{ $t('voip') }}</span>
-        <span class="valueIntro">{{ data.voip }}</span>
-      </div>-->
+
       <div class="item-content">
         <span class="introParam">{{ $t('primaryDomain') }}</span>
         <span class="valueIntro">{{ data.primaryDomain }}</span>

@@ -51,7 +51,7 @@ export default {
       if (
         this.$route.path
           .split('/')
-          .slice(2)
+          .slice(2, 3)
           .toString() === 'profile'
       ) {
         this.$axios
@@ -73,7 +73,7 @@ export default {
             tags: this.form.tags,
             linkedin: this.form.linkdin,
             git: this.form.git,
-            addresses: this.form.adress,
+            address: this.form.address,
             password: this.form.PassWord,
           })
           .then(res => {
@@ -88,6 +88,16 @@ export default {
                 path: `/${this.$route.params.locale}/userManagement`,
               });
             }
+          })
+          .catch(e => {
+            if (e.response.status === 409) {
+              this.$q.notify({
+                message: this.$t('mobileOrEmailEnteredAreReserved'),
+                color: 'negative',
+                icon: 'warning',
+                position: 'top',
+              });
+            }
           });
       } else {
         this.$axios
@@ -98,6 +108,7 @@ export default {
             personality: this.form.personality,
             nationalId: this.form.nationalId,
             mobile: this.form.MobileNumber,
+            tel: this.form.tel,
             role: this.form.role,
             status: this.form.status,
             email: this.form.email,
@@ -108,7 +119,7 @@ export default {
             tags: this.form.tags,
             linkedin: this.form.linkdin,
             git: this.form.git,
-            addresses: this.form.adress,
+            address: this.form.address,
             password: this.form.PassWord,
           })
           .then(res => {
@@ -121,6 +132,16 @@ export default {
               });
               this.$router.push({
                 path: `/${this.$route.params.locale}/userManagement`,
+              });
+            }
+          })
+          .catch(e => {
+            if (e.response.status === 409) {
+              this.$q.notify({
+                message: this.$t('mobileOrEmailEnteredAreReserved'),
+                color: 'negative',
+                icon: 'warning',
+                position: 'top',
               });
             }
           });

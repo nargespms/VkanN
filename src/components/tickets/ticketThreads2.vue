@@ -29,12 +29,9 @@ export default {
   },
   methods: {
     deletedTickets(value) {
-      // and then it should be post to server
-      console.log(value);
       this.$axios.delete(`/v1/api/vkann/threads/${value.id}`).then(res => {
         console.log(res);
       });
-      // should post value to server to server
     },
 
     replyThread(value) {
@@ -56,7 +53,6 @@ export default {
   },
   watch: {
     data(newVal) {
-      // console.log('ticketThreads2');
       console.log(newVal);
     },
   },

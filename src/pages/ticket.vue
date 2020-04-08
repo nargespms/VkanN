@@ -63,8 +63,6 @@ export default {
             this.getDataTicket();
           }
         });
-      // post the thread to server
-      // console.log(value);
       this.replyState = false;
       this.specificThreadToReply = '';
     },
@@ -99,7 +97,6 @@ export default {
   },
   watch: {
     ticket(newVal) {
-      // console.log('updateTicket');
       console.log('watchMe');
       this.ticket = newVal;
     },

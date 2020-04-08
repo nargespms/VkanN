@@ -16,13 +16,7 @@
     <td class="pointer">
       {{ item.itemNumber }}
       <q-popup-edit v-model="item.itemNumber" buttons @save="passItemToUp">
-        <q-input
-          type="number"
-          v-model="item.itemNumber"
-          dense
-          autofocus
-          counter
-        />
+        <q-input type="number" v-model="item.itemNumber" dense autofocus counter />
       </q-popup-edit>
     </td>
     <td class="pointer">
@@ -34,26 +28,14 @@
     <td class="pointer">
       {{ item.itemAmount }}{{ $t(currency) }}
       <q-popup-edit v-model="item.itemAmount" buttons @save="passItemToUp">
-        <q-input
-          type="number"
-          v-model="item.itemAmount"
-          dense
-          autofocus
-          counter
-        />
+        <q-input type="number" v-model="item.itemAmount" dense autofocus counter />
       </q-popup-edit>
     </td>
     <td>{{ itemTotalAmount }}{{ $t(currency) }}</td>
     <td class="pointer">
       {{ item.itemDiscount }}{{ $t(currency) }}
       <q-popup-edit v-model="item.itemDiscount" buttons @save="passItemToUp">
-        <q-input
-          type="number"
-          v-model="item.itemDiscount"
-          dense
-          autofocus
-          counter
-        />
+        <q-input type="number" v-model="item.itemDiscount" dense autofocus counter />
       </q-popup-edit>
     </td>
     <td>{{ itemTotalWithDiscount }}{{ $t(currency) }}</td>
@@ -74,8 +56,7 @@
           v-model="showing1"
           transition-show="scale"
           transition-hide="scale"
-          >{{ $t('delete') }}</q-tooltip
-        >
+        >{{ $t('delete') }}</q-tooltip>
       </q-btn>
     </td>
   </tr>
@@ -110,7 +91,18 @@ export default {
       this.$emit('getFromItemEncapsulate', this.item);
     },
     deleteRecord() {
-      this.$emit('removeItem', this.item);
+      this.$q
+        .dialog({
+          title: this.$t('deleteRecord'),
+          message: this.$t('areyousureyouwanttodeletethisRecor'),
+          cancel: true,
+        })
+        .onOk(() => {
+          this.$emit('removeItem', this.item);
+        })
+        .onCancel(() => {
+          console.log('Cancel');
+        });
     },
   },
   computed: {
@@ -128,23 +120,23 @@ export default {
     },
   },
   mounted() {
-    if (this.profileMode === 'Edit') {
-      console.log('bia inja');
-      this.item = {
-        id: this.data.id,
-        itemCode: this.data.code,
-        itemDescription: this.data.description,
-        itemNumber: this.data.quantity,
-        itemUnit: this.data.unit,
-        itemAmount: this.data.fee,
-        itemDiscount: this.data.discount,
-        itemTotalAmount: this.data.total,
-        itemTotalWithDiscount: this.data.totalAfterDiscount,
-        itemTaxAmount: this.data.tax,
-        itemTotalAmountTaxIncluded: this.data.finalTotal,
-        number: this.item.number,
-      };
-    }
+    // if (this.profileMode === 'Edit') {
+    //   this.item = {
+    //     // eslint-disable-next-line no-underscore-dangle
+    //     id: this.data._id,
+    //     itemCode: this.data.code,
+    //     itemDescription: this.data.description,
+    //     itemNumber: this.data.quantity,
+    //     itemUnit: this.data.unit,
+    //     itemAmount: this.data.fee,
+    //     itemDiscount: this.data.discount,
+    //     itemTotalAmount: this.data.total,
+    //     itemTotalWithDiscount: this.data.totalAfterDiscount,
+    //     itemTaxAmount: this.data.tax,
+    //     itemTotalAmountTaxIncluded: this.data.finalTotal,
+    //     number: this.item.rowNumber,
+    //   };
+    // }
   },
 };
 </script>

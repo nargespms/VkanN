@@ -29,12 +29,12 @@
       :label="$t('pleaseEnterYourMobilephoneNumber')"
       lazy-rules
       :rules="[val => val && val.length > 0]"
-      @input="$v.number.$touch"
+      @blur="formatter "
       :error="$v.number.$error"
+      @input="$v.number.$touch"
       mask="############"
       :disable="!this.con"
       debounce="1000"
-      @blur="formatter"
       class="pt20"
     >
       <template v-slot:prepend>
@@ -42,16 +42,8 @@
       </template>
       <!-- check for async validation -->
       <template v-if="this.number.length > 0" v-slot:append>
-        <q-icon
-          v-if="verifyMobile"
-          name="fas fa-check"
-          class="mailIcon text-positive"
-        />
-        <q-icon
-          v-if="!verifyMobile"
-          name="fas fa-times"
-          class="mailIcon text-negative"
-        />
+        <q-icon v-if="verifyMobile" name="fas fa-check" class="mailIcon text-positive" />
+        <q-icon v-if="!verifyMobile" name="fas fa-times" class="mailIcon text-negative" />
         <p class="error" v-if="wrongNumber">
           <span class="fn11">{{ $t('wrongnumber') }}</span>
         </p>
@@ -59,9 +51,10 @@
 
       <!-- check for async validation -->
       <p v-if="errors" class="error">
-        <span class="fn11" v-if="!$v.number.minLength"
-          >*{{ $t('Fieldmusthaveatleast10characters') }}.</span
-        >
+        <span
+          class="fn11"
+          v-if="!$v.number.minLength"
+        >*{{ $t('Fieldmusthaveatleast10characters') }}.</span>
       </p>
     </q-input>
     <!-- enter mobile phone number -->
@@ -77,7 +70,7 @@ const PNF = require('google-libphonenumber').PhoneNumberFormat;
 const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 
 export default {
-  props: ['data', 'existed', 'editData'],
+  props: ['data', 'existed', 'editData', 'mode'],
   data() {
     return {
       // data for validation
@@ -113,8 +106,11 @@ export default {
       this.empty = !this.$v.number.$anyDirty;
       this.errors = this.$v.number.$anyError;
       this.uiState = 'submit clicked';
+      console.log('biroonesh');
+
       if (this.errors === false && this.empty === false) {
         // ...........*************........................
+        console.log('toosh');
 
         // const number = phoneUtil.parseAndKeepRawInput(this.num, this.con);
         const number = phoneUtil.parseAndKeepRawInput(this.number, this.con);
@@ -133,8 +129,16 @@ export default {
 
           this.$axios
             .post('/v1/api/vkann/validation/mobile', {
-              mobile: completeNum,
-              existed: this.existed,
+              ...(this.mode === 'Edit'
+                ? {
+                    mobile: completeNum,
+                    existed: this.existed,
+                    id: this.$route.params.userId,
+                  }
+                : {
+                    mobile: completeNum,
+                    existed: this.existed,
+                  }),
             })
             .then(response => {
               console.log(response);

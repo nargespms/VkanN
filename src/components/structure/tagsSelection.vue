@@ -64,7 +64,6 @@ export default {
   mounted() {
     this.$axios.get('/v1/api/vkann/tags/get-tags').then(response => {
       this.tags = response.data.tags;
-      // console.log(this.tags);
     });
   },
   watch: {

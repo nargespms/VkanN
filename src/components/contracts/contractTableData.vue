@@ -34,7 +34,6 @@
             <span class="columnLabel">{{ $t(col.lable) }}</span>
             <!-- if filterable true in each column it will show an input -->
             <div class="columnFilterWrap" v-if="col.filterable" @click.stop="stopSort">
-              <!-- filter column for text -->
               <q-input
                 outlined
                 color="text-black"
@@ -47,7 +46,7 @@
                 @click="stopSort"
                 :placeholder="$t('search')"
               />
-              <!-- filter column for type -->
+
               <q-select
                 outlined
                 v-if="col.lable === 'type'"
@@ -68,7 +67,7 @@
                   </q-item>
                 </template>
               </q-select>
-              <!-- filter column for status -->
+
               <q-select
                 outlined
                 v-if="col.lable === 'status'"
@@ -89,8 +88,7 @@
                   </q-item>
                 </template>
               </q-select>
-              <!-- filter column for dates -->
-              <!-- start date -->
+
               <div v-if="col.filterType === 'Date'">
                 <q-input
                   outlined
@@ -124,7 +122,7 @@
                     </q-icon>
                   </template>
                 </q-input>
-                <!-- end date -->
+
                 <q-input
                   outlined
                   v-model.trim="filter.columnFilterEnddate"
@@ -164,7 +162,6 @@
       <!-- custom rows -->
       <template v-slot:body="props">
         <q-tr>
-          <!-- {{props.row}} -->
           <q-td>
             <router-link
               class="listNameTable"
@@ -242,11 +239,7 @@
             <span>{{ $t(props.row.status) }}</span>
           </q-td>
         </q-tr>
-        <!-- expandable row for extra description -->
       </template>
-      <!-- for responsive  -->
-
-      <!-- for responsive  -->
     </q-table>
   </div>
 </template>

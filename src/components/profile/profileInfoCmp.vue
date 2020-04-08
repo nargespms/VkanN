@@ -1,8 +1,6 @@
 <template>
   <div class="profileInfoWrapper">
-    <!-- avatar and name -->
     <userAvatarCmp :data="data" />
-    <!-- user Data and Information -->
     <userInformation :data="data" />
   </div>
 </template>

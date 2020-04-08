@@ -8,6 +8,7 @@
       <q-card-section class="usrInfoAvatar">
         <p>
           <span>{{ this.data.firstName }}</span>
+          &nbsp;
           <span>{{ this.data.lastName }}</span>
         </p>
       </q-card-section>

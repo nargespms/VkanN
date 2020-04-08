@@ -1,18 +1,10 @@
 <template>
   <tr class="invoiceItemRow">
-    <td></td>
-    <td class="pointer">
-      {{ item.code }}
-    </td>
-    <td class="pointer">
-      {{ item.description }}
-    </td>
-    <td class="pointer">
-      {{ item.quantity }}
-    </td>
-    <td class="pointer">
-      {{ item.unit }}
-    </td>
+    <td>{{item.rowNumber}}</td>
+    <td class="pointer">{{ item.code }}</td>
+    <td class="pointer">{{ item.description }}</td>
+    <td class="pointer">{{ item.quantity }}</td>
+    <td class="pointer">{{ item.unit }}</td>
     <td class="pointer">{{ item.fee }}{{ $t(currency) }}</td>
     <td>{{ item.total }}{{ $t(currency) }}</td>
     <td class="pointer">{{ item.discount }}{{ $t(currency) }}</td>

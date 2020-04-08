@@ -209,7 +209,6 @@ export default {
           console.log('OK');
           ticket.status = 'deleted';
           this.$emit('deletedTickets', this.ticket);
-          // console.log(ticket);
         })
         .onCancel(() => {
           console.log('Cancel');
@@ -217,7 +216,6 @@ export default {
     },
     editDesc() {
       this.editTicket = true;
-      // console.log(ticket);
     },
     changeEditedText(value) {
       console.log(value);

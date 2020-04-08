@@ -18,13 +18,13 @@ export default {
     return {
       columns: [
         {
-          lable: 'invoiceNumber',
+          lable: 'number',
           filterable: true,
           sortable: false,
           filterType: 'text',
         },
         {
-          lable: 'Service',
+          lable: 'service',
           filterable: true,
           sortable: false,
           filterType: 'text',
@@ -32,7 +32,7 @@ export default {
         { lable: 'amount', filterable: false, sortable: true, filterType: '' },
 
         {
-          lable: 'clientName',
+          lable: 'client',
           filterable: true,
           sortable: false,
           filterType: 'text',

@@ -74,23 +74,6 @@ export default {
   },
   mounted() {
     console.log(this.$route.params.invoiceId);
-    // this.$axios
-    //   .get(`/v1/api/vkann/invoices/${this.$route.params.invoiceId}`)
-    //   .then(res => {
-    //     console.log(res);
-    //     this.invoiceData = res.data.invoice;
-    //     this.isLoading = false;
-    //   })
-    //   .catch(e => {
-    //     if (e.response.status === 422) {
-    //       this.$q.notify({
-    //         message: this.$t('invoicesUnvalid'),
-    //         color: 'negative',
-    //         icon: 'warning',
-    //         position: 'top',
-    //       });
-    //     }
-    //   });
   },
 };
 </script>

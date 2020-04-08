@@ -1,8 +1,10 @@
 <template>
   <div>
-    <q-btn class="returnBut" @click="returnBack" color="primary">{{
+    <q-btn class="returnBut" @click="returnBack" color="primary">
+      {{
       $t('RETURNTOPANNEL')
-    }}</q-btn>
+      }}
+    </q-btn>
     <printInvoiceCmp />
   </div>
 </template>
@@ -29,5 +31,6 @@ export default {
 <style lang="scss">
 .returnBut {
   margin: 12px;
+  float: right;
 }
 </style>

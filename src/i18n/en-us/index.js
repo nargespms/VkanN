@@ -53,7 +53,7 @@ export default {
   Search: 'Search',
   PleaseEnterNationalId: 'Please Enter Your National Id',
   country: 'Country',
-  adress: 'Adress',
+  address: 'Adress',
   role: 'Role',
   status: 'Status',
   landLine: 'Land Line',
@@ -272,4 +272,8 @@ export default {
   INACTIVE: 'INACTIVE',
   BAN: ' BAN',
   DELETED: ' DELETED',
+  areyousureyouwanttodeletethisRecor: ' Are You Sure You Want TO delete This Item ? ',
+  deleteRecord: ' Delete Record',
+  invoiceEdited: 'invoice Edited',
+  mobileOrEmailEnteredAreReserved: 'mobile Or Email Entered Is Reserved',
 };

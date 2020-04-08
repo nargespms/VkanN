@@ -5,6 +5,7 @@
       :data="countries"
       :existed="existed"
       :editData="data"
+      :mode="mode"
     />
   </div>
 </template>
@@ -14,7 +15,7 @@ import mobilePhone from './mobilePhone.vue';
 
 export default {
   name: 'mobilePhoneWrapper',
-  props: ['existed', 'data'],
+  props: ['existed', 'data', 'mode'],
   components: {
     mobilePhone,
   },

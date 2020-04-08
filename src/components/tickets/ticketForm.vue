@@ -4,7 +4,7 @@
       <form>
         <q-input
           autofocus
-          filled
+          outlined
           required
           class="ticketTitle"
           :label="$t('ticketTitle')"
@@ -15,13 +15,10 @@
           @input="$v.ticket.title.$touch"
         >
           <p v-if="errors" class="error">
-            <span v-if="!$v.ticket.title.required"
-              >*{{ $t('thisfieldisrequired') }}.</span
-            >
+            <span v-if="!$v.ticket.title.required">*{{ $t('thisfieldisrequired') }}.</span>
           </p>
         </q-input>
         <div class="clear">
-          <!-- choose departman for ticet -->
           <q-select
             outlined
             :label="$t('departman')"
@@ -41,7 +38,7 @@
               </q-item>
             </template>
           </q-select>
-          <!-- choose priority -->
+
           <q-select
             outlined
             :label="$t('priority')"
@@ -61,15 +58,16 @@
             </template>
           </q-select>
 
-          <!--  Service name -->
           <servicesAutocomplete
             :isRequired="true"
             @getAutoCompleteValue="getAutoCompleteValueService"
           />
         </div>
+
         <div class="editorWrap pt20">
           <editor @getTextFromEditor="getTextFromEditor" />
         </div>
+
         <div class="attachments mb16">
           <span class="attachHeader">
             <q-icon name="fas fa-paperclip" />
@@ -78,12 +76,7 @@
 
           <uploadfile />
         </div>
-        <q-btn
-          class="uploadTicket"
-          color="primary"
-          type="submit"
-          @click.prevent="submitTicket"
-        >
+        <q-btn class="uploadTicket" color="primary" type="submit" @click.prevent="submitTicket">
           <q-icon name="fas fa-paper-plane " />
           {{ $t('send') }}
         </q-btn>
@@ -109,11 +102,8 @@ export default {
   },
   data() {
     return {
-      // data for validation
-      uiState: 'submit not clicked',
       errors: false,
       empty: true,
-      // end of data for validation
       departmans: ['INFO', 'TECH', 'BILLING'],
       priorities: ['LOW', 'NORMAL', 'CRITICAL'],
       ticket: {
@@ -173,9 +163,7 @@ export default {
     submitTicket() {
       this.empty = !this.$v.ticket.$anyDirty;
       this.errors = this.$v.ticket.$anyError;
-      this.uiState = 'submit clicked';
       console.log(this.errors);
-      // console.log(this.empty);
       if (this.errors === false && this.empty === false) {
         this.$axios
           .post('/v1/api/vkann/tickets', {

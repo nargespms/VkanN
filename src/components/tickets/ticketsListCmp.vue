@@ -30,19 +30,19 @@ export default {
           filterType: 'text',
         },
         {
-          lable: 'clientName',
+          lable: 'client',
           filterable: true,
           sortable: true,
           filterType: 'text',
         },
         {
-          lable: 'departman',
+          lable: 'department',
           filterable: true,
           sortable: false,
           filterType: 'DropBox',
         },
         {
-          lable: 'Service',
+          lable: 'service',
           filterable: true,
           sortable: false,
           filterType: 'text',
@@ -60,15 +60,9 @@ export default {
           sortable: true,
           filterType: 'DropBox',
         },
-        // {
-        //   lable: 'operation',
-        //   filterable: false,
-        //   sortable: false,
-        // },
       ],
     };
   },
 };
 </script>
 
-<style lang="scss"></style>

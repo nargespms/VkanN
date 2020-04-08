@@ -58,7 +58,7 @@ export default {
   PleaseEnterNationalId: 'لطفا کد ملی خود را وارد نمایید',
   country: 'کشور',
   city: 'شهر',
-  adress: 'آدرس',
+  address: 'آدرس',
   role: 'نقش',
   man: 'مرد',
   woman: 'زن',
@@ -328,4 +328,8 @@ export default {
   INACTIVE: 'غیرفعال',
   BAN: 'بن شده',
   DELETED: 'پاک شده',
+  areyousureyouwanttodeletethisRecor: 'آیا میخواهید این مورد را از فاکتور حذف نمایید؟',
+  deleteRecord: 'حذف آیتم',
+  invoiceEdited: 'فاکتور مورد نظر اصلاح شد',
+  mobileOrEmailEnteredAreReserved: 'شماره موبایل و یا ایمیل وارد شده قبلا در سامانه ثبت نام شده است',
 };

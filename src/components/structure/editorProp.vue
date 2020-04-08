@@ -50,9 +50,7 @@ export default {
   watch: {
     /* If our prop ever gets changed outside of this component then we need to update our local data version of the prop */
     data(newVal) {
-      // this.qeditor = newVal;
       this.qeditor = newVal;
-      // console.log('watch');
     },
   },
 };

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <div class="text-h6">{{$t('profileInfo')}}</div> -->
     <div class="list item-delimiter userInformationInfo">
       <div class="item">
         <div class="item-content">
@@ -40,17 +39,12 @@
           <span class="valueIntro">{{ data.city }}</span>
         </div>
         <div class="item-content">
-          <span class="introParam">{{ $t('adress') }}</span>
-          <span class="valueIntro">{{ data.addresses }}</span>
+          <span class="introParam">{{ $t('address') }}</span>
+          <span class="valueIntro">{{ data.address }}</span>
         </div>
         <div class="item-content wrap">
           <span class="introParam">{{ $t('Service') }}</span>
-          <!-- {{ data.services }} -->
-          <p
-            v-for="service in data.services"
-            :key="service._id"
-            class="valueIntro "
-          >
+          <p v-for="service in data.services" :key="service._id" class="valueIntro">
             <router-link
               class="valueIntro"
               :to="
@@ -93,7 +87,6 @@ export default {
   font-size: 16px;
   width: 50%;
   display: inline-block;
-  // font-family: 'ShabnamBold';
 }
 .valueIntro {
   color: $primary;

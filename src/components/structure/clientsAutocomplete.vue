@@ -18,9 +18,11 @@
     >
       <template v-slot:no-option>
         <q-item>
-          <q-item-section class="text-grey">{{
+          <q-item-section class="text-grey">
+            {{
             $t('noResults')
-          }}</q-item-section>
+            }}
+          </q-item-section>
         </q-item>
       </template>
     </q-select>

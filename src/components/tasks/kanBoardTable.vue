@@ -104,35 +104,6 @@ export default {
 </script>
 
 <style lang="scss">
-.tasksListState {
-  min-width: 10rem;
-  margin-top: 0 !important;
-  border: 1px solid grey;
-  padding: 0px 12px;
-  background-color: #e6e6e6;
-}
-.taskPacket[aria-grabbed='true'] {
-  background: #5cc1a6;
-  color: #fff;
-}
-@keyframes nodeInserted {
-  from {
-    opacity: 0.2;
-  }
-  to {
-    opacity: 0.8;
-  }
-}
-.item-dropzone-area {
-  height: 2rem;
-  background: #888;
-  opacity: 0.8;
-  animation-duration: 0.5s;
-  animation-name: nodeInserted;
-  margin-left: 0.6rem;
-  margin-right: 0.6rem;
-}
-// mine style
 .taskPacket {
   cursor: move;
   border: 1px solid #bdbdbd;

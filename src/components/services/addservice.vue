@@ -2,7 +2,6 @@
   <div class="col3th addServiceWrapper">
     <q-form @submit="onSubmit">
       <div class="col1">
-        <!--  Service name -->
         <q-input
           outlined
           required
@@ -18,14 +17,13 @@
             <q-icon name="settings_applications" />
           </template>
         </q-input>
+
         <clientsAutocomplete
           :editData="profileMode === 'Edit' ? clientEdit : ''"
           :isRequired="true"
           @getAutoCompleteValue="getAutoCompleteValueclient"
         />
-        <!-- employee name -->
 
-        <!-- primary Domain -->
         <q-input
           outlined
           class="pt20"
@@ -38,7 +36,7 @@
             <q-icon name />
           </template>
         </q-input>
-        <!-- park Domain -->
+
         <q-input
           outlined
           class="inputFieldText inputStyle pt20"
@@ -62,10 +60,8 @@
         </div>
       </div>
       <div class="col2">
-        <!-- tags -->
         <tagsSelection :editData="profileMode === 'Edit' ? tagEdit : ''" @addTagFn="addTagFn" />
 
-        <!-- voip -->
         <q-input
           outlined
           class="pt20 pb20"
@@ -79,14 +75,14 @@
             <q-icon name="fas fa-tty" />
           </template>
         </q-input>
-        <!-- description -->
+
         <textarea
           rows="5"
           v-model="service.description"
           :placeholder="$t('description')"
           class="w100 p8 description"
         ></textarea>
-        <!-- billing status -->
+
         <q-select
           color="light-blue-10"
           outlined
@@ -109,7 +105,7 @@
             </q-item>
           </template>
         </q-select>
-        <!-- status -->
+
         <q-select
           color="light-blue-10"
           outlined
@@ -164,11 +160,8 @@ export default {
   },
   data() {
     return {
-      // data for validation
-      uiState: 'submit not clicked',
       errors: true,
       empty: true,
-      // end of data for validation
       servicesName: ['name1', 'name2', 'name3'],
       servicesTag: ['tag1', 'tag2', 'tag3'],
       billingStatusService: ['PAID', 'UNPAID', 'BLOCK'],
@@ -206,21 +199,17 @@ export default {
     onSubmit() {
       this.empty = this.$v.service.$anyDirty;
       this.errors = this.$v.service.$anyError;
-      this.uiState = 'submit clicked';
       console.log(this.errors);
       console.log(this.empty);
 
       if (this.errors === false && this.empty === false) {
         // this is where you send the responses
-        this.uiState = 'form submitted';
-        console.log('edit service');
         this.$refs.upload.submit_btn();
         if (this.profileMode === 'Add') {
           this.$axios
             .post('/v1/api/vkann/services', {
               tags: this.service.tags,
               name: this.service.name,
-              // staff: this.service.employee,
               client: this.service.client,
               primaryDomain: this.service.primaryDomain,
               parkDomain: this.service.parkDomain,
@@ -309,7 +298,6 @@ export default {
           this.service.name = res.data.service.name;
           this.service.primaryDomain = res.data.service.primaryDomain;
           this.service.parkDomain = res.data.service.parkDomain;
-          // this.service.employee = res.data.staff;
           this.service.voip = res.data.service.VOIP;
           this.service.description = res.data.service.description;
           this.service.client = res.data.service.client;
@@ -320,7 +308,7 @@ export default {
           this.service.tags = res.data.service.tags._id;
           this.tagEdit = res.data.service.tags;
           this.clientEdit = this.service.client;
-          // for tags
+          //  tags
           const serverItems = res.data.service.tags.map(item => ({
             // eslint-disable-next-line no-underscore-dangle
             id: item._id,
