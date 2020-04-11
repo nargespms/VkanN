@@ -21,10 +21,13 @@
               </template>
             </q-input>
 
-            <editor v-if="profileMode !== 'Edit'" @getTextFromEditor="getTextFromEditor" />
+            <editor
+              v-if="profileMode !== 'Edit' && state !== 'kanboard'"
+              @getTextFromEditor="getTextFromEditor"
+            />
 
             <editorProp
-              v-if="profileMode === 'Edit'"
+              v-if="profileMode === 'Edit' || state === 'kanboard'"
               :data="task.description"
               @changeEditedText="getTextFromEditor"
             />
@@ -70,7 +73,7 @@
             </q-input>
 
             <servicesAutocomplete
-              :editData="profileMode === 'Edit' ? serviceEdit : ''"
+              :editData="profileMode === 'Edit' || state === 'kanboard' ? serviceEdit : ''"
               class="pt20"
               :isRequired="false"
               @getAutoCompleteValue="getAutoCompleteValueService"
@@ -130,7 +133,10 @@
               </p>
             </q-select>
 
-            <tagsSelection :editData="profileMode === 'Edit' ? tagEdit : ''" @addTagFn="addTagFn" />
+            <tagsSelection
+              :editData="profileMode === 'Edit' || state === 'kanboard' ? tagEdit : ''"
+              @addTagFn="addTagFn"
+            />
           </div>
         </div>
 
@@ -154,7 +160,7 @@
             transition-hide="scale"
           >
             <staffsAutocomplete
-              :editData="profileMode === 'Edit' ? staffEdit : ''"
+              :editData="profileMode === 'Edit' || state === 'kanboard' ? staffEdit : ''"
               isRequired="false"
               @getAutoCompleteValue="getAutoCompleteValuestaff"
             />
@@ -246,7 +252,7 @@
           type="submit"
         >{{ $t('save') }}</q-btn>
         <q-btn
-          v-if="profileMode !== 'Edit'"
+          v-if="profileMode !== 'Edit' || state !== 'kanboard'"
           @click="newTicket = !newTicket"
           class="savebutton mr12"
           color="primary"
@@ -274,7 +280,7 @@ export default {
   meta() {
     return { title: this.$t('addNewTask') };
   },
-  props: ['profileMode'],
+  props: ['profileMode', 'state', 'boardData'],
 
   components: {
     editor,
@@ -288,6 +294,7 @@ export default {
   },
   data() {
     return {
+      localBoardData: this.boardData,
       newTicket: false,
       errors: false,
       empty: true,
@@ -414,7 +421,7 @@ export default {
       this.$refs.departman.$el.focus();
       const dueDate = this.persionToGregorian(this.task.dueDate);
       console.log(this.errors);
-      if (this.profileMode !== 'Edit') {
+      if (this.profileMode !== 'Edit' && this.state !== 'kanboard') {
         if (
           this.task.priority.length !== 0 &&
           this.task.title.length !== 0 &&
@@ -514,6 +521,44 @@ export default {
           });
         }
       }
+      if (this.state === 'kanboard') {
+        if (
+          this.task.priority.length !== 0 &&
+          this.task.title.length !== 0 &&
+          this.task.departman.length !== 0
+        ) {
+          this.$axios
+            .put(`/v1/api/vkann/tasks/${this.localBoardData.id}`, {
+              title: this.task.title,
+              department: this.task.departman,
+              service: this.task.serviceName,
+              tags: this.task.tags,
+              priority: this.task.priority,
+              ticketId: this.task.ticketId,
+              dueDate: new Date(this.task.dueDate),
+              estimateTime: this.task.stimateTime,
+              // eslint-disable-next-line no-underscore-dangle
+              asignee: this.task.assignee,
+              asigner: this.task.assigner,
+              doneTime: this.task.doneTime,
+              description: this.task.description,
+              // comments: this.task.comments,
+            })
+            .then(res => {
+              console.log(res);
+              if (res.status === 200) {
+                console.log('submit task');
+                this.$q.notify({
+                  message: this.$t('taskEdited'),
+                  color: 'positive',
+                  icon: 'check',
+                  position: 'top',
+                });
+                this.$emit('taskState', false);
+              }
+            });
+        }
+      }
     },
     persionToGregorian(value) {
       const dateValue = value.split('/').map(i => parseInt(i, 10));
@@ -546,6 +591,46 @@ export default {
           });
           this.staffEdit = res.data.task.asignee;
           this.task.assignee = res.data.task.asignee;
+        })
+        .catch(e => {
+          if (e.response.status === 422) {
+            this.$q.notify({
+              message: this.$t('tasksUnvalid'),
+              color: 'negative',
+              icon: 'warning',
+              position: 'top',
+            });
+          }
+        });
+    }
+    if (this.state === 'kanboard') {
+      console.log('kanboard');
+      console.log(this.localBoardData);
+      this.$axios
+        .get(`/v1/api/vkann/tasks/${this.localBoardData.id}`)
+        .then(res => {
+          console.log(res);
+          this.task.title = res.data.task.title;
+          this.task.description = res.data.task.description;
+          this.task.departman = res.data.task.department;
+          this.task.priority = res.data.task.priority;
+          this.task.ticketId = res.data.task.ticket;
+          this.serviceEdit = res.data.task.service;
+          // eslint-disable-next-line no-underscore-dangle
+          this.task.serviceName = res.data.task.service._id;
+          const serverItems = res.data.task.tags.map(item => ({
+            // eslint-disable-next-line no-underscore-dangle
+            id: item._id,
+            title: item.title,
+          }));
+          this.tagEdit = serverItems;
+          this.task.tags = serverItems.map(item => {
+            // eslint-disable-next-line no-underscore-dangle
+            return item.id;
+          });
+          this.staffEdit = res.data.task.asignee;
+          // eslint-disable-next-line no-underscore-dangle
+          this.task.assignee = res.data.task.asignee._id;
         })
         .catch(e => {
           if (e.response.status === 422) {

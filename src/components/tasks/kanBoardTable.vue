@@ -1,17 +1,6 @@
 <template>
   <div>
     <table class="ticketsKanBoard">
-      <!-- <thead>
-        <tr>
-          <th>{{ $t('toDo') }}</th>
-          <th>{{ $t('firstSpirint') }}</th>
-          <th>{{ $t('secondSpirint') }}</th>
-          <th>{{ $t('draft') }}</th>
-          <th>{{ $t('WIP') }}</th>
-          <th>{{ $t('test') }}</th>
-          <th>{{ $t('done') }}</th>
-        </tr>
-      </thead>-->
       <tbody>
         <tr class="flex">
           <td>
@@ -104,11 +93,12 @@ export default {
 </script>
 
 <style lang="scss">
-.taskPacket {
-  cursor: move;
-  border: 1px solid #bdbdbd;
-  background-color: #f7f7f7;
-  margin: 8px 0px;
+.headerTitleKanboard {
+  background-color: #353535;
+  padding: 12px;
+  color: white;
+  text-align: center;
+  display: block;
 }
 .ticketsKanBoard {
   border: 1px solid grey;
@@ -129,8 +119,9 @@ h3 {
   padding: 4px 8px;
 }
 .kanboardColumns {
-  border: 1px solid red;
-  background-color: pink;
+  border: 1px solid #bab1f9;
+  background-color: #2f718f40;
+  padding: 8px;
   width: 200px;
   min-height: 550px;
 }

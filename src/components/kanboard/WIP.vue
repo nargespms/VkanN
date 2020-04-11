@@ -1,6 +1,6 @@
 <template>
   <div>
-    WIP
+    <span class="headerTitleKanboard">{{ $t('WIP') }}</span>
     <draggable
       :emptyInsertThreshold="100"
       class="kanboardColumns"
@@ -10,7 +10,7 @@
     >
       <div name="list-complete">
         <template v-for="item in data">
-          <taskCard :data="item" :key="item.id" />
+          <taskCard :data="item" :key="item.id" @deleteTaskOperation="deleteTaskOperation" />
         </template>
       </div>
     </draggable>
@@ -34,6 +34,18 @@ export default {
     };
   },
   methods: {
+    deleteTaskOperation(value) {
+      this.$axios
+        .delete(`/v1/api/vkann/tasks/${value.id}`)
+        .then(res => {
+          console.log(res);
+          this.$emit('reloadCmp', true);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+
     log(evt) {
       console.log('update in DRAFT');
       console.log(evt);

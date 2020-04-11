@@ -1,6 +1,7 @@
 <template>
   <div>
-    firstSpirint
+    <span class="headerTitleKanboard">{{ $t('firstSpirint') }}</span>
+
     <draggable
       :emptyInsertThreshold="100"
       class="kanboardColumns"
@@ -10,30 +11,59 @@
     >
       <div name="list-complete">
         <template v-for="item in data">
-          <taskCard :data="item" :key="item.id" />
+          <taskCard
+            :data="item"
+            :key="item.id"
+            @deleteTaskOperation="deleteTaskOperation"
+            @taskModalEdit="taskModalEdit"
+          />
         </template>
       </div>
     </draggable>
+    <taskModal :editData="task" :edit="enableEdit" @disable="disable" />
   </div>
 </template>
 
 <script>
 import draggable from 'vuedraggable';
 import taskCard from './taskCard.vue';
+import taskModal from '../structure/taskModal.vue';
 
 export default {
   name: 'firstSpirint',
   components: {
     taskCard,
     draggable,
+    taskModal,
   },
   data() {
     return {
       data: [],
       newItem: {},
+      task: {},
+      enableEdit: false,
     };
   },
   methods: {
+    disable(value) {
+      this.enableEdit = value;
+    },
+    taskModalEdit(value) {
+      this.task = value;
+      this.enableEdit = true;
+    },
+    deleteTaskOperation(value) {
+      this.$axios
+        .delete(`/v1/api/vkann/tasks/${value.id}`)
+        .then(res => {
+          console.log(res);
+          this.$emit('reloadCmp', true);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+
     log(evt) {
       console.log('update in first');
       console.log(evt.data);

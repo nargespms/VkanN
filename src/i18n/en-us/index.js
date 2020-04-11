@@ -276,4 +276,7 @@ export default {
   deleteRecord: ' Delete Record',
   invoiceEdited: 'invoice Edited',
   mobileOrEmailEnteredAreReserved: 'mobile Or Email Entered Is Reserved',
+  operation: 'operation',
+  deleteTask: 'delete Task',
+  areyousureyouwanttodeletethisTask: ' Are You Sure You Want TO delete This Task ? ',
 };

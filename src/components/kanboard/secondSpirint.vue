@@ -1,6 +1,7 @@
 <template>
   <div>
-    secondSpirint
+    <span class="headerTitleKanboard">{{ $t('secondSpirint') }}</span>
+
     <draggable
       :emptyInsertThreshold="100"
       class="kanboardColumns"
@@ -10,7 +11,7 @@
     >
       <transition-group name="list-complete">
         <template v-for="item in data">
-          <taskCard :data="item" :key="item.id" />
+          <taskCard :data="item" :key="item.id" @deleteTaskOperation="deleteTaskOperation" />
         </template>
       </transition-group>
     </draggable>
@@ -34,6 +35,17 @@ export default {
     };
   },
   methods: {
+    deleteTaskOperation(value) {
+      this.$axios
+        .delete(`/v1/api/vkann/tasks/${value.id}`)
+        .then(res => {
+          console.log(res);
+          this.$emit('reloadCmp', true);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
     log(evt) {
       window.console.log(evt);
       console.log('update in second');

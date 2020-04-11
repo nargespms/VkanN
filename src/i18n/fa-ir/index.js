@@ -329,7 +329,10 @@ export default {
   BAN: 'بن شده',
   DELETED: 'پاک شده',
   areyousureyouwanttodeletethisRecor: 'آیا میخواهید این مورد را از فاکتور حذف نمایید؟',
+  areyousureyouwanttodeletethisTask: 'آیا میخواهید این تسک را حذف نمایید؟',
   deleteRecord: 'حذف آیتم',
   invoiceEdited: 'فاکتور مورد نظر اصلاح شد',
   mobileOrEmailEnteredAreReserved: 'شماره موبایل و یا ایمیل وارد شده قبلا در سامانه ثبت نام شده است',
+  operation: 'عملیات',
+  deleteTask: 'حذف تسک',
 };
