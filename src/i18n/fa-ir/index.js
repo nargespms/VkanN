@@ -335,4 +335,5 @@ export default {
   mobileOrEmailEnteredAreReserved: 'شماره موبایل و یا ایمیل وارد شده قبلا در سامانه ثبت نام شده است',
   operation: 'عملیات',
   deleteTask: 'حذف تسک',
+  goUp: 'ابتدای لیست ',
 };

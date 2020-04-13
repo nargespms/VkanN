@@ -393,7 +393,7 @@ export default {
       this.task.ticketId = value.id;
       this.ticketPicker = false;
 
-      console.log(value);
+      // console.log(value);
     },
     getTextFromEditor(value) {
       this.task.description = value;
@@ -555,6 +555,7 @@ export default {
                   position: 'top',
                 });
                 this.$emit('taskState', false);
+                this.$emit('reloadCmp', true);
               }
             });
         }
@@ -612,6 +613,7 @@ export default {
           console.log(res);
           this.task.title = res.data.task.title;
           this.task.description = res.data.task.description;
+          console.log(res.data.task);
           this.task.departman = res.data.task.department;
           this.task.priority = res.data.task.priority;
           this.task.ticketId = res.data.task.ticket;

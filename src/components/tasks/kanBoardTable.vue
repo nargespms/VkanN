@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="w100">
     <table class="ticketsKanBoard">
       <tbody>
         <tr class="flex">
@@ -102,6 +102,10 @@ export default {
 }
 .ticketsKanBoard {
   border: 1px solid grey;
+  width: 100%;
+  td {
+    width: calc(100% / 6);
+  }
 }
 @media screen and (max-width: 800px) {
   .ticketsKanBoard {
@@ -120,9 +124,30 @@ h3 {
 }
 .kanboardColumns {
   border: 1px solid #bab1f9;
-  background-color: #2f718f40;
   padding: 8px;
-  width: 200px;
-  min-height: 550px;
+  min-height: 900px;
+}
+.bgdarkBlue {
+  background-color: #2f718f40;
+}
+.bgd9 {
+  background-color: #d9d9d9;
+}
+.kanboardScrollArea {
+  height: 850px;
+  width: 100%;
+}
+.goUpBut {
+  display: block;
+  margin: 8px auto;
+  background-color: #347f97;
+  color: #fff;
+  .q-btn__wrapper {
+    min-width: 2.5em;
+    min-height: 2.5em;
+    i {
+      font-size: 16px;
+    }
+  }
 }
 </style>

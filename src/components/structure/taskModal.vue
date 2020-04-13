@@ -9,6 +9,7 @@
         @taskState="taskState"
         :state="'kanboard'"
         :boardData="this.editData"
+        @reloadCmp="reloadCmp"
       />
     </q-dialog>
   </div>
@@ -35,6 +36,10 @@ export default {
     },
     hide() {
       this.$emit('disable', false);
+    },
+    reloadCmp(value) {
+      this.$emit('reloadCmp', value);
+      console.log('task modal');
     },
   },
   watch: {

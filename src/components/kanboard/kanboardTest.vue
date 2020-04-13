@@ -4,7 +4,12 @@
       test
       <div name="list-complete">
         <template v-for="item in data">
-          <taskCard :data="item" :key="item.id" @deleteTaskOperation="deleteTaskOperation" />
+          <taskCard
+            :data="item"
+            :key="item.id"
+            @deleteTaskOperation="deleteTaskOperation"
+            @taskModalEdit="taskModalEdit"
+          />
         </template>
       </div>
     </draggable>

@@ -94,6 +94,7 @@ export default {
   cursor: move;
   background-color: #f7f7f7;
   margin: 8px 0px;
+  width: 95%;
 }
 .border-red {
   border: 1px solid #dd0707;

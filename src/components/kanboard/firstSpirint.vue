@@ -1,26 +1,28 @@
 <template>
-  <div>
+  <div class="kanboardColumns bgd9">
     <span class="headerTitleKanboard">{{ $t('firstSpirint') }}</span>
-
-    <draggable
-      :emptyInsertThreshold="100"
-      class="kanboardColumns"
-      @change="log"
-      @add="add"
-      group="task"
-    >
-      <div name="list-complete">
-        <template v-for="item in data">
-          <taskCard
-            :data="item"
-            :key="item.id"
-            @deleteTaskOperation="deleteTaskOperation"
-            @taskModalEdit="taskModalEdit"
-          />
-        </template>
-      </div>
-    </draggable>
-    <taskModal :editData="task" :edit="enableEdit" @disable="disable" />
+    <q-scroll-area ref="scrollArea" :visible="visible" class="kanboardScrollArea">
+      <draggable :emptyInsertThreshold="100" @change="log" @add="add" group="task">
+        <div name="list-complete">
+          <template v-for="item in data">
+            <taskCard
+              :data="item"
+              :key="item.id"
+              @deleteTaskOperation="deleteTaskOperation"
+              @taskModalEdit="taskModalEdit"
+            />
+          </template>
+        </div>
+      </draggable>
+      <taskModal
+        v-show="false"
+        :editData="task"
+        :edit="enableEdit"
+        @disable="disable"
+        @reloadCmp="reloadCmp"
+      />
+    </q-scroll-area>
+    <q-btn round icon="fas fa-arrow-up" class="goUpBut" @click="animateScroll" />
   </div>
 </template>
 
@@ -42,6 +44,7 @@ export default {
       newItem: {},
       task: {},
       enableEdit: false,
+      visible: false,
     };
   },
   methods: {
@@ -51,6 +54,10 @@ export default {
     taskModalEdit(value) {
       this.task = value;
       this.enableEdit = true;
+    },
+    reloadCmp(value) {
+      this.$emit('reloadCmp', value);
+      console.log('firstSpirint');
     },
     deleteTaskOperation(value) {
       this.$axios
@@ -88,6 +95,14 @@ export default {
           }
         });
       this.$emit('reloadCmp', true);
+    },
+    animateScroll() {
+      this.$refs.scrollArea.setScrollPosition(0);
+      this.position = Math.floor(Math.random() * 1001) * 20;
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
     },
   },
   mounted() {

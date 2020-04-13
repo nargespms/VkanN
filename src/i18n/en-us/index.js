@@ -279,4 +279,5 @@ export default {
   operation: 'operation',
   deleteTask: 'delete Task',
   areyousureyouwanttodeletethisTask: ' Are You Sure You Want TO delete This Task ? ',
+  goUp: 'go Up',
 };
