@@ -1,9 +1,19 @@
 <template>
   <div class="kanboardColumns bgd9">
-    <span class="headerTitleKanboard">{{ $t('firstSpirint') }}</span>
+    <span class="headerTitleKanboard">
+      {{ $t('firstSpirint') }}
+      <span
+        class="searchColumn"
+        @click="kanboardFilterColumn =!kanboardFilterColumn"
+      >
+        <q-icon name="fas fa-filter"></q-icon>
+      </span>
+    </span>
+    <kanboardFilterColumn @getFilterColumn="getFilterColumn" v-if="kanboardFilterColumn" />
+
     <q-scroll-area ref="scrollArea" :visible="visible" class="kanboardScrollArea">
       <draggable :emptyInsertThreshold="100" @change="log" @add="add" group="task">
-        <div name="list-complete">
+        <transition-group name="list-complete">
           <template v-for="item in data">
             <taskCard
               :data="item"
@@ -12,7 +22,7 @@
               @taskModalEdit="taskModalEdit"
             />
           </template>
-        </div>
+        </transition-group>
       </draggable>
       <taskModal
         v-show="false"
@@ -22,6 +32,14 @@
         @reloadCmp="reloadCmp"
       />
     </q-scroll-area>
+    <q-pagination
+      class="mt12 paginationNum"
+      color="black"
+      v-model="pagination.page"
+      :max="totalPages"
+      :direction-links="true"
+      @input="onRequest()"
+    />
     <q-btn round icon="fas fa-arrow-up" class="goUpBut" @click="animateScroll" />
   </div>
 </template>
@@ -30,6 +48,7 @@
 import draggable from 'vuedraggable';
 import taskCard from './taskCard.vue';
 import taskModal from '../structure/taskModal.vue';
+import kanboardFilterColumn from './kanboardFilterColumn.vue';
 
 export default {
   name: 'firstSpirint',
@@ -37,6 +56,7 @@ export default {
     taskCard,
     draggable,
     taskModal,
+    kanboardFilterColumn,
   },
   data() {
     return {
@@ -45,9 +65,27 @@ export default {
       task: {},
       enableEdit: false,
       visible: false,
+      position: 0,
+      pageNumber: 1,
+      totalPages: 5,
+      collumnSearch: '',
+      filter: '',
+      pagination: {
+        descending: false,
+        page: 1,
+        limit: 5,
+        rowsNumber: 5,
+      },
+      kanboardFilterColumn: false,
+      filterable: false,
     };
   },
   methods: {
+    getFilterColumn(value) {
+      this.filter = value;
+      this.filterable = true;
+      this.onRequest();
+    },
     disable(value) {
       this.enableEdit = value;
     },
@@ -104,11 +142,39 @@ export default {
         behavior: 'smooth',
       });
     },
+    onRequest() {
+      // eslint-disable-next-line prefer-destructuring
+      const filter = this.filter;
+
+      const { page, limit, rowsNumber, descending } = this.pagination;
+      // const { collumnSearch, filter } = props;
+      // console.log(props);
+      this.loading = true;
+      this.$axios
+        .get('/v1/api/vkann/kanboard/sprint1', {
+          params: {
+            page,
+            limit,
+            rowsNumber,
+            descending,
+            // collumnSearch,
+            ...(this.filterable ? { filter } : ''),
+          },
+        })
+        .then(response => {
+          console.log(response.data);
+          this.data = response.data.result.docs;
+          this.pagination.rowsNumber = response.data.result.length;
+          this.totalPages = response.data.result.totalPages;
+          // don't forget to update local pagination object
+          this.pagination.page = page;
+          this.pagination.limit = limit;
+          this.pagination.descending = descending;
+        });
+    },
   },
   mounted() {
-    this.$axios.get('/v1/api/vkann/kanboard/sprint1').then(res => {
-      this.data = res.data.result.docs;
-    });
+    this.onRequest();
   },
 };
 </script>

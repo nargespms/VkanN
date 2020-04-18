@@ -186,7 +186,7 @@
       <template v-slot:body="props">
         <q-tr>
           <q-td class="idPicker" @click="recordClick(props.row)">
-            <span>{{ $t(props.row.id) }}</span>
+            <span>{{ $t(props.row.ticketNum) }}</span>
           </q-td>
 
           <q-td>

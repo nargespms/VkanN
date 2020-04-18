@@ -3,7 +3,7 @@
     <div class="item">
       <div class="item-content">
         <span class="introParam">{{ $t('taskNum') }}</span>
-        <span class="valueIntro">{{ data.id }}</span>
+        <span class="valueIntro">{{ data.taskNum }}</span>
       </div>
       <div class="item-content">
         <span class="introParam">{{ $t('title') }}</span>

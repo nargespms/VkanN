@@ -18,7 +18,7 @@ export default {
     return {
       columns: [
         {
-          lable: 'ticketNumber',
+          lable: 'ticketNum',
           filterable: true,
           sortable: false,
           filterType: 'text',

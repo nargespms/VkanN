@@ -2,8 +2,8 @@
   <div class="ticketInfoWrap">
     <div class="ticketInfo">
       <h3>
-        <span>#{{ data.id }}</span
-        >- {{ data.title }}
+        <span>#{{ data.taskNum }}</span>
+        - {{ data.title }}
       </h3>
       <q-select
         outlined

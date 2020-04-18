@@ -139,7 +139,8 @@ h3 {
 }
 .goUpBut {
   display: block;
-  margin: 8px auto;
+  // margin: 8px auto;
+  margin-top: 12px;
   background-color: #347f97;
   color: #fff;
   .q-btn__wrapper {
@@ -148,6 +149,16 @@ h3 {
     i {
       font-size: 16px;
     }
+  }
+}
+.paginationNum {
+  justify-content: space-evenly;
+}
+.paginationNum {
+  button:active {
+    background: transparent !important;
+    color: grey !important;
+    box-shadow: none !important;
   }
 }
 </style>

@@ -390,7 +390,7 @@ export default {
     },
 
     pickerInfo(value) {
-      this.task.ticketId = value.id;
+      this.task.ticketId = value.ticketNum;
       this.ticketPicker = false;
 
       // console.log(value);

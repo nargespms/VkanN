@@ -18,7 +18,7 @@ export default {
     return {
       columns: [
         {
-          lable: 'id',
+          lable: 'taskNum',
           filterable: true,
           sortable: false,
           filterType: 'text',

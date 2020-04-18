@@ -4,6 +4,15 @@
     @drag="dragged"
     :class="item.priority === 'CRITICAL' ? 'border-red': 'border-default'"
   >
+    <span class="operationBut" @click="enableOp = !enableOp">
+      ...
+      <q-tooltip
+        v-model="showing"
+        transition-show="scale"
+        transition-hide="scale"
+      >{{ $t('operation') }}</q-tooltip>
+    </span>
+
     <q-item>
       <q-item-section avatar>
         <q-avatar>
@@ -19,18 +28,74 @@
 
     <ul class="taskMoreOpt">
       <li class="priorityTask">
-        <q-icon class="pr12" v-if="item.priority === 'CRITICAL'" name="warning" color="negative" />
-        <span :class="item.priority === 'CRITICAL' ? 'text-red-9': ''">{{$t(item.priority)}}</span>
-      </li>
-      <li class="departmentTask" v-if="$store.state.module1.userData.role === 'MANAGER'">
-        <q-icon class="pr12" name="far fa-building" color="primary" />
-        <span class="text-primary">{{ $t(item.department) }}</span>
+        <div class="departmentTask" v-if="$store.state.module1.userData.role === 'MANAGER'">
+          <q-icon
+            v-if="item.department === 'TECH'"
+            class="pr12 fn18"
+            name="fas fa-cogs"
+            color="primary"
+          >
+            <q-tooltip
+              v-model="showing1"
+              transition-show="scale"
+              transition-hide="scale"
+            >{{ $t('TECH') }}</q-tooltip>
+          </q-icon>
+          <q-icon
+            v-if="item.department === 'INFO'"
+            class="pr12 fn18"
+            name="fas fa-info-circle"
+            color="primary"
+          >
+            <q-tooltip
+              v-model="showing1"
+              transition-show="scale"
+              transition-hide="scale"
+            >{{ $t('INFO') }}</q-tooltip>
+          </q-icon>
+          <q-icon
+            v-if="item.department === 'BILLING'"
+            class="pr12 fn18"
+            name="fas fa-file-invoice-dollar"
+            color="primary"
+          >
+            <q-tooltip
+              v-model="showing1"
+              transition-show="scale"
+              transition-hide="scale"
+            >{{ $t('BILLING') }}</q-tooltip>
+          </q-icon>
+          <q-icon
+            v-if="item.department === 'GENERAL'"
+            class="pr12 fn18"
+            name="fas fa-user-secret"
+            color="primary"
+          >
+            <q-tooltip
+              v-model="showing1"
+              transition-show="scale"
+              transition-hide="scale"
+            >{{ $t('GENERAL') }}</q-tooltip>
+          </q-icon>
+        </div>
+        <q-icon
+          class="pr12 fn18 pl12"
+          v-if="item.priority === 'CRITICAL'"
+          name="warning"
+          color="negative"
+        >
+          <q-tooltip
+            v-model="showing2"
+            transition-show="scale"
+            transition-hide="scale"
+          >{{ $t('CRITICAL') }}</q-tooltip>
+        </q-icon>
       </li>
       <li>
         <q-icon name="calendar"></q-icon>
         <span>{{ item.dueDate }}</span>
       </li>
-      <li class="operationCel">
+      <li class="operationCel" v-if="enableOp">
         {{$t('operation')}}
         <q-icon name="edit" @click="editTask">
           <q-tooltip transition-show="scale" transition-hide="scale">
@@ -63,6 +128,10 @@ export default {
   data() {
     return {
       item: { ...this.data },
+      enableOp: false,
+      showing: false,
+      showing1: false,
+      showing2: false,
     };
   },
   methods: {
@@ -95,6 +164,7 @@ export default {
   background-color: #f7f7f7;
   margin: 8px 0px;
   width: 95%;
+  border-left: 5px solid #2f718f !important;
 }
 .border-red {
   border: 1px solid #dd0707;
@@ -132,10 +202,18 @@ export default {
   }
 }
 .departmentTask {
-  padding: 8px 12px;
   display: flex;
   i {
     padding-top: 8px;
   }
+}
+.operationBut {
+  font-size: 18px;
+  color: #000;
+  float: right;
+  // background-color: #2f718f;
+  padding: 0px 12px 8px 12px;
+  border-radius: 0 0 0 5px;
+  cursor: pointer;
 }
 </style>

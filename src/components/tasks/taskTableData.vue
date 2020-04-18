@@ -186,7 +186,7 @@
       <template v-slot:body="props">
         <q-tr>
           <q-td>
-            <span>{{ $t(props.row.id) }}</span>
+            <span>{{ $t(props.row.taskNum) }}</span>
           </q-td>
 
           <q-td>

@@ -109,7 +109,7 @@ export default {
     onRequest(props) {
       const { page, limit, rowsNumber, sortBy, descending } = props.pagination;
       const { tableSearch, filter } = props;
-      console.log(props);
+      console.log(filter);
       this.loading = true;
       console.log(props);
       this.$axios

@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-xl">
-    <taskModal v-if="$store.state.module1.userData.role !== 'CLIENT'" style="overflow:auto;" />
+    <taskModal style="overflow:auto;" />
     <div class="flex mt12">
       <kanBoardTable />
     </div>
