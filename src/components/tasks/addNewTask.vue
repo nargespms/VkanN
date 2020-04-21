@@ -330,41 +330,43 @@ export default {
       staffEdit: '',
       columns: [
         {
-          lable: 'ticketNumber',
+          lable: 'ticketNum',
           filterable: true,
           sortable: false,
-          filterType: 'Text',
+          filterType: 'text',
         },
         {
           lable: 'title',
           filterable: true,
           sortable: false,
-          filterType: 'Text',
+          filterType: 'text',
         },
         {
-          lable: 'departman',
+          lable: 'client',
+          filterable: true,
+          sortable: true,
+          filterType: 'text',
+        },
+
+        {
+          lable: 'department',
           filterable: true,
           sortable: false,
-          filterType: 'Text',
+          filterType: 'DropBox',
         },
         {
-          lable: 'Service',
+          lable: 'service',
           filterable: true,
           sortable: false,
-          filterType: 'Text',
+          filterType: 'text',
         },
         {
           lable: 'priority',
           filterable: true,
           sortable: false,
-          filterType: 'Text',
+          filterType: 'DropBox',
         },
-        {
-          lable: 'clientName',
-          filterable: true,
-          sortable: true,
-          filterType: 'Text',
-        },
+
         {
           lable: 'status',
           filterable: true,
@@ -434,7 +436,7 @@ export default {
               service: this.task.serviceName,
               tags: this.task.tags,
               priority: this.task.priority,
-              ticketId: this.task.ticketId,
+              ticketNum: this.task.ticketId,
               dueDate,
               estimateTime: this.task.stimateTime,
               asignee: this.task.assignee,

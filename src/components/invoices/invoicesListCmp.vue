@@ -56,7 +56,7 @@ export default {
           filterType: 'DropBox',
         },
         {
-          lable: 'invoiceOfficial',
+          lable: 'official',
           filterable: true,
           sortable: true,
           filterType: '',
@@ -73,3 +73,4 @@ export default {
   },
 };
 </script>
+

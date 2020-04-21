@@ -1,12 +1,17 @@
 <template>
   <div class="invoiceProfileWrap">
-    <q-btn color="primary" icon="print" @click="goToPrint" class="printInvoiceBut">
-      <q-tooltip
-        v-model="showing"
-        transition-show="scale"
-        transition-hide="scale"
-      >{{ $t('print') }}&nbsp;{{ $t('invoice') }}</q-tooltip>
-    </q-btn>
+    <router-link
+      :to="`/${this.$route.params.locale}/print/invoice/${this.$route.params.invoiceId}`"
+      target="_blank"
+    >
+      <q-btn color="primary" icon="print" class="printInvoiceBut">
+        <q-tooltip
+          v-model="showing"
+          transition-show="scale"
+          transition-hide="scale"
+        >{{ $t('print') }}&nbsp;{{ $t('invoice') }}</q-tooltip>
+      </q-btn>
+    </router-link>
 
     <q-card class="clearme">
       <div>

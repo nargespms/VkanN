@@ -280,4 +280,12 @@ export default {
   deleteTask: 'delete Task',
   areyousureyouwanttodeletethisTask: ' Are You Sure You Want TO delete This Task ? ',
   goUp: 'go Up',
+  invoiceOfficial: '  invoiceOfficial ',
+  invoiceUnOfficial: ' invoiceUnOfficial  ',
+  NATURAL: 'natural',
+  JURDICAL: 'jurdical',
+  CLIENT: 'client',
+  areyousureyouwanttodeletethisTicket: 'Are You Sure You Want TO delete This Ticket ?  ',
+  deleteTicket: 'delete Ticket ',
+  ticketNum: 'ticket Number',
 };

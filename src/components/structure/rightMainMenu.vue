@@ -7,15 +7,8 @@
     :breakpoint="980"
     @hide="hideMenu"
   >
-    <q-img
-      class="absolute-top"
-      src="https://cdn.quasar.dev/img/material.png"
-      style="height: 150px"
-    >
-      <div
-        v-if="mobileSize || !miniState"
-        class="absolute-bottom bg-transparent"
-      >
+    <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
+      <div v-if="mobileSize || !miniState" class="absolute-bottom bg-transparent">
         <router-link
           :to="
             '/' +
@@ -54,7 +47,6 @@
       style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd"
     >
       <q-list>
-        <q-item-label header>{{ $t('EssentialLinks') }}</q-item-label>
         <q-btn
           v-if="!this.mobileSize"
           :class="miniState ? '' : 'pl8'"
@@ -68,10 +60,7 @@
             <!-- home route -->
             <li class="mainMenuLi">
               <q-item class="p8">
-                <router-link
-                  class="noneExpandableMenu"
-                  :to="'/' + locale + '/' + 'dashboard'"
-                >
+                <router-link class="noneExpandableMenu" :to="'/' + locale + '/' + 'dashboard'">
                   <q-item-section avatar>
                     <q-icon name="fas fa-home" class="fn18" />
                   </q-item-section>
@@ -82,10 +71,7 @@
             <li class="mainMenuLi">
               <q-item class="p8">
                 <!-- profile route -->
-                <router-link
-                  class="noneExpandableMenu"
-                  :to="'/' + locale + '/' + 'profile'"
-                >
+                <router-link class="noneExpandableMenu" :to="'/' + locale + '/' + 'profile'">
                   <q-item-section avatar>
                     <q-icon name="fas fa-address-card" class="fn18" />
                   </q-item-section>
@@ -94,10 +80,7 @@
               </q-item>
             </li>
             <!-- userManagement route -->
-            <li
-              class="mainMenuLi"
-              v-if="$store.state.module1.userData.role !== 'CLIENT'"
-            >
+            <li class="mainMenuLi" v-if="$store.state.module1.userData.role !== 'CLIENT'">
               <q-expansion-item
                 icon="supervisor_account"
                 :label="$t('userManagement')"
@@ -107,7 +90,7 @@
               >
                 <router-link
                   v-if="
-                    $store.state.module1.userData.role !== 'MEMBER' ||
+                    $store.state.module1.userData.role !== 'MEMBER' &&
                       $store.state.module1.userData.role !== 'CLIENT'
                   "
                   class="block"
@@ -156,20 +139,14 @@
                   {{ $t('ticketsList') }}
                 </router-link>
                 <!-- add new tickets -->
-                <router-link
-                  class="block"
-                  :to="'/' + locale + '/' + 'tickets' + '/' + 'addTicket'"
-                >
+                <router-link class="block" :to="'/' + locale + '/' + 'tickets' + '/' + 'addTicket'">
                   <q-icon name="system_update_alt" />
                   {{ $t('addTicket') }}
                 </router-link>
               </q-expansion-item>
             </li>
             <!-- my tasks route -->
-            <li
-              class="mainMenuLi"
-              v-if="$store.state.module1.userData.role !== 'CLIENT'"
-            >
+            <li class="mainMenuLi" v-if="$store.state.module1.userData.role !== 'CLIENT'">
               <q-expansion-item
                 expand-icon-toggle
                 class="expandableMenu"
@@ -177,31 +154,19 @@
                 :label="$t('tasks')"
                 :to="'/' + locale + '/' + 'tasks'"
               >
-                <router-link
-                  class="block"
-                  :to="'/' + locale + '/' + 'tasks' + '/' + 'myTasksList'"
-                >
+                <router-link class="block" :to="'/' + locale + '/' + 'tasks' + '/' + 'myTasksList'">
                   <q-icon name="play_for_work" />
                   {{ $t('mytasks') }}
                 </router-link>
-                <router-link
-                  class="block"
-                  :to="'/' + locale + '/' + 'tasks' + '/' + 'tasksList'"
-                >
+                <router-link class="block" :to="'/' + locale + '/' + 'tasks' + '/' + 'tasksList'">
                   <q-icon name="play_for_work" />
                   {{ $t('tasksList') }}
                 </router-link>
-                <router-link
-                  class="block"
-                  :to="'/' + locale + '/' + 'tasks' + '/' + 'addTask'"
-                >
+                <router-link class="block" :to="'/' + locale + '/' + 'tasks' + '/' + 'addTask'">
                   <q-icon name="play_for_work" />
                   {{ $t('addTask') }}
                 </router-link>
-                <router-link
-                  class="block"
-                  :to="'/' + locale + '/' + 'tasks' + '/' + 'kanBoard'"
-                >
+                <router-link class="block" :to="'/' + locale + '/' + 'tasks' + '/' + 'kanBoard'">
                   <q-icon name="fa fa-table" />
                   {{ $t('kanBoard') }}
                 </router-link>
@@ -364,10 +329,7 @@
             >
               <q-item class="p8">
                 <!-- tags -->
-                <router-link
-                  class="noneExpandableMenu"
-                  :to="'/' + locale + '/' + 'tags'"
-                >
+                <router-link class="noneExpandableMenu" :to="'/' + locale + '/' + 'tags'">
                   <q-item-section avatar>
                     <q-icon name="fas fa-tags" class="fn18" />
                   </q-item-section>

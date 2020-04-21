@@ -67,7 +67,7 @@ export default {
     },
     reloadSpirint1(value) {
       console.log(value);
-      console.log('umad to reload sprint1');
+      console.log('sprint1');
 
       this.spirint1Key += 1;
     },
@@ -88,7 +88,6 @@ export default {
       this.doneKey += 1;
     },
   },
-  mounted() {},
 };
 </script>
 

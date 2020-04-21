@@ -104,6 +104,7 @@
               </q-item-section>
             </q-item>
           </template>
+          <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
         </q-select>
 
         <q-select
@@ -127,6 +128,7 @@
               </q-item-section>
             </q-item>
           </template>
+          <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
         </q-select>
       </div>
       <div class="col3">

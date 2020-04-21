@@ -147,7 +147,6 @@
               outlined
               v-model.trim="invoice.currency"
               :options="invoiceCurrency"
-              use-input
               class="w55"
               :label="$t('currency')"
             >
@@ -161,6 +160,7 @@
                   </q-item-section>
                 </q-item>
               </template>
+              <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
             </q-select>
           </li>
 

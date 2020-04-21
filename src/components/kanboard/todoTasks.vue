@@ -2,11 +2,9 @@
   <div class="kanboardColumns bgdarkBlue">
     <span class="headerTitleKanboard">
       {{ $t('toDo') }}
-      <span
-        class="searchColumn"
-        @click="kanboardFilterColumn =!kanboardFilterColumn"
-      >
-        <q-icon name="fas fa-filter"></q-icon>
+      <span class="searchColumn">
+        <q-icon name="fas fa-undo" @click="reloadCmp()"></q-icon>
+        <q-icon name="fas fa-filter" @click="kanboardFilterColumn =!kanboardFilterColumn"></q-icon>
       </span>
     </span>
     <kanboardFilterColumn @getFilterColumn="getFilterColumn" v-if="kanboardFilterColumn" />
@@ -33,6 +31,7 @@
       />
     </q-scroll-area>
     <q-pagination
+      v-if="!loading"
       class="mt12 paginationNum"
       color="black"
       v-model="pagination.page"
@@ -74,11 +73,11 @@ export default {
       pagination: {
         descending: false,
         page: 1,
-        limit: 5,
-        rowsNumber: 5,
+        limit: 7,
       },
       kanboardFilterColumn: false,
       filterable: false,
+      loading: true,
     };
   },
   methods: {
@@ -96,7 +95,7 @@ export default {
     },
     reloadCmp(value) {
       this.$emit('reloadCmp', value);
-      console.log('firstSpirint');
+      console.log('todo');
     },
     deleteTaskOperation(value) {
       this.$axios.delete(`/v1/api/vkann/tasks/${value}`).then(res => {
@@ -145,33 +144,30 @@ export default {
     },
 
     onRequest() {
+      console.log('onrequest');
       // eslint-disable-next-line prefer-destructuring
       const filter = this.filter;
 
-      const { page, limit, rowsNumber, descending } = this.pagination;
-      // const { collumnSearch, filter } = props;
-      // console.log(props);
-      this.loading = true;
+      const { page, limit, descending } = this.pagination;
       this.$axios
         .get('/v1/api/vkann/kanboard/todo', {
           params: {
             page,
             limit,
-            rowsNumber,
             descending,
-            // collumnSearch,
             ...(this.filterable ? { filter } : ''),
           },
         })
         .then(response => {
           console.log(response.data);
           this.data = response.data.result.docs;
-          this.pagination.rowsNumber = response.data.result.length;
+          // this.pagination.rowsNumber = response.data.result.length;
           this.totalPages = response.data.result.totalPages;
           // don't forget to update local pagination object
           this.pagination.page = page;
           this.pagination.limit = limit;
           this.pagination.descending = descending;
+          this.loading = false;
         });
     },
   },
@@ -184,7 +180,7 @@ export default {
 <style lang="scss">
 .searchColumn {
   display: flex;
-  justify-content: left;
+  justify-content: space-between;
   cursor: pointer;
 }
 .kanboardFilterColumn {

@@ -35,6 +35,7 @@
       @request="onRequest"
       :pagination="pagination"
       @onIdClick="onIdClick"
+      @ticketDelete="ticketDelete"
     />
     <invoiceTableData
       v-if="this.module === 'invoice'"
@@ -125,7 +126,6 @@ export default {
           },
         })
         .then(response => {
-          console.log(response.data);
           this.data = response.data.result.docs;
           this.pagination.rowsNumber = response.data.result.length;
           // don't forget to update local pagination object
@@ -152,7 +152,20 @@ export default {
               return parseFloat(x[sortBy]) - parseFloat(y[sortBy]);
             });
           }
+        })
+        .catch(e => {
+          if (e.response.status === 404) {
+            this.$q.notify({
+              message: this.$t('noResults'),
+              color: 'negative',
+              icon: 'warning',
+              position: 'top',
+            });
+          }
         });
+    },
+    ticketDelete(value) {
+      this.$emit('ticketDelete', value);
     },
   },
   mounted() {
@@ -160,7 +173,11 @@ export default {
       pagination: this.pagination,
       tableSearch: undefined,
     });
-    console.log(this.endpoint);
   },
 };
 </script>
+<style lang="scss">
+.q-table__top {
+  padding: 28px;
+}
+</style>

@@ -1,7 +1,13 @@
 <template>
   <div class="q-pa-xl">
     <div class="userManagementListWrap">
-      <tableDataWrap module="ticket" :columns="columns" :endpoint="'/v1/api/vkann/tickets/list'" />
+      <tableDataWrap
+        @ticketDelete="ticketDelete"
+        module="ticket"
+        :columns="columns"
+        :endpoint="'/v1/api/vkann/tickets/list'"
+        :key="componentKey"
+      />
     </div>
   </div>
 </template>
@@ -60,8 +66,29 @@ export default {
           sortable: true,
           filterType: 'DropBox',
         },
+        {
+          lable: 'operation',
+          filterable: false,
+          sortable: false,
+        },
       ],
+      componentKey: 0,
     };
+  },
+  methods: {
+    ticketDelete(value) {
+      this.$axios
+        .delete(`/v1/api/vkann/tickets/${value}`)
+        .then(res => {
+          console.log(res);
+          if (res.status === 200) {
+            this.componentKey += 1;
+          }
+        })
+        .catch(e => {
+          console.log(e.response);
+        });
+    },
   },
 };
 </script>

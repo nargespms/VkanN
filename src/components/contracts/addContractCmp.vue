@@ -143,6 +143,7 @@
               </q-item-section>
             </q-item>
           </template>
+          <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
         </q-select>
 
         <q-select
@@ -158,6 +159,14 @@
           <template v-slot:append>
             <q-icon name />
           </template>
+          <template v-slot:option="scope">
+            <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+              <q-item-section>
+                <q-item-label>{{ $t(scope.opt) }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </template>
+          <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
         </q-select>
 
         <q-select
@@ -178,6 +187,7 @@
               </q-item-section>
             </q-item>
           </template>
+          <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
         </q-select>
         <div class="w100 pt20">
           <uploadfile :UploadButton="false" ref="upload" :text="'attachments'" />

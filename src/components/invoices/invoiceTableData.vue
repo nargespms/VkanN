@@ -3,6 +3,7 @@
     <q-table
       :data="data"
       :columns="columns"
+      :rows-per-page-options="[0]"
       row-key="name"
       :filter="tableSearch"
       :separator="separator"
@@ -14,20 +15,7 @@
       :grid="$q.screen.lt.sm"
     >
       <!-- search field -->
-      <template v-slot:top-right>
-        <q-input
-          class="tableSearchInput"
-          borderless
-          dense
-          debounce="300"
-          v-model="tableSearch"
-          :placeholder="$t('Search')"
-        >
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-      </template>
+      <template v-slot:top-right></template>
       <!-- custom header -->
       <template v-slot:header="props">
         <q-tr :props="props">
@@ -52,13 +40,10 @@
               <q-select
                 outlined
                 v-if="col.lable === 'status'"
-                class="filterColumnSearch dropBoxFilterColumn"
+                class="filterColumnSearch dropBoxFilterColumn w150p"
                 :options="status"
                 v-model.trim="filter[col.lable]"
                 @input="colFilterChange"
-                use-input
-                hide-selected
-                fill-input
                 debounce="1000"
               >
                 <template v-slot:option="scope">
@@ -68,18 +53,37 @@
                     </q-item-section>
                   </q-item>
                 </template>
+                <template v-slot:selected-item="scope">{{ $t(scope.opt)}}</template>
               </q-select>
 
               <q-select
                 outlined
-                v-if="col.lable === 'type'"
-                class="filterColumnSearch dropBoxFilterColumn"
-                :options="type"
+                v-if="col.lable === 'official'"
+                class="filterColumnSearch dropBoxFilterColumn w150p"
+                :options="official"
                 v-model.trim="filter[col.lable]"
                 @input="colFilterChange"
                 use-input
-                hide-selected
-                fill-input
+                debounce="1000"
+                emit-value
+                map-options
+                :option-label="opt => $t(opt.label)"
+              >
+                <template v-slot:option="scope">
+                  <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                    <q-item-section>
+                      <q-item-label>{{ $t(scope.opt.label) }}</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
+              <q-select
+                outlined
+                v-if="col.lable === 'type'"
+                class="filterColumnSearch dropBoxFilterColumn w150p"
+                :options="type"
+                v-model.trim="filter[col.lable]"
+                @input="colFilterChange"
                 debounce="1000"
               >
                 <template v-slot:option="scope">
@@ -89,6 +93,7 @@
                     </q-item-section>
                   </q-item>
                 </template>
+                <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
               </q-select>
 
               <div v-if="col.filterType === 'Date'">
@@ -270,7 +275,10 @@ export default {
     return {
       todayDate: new Date(),
       status: ['VALID', 'INVALID', 'PAID', 'UNPAID', 'PENDING'],
-      official: ['invoiceOfficial', 'invoiceUnOfficial'],
+      official: [
+        { label: 'invoiceUnOfficial', value: true },
+        { label: 'invoiceOfficial', value: false },
+      ],
       type: ['QUOTE', 'INVOICE'],
       separator: 'cell',
       filter: {},
@@ -364,6 +372,8 @@ export default {
   margin-top: 8px;
 }
 .columnFilterWrap {
+  display: flex;
+  justify-content: center;
   .q-field__control {
     height: unset;
     color: #000 !important;

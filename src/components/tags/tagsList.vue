@@ -1,80 +1,85 @@
 <template>
   <div class="tagsListWrapp">
-    <ul>
-      <li v-for="tag in activetags" :key="tag.id">
-        <q-card class="card mb12 tagList">
-          <q-card-actions class="bg-white tagAction">
-            <span>{{ tag.title }}</span>
-          </q-card-actions>
+    <q-scroll-area class="tagsListWrappScroll">
+      <ul>
+        <li v-for="tag in activetags" :key="tag.id">
+          <q-card class="card mb12 tagList">
+            <q-card-actions class="bg-white tagAction">
+              <span>{{ tag.title }}</span>
+            </q-card-actions>
 
-          <div class="tagListButtsWrapper">
-            <q-card-section class="tagTxt brright">
-              <q-icon name="edit" class="editTag">
-                <q-tooltip transition-show="scale" transition-hide="scale">
-                  {{
-                  $t('editTag')
-                  }}
-                </q-tooltip>
-              </q-icon>
-              <q-popup-edit
-                v-model.trim="tag.title"
-                buttons
-                anchor="top left"
-                :validate="checkForReapetedTags"
-              >
-                <q-input
+            <div class="tagListButtsWrapper">
+              <q-card-section class="tagTxt brright">
+                <q-icon name="edit" class="editTag">
+                  <q-tooltip transition-show="scale" transition-hide="scale">
+                    {{
+                    $t('editTag')
+                    }}
+                  </q-tooltip>
+                </q-icon>
+                <q-popup-edit
                   v-model.trim="tag.title"
-                  dense
-                  autofocus
-                  counter
-                  debounce="1000"
-                  :error="errorValidation"
-                  @change="setEditTag(tag)"
-                />
-              </q-popup-edit>
-            </q-card-section>
+                  buttons
+                  anchor="top left"
+                  :validate="checkForReapetedTags"
+                >
+                  <q-input
+                    v-model.trim="tag.title"
+                    dense
+                    autofocus
+                    counter
+                    debounce="1000"
+                    :error="errorValidation"
+                    @change="setEditTag(tag)"
+                  />
+                </q-popup-edit>
+              </q-card-section>
 
-            <q-card-section
-              v-if="$store.state.module1.userData.role === 'MANAGER'"
-              class="tagTxt p16 brleft"
-              @click="deactiveTag(tag)"
-            >
-              <q-icon name="fa fa-trash" class="editTag">
-                <q-tooltip transition-show="scale" transition-hide="scale">
-                  {{
-                  $t('deactiveTag')
-                  }}
-                </q-tooltip>
-              </q-icon>
-            </q-card-section>
-          </div>
-        </q-card>
-      </li>
-    </ul>
+              <q-card-section
+                v-if="$store.state.module1.userData.role === 'MANAGER'"
+                class="tagTxt p16 brleft"
+                @click="deactiveTag(tag)"
+              >
+                <q-icon name="fa fa-trash" class="editTag">
+                  <q-tooltip transition-show="scale" transition-hide="scale">
+                    {{
+                    $t('deactiveTag')
+                    }}
+                  </q-tooltip>
+                </q-icon>
+              </q-card-section>
+            </div>
+          </q-card>
+        </li>
+      </ul>
+    </q-scroll-area>
+
     <div v-if="deactivetags.length">
       <h4 class="headerTitleInPage">
         <span>{{ $t('deletedTags') }}</span>
       </h4>
-      <ul class="deactiveList">
-        <li v-for="tag in deactivetags" :key="tag.id">
-          <q-card class="card mb12 tagList">
-            <!-- action -->
-            <q-card-actions class="tagAction">
-              <span class="clw">{{ tag.title }}</span>
-            </q-card-actions>
-            <!-- main content -->
-            <q-card-section class="tagTxt p16 brleft" @click="activeTag(tag)">
-              <q-icon name="restore" class="editTag positive clb">
-                <q-tooltip transition-show="scale" transition-hide="scale">
-                  {{
-                  $t('restoreTag')
-                  }}
-                </q-tooltip>
-              </q-icon>
-            </q-card-section>
-          </q-card>
-        </li>
-      </ul>
+      <q-scroll-area class="tagsListWrappScroll">
+        <ul class="deactiveList">
+          <li v-for="tag in deactivetags" :key="tag.id">
+            <q-card class="card mb12 tagList">
+              <!-- action -->
+              <q-card-actions class="tagAction">
+                <span class="clw">{{ tag.title }}</span>
+              </q-card-actions>
+              <!-- main content -->
+              <q-card-section class="tagTxt p16 brleft" @click="activeTag(tag)">
+                <q-icon name="restore" class="editTag positive clb">
+                  <q-tooltip transition-show="scale" transition-hide="scale">
+                    {{
+                    $t('restoreTag')
+                    }}
+                  </q-tooltip>
+                </q-icon>
+              </q-card-section>
+            </q-card>
+          </li>
+        </ul>
+      </q-scroll-area>
     </div>
   </div>
 </template>
@@ -282,5 +287,9 @@ export default {
 .tagList {
   display: flex;
   justify-content: space-between;
+}
+.tagsListWrappScroll {
+  height: 500px;
+  padding: 16px;
 }
 </style>

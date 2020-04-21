@@ -49,9 +49,6 @@
             v-model.trim="filter.priority"
             @input="colFilterChange"
             debounce="1000"
-            use-input
-            hide-selected
-            fill-input
             :label="$t('priority')"
           >
             <template v-slot:option="scope">
@@ -61,6 +58,7 @@
                 </q-item-section>
               </q-item>
             </template>
+            <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
           </q-select>
         </q-item-section>
       </q-item>

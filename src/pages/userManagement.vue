@@ -3,16 +3,14 @@
     <div class="cardActionWrap">
       <cardsAction
         v-if="
-          $store.state.module1.userData.role !== 'CLIENT' &&
-            $store.state.module1.userData.role !== 'TECH' &&
-            $store.state.module1.userData.role !== 'INFO'
+          $store.state.module1.userData.role === 'MANAGER'
         "
         :data="users.staffs"
       />
       <cardsAction :data="users.clients" v-if="$store.state.module1.userData.role !== 'CLIENT'" />
       <cardsAction
         v-if="
-          $store.state.module1.userData.role === 'SERVICEMANAGER' ||
+
             $store.state.module1.userData.role === 'MANAGER' ||
             $store.state.module1.userData.role === 'ASSISTANT'
         "

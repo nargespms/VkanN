@@ -17,7 +17,7 @@
         >
           <span>{{ ticket.createdBy.firstName }}</span>
           &nbsp;
-          <span>{{ ticket.createdBy.firstName }}</span>
+          <span>{{ ticket.createdBy.lastName }}</span>
         </router-link>
         <p class="text-primary">{{ ticket.createdBy.role }}</p>
         <router-link
@@ -106,7 +106,7 @@
         >
           <span>{{ ticket.createdBy.firstName }}</span>
           &nbsp;
-          <span>{{ ticket.createdBy.firstName }}</span>
+          <span>{{ ticket.createdBy.lastName }}</span>
         </router-link>
         <p class="text-primary">{{ ticket.createdBy.role }}</p>
         <!-- functional buttons for admin -->

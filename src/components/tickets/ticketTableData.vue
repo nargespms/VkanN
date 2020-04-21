@@ -3,6 +3,7 @@
     <q-table
       :data="data"
       :columns="columns"
+      :rows-per-page-options="[0]"
       :filter="tableSearch"
       :separator="separator"
       :pagination.sync="innerPagination"
@@ -14,26 +15,19 @@
       row-key="lable"
     >
       <!-- search field -->
-      <template v-slot:top-right>
-        <q-input
-          class="tableSearchInput"
-          borderless
-          dense
-          debounce="300"
-          v-model="tableSearch"
-          :placeholder="$t('Search')"
-        >
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-      </template>
+      <template v-slot:top-right></template>
       <!-- custom header -->
       <template v-slot:header="props">
         <q-tr :props="props">
           <q-th v-for="col in columns" :key="col.lable" class="tableHeadCell">
             <!-- name for each column -->
-            <span class="columnLabel">{{ $t(col.lable) }}</span>
+            <span class="columnLabel" v-if="col.lable !== 'operation'">{{ $t(col.lable) }}</span>
+            <template v-if="col.lable === 'operation'">
+              <span
+                class="columnLabel"
+                v-if="$store.state.module1.userData.role === 'MANAGER'"
+              >{{ $t(col.lable) }}</span>
+            </template>
             <!-- if filterable true in each column it will show an input -->
             <div class="columnFilterWrap" v-if="col.filterable" @click.stop="stopSort">
               <q-input
@@ -52,13 +46,10 @@
               <q-select
                 outlined
                 v-if="col.lable === 'department'"
-                class="filterColumnSearch dropBoxFilterColumn"
+                class="filterColumnSearch dropBoxFilterColumn w150p"
                 :options="departmans"
                 v-model.trim="filter[col.lable]"
                 @input="colFilterChange"
-                use-input
-                hide-selected
-                fill-input
                 input-debounce="0"
               >
                 <template v-slot:option="scope">
@@ -68,18 +59,16 @@
                     </q-item-section>
                   </q-item>
                 </template>
+                <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
               </q-select>
 
               <q-select
                 outlined
                 v-if="col.lable === 'priority'"
-                class="filterColumnSearch dropBoxFilterColumn"
+                class="filterColumnSearch dropBoxFilterColumn w150p"
                 :options="priorities"
                 v-model.trim="filter[col.lable]"
                 @input="colFilterChange"
-                use-input
-                hide-selected
-                fill-input
                 input-debounce="0"
               >
                 <template v-slot:option="scope">
@@ -89,18 +78,16 @@
                     </q-item-section>
                   </q-item>
                 </template>
+                <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
               </q-select>
 
               <q-select
                 outlined
                 v-if="col.lable === 'status'"
-                class="filterColumnSearch dropBoxFilterColumn"
+                class="filterColumnSearch dropBoxFilterColumn w150p"
                 :options="ticketStatus"
                 v-model.trim="filter[col.lable]"
                 @input="colFilterChange"
-                use-input
-                hide-selected
-                fill-input
                 input-debounce="0"
               >
                 <template v-slot:option="scope">
@@ -110,6 +97,7 @@
                     </q-item-section>
                   </q-item>
                 </template>
+                <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
               </q-select>
 
               <div v-if="col.filterType === 'Date'">
@@ -245,22 +233,9 @@
           <q-td>
             <span>{{ $t(props.row.status) }}</span>
           </q-td>
-          <!-- <q-td>
-            <q-btn
-              class="rmRecord"
-              round
-              icon="delete"
-              color="negative"
-              @click="deleteRecord"
-              :disable="first"
-            >
-              <q-tooltip
-                v-model="showing1"
-                transition-show="scale"
-                transition-hide="scale"
-              >{{ $t('delete') }}</q-tooltip>
-            </q-btn>
-          </q-td>-->
+          <q-td class="center" v-if="$store.state.module1.userData.role === 'MANAGER'">
+            <q-btn flat round class="rmRecord" icon="delete" @click="deleteRecord(props.row.id)"></q-btn>
+          </q-td>
         </q-tr>
       </template>
     </q-table>
@@ -288,6 +263,7 @@ export default {
       separator: 'cell',
       filter: {},
       tableSearch: '',
+      showing1: false,
       innerPagination: this.pagination,
     };
   },
@@ -333,6 +309,20 @@ export default {
         : `${this.selected.length} record${
             this.selected.length > 1 ? 's' : ''
           } selected of ${this.data.length}`;
+    },
+    deleteRecord(id) {
+      this.$q
+        .dialog({
+          title: this.$t('deleteTicket'),
+          message: this.$t('areyousureyouwanttodeletethisTicket'),
+          cancel: true,
+        })
+        .onOk(() => {
+          this.$emit('ticketDelete', id);
+        })
+        .onCancel(() => {
+          console.log('Cancel');
+        });
     },
   },
 };
@@ -383,6 +373,8 @@ export default {
   margin-top: 8px;
 }
 .columnFilterWrap {
+  display: flex;
+  justify-content: center;
   .q-field__control {
     height: unset;
     color: #000 !important;

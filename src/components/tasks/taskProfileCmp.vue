@@ -50,7 +50,7 @@
           <span class="valueIntro">
             {{ data.asignee.firstName }}
             &nbsp;
-            {{ data.asignee.firstName }}
+            {{ data.asignee.lastName }}
           </span>
         </router-link>
       </div>
@@ -70,7 +70,7 @@
           <span class="valueIntro">
             {{ data.asigner.firstName }}
             &nbsp;
-            {{ data.asigner.firstName }}
+            {{ data.asigner.lastName }}
           </span>
         </router-link>
       </div>

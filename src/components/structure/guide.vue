@@ -1,7 +1,12 @@
 <template>
   <div>
     <h3>
-      common methods and markup
+      <!-- common methods and markup -->
+      <!-- for select boxes that have map-options -->
+      <!-- :option-label="opt => $t(opt.label)" -->
+
+      <!-- for select box without any furthoemore options -->
+      <!-- <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template> -->
     </h3>
   </div>
 </template>

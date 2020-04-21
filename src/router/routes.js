@@ -284,7 +284,7 @@ const routes = [
         component: () => import('pages/userManagement'),
         meta: {
           requiresAuth: true,
-          roles: ['MANAGER', 'ASSISTANT', 'MEMBER '],
+          roles: ['MANAGER', 'ASSISTANT', 'MEMBER'],
           dep: ['GENERAL', 'BILLING', 'TECH', 'INFO'],
         },
       },

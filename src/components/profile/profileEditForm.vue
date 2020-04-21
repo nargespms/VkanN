@@ -93,6 +93,14 @@
           <template v-slot:append>
             <q-icon name />
           </template>
+          <template v-slot:option="scope">
+            <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+              <q-item-section>
+                <q-item-label>{{ $t(scope.opt) }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </template>
+          <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
         </q-select>
 
         <q-input
@@ -236,6 +244,15 @@
           <template v-slot:append>
             <q-icon name />
           </template>
+          <template v-slot:option="scope">
+            <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+              <q-item-section>
+                <q-item-label>{{ $t(scope.opt) }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </template>
+
+          <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
         </q-select>
         <!-- if role user was staff we should choose departman -->
         <q-select
@@ -257,6 +274,7 @@
               </q-item-section>
             </q-item>
           </template>
+          <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
         </q-select>
 
         <q-select
@@ -270,6 +288,14 @@
           <template v-slot:append>
             <q-icon name />
           </template>
+          <template v-slot:option="scope">
+            <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+              <q-item-section>
+                <q-item-label>{{ $t(scope.opt) }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </template>
+          <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
         </q-select>
 
         <tagsSelection :editData="profileMode === 'Edit' ? tagEdit : ''" @addTagFn="addTagFn" />
@@ -285,6 +311,15 @@
           <template v-slot:append>
             <q-icon name />
           </template>
+          <template v-slot:option="scope">
+            <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+              <q-item-section>
+                <q-item-label>{{ $t(scope.opt) }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </template>
+
+          <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
         </q-select>
       </div>
       <div class="col3">

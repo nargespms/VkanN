@@ -3,6 +3,7 @@
     <q-table
       :data="data"
       :columns="columns"
+      :rows-per-page-options="[0]"
       row-key="name"
       :filter="tableSearch"
       :separator="separator"
@@ -12,20 +13,7 @@
       @request="onRequest"
     >
       <!-- search field -->
-      <template v-slot:top-right>
-        <q-input
-          class="tableSearchInput"
-          borderless
-          dense
-          debounce="300"
-          v-model="tableSearch"
-          :placeholder="$t('Search')"
-        >
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-      </template>
+      <template v-slot:top-right></template>
       <!-- custom header -->
       <template v-slot:header="props">
         <q-tr :props="props">
@@ -50,13 +38,10 @@
               <q-select
                 outlined
                 v-if="col.lable === 'type'"
-                class="filterColumnSearch dropBoxFilterColumn"
+                class="filterColumnSearch dropBoxFilterColumn w150p"
                 :options="contractType"
                 v-model.trim="filter[col.lable]"
                 @input="colFilterChange"
-                use-input
-                hide-selected
-                fill-input
                 debounce="1000"
               >
                 <template v-slot:option="scope">
@@ -66,18 +51,16 @@
                     </q-item-section>
                   </q-item>
                 </template>
+                <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
               </q-select>
 
               <q-select
                 outlined
                 v-if="col.lable === 'status'"
-                class="filterColumnSearch dropBoxFilterColumn"
+                class="filterColumnSearch dropBoxFilterColumn w150p"
                 :options="contractStatus"
                 v-model.trim="filter[col.lable]"
                 @input="colFilterChange"
-                use-input
-                hide-selected
-                fill-input
                 debounce="1000"
               >
                 <template v-slot:option="scope">
@@ -87,18 +70,17 @@
                     </q-item-section>
                   </q-item>
                 </template>
+                <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
               </q-select>
 
-              <div v-if="col.filterType === 'Date'">
+              <div v-if="col.lable === 'startDate'">
                 <q-input
                   outlined
-                  v-model.trim="filter.columnFilterStartdate"
+                  v-model="startDate"
                   mask="date"
                   :rules="['date']"
-                  :label="$t('startDate')"
-                  ref="qDateProxy"
+                  :label="$t('date')"
                   name="event"
-                  @click="stopSort"
                 >
                   <template v-slot:append>
                     <q-icon name="event" class="cursor-pointer" color="black">
@@ -107,14 +89,15 @@
                         transition-show="scale"
                         transition-hide="scale"
                       >
-                        <q-date
-                          v-model.trim="filter.columnFilterStartdate"
-                          today-btn
-                          ok-label
-                          calendar="persian"
-                        >
+                        <q-date v-model="startDate" today-btn ok-label calendar="persian">
                           <div class="row items-center justify-end q-gutter-sm">
-                            <q-btn :label="$t('ok')" color="primary" flat v-close-popup />
+                            <q-btn
+                              :label="$t('ok')"
+                              color="primary"
+                              flat
+                              v-close-popup
+                              @click="startSetDate(startDate)"
+                            />
                             <q-btn :label="$t('cancel')" color="primary" flat v-close-popup />
                           </div>
                         </q-date>
@@ -122,31 +105,32 @@
                     </q-icon>
                   </template>
                 </q-input>
-
+              </div>
+              <div v-if="col.lable === 'endDate'">
                 <q-input
                   outlined
-                  v-model.trim="filter.columnFilterEnddate"
+                  v-model="endDate"
                   mask="date"
                   :rules="['date']"
-                  :label="$t('endDate')"
-                  @click="stopSort"
+                  :label="$t('date')"
+                  name="event"
                 >
                   <template v-slot:append>
                     <q-icon name="event" class="cursor-pointer" color="black">
                       <q-popup-proxy
-                        ref="qDateProxy"
+                        ref="qDateProxy1"
                         transition-show="scale"
                         transition-hide="scale"
                       >
-                        <q-date
-                          v-model.trim="filter.filterEnddate"
-                          @change="() => $refs.qDateProxy.hide()"
-                          today-btn
-                          calendar="persian"
-                          :options="computDate"
-                        >
+                        <q-date v-model="endDate" today-btn ok-label calendar="persian">
                           <div class="row items-center justify-end q-gutter-sm">
-                            <q-btn :label="$t('ok')" color="primary" flat v-close-popup />
+                            <q-btn
+                              :label="$t('ok')"
+                              color="primary"
+                              flat
+                              v-close-popup
+                              @click="endSetDate(endDate)"
+                            />
                             <q-btn :label="$t('cancel')" color="primary" flat v-close-popup />
                           </div>
                         </q-date>
@@ -249,6 +233,8 @@ export default {
   name: 'contractTableData',
   data() {
     return {
+      startDate: '',
+      endDate: '',
       contractType: ['FORMAL', 'INFORMAL'],
       contractStatus: ['VALID', 'TERMINATED', 'EXPIRED'],
       FilterOption: this.status,
@@ -294,6 +280,19 @@ export default {
       props.filter = this.filter;
       this.innerPagination = props.pagination;
       this.$emit('request', props);
+    },
+    persionToGregorian(value) {
+      const dateValue = value.split('/').map(i => parseInt(i, 10));
+      return new this.$persianDate(dateValue).toDate().toISOString();
+    },
+
+    startSetDate(value) {
+      this.filter.startDate = this.persionToGregorian(value);
+      this.colFilterChange();
+    },
+    endSetDate(value) {
+      this.filter.endDate = this.persionToGregorian(value);
+      this.colFilterChange();
     },
   },
 };
@@ -344,6 +343,8 @@ export default {
   margin-top: 8px;
 }
 .columnFilterWrap {
+  display: flex;
+  justify-content: center;
   .q-field__control {
     height: unset;
     color: #000 !important;

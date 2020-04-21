@@ -38,7 +38,7 @@
           <span class="valueIntro">
             {{ data.client.firstName }}
             &nbsp;
-            {{ data.client.firstName }}
+            {{ data.client.lastName }}
           </span>
         </router-link>
       </div>
@@ -59,15 +59,19 @@
 
       <div class="item-content">
         <span class="introParam">{{ $t('startDate') }}</span>
-        <span class="valueIntro">{{
+        <span class="valueIntro">
+          {{
           new Date(data.startDate).toLocaleDateString(`${$route.params.locale}`)
-        }}</span>
+          }}
+        </span>
       </div>
       <div class="item-content">
         <span class="introParam">{{ $t('endDate') }}</span>
-        <span class="valueIntro">{{
+        <span class="valueIntro">
+          {{
           new Date(data.endDate).toLocaleDateString(`${$route.params.locale}`)
-        }}</span>
+          }}
+        </span>
       </div>
       <div class="item-content">
         <span class="introParam">{{ $t('currency') }}</span>

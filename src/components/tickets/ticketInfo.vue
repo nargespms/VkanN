@@ -2,7 +2,7 @@
   <div class="ticketInfoWrap">
     <div class="ticketInfo">
       <h3>
-        <span>#{{ data.taskNum }}</span>
+        <span>#{{ data.ticketNum }}</span>
         - {{ data.title }}
       </h3>
       <q-select
@@ -23,6 +23,7 @@
             </q-item-section>
           </q-item>
         </template>
+        <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
       </q-select>
       <q-btn color="primary" @click="editorState" class="replyTicketBut">
         <q-icon name="fas fa-edit" />

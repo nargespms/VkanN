@@ -75,7 +75,7 @@ export default {
   padding-left: 0px;
 }
 .welMsgLogo {
-  background-image: url('../../../node_modules/@aasaam/information/logo/aasaam-mask.svg');
+  background-image: url('../../../node_modules/@aasaam/information/logo/aasaam-mono.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: left;

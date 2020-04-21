@@ -1,10 +1,5 @@
 <template>
   <div>
-    <q-btn class="returnBut" @click="returnBack" color="primary">
-      {{
-      $t('RETURNTOPANNEL')
-      }}
-    </q-btn>
     <printInvoiceCmp />
   </div>
 </template>
@@ -21,11 +16,7 @@ export default {
   components: {
     printInvoiceCmp,
   },
-  methods: {
-    returnBack() {
-      this.$router.go(-1);
-    },
-  },
+  methods: {},
 };
 </script>
 <style lang="scss">

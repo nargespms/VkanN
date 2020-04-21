@@ -3,6 +3,7 @@
     <q-table
       :data="data"
       :columns="columns"
+      :rows-per-page-options="[0]"
       :filter="tableSearch"
       :separator="separator"
       :pagination.sync="innerPagination"
@@ -14,20 +15,7 @@
       row-key="lable"
     >
       <!-- search field -->
-      <template v-slot:top-right>
-        <q-input
-          class="tableSearchInput"
-          borderless
-          dense
-          debounce="300"
-          v-model="tableSearch"
-          :placeholder="$t('Search')"
-        >
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-      </template>
+      <template v-slot:top-right></template>
       <!-- custom header -->
       <template v-slot:header="props">
         <q-tr :props="props">
@@ -52,13 +40,10 @@
               <q-select
                 outlined
                 v-if="col.lable === 'department'"
-                class="filterColumnSearch dropBoxFilterColumn"
+                class="filterColumnSearch dropBoxFilterColumn w150p"
                 :options="departmans"
                 v-model.trim="filter[col.lable]"
                 @input="colFilterChange"
-                use-input
-                hide-selected
-                fill-input
                 input-debounce="0"
               >
                 <template v-slot:option="scope">
@@ -68,18 +53,16 @@
                     </q-item-section>
                   </q-item>
                 </template>
+                <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
               </q-select>
 
               <q-select
                 outlined
                 v-if="col.lable === 'priority'"
-                class="filterColumnSearch dropBoxFilterColumn"
+                class="filterColumnSearch dropBoxFilterColumn w150p"
                 :options="priorities"
                 v-model.trim="filter[col.lable]"
                 @input="colFilterChange"
-                use-input
-                hide-selected
-                fill-input
                 input-debounce="0"
               >
                 <template v-slot:option="scope">
@@ -89,18 +72,16 @@
                     </q-item-section>
                   </q-item>
                 </template>
+                <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
               </q-select>
 
               <q-select
                 outlined
                 v-if="col.lable === 'state'"
-                class="filterColumnSearch dropBoxFilterColumn"
+                class="filterColumnSearch dropBoxFilterColumn w150p"
                 :options="taskStatus"
                 v-model.trim="filter[col.lable]"
                 @input="colFilterChange"
-                use-input
-                hide-selected
-                fill-input
                 input-debounce="0"
               >
                 <template v-slot:option="scope">
@@ -110,6 +91,7 @@
                     </q-item-section>
                   </q-item>
                 </template>
+                <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
               </q-select>
 
               <div v-if="col.filterType === 'Date'">
@@ -374,6 +356,8 @@ export default {
   margin-top: 8px;
 }
 .columnFilterWrap {
+  display: flex;
+  justify-content: center;
   .q-field__control {
     height: unset;
     color: #000 !important;

@@ -15,7 +15,7 @@
           <span class="valueIntro">
             {{ data.client.firstName}}
             &nbsp;
-            {{ data.client.firstName}}
+            {{ data.client.lastName}}
           </span>
         </router-link>
       </div>
