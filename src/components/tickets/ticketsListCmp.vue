@@ -1,11 +1,11 @@
 <template>
   <div class="q-pa-xl">
-    <div class="userManagementListWrap">
+    <div class="tableListWrap">
       <tableDataWrap
-        @ticketDelete="ticketDelete"
         module="ticket"
         :columns="columns"
         :endpoint="'/v1/api/vkann/tickets/list'"
+        @ticketDelete="ticketDelete"
         :key="componentKey"
       />
     </div>

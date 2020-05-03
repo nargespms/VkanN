@@ -13,7 +13,7 @@
     <kanboardFilterColumn @getFilterColumn="getFilterColumn" v-if="kanboardFilterColumn" />
 
     <q-scroll-area ref="scrollArea" :visible="visible" class="kanboardScrollArea">
-      <draggable :emptyInsertThreshold="100" @change="log" @add="add" group="task">
+      <draggable :emptyInsertThreshold="50" @change="log" @add="add" group="task">
         <transition-group name="list-complete">
           <template v-for="item in data">
             <taskCard
@@ -162,7 +162,6 @@ export default {
           },
         })
         .then(response => {
-          console.log(response.data);
           this.data = response.data.result.docs;
           // this.pagination.rowsNumber = response.data.result.length;
           this.totalPages = response.data.result.totalPages;

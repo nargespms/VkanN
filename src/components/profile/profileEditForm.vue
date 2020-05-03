@@ -112,7 +112,7 @@
           v-model.trim="form.PassWord"
           :type="isPwd ? 'password' : 'text'"
           lazy-rules
-          :rules="[val => (val && val.length > 0) || 'Please type something']"
+          :rules="[val => (val && val.length > 0) ]"
           @input="EnableConf"
         >
           <template v-slot:prepend>
@@ -142,7 +142,7 @@
           v-model.trim="form.Confirmpass"
           :type="isPwd1 ? 'password' : 'text'"
           lazy-rules
-          :rules="[val => (val && val.length > 0) || 'Please type something']"
+          :rules="[val => (val && val.length > 0) ]"
           :disable="!this.enableConfirm"
         >
           <template v-slot:prepend>
@@ -255,14 +255,16 @@
           <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
         </q-select>
         <!-- if role user was staff we should choose departman -->
+
         <q-select
-          v-if="form.role.length > 0 && form.role !== 'CLIENT'"
+          v-if="form.role.length > 0 && form.role !== 'CLIENT' "
           outlined
           :label="$t('departman')"
           v-model.trim="form.departman"
           :options="departmans"
           class="inputStyle"
           required
+          :disable="!departmentAllow"
         >
           <template v-slot:prepend>
             <q-icon name="far fa-building" />
@@ -328,7 +330,7 @@
           v-model.trim="form.tel"
           :label="$t('PleaseEnterLandLine')"
           class="inputStyle"
-          mask="#####-#####"
+          mask="############"
         >
           <template v-slot:prepend>
             <q-icon name />
@@ -461,7 +463,6 @@ export default {
                   ...(this.profileMode === 'ADD' ? '' : { id: this.userId }),
                 })
                 .then(response => {
-                  console.log(response);
                   if (response.status === 204) {
                     this.nationalID = true;
                   }
@@ -497,9 +498,7 @@ export default {
                   : { existed: false, id: this.userId }),
               })
               .then(response => {
-                console.log(response);
                 if (response.status === 204) {
-                  console.log('lll');
                   this.verifyEmail = true;
                 }
               })
@@ -557,8 +556,6 @@ export default {
         this.empty = !this.$v.form.$anyDirty;
         this.errors = this.$v.form.$anyError;
         this.uiState = 'submit clicked';
-        console.log(this.empty);
-        console.log(this.errors);
 
         if (this.errors === false && this.empty === false) {
           normalizeEmail(this.form.email);
@@ -582,16 +579,13 @@ export default {
       if (this.profileMode === 'Edit') {
         this.empty = !this.$v.form.$anyDirty;
         this.errors = this.$v.form.$anyError;
-        console.log(this.empty);
-        console.log(this.errors);
 
         this.uiState = 'submit clicked';
-        if (this.errors === false) {
+        if (this.errors === false && this.empty === false) {
           this.uiState = 'form submitted';
           normalizeEmail(this.form.email);
           console.log(normalizeEmail(this.form.email));
 
-          // should emit to parent what t
           //  (beacause it is used in 2 place (profile & add user))
           if (this.nationalID && this.verifyEmail) {
             this.$emit('editDataUser', this.form);
@@ -612,7 +606,11 @@ export default {
     mobileVerified(value, con) {
       this.form.country = con;
       this.form.MobileNumber = value;
-      console.log(value, con);
+    },
+  },
+  computed: {
+    departmentAllow() {
+      return this.$store.state.module1.userData.role === 'MANAGER';
     },
   },
   mounted() {
@@ -623,7 +621,6 @@ export default {
         .slice(2, 3)
         .toString() === 'profile'
     ) {
-      console.log('profile ast');
       this.$axios.get('/v1/api/vkann/profile').then(response => {
         if (response.status === 200) {
           this.userId = response.data.id;
@@ -650,7 +647,6 @@ export default {
           this.mobileData.con = response.data.country;
           this.mobileData.mobile = response.data.mobile;
           this.mobileLoading = false;
-          console.log(response.tags);
 
           if (response.data.tags.length > 1) {
             // for tags
@@ -665,6 +661,7 @@ export default {
               return item.id;
             });
           }
+          this.$v.$touch();
         }
       });
     } else if (
@@ -715,6 +712,7 @@ export default {
                 return item.id;
               });
             }
+            this.$v.$touch();
           }
         })
         .catch(e => {

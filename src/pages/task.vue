@@ -10,7 +10,7 @@ import taskProfile from '../components/tasks/taskProfile.vue';
 export default {
   name: 'task',
   meta() {
-    return { title: `${this.$t('task')} ${this.$route.params.taskId}` };
+    return { title: `${this.$t('task')}` };
   },
   components: {
     taskProfile,

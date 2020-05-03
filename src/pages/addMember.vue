@@ -83,6 +83,14 @@ export default {
                 position: 'top',
               });
             }
+            if (e.response.status === 403) {
+              this.$q.notify({
+                message: this.$t('youDonthaveAccess'),
+                color: 'negative',
+                icon: 'warning',
+                position: 'top',
+              });
+            }
           });
       }
     },

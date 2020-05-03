@@ -53,7 +53,6 @@ export default {
         serviceName: '',
       },
       FilterOption2: this.servicesName,
-      servicesName: ['service1', 'service2', 'service3', 'الکسا', 'رکنا'],
     };
   },
   methods: {
@@ -79,7 +78,7 @@ export default {
       this.ticketFormStatus = !this.ticketFormStatus;
       this.$router.push({
         path: `/${this.$route.params.locale}/tickets/addTicket`,
-        query: { depid: 'SUPPORT' },
+        query: { depid: 'TECH' },
       });
     },
     // activate billing ticket

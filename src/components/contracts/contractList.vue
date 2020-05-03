@@ -1,6 +1,6 @@
 <template >
   <div class="q-pa-xl">
-    <div class="userManagementListWrap">
+    <div class="tableListWrap">
       <tableDataWrap
         module="contract"
         :columns="columns"

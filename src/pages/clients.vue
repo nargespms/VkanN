@@ -1,7 +1,13 @@
 <template>
   <div class="q-pa-xl">
-    <div class="userManagementListWrap">
-      <tableDataWrap module="clients" :columns="columns" :endpoint="'/v1/api/vkann/clients/list'" />
+    <div class="tableListWrap">
+      <tableDataWrap
+        module="clients"
+        :columns="columns"
+        :endpoint="'/v1/api/vkann/clients/list'"
+        @clientDelete="clientDelete"
+        :key="componentKey"
+      />
     </div>
   </div>
 </template>
@@ -19,6 +25,7 @@ export default {
   },
   data() {
     return {
+      componentKey: 0,
       columns: [
         {
           lable: 'firstName',
@@ -59,8 +66,24 @@ export default {
           filterType: 'DropBox',
         },
         { lable: 'avatar', filterable: false, sortable: false, filterType: '' },
+        { lable: 'operation', filterable: false, sortable: false },
       ],
     };
+  },
+  methods: {
+    clientDelete(value) {
+      this.$axios
+        .delete(`/v1/api/vkann/users/${value}`)
+        .then(res => {
+          console.log(res);
+          if (res.status === 200) {
+            this.componentKey += 1;
+          }
+        })
+        .catch(e => {
+          console.log(e.response);
+        });
+    },
   },
 };
 </script>

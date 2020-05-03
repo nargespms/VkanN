@@ -5,7 +5,12 @@
       <div>
         <q-tabs v-model="tab" class="block640">
           <q-tab class="tabSelect" label name="serviceProfile">{{ $t('serviceInformation') }}</q-tab>
-          <q-tab class="tabSelect" label name="serviceEdit">{{ $t('edit') }}</q-tab>
+          <q-tab
+            class="tabSelect"
+            label
+            name="serviceEdit"
+            v-if="$store.state.module1.userData.role === 'MANAGER'"
+          >{{ $t('edit') }}</q-tab>
         </q-tabs>
 
         <q-tab-panels v-if="!isLoading" v-model="tab" animated>
@@ -19,7 +24,7 @@
             <serviceProfileCmp :data="serviceData" />
           </q-tab-panel>
 
-          <q-tab-panel name="serviceEdit">
+          <q-tab-panel name="serviceEdit" v-if="$store.state.module1.userData.role === 'MANAGER'">
             <serviceEditCmp @tabChanged="tabChanged" :data="serviceData" />
           </q-tab-panel>
         </q-tab-panels>

@@ -51,7 +51,7 @@ const routes = [
         component: () => import('pages/dashboard.vue'),
         meta: {
           requiresAuth: true,
-          roles: ['MANAGER', 'ASSISTANT', 'CLIENT'],
+          roles: ['MANAGER', 'ASSISTANT', 'CLIENT', 'MEMBER'],
           dep: ['GENERAL', 'BILLING', 'TECH', 'INFO'],
         },
       },
@@ -179,7 +179,7 @@ const routes = [
         component: () => import('pages/addTask'),
         meta: {
           requiresAuth: true,
-          roles: ['MANAGER', 'ASSISTANT', 'MEMBER '],
+          roles: ['MANAGER', 'ASSISTANT', 'MEMBER'],
           dep: ['GENERAL', 'BILLING', 'TECH', 'INFO'],
         },
       },
@@ -189,7 +189,7 @@ const routes = [
         component: () => import('pages/kanBoard'),
         meta: {
           requiresAuth: true,
-          roles: ['MANAGER', 'ASSISTANT', 'MEMBER '],
+          roles: ['MANAGER', 'ASSISTANT', 'MEMBER'],
           dep: ['GENERAL', 'BILLING', 'TECH', 'INFO'],
         },
       },
@@ -199,7 +199,7 @@ const routes = [
         component: () => import('pages/task'),
         meta: {
           requiresAuth: true,
-          roles: ['MANAGER', 'ASSISTANT', 'MEMBER '],
+          roles: ['MANAGER', 'ASSISTANT', 'MEMBER'],
           dep: ['GENERAL', 'BILLING', 'TECH', 'INFO'],
         },
       },
@@ -210,7 +210,7 @@ const routes = [
         component: () => import('pages/fileManagements'),
         meta: {
           requiresAuth: true,
-          roles: ['MANAGER', 'ASSISTANT', 'MEMBER ', 'CLIENT'],
+          roles: ['MANAGER', 'ASSISTANT', 'MEMBER', 'CLIENT'],
           dep: ['GENERAL', 'BILLING', 'TECH', 'INFO'],
         },
       },
@@ -220,7 +220,7 @@ const routes = [
         component: () => import('pages/filesList'),
         meta: {
           requiresAuth: true,
-          roles: ['MANAGER', 'ASSISTANT', 'MEMBER ', 'CLIENT'],
+          roles: ['MANAGER', 'ASSISTANT', 'MEMBER', 'CLIENT'],
           dep: ['GENERAL', 'BILLING', 'TECH', 'INFO'],
         },
       },
@@ -230,7 +230,7 @@ const routes = [
         component: () => import('pages/uploadFile'),
         meta: {
           requiresAuth: true,
-          roles: ['MANAGER', 'ASSISTANT', 'MEMBER ', 'CLIENT'],
+          roles: ['MANAGER', 'ASSISTANT', 'MEMBER', 'CLIENT'],
           dep: ['GENERAL', 'BILLING', 'TECH', 'INFO'],
         },
       },
@@ -242,7 +242,7 @@ const routes = [
         component: () => import('pages/services'),
         meta: {
           requiresAuth: true,
-          roles: ['MANAGER', 'ASSISTANT', 'MEMBER ', 'CLIENT'],
+          roles: ['MANAGER', 'ASSISTANT', 'MEMBER', 'CLIENT'],
           dep: ['GENERAL', 'BILLING', 'TECH', 'INFO'],
         },
       },
@@ -253,7 +253,7 @@ const routes = [
         component: () => import('pages/servicesList'),
         meta: {
           requiresAuth: true,
-          roles: ['MANAGER', 'ASSISTANT', 'MEMBER ', 'CLIENT'],
+          roles: ['MANAGER', 'ASSISTANT', 'MEMBER', 'CLIENT'],
           dep: ['GENERAL', 'BILLING', 'TECH', 'INFO'],
         },
       },
@@ -273,7 +273,7 @@ const routes = [
         component: () => import('pages/service'),
         meta: {
           requiresAuth: true,
-          roles: ['MANAGER', 'ASSISTANT', 'MEMBER ', 'CLIENT'],
+          roles: ['MANAGER', 'ASSISTANT', 'MEMBER', 'CLIENT'],
           dep: ['GENERAL', 'BILLING', 'TECH', 'INFO'],
         },
       },
@@ -304,7 +304,7 @@ const routes = [
         component: () => import('pages/clients'),
         meta: {
           requiresAuth: true,
-          roles: ['MANAGER', 'ASSISTANT', 'MEMBER '],
+          roles: ['MANAGER', 'ASSISTANT', 'MEMBER'],
           dep: ['GENERAL', 'BILLING', 'TECH', 'INFO'],
         },
       },
@@ -324,7 +324,7 @@ const routes = [
         component: () => import('pages/userProfile'),
         meta: {
           requiresAuth: true,
-          roles: ['MANAGER', 'ASSISTANT'],
+          roles: ['MANAGER', 'ASSISTANT', 'MEMBER'],
           dep: ['GENERAL', 'BILLING', 'TECH', 'INFO'],
         },
       },
@@ -366,7 +366,7 @@ const routes = [
         component: () => import('pages/contract'),
         meta: {
           requiresAuth: true,
-          roles: ['MANAGER', 'ASSISTANT', 'CLIENT', 'MEMBER'],
+          roles: ['MANAGER', 'ASSISTANT', 'MEMBER'],
           dep: ['GENERAL', 'BILLING'],
         },
       },
@@ -431,8 +431,8 @@ const routes = [
           dep: ['GENERAL', 'BILLING'],
         },
       },
-      { path: '*', component: () => import('pages/Error404.vue') },
-      { path: '404', component: () => import('pages/E404.vue') },
+      { name: '404', path: '404', component: () => import('pages/E404.vue') },
+      { path: '*', component: () => import('pages/E404.vue') },
     ],
   },
 ];
@@ -441,7 +441,7 @@ const routes = [
 if (process.env.MODE !== 'ssr') {
   routes.push({
     path: '*',
-    component: () => import('pages/Error404.vue'),
+    component: () => import('pages/E404.vue'),
   });
 }
 

@@ -254,6 +254,16 @@
           <q-td>
             <span>{{ $t(props.row.avatar) }}</span>
           </q-td>
+          <q-td class="center">
+            <q-btn
+              flat
+              round
+              class="rmRecord"
+              icon="delete"
+              @click="deleteRecord(props.row.id)"
+              :disable="!deleteAllow"
+            ></q-btn>
+          </q-td>
         </q-tr>
       </template>
     </q-table>
@@ -269,7 +279,7 @@ export default {
       todayDate: new Date(),
       roles: ['MEMBER', 'ASSISTANT', 'MANAGER'],
       departmans: ['INFO', 'TECH', 'BILLING'],
-      status: ['INACTIVE', 'ACTIVE', 'BAN', 'DELETED'],
+      status: ['INACTIVE', 'ACTIVE', 'BAN'],
       separator: 'cell',
       filter: {},
       tableSearch: '',
@@ -313,12 +323,34 @@ export default {
       this.innerPagination = props.pagination;
       this.$emit('request', props);
     },
+    deleteRecord(id) {
+      this.$q
+        .dialog({
+          title: this.$t('deleteUser'),
+          message: this.$t('areyousureyouwanttodeletethisuser'),
+          cancel: true,
+        })
+        .onOk(() => {
+          this.$emit('userDelete', id);
+        })
+        .onCancel(() => {
+          console.log('Cancel');
+        });
+    },
+  },
+  computed: {
+    deleteAllow() {
+      return (
+        this.$store.state.module1.userData.role === 'MANAGER' &&
+        this.$store.state.module1.userData.department === 'GENERAL'
+      );
+    },
   },
 };
 </script>
 
 <style lang="scss">
-.userManagementListWrap {
+.tableListWrap {
   .expandTable {
     .q-icon {
       color: #666;

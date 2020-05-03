@@ -11,7 +11,7 @@
       :toolbar="[
         ['bold', 'italic', 'strike', 'underline'],
         ['token', 'hr', 'link', 'custom_btn'],
-        ['removeFormat'],
+        ['removeFormat' , 'code'],
         ['quote', 'unordered', 'ordered'],
 
         ['undo', 'redo'],
@@ -64,5 +64,23 @@ blockquote {
   background-color: #eee;
   padding: 12px;
   border-radius: 12px;
+}
+p {
+  pre {
+    text-align: right;
+    direction: rtl;
+    margin: 0;
+    background-color: #000;
+    color: #99dcec;
+    padding: 0px 12px;
+  }
+}
+pre {
+  text-align: right;
+  direction: rtl;
+  margin: 0;
+  background-color: #000;
+  color: #99dcec;
+  padding: 0px 12px;
 }
 </style>

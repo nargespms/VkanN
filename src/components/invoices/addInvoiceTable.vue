@@ -432,7 +432,7 @@
               />
               <editorProp
                 v-if="descriptionTrue && profileMode === 'Edit'"
-                :data="invoice.description"
+                v-bind="{data: invoice.description || '' }"
                 @changeEditedText="getTextFromEditor"
               />
             </q-slide-transition>

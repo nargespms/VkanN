@@ -157,7 +157,6 @@ export default {
           },
         })
         .then(response => {
-          console.log(response.data);
           this.data = response.data.result.docs;
           // this.pagination.rowsNumber = response.data.result.length;
           this.totalPages = response.data.result.totalPages;

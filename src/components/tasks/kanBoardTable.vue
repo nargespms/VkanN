@@ -18,9 +18,9 @@
           <td>
             <WIP :key="wipKey" @reloadCmp="reloadWIP" />
           </td>
-          <!-- <td>
+          <td>
             <kanboardTest :key="testKey" @reloadCmp="reloadTest" />
-          </td>-->
+          </td>
           <td>
             <kanboardDone :key="doneKey" @reloadCmp="reloadDone" />
           </td>
@@ -37,6 +37,7 @@ import secondSpirint from '../kanboard/secondSpirint.vue';
 import drafts from '../kanboard/drafts.vue';
 import WIP from '../kanboard/WIP.vue';
 import kanboardDone from '../kanboard/kanboardDone.vue';
+import kanboardTest from '../kanboard/kanboardTest.vue';
 
 export default {
   name: 'kanBoardTable',
@@ -47,6 +48,7 @@ export default {
     drafts,
     WIP,
     kanboardDone,
+    kanboardTest,
   },
   data() {
     return {
@@ -58,6 +60,7 @@ export default {
       draftsKey: 0,
       wipKey: 0,
       doneKey: 0,
+      testKey: 0,
     };
   },
   methods: {
@@ -87,6 +90,10 @@ export default {
       console.log(value);
       this.doneKey += 1;
     },
+    reloadTest(value) {
+      console.log(value);
+      this.testKey += 1;
+    },
   },
 };
 </script>
@@ -103,11 +110,17 @@ export default {
   border: 1px solid grey;
   width: 100%;
   td {
-    width: calc(100% / 6);
+    width: calc(100% / 7);
   }
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 1200px) {
   .ticketsKanBoard {
+    tr {
+      flex-wrap: nowrap;
+    }
+    td {
+      width: 200px;
+    }
     display: block;
     overflow-x: auto;
     white-space: nowrap;
@@ -122,7 +135,7 @@ h3 {
   padding: 4px 8px;
 }
 .kanboardColumns {
-  border: 1px solid #bab1f9;
+  border: 1px solid #bababa;
   padding: 8px;
   min-height: 900px;
 }

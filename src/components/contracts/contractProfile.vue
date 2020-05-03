@@ -4,12 +4,21 @@
       <div class></div>
       <div>
         <q-tabs v-model="tab" class="block640">
-          <q-tab class="tabSelect" label name="contractProfile">{{
+          <q-tab class="tabSelect" label name="contractProfile">
+            {{
             $t('contractInformation')
-          }}</q-tab>
-          <q-tab class="tabSelect" label name="contractEdit">{{
+            }}
+          </q-tab>
+          <q-tab
+            class="tabSelect"
+            label
+            name="contractEdit"
+            v-if="$store.state.module1.userData.role !== 'MEMBER'&& $store.state.module1.userData.role !== 'CLIENT'"
+          >
+            {{
             $t('edit')
-          }}</q-tab>
+            }}
+          </q-tab>
         </q-tabs>
 
         <q-tab-panels v-if="!isLoading" v-model="tab" animated>
@@ -20,7 +29,11 @@
             <contractProfileCmp :data="contractData" />
           </q-tab-panel>
 
-          <q-tab-panel name="contractEdit">
+          <q-tab-panel
+            name="contractEdit"
+            v-if="$store.state.module1.userData.role !== 'MEMBER' && $store.state.module1.userData.role !== 'CLIENT'
+"
+          >
             <contractEditCmp @tabChanged="tabChanged" :data="contractData" />
           </q-tab-panel>
         </q-tab-panels>

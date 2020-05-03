@@ -299,7 +299,7 @@ export default {
 </script>
 
 <style lang="scss">
-.userManagementListWrap {
+.tableListWrap {
   .expandTable {
     .q-icon {
       color: #666;

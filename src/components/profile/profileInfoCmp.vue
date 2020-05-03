@@ -15,6 +15,11 @@ export default {
     userAvatarCmp,
     userInformation,
   },
+  data() {
+    return {
+      profileData: {},
+    };
+  },
   props: ['data'],
 };
 </script>

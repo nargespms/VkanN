@@ -21,7 +21,12 @@
             $t('invoiceInformation')
             }}
           </q-tab>
-          <q-tab class="tabSelect" label name="invoiceEdit">
+          <q-tab
+            class="tabSelect"
+            label
+            name="invoiceEdit"
+            v-if="$store.state.module1.userData.role === 'MANAGER'"
+          >
             {{
             $t('edit')
             }}
@@ -33,7 +38,7 @@
             <invoiceProfileCmp />
           </q-tab-panel>
 
-          <q-tab-panel name="invoiceEdit">
+          <q-tab-panel name="invoiceEdit" v-if="$store.state.module1.userData.role === 'MANAGER'">
             <addInvoiceTable
               profileMode="Edit"
               class="EditInvoiceTable"

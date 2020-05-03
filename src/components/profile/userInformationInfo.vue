@@ -20,7 +20,7 @@
         </div>
         <div class="item-content">
           <span class="introParam">{{ $t('landLine') }}</span>
-          <span class="valueIntro">{{ data.tel }}</span>
+          <span class="valueIntro numberDir">{{ data.tel }}</span>
         </div>
         <div class="item-content">
           <span class="introParam">{{ $t('status') }}</span>
@@ -41,6 +41,10 @@
         <div class="item-content">
           <span class="introParam">{{ $t('address') }}</span>
           <span class="valueIntro">{{ data.address }}</span>
+        </div>
+        <div v-if="$store.state.module1.userData.role !== 'CLIENT'" class="item-content">
+          <span class="introParam">{{ $t('department') }}</span>
+          <span class="valueIntro">{{ $t(data.department) }}</span>
         </div>
         <div class="item-content wrap">
           <span class="introParam">{{ $t('Service') }}</span>

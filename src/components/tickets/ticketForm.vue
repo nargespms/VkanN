@@ -106,6 +106,9 @@ export default {
     return {
       errors: false,
       empty: true,
+      editorFill: false,
+      serviceSelected: false,
+      departmentSelected: false,
       departmans: ['INFO', 'TECH', 'BILLING'],
       priorities: ['LOW', 'NORMAL', 'CRITICAL'],
       ticket: {
@@ -129,6 +132,13 @@ export default {
   methods: {
     getTextFromEditor(value) {
       this.ticket.thread.description = value;
+      this.editorFill = true;
+      console.log(value);
+      console.log(this.editorFill);
+    },
+    getAutoCompleteValueService(value) {
+      this.ticket.serviceName = value.id;
+      this.serviceSelected = true;
     },
 
     setDepUrl() {
@@ -140,6 +150,7 @@ export default {
           customerName: this.ticket.customerName,
         },
       });
+      this.departmentSelected = true;
     },
     setServiceUrl() {
       console.log(this.ticket.serviceName);
@@ -167,47 +178,86 @@ export default {
       this.errors = this.$v.ticket.$anyError;
       console.log(this.errors);
       if (this.errors === false && this.empty === false) {
-        this.$axios
-          .post('/v1/api/vkann/tickets', {
-            serviceId: this.ticket.serviceName,
-            department: this.ticket.departamn,
-            priority: this.ticket.priority,
-            title: this.ticket.title,
-            thread: this.ticket.thread,
-          })
-          .then(response => {
-            console.log(response);
+        console.log(`edit:${this.editorFill}`);
+        if (this.ticket.departamn.length > 0) {
+          this.departmentSelected = true;
+        }
+        if (this.departmentSelected) {
+          if (this.serviceSelected) {
+            if (this.editorFill) {
+              this.$axios
+                .post('/v1/api/vkann/tickets', {
+                  serviceId: this.ticket.serviceName,
+                  department: this.ticket.departamn,
+                  priority: this.ticket.priority,
+                  title: this.ticket.title,
+                  thread: this.ticket.thread,
+                })
+                .then(response => {
+                  console.log(response);
+                  this.$q.notify({
+                    message: this.$t('newTicketAdded'),
+                    color: 'positive',
+                    icon: 'check',
+                    position: 'top',
+                  });
+
+                  this.$router.push({
+                    path: `/${this.$route.params.locale}/tickets/ticketsList`,
+                  });
+                })
+                .catch(e => {
+                  if (e.response.status === 400) {
+                    this.$q.notify({
+                      message: this.$t('fillTheTicketTextArea'),
+                      color: 'negative',
+                      icon: 'warning',
+                      position: 'top',
+                    });
+                  }
+                  if (e.response.status === 422) {
+                    this.$q.notify({
+                      message: this.$t('Theformabovehaserrors'),
+                      color: 'negative',
+                      icon: 'warning',
+                      position: 'top',
+                    });
+                  }
+                  if (e.response.status === 403) {
+                    this.$q.notify({
+                      message: this.$t('youDonthaveAccess'),
+                      color: 'negative',
+                      icon: 'warning',
+                      position: 'top',
+                    });
+                  }
+
+                  console.log(e.response.status);
+                });
+            } else {
+              this.$q.notify({
+                message: this.$t('pleaseFillTicketText'),
+                color: 'negative',
+                icon: 'warning',
+                position: 'top',
+              });
+            }
+          } else {
             this.$q.notify({
-              message: this.$t('newTicketAdded'),
-              color: 'positive',
-              icon: 'check',
+              message: this.$t('pleaseSelectServiceName'),
+              color: 'negative',
+              icon: 'warning',
               position: 'top',
             });
-
-            this.$router.push({
-              path: `/${this.$route.params.locale}/tickets/ticketsList`,
-            });
-          })
-          .catch(e => {
-            if (e.response.status === 400) {
-              this.$q.notify({
-                message: this.$t('fillTheTicketTextArea'),
-                color: 'negative',
-                icon: 'warning',
-                position: 'top',
-              });
-            }
-            if (e.response.status === 422) {
-              this.$q.notify({
-                message: this.$t('Theformabovehaserrors'),
-                color: 'negative',
-                icon: 'warning',
-                position: 'top',
-              });
-            }
-
-            console.log(e.response.status);
+          }
+        } else {
+          this.$q.notify({
+            message: this.$t('pleaseSelectdepartment'),
+            color: 'negative',
+            icon: 'warning',
+            position: 'top',
           });
+        }
       } else if (this.empty === true) {
         this.$q.notify({
           message: this.$t('emptyForm'),
@@ -216,9 +266,6 @@ export default {
           position: 'top',
         });
       }
-    },
-    getAutoCompleteValueService(value) {
-      this.ticket.serviceName = value.id;
     },
   },
 };

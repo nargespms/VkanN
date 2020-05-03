@@ -21,13 +21,8 @@
         <q-tr :props="props">
           <q-th v-for="col in columns" :key="col.lable" class="tableHeadCell">
             <!-- name for each column -->
-            <span class="columnLabel" v-if="col.lable !== 'operation'">{{ $t(col.lable) }}</span>
-            <template v-if="col.lable === 'operation'">
-              <span
-                class="columnLabel"
-                v-if="$store.state.module1.userData.role === 'MANAGER'"
-              >{{ $t(col.lable) }}</span>
-            </template>
+            <span class="columnLabel">{{ $t(col.lable) }}</span>
+
             <!-- if filterable true in each column it will show an input -->
             <div class="columnFilterWrap" v-if="col.filterable" @click.stop="stopSort">
               <q-input
@@ -233,8 +228,15 @@
           <q-td>
             <span>{{ $t(props.row.status) }}</span>
           </q-td>
-          <q-td class="center" v-if="$store.state.module1.userData.role === 'MANAGER'">
-            <q-btn flat round class="rmRecord" icon="delete" @click="deleteRecord(props.row.id)"></q-btn>
+          <q-td class="center">
+            <q-btn
+              flat
+              round
+              class="rmRecord"
+              icon="delete"
+              @click="deleteRecord(props.row.id)"
+              :disable="!deleteAllow"
+            ></q-btn>
           </q-td>
         </q-tr>
       </template>
@@ -325,11 +327,16 @@ export default {
         });
     },
   },
+  computed: {
+    deleteAllow() {
+      return this.$store.state.module1.userData.role === 'MANAGER';
+    },
+  },
 };
 </script>
 
 <style lang="scss">
-.userManagementListWrap {
+.tableListWrap {
   .expandTable {
     .q-icon {
       color: #666;
@@ -410,5 +417,12 @@ export default {
 }
 .tableSearchInput * {
   color: #fff !important;
+}
+.ticketTable tr:hover {
+  .idPicker {
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14),
+      0 3px 1px -2px rgba(0, 0, 0, 0.12);
+    transition: ease-in 0.25s;
+  }
 }
 </style>

@@ -8,6 +8,7 @@
       @request="onRequest"
       :pagination="pagination"
       @onIdClick="onIdClick"
+      @userDelete="userDelete"
     />
     <clientsTableData
       v-if="this.module === 'clients'"
@@ -17,6 +18,7 @@
       @request="onRequest"
       :pagination="pagination"
       @onIdClick="onIdClick"
+      @clientDelete="clientDelete"
     />
     <serviceTableData
       v-if="this.module === 'service'"
@@ -166,6 +168,12 @@ export default {
     },
     ticketDelete(value) {
       this.$emit('ticketDelete', value);
+    },
+    userDelete(value) {
+      this.$emit('userDelete', value);
+    },
+    clientDelete(value) {
+      this.$emit('clientDelete', value);
     },
   },
   mounted() {

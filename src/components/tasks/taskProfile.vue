@@ -3,12 +3,16 @@
     <q-card>
       <div>
         <q-tabs v-model="tab" class="block640">
-          <q-tab class="tabSelect" label name="taskProfile">{{
+          <q-tab class="tabSelect" label name="taskProfile">
+            {{
             $t('taskInformation')
-          }}</q-tab>
-          <q-tab class="tabSelect" label name="taskEdit">{{
+            }}
+          </q-tab>
+          <q-tab class="tabSelect" label name="taskEdit">
+            {{
             $t('edit')
-          }}</q-tab>
+            }}
+          </q-tab>
         </q-tabs>
 
         <q-tab-panels v-if="!isLoading" v-model="tab" animated>

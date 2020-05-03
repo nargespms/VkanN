@@ -12,8 +12,8 @@
       :toolbar="[
         ['bold', 'italic', 'strike', 'underline'],
         ['token', 'hr', 'link', 'custom_btn'],
-        ['removeFormat'],
-        ['quote', 'unordered', 'ordered'],
+        ['removeFormat' ],
+        ['quote', 'unordered', 'ordered' , 'code'],
 
         ['undo', 'redo'],
         ['fullscreen'],
@@ -81,6 +81,7 @@ export default {
 .editor {
   min-height: 350px;
 }
+
 .addedText {
   background-color: #e1e1e1;
   padding: 14px 48px;
@@ -105,9 +106,33 @@ blockquote {
   padding: 12px;
   border-radius: 12px;
 }
+p {
+  pre {
+    text-align: right;
+    direction: rtl;
+    margin: 0;
+    background-color: #000;
+    color: #99dcec;
+    padding: 0px 12px;
+  }
+}
+pre {
+  text-align: right;
+  direction: rtl;
+  margin: 0;
+  background-color: #000;
+  color: #99dcec;
+  padding: 0px 12px;
+}
+
 blockquote::after {
   content: quote-right;
   font-family: 'FontAwesome';
+}
+.codeStyle {
+  background-color: #000;
+  color: #eee;
+  direction: ltr;
 }
 // blockquote {
 //   position: relative;

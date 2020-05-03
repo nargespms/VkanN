@@ -7,7 +7,8 @@
       >
         <router-link :to="url" class="text-white cardLinkInner">
           <q-icon :name="data.icon" />
-          <span class="fnb cardName">{{$t(name)}}</span>
+          <span v-if="!data.cardLabel" class="fnb cardName">{{$t(name)}}</span>
+          <span v-if="data.cardLabel">{{$t(data.cardLabel)}}</span>
           <span class="numberCardData" v-if="this.data.number">{{localizeNumber }}</span>
         </router-link>
       </q-card-section>
@@ -59,7 +60,7 @@ export default {
     i {
       font-size: 52px;
       vertical-align: middle;
-      padding-right: 24px;
+      // padding-right: 24px;
       @media screen and (max-width: 768px) {
         font-size: 35px !important;
       }

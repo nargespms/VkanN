@@ -13,7 +13,7 @@
       >{{ $t('operation') }}</q-tooltip>
     </span>
 
-    <q-item>
+    <q-item class="taskHead">
       <q-item-section avatar>
         <q-avatar>
           <img src="https://cdn.quasar.dev/img/avatar2.jpg" />
@@ -91,9 +91,15 @@
           >{{ $t('CRITICAL') }}</q-tooltip>
         </q-icon>
       </li>
-      <li>
-        <q-icon name="calendar"></q-icon>
-        <span>{{ item.dueDate }}</span>
+      <li v-if="item.dueDate.length>0">
+        <span>
+          <q-icon name="fa fa-clock" color="negative"></q-icon>
+          <span>{{$t('dueDate')}} :</span>
+          <span class="numberDir">
+            {{ new Date(item.dueDate).toLocaleDateString(`${$route.params.locale}`)
+            }}
+          </span>
+        </span>
       </li>
       <li class="operationCel" v-if="enableOp">
         {{$t('operation')}}
@@ -165,6 +171,7 @@ export default {
   margin: 8px 0px;
   width: 95%;
   border-left: 5px solid #2f718f !important;
+  overflow: hidden;
 }
 .border-red {
   border: 1px solid #dd0707;
@@ -215,5 +222,10 @@ export default {
   padding: 0px 12px 8px 12px;
   border-radius: 0 0 0 5px;
   cursor: pointer;
+}
+@media screen and (max-width: 1200px) {
+  .taskHead {
+    display: block;
+  }
 }
 </style>

@@ -130,10 +130,9 @@
       <template v-slot:body="props">
         <q-tr>
           <q-td>
-            <span>
-              <router-link
-                class="listNameTable"
-                :to="
+            <router-link
+              class="listNameTable"
+              :to="
                   '/' +
                     $route.params.locale +
                     '/' +
@@ -141,24 +140,19 @@
                     '/' +
                     props.row.id
                 "
-              >{{ props.row.firstName }}</router-link>
-            </span>
+            >
+              <span>{{ props.row.firstName }}</span>
+            </router-link>
           </q-td>
           <q-td>
             <router-link
               class="listNameTable"
-              :to="
-                '/' +
-                  $route.params.locale +
-                  '/' +
-                  'profile' +
-                  '/' +
-                  props.row.id
-              "
+              :to=" '/' + $route.params.locale + '/' + 'userManagement' + '/' + props.row.id "
             >
-              <span>{{ $t(props.row.lastName) }}</span>
+              <span>{{ props.row.lastName }}</span>
             </router-link>
           </q-td>
+
           <q-td class="rtl">
             <span>{{ $t(props.row.mobile) }}</span>
           </q-td>
@@ -188,6 +182,16 @@
           <q-td>
             <span>{{ $t(props.row.avatar) }}</span>
           </q-td>
+          <q-td class="center">
+            <q-btn
+              flat
+              round
+              class="rmRecord"
+              icon="delete"
+              @click="deleteRecord(props.row.id)"
+              :disable="!deleteAllow"
+            ></q-btn>
+          </q-td>
         </q-tr>
       </template>
     </q-table>
@@ -200,7 +204,8 @@ export default {
   data() {
     return {
       todayDate: new Date(),
-      status: ['INACTIVE', 'ACTIVE', 'BAN', 'DELETED'],
+      status: ['INACTIVE', 'ACTIVE', 'BAN'],
+
       separator: 'cell',
       filter: {},
       tableSearch: '',
@@ -244,12 +249,34 @@ export default {
       this.innerPagination = props.pagination;
       this.$emit('request', props);
     },
+    deleteRecord(id) {
+      this.$q
+        .dialog({
+          title: this.$t('deleteUser'),
+          message: this.$t('areyousureyouwanttodeletethisuser'),
+          cancel: true,
+        })
+        .onOk(() => {
+          this.$emit('clientDelete', id);
+        })
+        .onCancel(() => {
+          console.log('Cancel');
+        });
+    },
+  },
+  computed: {
+    deleteAllow() {
+      return (
+        this.$store.state.module1.userData.role === 'MANAGER' &&
+        this.$store.state.module1.userData.department === 'GENERAL'
+      );
+    },
   },
 };
 </script>
 
 <style lang="scss">
-.userManagementListWrap {
+.tableListWrap {
   .expandTable {
     .q-icon {
       color: #666;

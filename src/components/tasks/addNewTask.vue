@@ -28,7 +28,7 @@
 
             <editorProp
               v-if="profileMode === 'Edit' || state === 'kanboard'"
-              :data="task.description"
+              v-bind="{data: task.description || '' }"
               @changeEditedText="getTextFromEditor"
             />
           </div>
@@ -100,6 +100,7 @@
                   </q-item-section>
                 </q-item>
               </template>
+              <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
 
               <p v-if="errors" class="error">
                 <span v-if="!$v.task.priority.required">*{{ $t('thisfieldisrequired') }}.</span>
@@ -127,6 +128,7 @@
                   </q-item-section>
                 </q-item>
               </template>
+              <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
 
               <p v-if="errors" class="error">
                 <span v-if="!$v.task.departman.required">*{{ $t('thisfieldisrequired') }}.</span>
@@ -161,7 +163,7 @@
           >
             <staffsAutocomplete
               :editData="profileMode === 'Edit' || state === 'kanboard' ? staffEdit : ''"
-              isRequired="false"
+              :isRequired="false"
               @getAutoCompleteValue="getAutoCompleteValuestaff"
             />
 
@@ -202,21 +204,6 @@
                       @input="() => $refs.qDateProxy.hide()"
                       today-btn
                       calendar="persian"
-                    />
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
-            </q-input>
-
-            <q-input outlined v-model="task.doneTime" :label="$t('doneTime')" mask="time">
-              <template v-slot:prepend>
-                <q-icon name="access_time" class="cursor-pointer" color="primary">
-                  <q-popup-proxy ref="qTimeProxy" transition-show="scale" transition-hide="scale">
-                    <q-time
-                      v-model="task.doneTime"
-                      :minute-options="minuteOptions"
-                      :hour-options="hourOptions1"
-                      @input="() => $refs.qTimeProxy.hide()"
                     />
                   </q-popup-proxy>
                 </q-icon>
@@ -320,7 +307,6 @@ export default {
         assigner: this.$store.state.module1.userData.id,
         assignee: '',
         stimateTime: '',
-        doneTime: '',
         dueDate: '',
         comments: [],
         attachments: '',
@@ -417,12 +403,12 @@ export default {
     submitTask() {
       this.empty = !this.$v.task.$anyDirty;
       this.errors = !this.$v.task.$anyError;
-      console.log(this.$v.task);
 
       this.$refs.priority.$el.focus();
       this.$refs.departman.$el.focus();
-      const dueDate = this.persionToGregorian(this.task.dueDate);
-      console.log(this.errors);
+
+      console.log(`dueDate:${this.task.dueDate}`);
+
       if (this.profileMode !== 'Edit' && this.state !== 'kanboard') {
         if (
           this.task.priority.length !== 0 &&
@@ -436,19 +422,21 @@ export default {
               service: this.task.serviceName,
               tags: this.task.tags,
               priority: this.task.priority,
-              ticketNum: this.task.ticketId,
-              dueDate,
-              estimateTime: this.task.stimateTime,
+              ...(this.task.ticketId.length > 0
+                ? { ticketNum: this.task.ticketId }
+                : ''),
+              ...(this.task.dueDate.length > 0
+                ? { dueDate: this.persionToGregorian(this.task.dueDate) }
+                : ''),
+              estimatedTime: this.task.stimateTime,
               asignee: this.task.assignee,
               asigner: this.task.assigner,
-              doneTime: this.task.doneTime,
               description: this.task.description,
               // comments: this.task.comments,
             })
             .then(res => {
               console.log(res);
               if (res.status === 200) {
-                console.log('submit task');
                 this.$q.notify({
                   message: this.$t('newTaskAdded'),
                   color: 'positive',
@@ -483,16 +471,19 @@ export default {
             .put(`/v1/api/vkann/tasks/${this.$route.params.taskId}`, {
               title: this.task.title,
               department: this.task.departman,
-              service: this.task.serviceName,
+              ...(this.task.serviceName.length > 0
+                ? { service: this.task.serviceName }
+                : ''),
               tags: this.task.tags,
               priority: this.task.priority,
               ticketId: this.task.ticketId,
               dueDate: new Date(this.task.dueDate),
-              estimateTime: this.task.stimateTime,
+              estimatedTime: this.task.stimateTime,
               // eslint-disable-next-line no-underscore-dangle
-              asignee: this.task.assignee,
+              ...(this.task.assignee.length > 0
+                ? { asignee: this.task.assignee }
+                : ''),
               asigner: this.task.assigner,
-              doneTime: this.task.doneTime,
               description: this.task.description,
               // comments: this.task.comments,
             })
@@ -538,11 +529,13 @@ export default {
               priority: this.task.priority,
               ticketId: this.task.ticketId,
               dueDate: new Date(this.task.dueDate),
-              estimateTime: this.task.stimateTime,
+              estimatedTime: this.task.stimateTime,
               // eslint-disable-next-line no-underscore-dangle
-              asignee: this.task.assignee,
+              ...(this.task.assignee.length > 0
+                ? { asignee: this.task.assignee }
+                : ''),
+
               asigner: this.task.assigner,
-              doneTime: this.task.doneTime,
               description: this.task.description,
               // comments: this.task.comments,
             })
@@ -574,14 +567,24 @@ export default {
         .get(`/v1/api/vkann/tasks/${this.$route.params.taskId}`)
         .then(res => {
           console.log(res);
+
           this.task.title = res.data.task.title;
           this.task.description = res.data.task.description;
           this.task.departman = res.data.task.department;
-          this.task.priority = res.data.task.priority;
           this.task.ticketId = res.data.task.ticket;
           this.serviceEdit = res.data.task.service;
+          this.task.priority = res.data.task.priority;
+          this.task.dueDate = res.data.task.dueDate;
+          this.task.stimateTime = res.data.task.estimatedTime;
+          if (res.data.task.service) {
+            // eslint-disable-next-line no-underscore-dangle
+            this.task.serviceName = res.data.task.service._id;
+          }
+          this.staffEdit = res.data.task.asignee;
+          console.log('inja?');
+
           // eslint-disable-next-line no-underscore-dangle
-          this.task.serviceName = res.data.task.service._id;
+          this.task.assignee = res.data.task.asignee._id;
           const serverItems = res.data.task.tags.map(item => ({
             // eslint-disable-next-line no-underscore-dangle
             id: item._id,
@@ -592,8 +595,6 @@ export default {
             // eslint-disable-next-line no-underscore-dangle
             return item.id;
           });
-          this.staffEdit = res.data.task.asignee;
-          this.task.assignee = res.data.task.asignee;
         })
         .catch(e => {
           if (e.response.status === 422) {
@@ -620,6 +621,8 @@ export default {
           this.task.priority = res.data.task.priority;
           this.task.ticketId = res.data.task.ticket;
           this.serviceEdit = res.data.task.service;
+          this.task.dueDate = res.data.task.dueDate;
+          this.task.stimateTime = res.data.task.estimatedTime;
           // eslint-disable-next-line no-underscore-dangle
           this.task.serviceName = res.data.task.service._id;
           const serverItems = res.data.task.tags.map(item => ({
@@ -663,7 +666,7 @@ export default {
 .newTaskInfoHeader {
   text-align: center;
   background-color: #dbdbdb;
-  border: 1px solid #bcbcff;
+  border: 1px solid #bcbcbc;
   border-radius: 12px;
   padding: 3px;
   font-size: 16px;
@@ -729,7 +732,6 @@ export default {
   font-size: 16px;
   text-align: center;
 }
-
 .ticketTable tr:hover {
   .idPicker {
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14),

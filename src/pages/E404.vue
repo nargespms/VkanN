@@ -1,13 +1,16 @@
 <template >
-  <div>
-    <div class="alreadySignedText">
-      <span>{{$t('YouAreSignInAlready')}}</span>
-      <router-link :to="'/' + $route.params.locale + '/dashboard'">
+  <div class="q-pa-xl">
+    <div class="permissionDeniedPage">
+      <span class="permissionDeniedTxt">
+        <q-icon name="warning" flat color="negative"></q-icon>
+        {{$t('youDonthaveAccess')}}
+      </span>
+      <!-- <router-link :to="'/' + $route.params.locale + '/dashboard'">
         <q-icon name="fas fa-home" class="fn18" />
         {{$t('returnTo')}} {{$t('dashboard')}}
-      </router-link>
+      </router-link>-->
+      <img src="~assets/signIn.png" alt />
     </div>
-    <img src="~assets/signIn.png" alt />
   </div>
 </template>
 
@@ -22,9 +25,15 @@ export default {
 
 
 <style lang="scss">
-.alreadySignedText {
-  span {
-    font-size: 18px;
+.permissionDeniedPage {
+  .permissionDeniedTxt {
+    font-size: 22px;
+    display: block;
+    margin: auto;
+    text-align: center;
+    i {
+      font-size: 35px;
+    }
   }
   a {
     display: block;
@@ -35,6 +44,10 @@ export default {
     color: #000;
     padding: 4px 12px;
     border-radius: 4px;
+  }
+  img {
+    display: block;
+    margin: auto;
   }
 }
 </style>

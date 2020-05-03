@@ -8,7 +8,6 @@
       :filter="tableSearch"
       :separator="separator"
       :pagination.sync="innerPagination"
-      binary-state-sort
       class="my-sticky-header-table"
       @request="onRequest"
       :dense="$q.screen.lt.sm"
@@ -22,8 +21,14 @@
           <q-th v-for="col in columns" :key="col.lable" class="tableHeadCell">
             <!-- name for each column -->
             <span class="columnLabel">{{ $t(col.lable) }}</span>
+            <template v-if="col.sortable">
+              <span @click="sortSet" class="pointer">
+                <i v-if="sorted" class="fa fa-arrow-down" aria-hidden="true"></i>
+                <i v-if="!sorted" class="fa fa-arrow-up" aria-hidden="true"></i>
+              </span>
+            </template>
             <!-- if filterable true in each column it will show an input -->
-            <div class="columnFilterWrap" v-if="col.filterable" @click.stop="stopSort">
+            <div class="columnFilterWrap" v-if="col.filterable">
               <q-input
                 outlined
                 color="text-black"
@@ -96,16 +101,15 @@
                 <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
               </q-select>
 
-              <div v-if="col.filterType === 'Date'">
+              <div v-if="col.lable === 'issueDate'">
                 <q-input
                   outlined
-                  v-model.trim="filter.columnFilterStartdate"
+                  v-model="issueDate"
                   mask="date"
                   :rules="['date']"
-                  :label="$t('startDate')"
-                  ref="qDateProxy"
+                  :label="$t('date')"
                   name="event"
-                  @click="stopSort"
+                  class="w200p"
                 >
                   <template v-slot:append>
                     <q-icon name="event" class="cursor-pointer" color="black">
@@ -114,51 +118,60 @@
                         transition-show="scale"
                         transition-hide="scale"
                       >
-                        <q-date
-                          v-model.trim="filter.columnFilterStartdate"
-                          today-btn
-                          ok-label
-                          calendar="persian"
-                        >
+                        <q-date v-model="issueDate" today-btn ok-label calendar="persian">
                           <div class="row items-center justify-end q-gutter-sm">
-                            <q-btn :label="$t('ok')" color="primary" flat v-close-popup />
+                            <q-btn
+                              :label="$t('ok')"
+                              color="primary"
+                              flat
+                              v-close-popup
+                              @click="startSetDate(issueDate)"
+                            />
                             <q-btn :label="$t('cancel')" color="primary" flat v-close-popup />
                           </div>
                         </q-date>
                       </q-popup-proxy>
                     </q-icon>
                   </template>
+                  <template v-if="issueDate" v-slot:prepend>
+                    <q-icon name="cancel" @click.stop="issueDate = null" class="cursor-pointer" />
+                  </template>
                 </q-input>
-
+              </div>
+              <div v-if="col.lable === 'endDate'">
                 <q-input
                   outlined
-                  v-model.trim="filter.columnFilterEnddate"
+                  v-model="dueDate"
                   mask="date"
                   :rules="['date']"
-                  :label="$t('endDate')"
-                  @click="stopSort"
+                  :label="$t('date')"
+                  name="event"
+                  class="w200p"
                 >
                   <template v-slot:append>
                     <q-icon name="event" class="cursor-pointer" color="black">
                       <q-popup-proxy
-                        ref="qDateProxy"
+                        ref="qDateProxy1"
                         transition-show="scale"
                         transition-hide="scale"
                       >
-                        <q-date
-                          v-model.trim="filter.columnFilterEnddate"
-                          @change="() => $refs.qDateProxy.hide()"
-                          today-btn
-                          calendar="persian"
-                          :options="computDate"
-                        >
+                        <q-date v-model="dueDate" today-btn ok-label calendar="persian">
                           <div class="row items-center justify-end q-gutter-sm">
-                            <q-btn :label="$t('ok')" color="primary" flat v-close-popup />
+                            <q-btn
+                              :label="$t('ok')"
+                              color="primary"
+                              flat
+                              v-close-popup
+                              @click="endSetDate(dueDate)"
+                            />
                             <q-btn :label="$t('cancel')" color="primary" flat v-close-popup />
                           </div>
                         </q-date>
                       </q-popup-proxy>
                     </q-icon>
+                  </template>
+                  <template v-if="dueDate" v-slot:prepend>
+                    <q-icon name="cancel" @click.stop="dueDate = null" class="cursor-pointer" />
                   </template>
                 </q-input>
               </div>
@@ -273,6 +286,9 @@ export default {
   name: 'invoiceTableData',
   data() {
     return {
+      issueDate: '',
+      dueDate: '',
+      sorted: false,
       todayDate: new Date(),
       status: ['VALID', 'INVALID', 'PAID', 'UNPAID', 'PENDING'],
       official: [
@@ -293,7 +309,7 @@ export default {
     pagination: {
       type: Object,
       default: () => ({
-        sortBy: 'name',
+        sortBy: 'total',
         descending: false,
         page: 1,
         limit: 10,
@@ -302,6 +318,17 @@ export default {
     },
   },
   methods: {
+    sortSet() {
+      this.sorted = !this.sorted;
+      console.log('click');
+      this.innerPagination.sortBy = 'total';
+      this.innerPagination.descending = !this.innerPagination.descending;
+
+      this.onRequest({
+        pagination: this.innerPagination,
+        filter: this.filter,
+      });
+    },
     recordClick(value) {
       this.$emit('onIdClick', value);
     },
@@ -323,12 +350,26 @@ export default {
       this.innerPagination = props.pagination;
       this.$emit('request', props);
     },
+    persionToGregorian(value) {
+      const dateValue = value.split('/').map(i => parseInt(i, 10));
+      return new this.$persianDate(dateValue).toDate().toISOString();
+    },
+
+    startSetDate(value) {
+      this.filter.issueDate = this.persionToGregorian(value);
+      this.colFilterChange();
+    },
+    endSetDate(value) {
+      this.filter.dueDate = this.persionToGregorian(value);
+      this.filter.validUntil = this.persionToGregorian(value);
+      this.colFilterChange();
+    },
   },
 };
 </script>
 
 <style lang="scss">
-.userManagementListWrap {
+.tableListWrap {
   .expandTable {
     .q-icon {
       color: #666;

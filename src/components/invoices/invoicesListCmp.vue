@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="userManagementListWrap">
+    <div class="tableListWrap">
       <tableDataWrap module="invoice" :columns="columns" :endpoint="'/v1/api/vkann/invoices/list'" />
     </div>
   </div>
@@ -38,15 +38,15 @@ export default {
           filterType: 'text',
         },
         {
-          lable: 'startDate',
+          lable: 'issueDate',
           filterable: true,
-          sortable: true,
+          sortable: false,
           filterType: 'Date',
         },
         {
           lable: 'endDate',
           filterable: true,
-          sortable: true,
+          sortable: false,
           filterType: 'Date',
         },
         {
@@ -58,7 +58,7 @@ export default {
         {
           lable: 'official',
           filterable: true,
-          sortable: true,
+          sortable: false,
           filterType: '',
         },
 

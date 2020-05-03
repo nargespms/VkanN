@@ -62,19 +62,12 @@ export default function({ store }) {
         const userRole = user.module1.userData.role;
         const userDep = user.module1.userData.department;
 
-        console.log(userRole);
-        console.log(userDep);
-
-        console.log(`role included :${to.meta.roles.includes(userRole)}`);
-        console.log(to.meta.roles);
-        console.log(to.meta.dep.includes(userDep));
-
         if (to.meta.roles.includes(userRole) && to.meta.dep.includes(userDep)) {
           console.log('happy');
           next();
         } else {
           console.log('unhappy');
-          next('/');
+          next({ name: '404' });
         }
       }
     } else {

@@ -63,9 +63,10 @@ export default {
           .toString();
         // console.log(extensionArray);
         console.log(extension);
+        console.log(file);
         // Create a new tus upload
         const upload = new tus.Upload(file, {
-          endpoint: 'files/',
+          endpoint: '/v1/api/vkann/url',
           retryDelays: [0, 3000, 5000, 10000, 20000],
           metadata: {
             filename: file.name,

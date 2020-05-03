@@ -180,7 +180,9 @@
           {{ printData.total }}
           {{ $t(printData.currency) }}
         </td>
-        <td v-if="printData.official"></td>
+        <!-- <template v-if="printData.official">
+          <td></td>
+        </template>-->
       </tr>
     </table>
 

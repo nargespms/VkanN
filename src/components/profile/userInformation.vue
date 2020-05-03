@@ -4,7 +4,7 @@
       <q-tabs v-model="tab" dense class="text-grey block460" active-color="primary" align="justify">
         <q-tab name="profileInfo" :label="$t('profileInfo')" />
         <q-tab name="profileInfoDetails" :label="$t('profileInfoDetails')" />
-        <q-tab name="editProfile" :label="$t('editProfile')" />
+        <q-tab name="editProfile" :label="$t('editProfile')" v-if="!userEdit" />
       </q-tabs>
       <q-separator />
       <q-tab-panels v-model="tab" animated>
@@ -16,7 +16,7 @@
           <userInformationDetailsInfo :data="data" />
         </q-tab-panel>
 
-        <q-tab-panel name="editProfile">
+        <q-tab-panel name="editProfile" v-if="!userEdit">
           <profileEditForm :profileMode="'Edit'" @editDataUser="editDataUser" />
         </q-tab-panel>
       </q-tab-panels>
@@ -85,9 +85,7 @@ export default {
                 icon: 'check',
                 position: 'top',
               });
-              this.$router.push({
-                path: `/${this.$route.params.locale}/userManagement`,
-              });
+              this.tab = 'profileInfo';
             }
           })
           .catch(e => {
@@ -148,6 +146,17 @@ export default {
             }
           });
       }
+    },
+  },
+  computed: {
+    userEdit() {
+      return (
+        this.$route.path
+          .split('/')
+          .slice(2, 3)
+          .toString() !== 'profile' &&
+        this.$store.state.module1.userData.role !== 'MANAGER'
+      );
     },
   },
 };

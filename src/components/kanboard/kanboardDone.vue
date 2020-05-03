@@ -155,7 +155,6 @@ export default {
           },
         })
         .then(response => {
-          console.log(response.data);
           this.data = response.data.result.docs;
           this.totalPages = response.data.result.totalPages;
           // don't forget to update local pagination object

@@ -107,14 +107,9 @@
                   {{ $t('clients') }}
                 </router-link>
                 <router-link
-                  v-if="
-                    $store.state.module1.userData.role !== 'MEMBER' ||
-                      $store.state.module1.userData.role !== 'CLIENT'
-                  "
+                  v-if="$store.state.module1.userData.role === 'MANAGER'"
                   class="block"
-                  :to="
-                    '/' + locale + '/' + 'userManagement' + '/' + 'addMember'
-                  "
+                  :to="'/' + locale + '/' + 'userManagement' + '/' + 'addMember'"
                 >
                   <q-icon name="fas fa-plus pr1" />
                   {{ $t('addMember') }}
@@ -135,12 +130,12 @@
                   class="block"
                   :to="'/' + locale + '/' + 'tickets' + '/' + 'ticketsList'"
                 >
-                  <q-icon name="system_update_alt" />
+                  <q-icon name="fa fa-table" />
                   {{ $t('ticketsList') }}
                 </router-link>
                 <!-- add new tickets -->
                 <router-link class="block" :to="'/' + locale + '/' + 'tickets' + '/' + 'addTicket'">
-                  <q-icon name="system_update_alt" />
+                  <q-icon name="fas fa-plus" />
                   {{ $t('addTicket') }}
                 </router-link>
               </q-expansion-item>
@@ -155,15 +150,19 @@
                 :to="'/' + locale + '/' + 'tasks'"
               >
                 <router-link class="block" :to="'/' + locale + '/' + 'tasks' + '/' + 'myTasksList'">
-                  <q-icon name="play_for_work" />
+                  <q-icon name="fa fa-table" />
                   {{ $t('mytasks') }}
                 </router-link>
-                <router-link class="block" :to="'/' + locale + '/' + 'tasks' + '/' + 'tasksList'">
-                  <q-icon name="play_for_work" />
+                <router-link
+                  v-if="$store.state.module1.userData.role === 'MANAGER'"
+                  class="block"
+                  :to="'/' + locale + '/' + 'tasks' + '/' + 'tasksList'"
+                >
+                  <q-icon name="fa fa-table" />
                   {{ $t('tasksList') }}
                 </router-link>
                 <router-link class="block" :to="'/' + locale + '/' + 'tasks' + '/' + 'addTask'">
-                  <q-icon name="play_for_work" />
+                  <q-icon name="fas fa-plus" />
                   {{ $t('addTask') }}
                 </router-link>
                 <router-link class="block" :to="'/' + locale + '/' + 'tasks' + '/' + 'kanBoard'">
@@ -215,12 +214,11 @@
             </li>
 
             <!-- billing route -->
+
             <li
               class="mainMenuLi"
-              v-if="
-                $store.state.module1.userData.department !== 'INFO' ||
-                  $store.state.module1.userData.department !== 'TECH'
-              "
+              v-if="$store.state.module1.userData.department !== 'TECH'&&
+              $store.state.module1.userData.department !== 'INFO'"
             >
               <q-expansion-item
                 icon="attach_money"
