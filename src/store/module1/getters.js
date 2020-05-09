@@ -1,3 +1,3 @@
 export function isAuthenticated(state) {
-  return state.userData;
+  return state.userData.user;
 }

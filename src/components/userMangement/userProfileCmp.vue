@@ -1,6 +1,6 @@
 <template>
   <div>
-    <profileInfoCmp :data="userData" />
+    <profileInfoCmp :data="userData.user" />
   </div>
 </template>
 
@@ -22,7 +22,7 @@ export default {
       .get(`/v1/api/vkann/users/${this.$route.params.userId}`)
       .then(res => {
         console.log(res);
-        this.userData = res.data.user;
+        this.userData.user = res.data.user;
       });
   },
 };

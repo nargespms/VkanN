@@ -6,6 +6,7 @@
         :columns="columns"
         :endpoint="'/v1/api/vkann/tickets/list'"
         @ticketDelete="ticketDelete"
+        @retriveTicket="retriveTicket"
         :key="componentKey"
       />
     </div>
@@ -16,7 +17,7 @@
 import tableDataWrap from '../structure/tableDataWrap.vue';
 
 export default {
-  name: 'ticketsList',
+  name: 'ticketsListCmp',
   components: {
     tableDataWrap,
   },
@@ -79,6 +80,19 @@ export default {
     ticketDelete(value) {
       this.$axios
         .delete(`/v1/api/vkann/tickets/${value}`)
+        .then(res => {
+          console.log(res);
+          if (res.status === 200) {
+            this.componentKey += 1;
+          }
+        })
+        .catch(e => {
+          console.log(e.response);
+        });
+    },
+    retriveTicket(value) {
+      this.$axios
+        .patch(`/v1/api/vkann/tickets/${value}`)
         .then(res => {
           console.log(res);
           if (res.status === 200) {

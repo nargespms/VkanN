@@ -20,6 +20,7 @@
       </div>
     </q-header>
     <!-- right  main menu component -->
+
     <div v-if="$store.state.module1.logedIn">
       <rightMainMenu
         :locale="locale"

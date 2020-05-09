@@ -37,21 +37,23 @@
 
               <q-select
                 outlined
-                v-if="col.lable === 'type'"
+                v-if="col.lable === 'formal'"
                 class="filterColumnSearch dropBoxFilterColumn w150p"
                 :options="contractType"
                 v-model.trim="filter[col.lable]"
                 @input="colFilterChange"
                 debounce="1000"
+                emit-value
+                map-options
+                :option-label="opt => $t(opt.label)"
               >
                 <template v-slot:option="scope">
                   <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
                     <q-item-section>
-                      <q-item-label>{{ $t(scope.opt) }}</q-item-label>
+                      <q-item-label>{{ $t(scope.opt.label) }}</q-item-label>
                     </q-item-section>
                   </q-item>
                 </template>
-                <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
               </q-select>
 
               <q-select
@@ -104,6 +106,9 @@
                       </q-popup-proxy>
                     </q-icon>
                   </template>
+                  <template v-if="startDate" v-slot:prepend>
+                    <q-icon name="cancel" @click="startDateNull" class="cursor-pointer" />
+                  </template>
                 </q-input>
               </div>
               <div v-if="col.lable === 'endDate'">
@@ -136,6 +141,9 @@
                         </q-date>
                       </q-popup-proxy>
                     </q-icon>
+                  </template>
+                  <template v-if="endDate" v-slot:prepend>
+                    <q-icon name="cancel" @click="endDateNull" class="cursor-pointer" />
                   </template>
                 </q-input>
               </div>
@@ -216,9 +224,13 @@
             </span>
           </q-td>
           <q-td>
-            <span>{{ $t(props.row.type) }}</span>
+            <span class="center block" v-if="props.row.formal">
+              <q-icon class="fn18 fnb" name="fa fa-check-circle" color="positive" />
+            </span>
+            <span class="center block" v-if="!props.row.formal">
+              <q-icon class="fn16" name="fa fa-times" color="negative" />
+            </span>
           </q-td>
-
           <q-td>
             <span>{{ $t(props.row.status) }}</span>
           </q-td>
@@ -235,7 +247,10 @@ export default {
     return {
       startDate: '',
       endDate: '',
-      contractType: ['FORMAL', 'INFORMAL'],
+      contractType: [
+        { label: 'FORMAL', value: true },
+        { label: 'INFORMAL', value: false },
+      ],
       contractStatus: ['VALID', 'TERMINATED', 'EXPIRED'],
       FilterOption: this.status,
       separator: 'cell',
@@ -292,6 +307,16 @@ export default {
     },
     endSetDate(value) {
       this.filter.endDate = this.persionToGregorian(value);
+      this.colFilterChange();
+    },
+    startDateNull() {
+      this.startDate = null;
+      delete this.filter.startDate;
+      this.colFilterChange();
+    },
+    endDateNull() {
+      this.endDate = null;
+      delete this.filter.endDate;
       this.colFilterChange();
     },
   },

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="q-pa-md">
     <div class="width-1of2 lg-width-1of3 sm-auto chartsWrap">
       <lineChartWrap />
       <!-- <barChart :chartdata="chartData" :options="chartOptions" />

@@ -25,7 +25,7 @@
             class="tabSelect"
             label
             name="invoiceEdit"
-            v-if="$store.state.module1.userData.role === 'MANAGER'"
+            v-if="$store.state.module1.userData.user.role === 'MANAGER'"
           >
             {{
             $t('edit')
@@ -38,7 +38,10 @@
             <invoiceProfileCmp />
           </q-tab-panel>
 
-          <q-tab-panel name="invoiceEdit" v-if="$store.state.module1.userData.role === 'MANAGER'">
+          <q-tab-panel
+            name="invoiceEdit"
+            v-if="$store.state.module1.userData.user.role === 'MANAGER'"
+          >
             <addInvoiceTable
               profileMode="Edit"
               class="EditInvoiceTable"

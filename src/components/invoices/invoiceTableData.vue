@@ -134,7 +134,7 @@
                     </q-icon>
                   </template>
                   <template v-if="issueDate" v-slot:prepend>
-                    <q-icon name="cancel" @click.stop="issueDate = null" class="cursor-pointer" />
+                    <q-icon name="cancel" @click.stop="issueDateNull" class="cursor-pointer" />
                   </template>
                 </q-input>
               </div>
@@ -171,7 +171,7 @@
                     </q-icon>
                   </template>
                   <template v-if="dueDate" v-slot:prepend>
-                    <q-icon name="cancel" @click.stop="dueDate = null" class="cursor-pointer" />
+                    <q-icon name="cancel" @click="dueDateNull" class="cursor-pointer" />
                   </template>
                 </q-input>
               </div>
@@ -272,9 +272,6 @@
               <q-icon class="fn16" name="fa fa-times" color="negative" />
             </span>
           </q-td>
-          <q-td>
-            <span>{{ $t(props.row.type) }}</span>
-          </q-td>
         </q-tr>
       </template>
     </q-table>
@@ -292,8 +289,8 @@ export default {
       todayDate: new Date(),
       status: ['VALID', 'INVALID', 'PAID', 'UNPAID', 'PENDING'],
       official: [
-        { label: 'invoiceUnOfficial', value: true },
-        { label: 'invoiceOfficial', value: false },
+        { label: 'invoiceOfficial', value: true },
+        { label: 'invoiceUnOfficial', value: false },
       ],
       type: ['QUOTE', 'INVOICE'],
       separator: 'cell',
@@ -361,7 +358,16 @@ export default {
     },
     endSetDate(value) {
       this.filter.dueDate = this.persionToGregorian(value);
-      this.filter.validUntil = this.persionToGregorian(value);
+      this.colFilterChange();
+    },
+    issueDateNull() {
+      this.issueDate = null;
+      delete this.filter.issueDate;
+      this.colFilterChange();
+    },
+    dueDateNull() {
+      this.dueDate = null;
+      delete this.filter.dueDate;
       this.colFilterChange();
     },
   },

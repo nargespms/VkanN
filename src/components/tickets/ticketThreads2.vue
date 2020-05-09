@@ -32,6 +32,7 @@ export default {
       this.$axios.delete(`/v1/api/vkann/threads/${value.id}`).then(res => {
         console.log(res);
       });
+      this.$emit('reloadCmp', true);
     },
 
     replyThread(value) {

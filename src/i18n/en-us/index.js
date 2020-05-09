@@ -300,4 +300,9 @@ export default {
   inprogressTickets: 'inprogress Tickets',
   criticalTasks: 'critical Tasks',
   expiredTasks: 'expired Tasks',
+  daily: 'Daily',
+  monthly: 'Monthly',
+  year: 'Year',
+  filterBy: 'filter By',
+  part: 'part',
 };

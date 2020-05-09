@@ -212,25 +212,7 @@
           </div>
         </q-slide-transition>
       </div>
-      <div class="taskWrapper mt32">
-        <div class="newTaskInfoHeader" @click="taskStateComment = !taskStateComment">
-          <span class="pr12">
-            <q-icon v-if="!taskStateComment" class="text-blue-grey-8" name="fa fa-arrow-down" />
-            <q-icon v-if="taskStateComment" class="text-blue-grey-8" name="fa fa-arrow-up" />
-          </span>
-          {{ $t('comments') }}
-        </div>
-        <div class="taskCommentContent">
-          <q-slide-transition>
-            <taskComment
-              @setCommentValue="setCommentValue"
-              v-if="taskStateComment"
-              transition-show="scale"
-              transition-hide="scale"
-            />
-          </q-slide-transition>
-        </div>
-      </div>
+
       <div class="saveButTask">
         <q-btn
           style="width:250px;"
@@ -257,7 +239,6 @@ import editor from '../structure/editor.vue';
 import editorProp from '../structure/editorProp.vue';
 import tagsSelection from '../structure/tagsSelection.vue';
 import uploadfile from '../structure/uploadfile.vue';
-import taskComment from './taskComment.vue';
 import servicesAutocomplete from '../structure/servicesAutocomplete.vue';
 import staffsAutocomplete from '../structure/staffsAutocomplete.vue';
 import tableDataWrap from '../structure/tableDataWrap.vue';
@@ -274,7 +255,6 @@ export default {
     editorProp,
     tagsSelection,
     uploadfile,
-    taskComment,
     servicesAutocomplete,
     tableDataWrap,
     staffsAutocomplete,
@@ -304,11 +284,10 @@ export default {
         tags: [],
         priority: '',
         ticketId: '',
-        assigner: this.$store.state.module1.userData.id,
+        assigner: this.$store.state.module1.userData.user.id,
         assignee: '',
         stimateTime: '',
         dueDate: '',
-        comments: [],
         attachments: '',
       },
       serviceEdit: '',
@@ -389,9 +368,7 @@ export default {
     addTagFn(value) {
       this.task.tags = value.map(v => v.id);
     },
-    setCommentValue(value) {
-      this.task.comments = value;
-    },
+
     filterFn(val, update) {
       update(() => {
         const needle = val.toLowerCase();
@@ -432,7 +409,6 @@ export default {
               asignee: this.task.assignee,
               asigner: this.task.assigner,
               description: this.task.description,
-              // comments: this.task.comments,
             })
             .then(res => {
               console.log(res);
@@ -485,7 +461,6 @@ export default {
                 : ''),
               asigner: this.task.assigner,
               description: this.task.description,
-              // comments: this.task.comments,
             })
             .then(res => {
               console.log(res);
@@ -524,7 +499,10 @@ export default {
             .put(`/v1/api/vkann/tasks/${this.localBoardData.id}`, {
               title: this.task.title,
               department: this.task.departman,
-              service: this.task.serviceName,
+              ...(this.task.serviceName.length > 0
+                ? { service: this.task.serviceName }
+                : ''),
+
               tags: this.task.tags,
               priority: this.task.priority,
               ticketId: this.task.ticketId,
@@ -537,7 +515,6 @@ export default {
 
               asigner: this.task.assigner,
               description: this.task.description,
-              // comments: this.task.comments,
             })
             .then(res => {
               console.log(res);

@@ -35,6 +35,7 @@
           <template v-slot:append>
             <q-icon name />
           </template>
+          <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
         </q-select>
         <router-link class="forgetUser" to="/">
           <span @click="goToForget">{{ $t('forgotEmail') }} {{ $t('questionmark') }}</span>
@@ -142,14 +143,14 @@ export default {
       form: {
         UserName: '',
         password: '',
-        method: this.$t('otp'),
+        method: 'password',
         otp: '',
       },
       isPwd: true,
       EnableSecondLevel: false,
       EnableFirstLevel: true,
       EnableOtpLevel: false,
-      methodOptions: [this.$t('otp'), this.$t('password')],
+      methodOptions: ['otp', 'password'],
       //  for captcha checking
       captcha: false,
       captchaObj: {},
@@ -278,7 +279,7 @@ export default {
           });
       } else {
         this.$q.notify({
-          message: this.$t('pleaseenter a valid username'),
+          message: this.$t('pleaseenteravalidusername'),
           color: 'negative',
           icon: 'warning',
           position: 'top',
@@ -368,10 +369,10 @@ export default {
               if (response.status === 200) {
                 this.EnableSecondLevel = false;
                 this.showNotif('top-right');
-                console.log(response.data);
+                console.log(response.data.user);
                 this.$store.commit(
                   'module1/userDataFromServer',
-                  response.data,
+                  response.data.user,
                   { module: 'module1' }
                 );
                 this.$store.commit('module1/logedInSuccesfully', true, {
@@ -530,7 +531,7 @@ export default {
 }
 .resendOtp {
   color: $primary;
-  float: right;
+  // float: right;
   cursor: pointer;
   display: inline-block;
 }

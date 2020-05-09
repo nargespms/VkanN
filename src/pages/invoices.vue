@@ -4,9 +4,10 @@
       <cardsAction :data="invoices.list" />
 
       <cardsAction
-        v-if="$store.state.module1.userData.role !== 'CLIENT'"
+        v-if="$store.state.module1.userData.user.role !== 'CLIENT'"
         :data="invoices.addInvoice"
       />
+      <cardsAction :data="invoices.quotesList" />
     </div>
   </div>
 </template>
@@ -27,10 +28,15 @@ export default {
     return {
       invoices: {
         list: {
-          number: 15,
           icon: 'fa fa-table',
           bg: '#26A69A',
           cardName: 'invoicesList',
+          parentUrl: 'billing/invoices',
+        },
+        quotesList: {
+          icon: 'fa fa-table',
+          bg: '#D64367',
+          cardName: 'quotesList',
           parentUrl: 'billing/invoices',
         },
         addInvoice: {

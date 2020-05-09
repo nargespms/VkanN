@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="dashBoardCardsWrap">
     <cardsAction :data="tickets.open" />
     <cardsAction :data="tickets.inProgress" />
     <cardsAction :data="tasks.critical" />
@@ -12,7 +12,7 @@
 import cardsAction from './cardsAction.vue';
 
 export default {
-  name: 'openTicketCard',
+  name: 'TicketsStatusCard',
   components: {
     cardsAction,
   },
@@ -58,3 +58,9 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+.dashBoardCardsWrap {
+  display: flex;
+  justify-content: center;
+}
+</style>

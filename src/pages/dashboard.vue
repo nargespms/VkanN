@@ -3,12 +3,10 @@
     <div class="pannelStatusCards">
       <pannelStatusCards />
     </div>
-    <charts />
   </div>
 </template>
 <script>
 import pannelStatusCards from '../components/structure/pannelStatusCards.vue';
-import charts from '../components/structure/charts.vue';
 
 export default {
   meta() {
@@ -19,7 +17,6 @@ export default {
 
   components: {
     pannelStatusCards,
-    charts,
   },
 };
 </script>

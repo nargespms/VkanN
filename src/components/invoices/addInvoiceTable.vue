@@ -519,6 +519,7 @@ export default {
       enableEndDateQuote: false,
       invoiceCurrency: ['IRR', 'USD', 'EUR'],
       invoice: {
+        id: '',
         cardNumber: '',
         currency: '',
         serialNumber: '',
@@ -591,6 +592,30 @@ export default {
         if (foundItemIndex !== -1) {
           this.invoice.items[foundItemIndex] = value;
         }
+        console.log(`value${value}`);
+        const serverItems = {
+          rowNumber: value.number,
+          code: value.itemCode,
+          description: value.itemDescription,
+          quantity: value.itemNumber,
+          unit: value.itemUnit,
+          fee: value.itemAmount,
+          total: value.itemTotalAmount,
+          discount: value.itemDiscount,
+          totalAfterDiscount: value.itemTotalWithDiscount,
+          TAX: 9,
+          finalTotal: value.itemTotalAmountTaxIncluded,
+        };
+        //
+        this.$axios
+          .put(`/v1/api/vkann/items/${value.id}`, {
+            invoiceId: this.invoice.id,
+            ...serverItems,
+          })
+          .then(res => {
+            console.log(res);
+          });
+        //
       }
 
       this.invoiceTotalAmount();
@@ -692,35 +717,22 @@ export default {
               }
             });
         }
-        if (this.profileMode === 'Edit') {
-          console.log('edit');
-        }
       }
     },
     editSubmit() {
-      console.log('edit submit');
-      // const standardStartDate = this.persionToGregorian(this.invoice.startdate);
-      // const standardQuoteStartDate = this.persionToGregorian(
-      //   this.invoice.quoteStartDate
-      // );
-
-      // const standardEndDate = this.persionToGregorian(this.invoice.enddate);
-      // const standardQuoteEndDate = this.persionToGregorian(
-      //   this.invoice.quoteEndDate
-      // );
-      const serverItems = this.invoice.items.map(item => ({
-        rowNumber: item.number,
-        code: item.itemCode,
-        description: item.itemDescription,
-        quantity: item.itemNumber,
-        unit: item.itemUnit,
-        fee: item.itemAmount,
-        total: item.itemTotalAmount,
-        discount: item.itemDiscount,
-        totalAfterDiscount: item.itemTotalWithDiscount,
-        TAX: 9,
-        finalTotal: item.itemTotalAmountTaxIncluded,
-      }));
+      // const serverItems = this.invoice.items.map(item => ({
+      //   rowNumber: item.number,
+      //   code: item.itemCode,
+      //   description: item.itemDescription,
+      //   quantity: item.itemNumber,
+      //   unit: item.itemUnit,
+      //   fee: item.itemAmount,
+      //   total: item.itemTotalAmount,
+      //   discount: item.itemDiscount,
+      //   totalAfterDiscount: item.itemTotalWithDiscount,
+      //   TAX: 9,
+      //   finalTotal: item.itemTotalAmountTaxIncluded,
+      // }));
       const standardInvoiceDate = this.persionToGregorian(this.invoice.date);
       this.$axios
         .put(`/v1/api/vkann/invoices/${this.$route.params.invoiceId}`, {
@@ -738,8 +750,8 @@ export default {
                 issueDate: this.invoice.startdate,
               }
             : {
-                validUntil: '2020-04-05T19:30:00.000Z',
-                issueDate: '2020-04-05T19:30:00.000Z',
+                validUntil: this.invoice.quoteEndDate,
+                issueDate: this.invoice.quoteStartDate,
               }),
 
           service: this.invoice.serviceName,
@@ -750,7 +762,7 @@ export default {
           cardNumber: this.invoice.cardNumber,
           note: this.invoice.notes,
           status: 'VALID',
-          items: serverItems,
+          // items: serverItems,
           // attachments: 'string',
         })
         .then(res => {
@@ -888,6 +900,7 @@ export default {
         .get(`/v1/api/vkann/invoices/${this.$route.params.invoiceId}`)
         .then(res => {
           console.log(res);
+          this.invoice.id = res.data.id;
           this.invoice.cardNumber = res.data.cardNumber;
           this.invoice.serialNumber = res.data.number;
           this.invoice.type = res.data.type;
@@ -930,6 +943,8 @@ export default {
           }
           // reverse map
           const localItems = res.data.items.map(item => ({
+            // eslint-disable-next-line no-underscore-dangle
+            id: item._id,
             number: item.rowNumber,
             itemCode: item.code,
             itemDescription: item.description,

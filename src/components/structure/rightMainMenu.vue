@@ -16,7 +16,7 @@
               '/' +
               'profile' +
               '/' +
-              `${$store.state.module1.userData.id}`
+              `${$store.state.module1.userData.user.id}`
           "
         >
           <q-avatar size="56px" class="q-mb-sm">
@@ -33,12 +33,12 @@
                 '/' +
                 'profile' +
                 '/' +
-                `${$store.state.module1.userData.id}`
+                `${$store.state.module1.userData.user.id}`
             "
           >
-            {{ this.userData.firstName }}
-            {{ this.userData.lastName }}
-            <p>{{ this.userData.role }}</p>
+            {{ this.userData.user.firstName }}
+            {{ this.userData.user.lastName }}
+            <p>{{ this.userData.user.role }}</p>
           </router-link>
         </div>
       </div>
@@ -80,7 +80,7 @@
               </q-item>
             </li>
             <!-- userManagement route -->
-            <li class="mainMenuLi" v-if="$store.state.module1.userData.role !== 'CLIENT'">
+            <li class="mainMenuLi" v-if="$store.state.module1.userData.user.role !== 'CLIENT'">
               <q-expansion-item
                 icon="supervisor_account"
                 :label="$t('userManagement')"
@@ -90,8 +90,8 @@
               >
                 <router-link
                   v-if="
-                    $store.state.module1.userData.role !== 'MEMBER' &&
-                      $store.state.module1.userData.role !== 'CLIENT'
+                    $store.state.module1.userData.user.role !== 'MEMBER' &&
+                      $store.state.module1.userData.user.role !== 'CLIENT'
                   "
                   class="block"
                   :to="'/' + locale + '/' + 'userManagement' + '/' + 'staffs'"
@@ -107,7 +107,7 @@
                   {{ $t('clients') }}
                 </router-link>
                 <router-link
-                  v-if="$store.state.module1.userData.role === 'MANAGER'"
+                  v-if="$store.state.module1.userData.user.role === 'MANAGER'"
                   class="block"
                   :to="'/' + locale + '/' + 'userManagement' + '/' + 'addMember'"
                 >
@@ -141,7 +141,7 @@
               </q-expansion-item>
             </li>
             <!-- my tasks route -->
-            <li class="mainMenuLi" v-if="$store.state.module1.userData.role !== 'CLIENT'">
+            <li class="mainMenuLi" v-if="$store.state.module1.userData.user.role !== 'CLIENT'">
               <q-expansion-item
                 expand-icon-toggle
                 class="expandableMenu"
@@ -154,7 +154,7 @@
                   {{ $t('mytasks') }}
                 </router-link>
                 <router-link
-                  v-if="$store.state.module1.userData.role === 'MANAGER'"
+                  v-if="$store.state.module1.userData.user.role === 'MANAGER'"
                   class="block"
                   :to="'/' + locale + '/' + 'tasks' + '/' + 'tasksList'"
                 >
@@ -189,20 +189,20 @@
                 </router-link>
                 <router-link
                   v-if="
-                    ($store.state.module1.userData.role === 'MANAGER' &&
-                      $store.state.module1.userData.department === 'GENERAL') ||
-                      ($store.state.module1.userData.role === 'MANAGER' &&
-                        $store.state.module1.userData.department === 'TECH') ||
-                      ($store.state.module1.userData.role === 'MANAGER' &&
-                        $store.state.module1.userData.department ===
+                    ($store.state.module1.userData.user.role === 'MANAGER' &&
+                      $store.state.module1.userData.user.department === 'GENERAL') ||
+                      ($store.state.module1.userData.user.role === 'MANAGER' &&
+                        $store.state.module1.userData.user.department === 'TECH') ||
+                      ($store.state.module1.userData.user.role === 'MANAGER' &&
+                        $store.state.module1.userData.user.department ===
                           'BILLING') ||
-                      ($store.state.module1.userData.role === 'ASSISTANT' &&
-                        $store.state.module1.userData.department ===
+                      ($store.state.module1.userData.user.role === 'ASSISTANT' &&
+                        $store.state.module1.userData.user.department ===
                           'GENERAL') ||
-                      ($store.state.module1.userData.role === 'ASSISTANT' &&
-                        $store.state.module1.userData.department === 'TECH') ||
-                      ($store.state.module1.userData.role === 'ASSISTANT' &&
-                        $store.state.module1.userData.department === 'BILLING')
+                      ($store.state.module1.userData.user.role === 'ASSISTANT' &&
+                        $store.state.module1.userData.user.department === 'TECH') ||
+                      ($store.state.module1.userData.user.role === 'ASSISTANT' &&
+                        $store.state.module1.userData.user.department === 'BILLING')
                   "
                   class="block"
                   :to="'/' + locale + '/' + 'services' + '/' + 'addService'"
@@ -217,8 +217,8 @@
 
             <li
               class="mainMenuLi"
-              v-if="$store.state.module1.userData.department !== 'TECH'&&
-              $store.state.module1.userData.department !== 'INFO'"
+              v-if="$store.state.module1.userData.user.department !== 'TECH'&&
+              $store.state.module1.userData.user.department !== 'INFO'"
             >
               <q-expansion-item
                 icon="attach_money"
@@ -251,7 +251,7 @@
                     {{ $t('invoicesList') }}
                   </router-link>
                   <router-link
-                    v-if="$store.state.module1.userData.role !== 'CLIENT'"
+                    v-if="$store.state.module1.userData.user.role !== 'CLIENT'"
                     class="block"
                     :to="
                       '/' +
@@ -280,8 +280,8 @@
                 >
                   <router-link
                     v-if="
-                      $store.state.module1.userData.role !== 'CLIENT' &&
-                        $store.state.module1.userData.role !== 'MEMBER'
+                      $store.state.module1.userData.user.role !== 'CLIENT' &&
+                        $store.state.module1.userData.user.role !== 'MEMBER'
                     "
                     class="block"
                     :to="
@@ -321,8 +321,8 @@
             <li
               class="mainMenuLi"
               v-if="
-                $store.state.module1.userData.role !== 'CLIENT' &&
-                  $store.state.module1.userData.role !== 'MEMBER'
+                $store.state.module1.userData.user.role !== 'CLIENT' &&
+                  $store.state.module1.userData.user.role !== 'MEMBER'
               "
             >
               <q-item class="p8">

@@ -13,7 +13,7 @@
             class="tabSelect"
             label
             name="contractEdit"
-            v-if="$store.state.module1.userData.role !== 'MEMBER'&& $store.state.module1.userData.role !== 'CLIENT'"
+            v-if="$store.state.module1.userData.user.role !== 'MEMBER'&& $store.state.module1.userData.user.role !== 'CLIENT'"
           >
             {{
             $t('edit')
@@ -31,7 +31,7 @@
 
           <q-tab-panel
             name="contractEdit"
-            v-if="$store.state.module1.userData.role !== 'MEMBER' && $store.state.module1.userData.role !== 'CLIENT'
+            v-if="$store.state.module1.userData.user.role !== 'MEMBER' && $store.state.module1.userData.user.role !== 'CLIENT'
 "
           >
             <contractEditCmp @tabChanged="tabChanged" :data="contractData" />

@@ -167,7 +167,7 @@
       <!-- custom rows -->
       <template v-slot:body="props">
         <q-tr>
-          <q-td v-if="props.row.id !== $store.state.module1.userData.id">
+          <q-td v-if="props.row.id !== $store.state.module1.userData.user.id">
             <span>
               <router-link
                 class="listNameTable"
@@ -183,7 +183,7 @@
             </span>
           </q-td>
 
-          <q-td v-if="props.row.id !== $store.state.module1.userData.id">
+          <q-td v-if="props.row.id !== $store.state.module1.userData.user.id">
             <router-link
               class="listNameTable"
               :to="
@@ -199,7 +199,7 @@
             </router-link>
           </q-td>
 
-          <q-td v-if="props.row.id === $store.state.module1.userData.id">
+          <q-td v-if="props.row.id === $store.state.module1.userData.user.id">
             <span>
               <router-link
                 class="listNameTable"
@@ -215,7 +215,7 @@
             </span>
           </q-td>
 
-          <q-td v-if="props.row.id === $store.state.module1.userData.id">
+          <q-td v-if="props.row.id === $store.state.module1.userData.user.id">
             <router-link
               class="listNameTable"
               :to="
@@ -341,8 +341,8 @@ export default {
   computed: {
     deleteAllow() {
       return (
-        this.$store.state.module1.userData.role === 'MANAGER' &&
-        this.$store.state.module1.userData.department === 'GENERAL'
+        this.$store.state.module1.userData.user.role === 'MANAGER' &&
+        this.$store.state.module1.userData.user.department === 'GENERAL'
       );
     },
   },

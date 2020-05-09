@@ -3,7 +3,7 @@
     <div class="cardActionWrap">
       <cardsAction :data="contracts.list" />
       <cardsAction
-        v-if="$store.state.module1.userData.role !== 'CLIENT' && $store.state.module1.userData.role !== 'MEMBER'"
+        v-if="$store.state.module1.userData.user.role !== 'CLIENT' && $store.state.module1.userData.user.role !== 'MEMBER'"
         :data="contracts.addContract"
       />
     </div>

@@ -61,13 +61,6 @@ export default {
           sortable: false,
           filterType: '',
         },
-
-        {
-          lable: 'type',
-          filterable: true,
-          sortable: false,
-          filterType: 'DropBox',
-        },
       ],
     };
   },

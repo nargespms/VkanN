@@ -9,7 +9,7 @@
             class="tabSelect"
             label
             name="serviceEdit"
-            v-if="$store.state.module1.userData.role === 'MANAGER'"
+            v-if="$store.state.module1.userData.user.role === 'MANAGER'"
           >{{ $t('edit') }}</q-tab>
         </q-tabs>
 
@@ -24,7 +24,10 @@
             <serviceProfileCmp :data="serviceData" />
           </q-tab-panel>
 
-          <q-tab-panel name="serviceEdit" v-if="$store.state.module1.userData.role === 'MANAGER'">
+          <q-tab-panel
+            name="serviceEdit"
+            v-if="$store.state.module1.userData.user.role === 'MANAGER'"
+          >
             <serviceEditCmp @tabChanged="tabChanged" :data="serviceData" />
           </q-tab-panel>
         </q-tab-panels>

@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-xl">
-    <profileInfoCmp :data="userData" />
+    <profileInfoCmp :data="userData.user" />
   </div>
 </template>
 

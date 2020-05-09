@@ -36,7 +36,7 @@
               </q-card-section>
 
               <q-card-section
-                v-if="$store.state.module1.userData.role === 'MANAGER'"
+                v-if="$store.state.module1.userData.user.role === 'MANAGER'"
                 class="tagTxt p16 brleft"
                 @click="deactiveTag(tag)"
               >

@@ -41,5 +41,6 @@ export default {
 }
 .taskCommentListWrap {
   padding: 24px;
+  width: 40%;
 }
 </style>

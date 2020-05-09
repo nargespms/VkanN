@@ -28,7 +28,7 @@
 
     <ul class="taskMoreOpt">
       <li class="priorityTask">
-        <div class="departmentTask" v-if="$store.state.module1.userData.role === 'MANAGER'">
+        <div class="departmentTask" v-if="$store.state.module1.userData.user.role === 'MANAGER'">
           <q-icon
             v-if="item.department === 'TECH'"
             class="pr12 fn18"
@@ -91,7 +91,7 @@
           >{{ $t('CRITICAL') }}</q-tooltip>
         </q-icon>
       </li>
-      <li v-if="item.dueDate.length>0">
+      <li v-if="item.dueDate">
         <span>
           <q-icon name="fa fa-clock" color="negative"></q-icon>
           <span>{{$t('dueDate')}} :</span>
@@ -103,8 +103,15 @@
       </li>
       <li class="operationCel" v-if="enableOp">
         {{$t('operation')}}
+        <q-icon name="fas fa-comment" @click="commentTask">
+          <q-tooltip transition-show="scale" transition-hide="scale" v-model="comment">
+            {{
+            $t('comments')
+            }}
+          </q-tooltip>
+        </q-icon>
         <q-icon name="edit" @click="editTask">
-          <q-tooltip transition-show="scale" transition-hide="scale">
+          <q-tooltip transition-show="scale" transition-hide="scale" v-model="edit">
             {{
             $t('editTask')
             }}
@@ -113,9 +120,9 @@
         <q-icon
           @click="deleteTask"
           name="fa fa-trash"
-          v-if="$store.state.module1.userData.role === 'MANAGER'"
+          v-if="$store.state.module1.userData.user.role === 'MANAGER'"
         >
-          <q-tooltip transition-show="scale" transition-hide="scale">
+          <q-tooltip transition-show="scale" transition-hide="scale" v-model="del">
             {{
             $t('deleteTask')
             }}
@@ -138,6 +145,9 @@ export default {
       showing: false,
       showing1: false,
       showing2: false,
+      comment: false,
+      edit: false,
+      del: false,
     };
   },
   methods: {
@@ -160,6 +170,9 @@ export default {
     },
     editTask() {
       this.$emit('taskModalEdit', this.item);
+    },
+    commentTask() {
+      this.$emit('taskModalComment', this.item);
     },
   },
 };

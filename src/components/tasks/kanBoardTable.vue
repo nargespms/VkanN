@@ -1,28 +1,37 @@
 <template>
   <div class="w100">
+    <!-- quick access to specific staff kanboard -->
+    <div class="generalFilterKan">
+      <span class="alignCenter">{{$t('filterBy')}} :</span>
+      <staffsAutocomplete
+        class="pl12"
+        :isRequired="false"
+        @getAutoCompleteValue="getAutoCompleteValuestaff"
+      />
+    </div>
     <table class="ticketsKanBoard">
       <tbody>
         <tr class="flex">
           <td>
-            <todoTasks :key="todoKey" @reloadCmp="reloadTodo" />
+            <todoTasks :staffFilter="asignee" :key="todoKey" @reloadCmp="reloadTodo" />
           </td>
           <td>
-            <firstSpirint :key="spirint1Key" @reloadCmp="reloadSpirint1" />
+            <firstSpirint :staffFilter="asignee" :key="spirint1Key" @reloadCmp="reloadSpirint1" />
           </td>
           <td>
-            <secondSpirint :key="spirint2Key" @reloadCmp="reloadSpirint2" />
+            <secondSpirint :staffFilter="asignee" :key="spirint2Key" @reloadCmp="reloadSpirint2" />
           </td>
           <td>
-            <drafts :key="draftsKey" @reloadCmp="reloadDrafts" />
+            <drafts :staffFilter="asignee" :key="draftsKey" @reloadCmp="reloadDrafts" />
           </td>
           <td>
-            <WIP :key="wipKey" @reloadCmp="reloadWIP" />
+            <WIP :staffFilter="asignee" :key="wipKey" @reloadCmp="reloadWIP" />
           </td>
           <td>
-            <kanboardTest :key="testKey" @reloadCmp="reloadTest" />
+            <kanboardTest :staffFilter="asignee" :key="testKey" @reloadCmp="reloadTest" />
           </td>
           <td>
-            <kanboardDone :key="doneKey" @reloadCmp="reloadDone" />
+            <kanboardDone :staffFilter="asignee" :key="doneKey" @reloadCmp="reloadDone" />
           </td>
         </tr>
       </tbody>
@@ -38,6 +47,7 @@ import drafts from '../kanboard/drafts.vue';
 import WIP from '../kanboard/WIP.vue';
 import kanboardDone from '../kanboard/kanboardDone.vue';
 import kanboardTest from '../kanboard/kanboardTest.vue';
+import staffsAutocomplete from '../structure/staffsAutocomplete.vue';
 
 export default {
   name: 'kanBoardTable',
@@ -49,6 +59,7 @@ export default {
     WIP,
     kanboardDone,
     kanboardTest,
+    staffsAutocomplete,
   },
   data() {
     return {
@@ -61,6 +72,7 @@ export default {
       wipKey: 0,
       doneKey: 0,
       testKey: 0,
+      asignee: '',
     };
   },
   methods: {
@@ -93,6 +105,10 @@ export default {
     reloadTest(value) {
       console.log(value);
       this.testKey += 1;
+    },
+
+    getAutoCompleteValuestaff(value) {
+      this.asignee = value.id;
     },
   },
 };
@@ -172,5 +188,11 @@ h3 {
     color: grey !important;
     box-shadow: none !important;
   }
+}
+.generalFilterKan {
+  display: flex;
+  padding: 12px;
+  border: 1px solid #a8a8a8;
+  background-color: #e6e6e6;
 }
 </style>

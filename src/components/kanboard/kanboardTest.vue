@@ -2,12 +2,13 @@
   <div class="kanboardColumns bgd9">
     <span class="headerTitleKanboard">
       {{ $t('test') }}
-      <span
-        class="searchColumn"
-        @click="kanboardFilterColumn = !kanboardFilterColumn"
-      >
-        <q-icon name="fas fa-undo" @click="reloadCmp()"></q-icon>
-        <q-icon name="fas fa-filter"></q-icon>
+      <span class="searchColumn">
+        <q-icon class="pointer" name="fas fa-undo" @click="reloadCmp()"></q-icon>
+        <q-icon
+          class="pointer"
+          name="fas fa-filter"
+          @click="kanboardFilterColumn =!kanboardFilterColumn"
+        ></q-icon>
       </span>
     </span>
     <kanboardFilterColumn @getFilterColumn="getFilterColumn" v-if="kanboardFilterColumn" />
@@ -21,6 +22,7 @@
               :key="item.id"
               @deleteTaskOperation="deleteTaskOperation"
               @taskModalEdit="taskModalEdit"
+              @taskModalComment="taskModalComment"
             />
           </template>
         </transition-group>
@@ -32,6 +34,15 @@
         @disable="disable"
         @reloadCmp="reloadCmp"
       />
+      <q-dialog v-model="enableComments" transition-show="jump-down" transition-hide="jump-up">
+        <taskComment
+          @setCommentValue="setCommentValue"
+          v-show="enableComments"
+          class="bg-white q-pa-lg"
+          view="Lhh lpR fff"
+          style="width: 1000px;max-width:50vw;"
+        />
+      </q-dialog>
     </q-scroll-area>
     <q-pagination
       v-if="!loading"
@@ -52,6 +63,7 @@ import draggable from 'vuedraggable';
 import taskCard from './taskCard.vue';
 import taskModal from '../structure/taskModal.vue';
 import kanboardFilterColumn from './kanboardFilterColumn.vue';
+import taskComment from '../tasks/taskComment.vue';
 
 export default {
   name: 'kanboardTest',
@@ -60,7 +72,9 @@ export default {
     draggable,
     taskModal,
     kanboardFilterColumn,
+    taskComment,
   },
+  props: ['staffFilter'],
   data() {
     return {
       data: [],
@@ -77,6 +91,7 @@ export default {
       kanboardFilterColumn: false,
       filterable: false,
       loading: true,
+      enableComments: false,
     };
   },
   methods: {
@@ -93,6 +108,15 @@ export default {
       this.task = value;
       this.enableEdit = true;
     },
+    taskModalComment(value) {
+      console.log(value);
+      this.enableComments = true;
+    },
+    setCommentValue(value) {
+      console.log(value);
+      console.log('edit comment');
+    },
+
     reloadCmp(value) {
       this.$emit('reloadCmp', value);
       console.log('firstSpirint');
@@ -168,6 +192,14 @@ export default {
   },
   mounted() {
     this.onRequest();
+  },
+  watch: {
+    staffFilter(newVal) {
+      const asignee = { asignee: newVal };
+      this.filter = asignee;
+      this.filterable = true;
+      this.onRequest();
+    },
   },
 };
 </script>

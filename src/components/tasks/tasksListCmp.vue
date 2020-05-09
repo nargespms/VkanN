@@ -1,7 +1,14 @@
 <template>
   <div class="q-pa-xl">
     <div class="tableListWrap">
-      <tableDataWrap module="task" :columns="columns" :endpoint="'/v1/api/vkann/tasks/list'" />
+      <tableDataWrap
+        module="task"
+        :columns="columns"
+        :endpoint="'/v1/api/vkann/tasks/list'"
+        @taskDelete="taskDelete"
+        @retriveTask="retriveTask"
+        :key="componentKey"
+      />
     </div>
   </div>
 </template>
@@ -16,6 +23,7 @@ export default {
   },
   data() {
     return {
+      componentKey: 0,
       columns: [
         {
           lable: 'taskNum',
@@ -59,8 +67,37 @@ export default {
           sortable: true,
           filterType: 'DropBox',
         },
+        { lable: 'operation', filterable: false, sortable: false },
       ],
     };
+  },
+  methods: {
+    taskDelete(value) {
+      this.$axios
+        .delete(`/v1/api/vkann/tasks/${value}`)
+        .then(res => {
+          console.log(res);
+          if (res.status === 200) {
+            this.componentKey += 1;
+          }
+        })
+        .catch(e => {
+          console.log(e.response);
+        });
+    },
+    retriveTask(value) {
+      this.$axios
+        .patch(`/v1/api/vkann/tasks/${value}`)
+        .then(res => {
+          console.log(res);
+          if (res.status === 200) {
+            this.componentKey += 1;
+          }
+        })
+        .catch(e => {
+          console.log(e.response);
+        });
+    },
   },
 };
 </script>

@@ -267,8 +267,8 @@ export default {
   computed: {
     deleteAllow() {
       return (
-        this.$store.state.module1.userData.role === 'MANAGER' &&
-        this.$store.state.module1.userData.department === 'GENERAL'
+        this.$store.state.module1.userData.user.role === 'MANAGER' &&
+        this.$store.state.module1.userData.user.department === 'GENERAL'
       );
     },
   },

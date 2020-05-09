@@ -166,7 +166,7 @@
       </template>
       <!-- custom rows -->
       <template v-slot:body="props">
-        <q-tr>
+        <q-tr :class="props.row.deleted ? 'red' : ''">
           <q-td>
             <span>{{ $t(props.row.taskNum) }}</span>
           </q-td>
@@ -234,6 +234,25 @@
 
           <q-td>
             <span>{{ $t(props.row.state) }}</span>
+          </q-td>
+          <q-td class="center">
+            <q-btn
+              v-if="!props.row.deleted"
+              flat
+              round
+              class="rmRecord"
+              icon="delete"
+              @click="deleteRecord(props.row.id)"
+              :disable="!deleteAllow "
+            ></q-btn>
+            <q-btn
+              v-if="props.row.deleted"
+              flat
+              round
+              class="retriveRecord"
+              icon="restore"
+              @click="retriveRecord(props.row.id)"
+            ></q-btn>
           </q-td>
         </q-tr>
       </template>
@@ -306,6 +325,39 @@ export default {
         : `${this.selected.length} record${
             this.selected.length > 1 ? 's' : ''
           } selected of ${this.data.length}`;
+    },
+    deleteRecord(id) {
+      this.$q
+        .dialog({
+          title: this.$t('deleteTask'),
+          message: this.$t('areyousureyouwanttodeletethisTask'),
+          cancel: true,
+        })
+        .onOk(() => {
+          this.$emit('taskDelete', id);
+        })
+        .onCancel(() => {
+          console.log('Cancel');
+        });
+    },
+    retriveRecord(id) {
+      this.$q
+        .dialog({
+          title: this.$t('retriveTask'),
+          message: this.$t('areyousureyouwanttoretrivethisTask'),
+          cancel: true,
+        })
+        .onOk(() => {
+          this.$emit('retriveTask', id);
+        })
+        .onCancel(() => {
+          console.log('Cancel');
+        });
+    },
+  },
+  computed: {
+    deleteAllow() {
+      return this.$store.state.module1.userData.user.role === 'MANAGER';
     },
   },
 };
@@ -393,5 +445,15 @@ export default {
 }
 .tableSearchInput * {
   color: #fff !important;
+}
+.red {
+  background-color: #b70000;
+  color: #fff;
+  .listNameTable {
+    color: #fff !important;
+  }
+  .text-negative {
+    color: #fff !important;
+  }
 }
 </style>

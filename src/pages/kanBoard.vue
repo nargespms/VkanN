@@ -1,6 +1,5 @@
 <template>
   <div class="q-pa-xl">
-    <taskModal style="overflow:auto;" />
     <div class="flex mt12">
       <kanBoardTable />
     </div>
@@ -9,7 +8,6 @@
 
 <script>
 import kanBoardTable from '../components/tasks/kanBoardTable';
-import taskModal from '../components/structure/taskModal.vue';
 
 export default {
   name: 'kanBoard',
@@ -19,7 +17,6 @@ export default {
 
   components: {
     kanBoardTable,
-    taskModal,
   },
 };
 </script>

@@ -42,7 +42,7 @@
           <span class="introParam">{{ $t('address') }}</span>
           <span class="valueIntro">{{ data.address }}</span>
         </div>
-        <div v-if="$store.state.module1.userData.role !== 'CLIENT'" class="item-content">
+        <div v-if="$store.state.module1.userData.user.role !== 'CLIENT'" class="item-content">
           <span class="introParam">{{ $t('department') }}</span>
           <span class="valueIntro">{{ $t(data.department) }}</span>
         </div>

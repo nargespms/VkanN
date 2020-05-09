@@ -88,6 +88,8 @@ export default {
         itemTotalAmountTaxIncluded: this.itemTotalAmountTaxIncluded,
         number: this.item.number,
       };
+      console.log(this.item);
+      console.log('innn');
       this.$emit('getFromItemEncapsulate', this.item);
     },
     deleteRecord() {
@@ -118,25 +120,6 @@ export default {
     itemTotalAmountTaxIncluded() {
       return this.itemTaxAmount + this.itemTotalWithDiscount;
     },
-  },
-  mounted() {
-    // if (this.profileMode === 'Edit') {
-    //   this.item = {
-    //     // eslint-disable-next-line no-underscore-dangle
-    //     id: this.data._id,
-    //     itemCode: this.data.code,
-    //     itemDescription: this.data.description,
-    //     itemNumber: this.data.quantity,
-    //     itemUnit: this.data.unit,
-    //     itemAmount: this.data.fee,
-    //     itemDiscount: this.data.discount,
-    //     itemTotalAmount: this.data.total,
-    //     itemTotalWithDiscount: this.data.totalAfterDiscount,
-    //     itemTaxAmount: this.data.tax,
-    //     itemTotalAmountTaxIncluded: this.data.finalTotal,
-    //     number: this.item.rowNumber,
-    //   };
-    // }
   },
 };
 </script>

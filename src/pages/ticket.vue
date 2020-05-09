@@ -7,7 +7,7 @@
       </template>
     </div>
     <!--  for clients (chat) -->
-    <div v-if="$store.state.module1.userData.role === 'CLIENT'" class="ticketThreadsWrap">
+    <div v-if="$store.state.module1.userData.user.role === 'CLIENT'" class="ticketThreadsWrap">
       <ticketThreads :key="componentKey" :data="this.ticket" />
     </div>
     <!-- for staffs -->
@@ -16,6 +16,7 @@
         :key="componentKey"
         :data="this.ticket"
         @replyThreadParent="replyThreadParent"
+        @reloadCmp="reloadCmp"
       />
     </div>
   </div>
@@ -90,6 +91,9 @@ export default {
         .then(res => {
           this.ticket = res.data.ticket;
         });
+    },
+    reloadCmp() {
+      this.getDataTicket();
     },
   },
   mounted() {

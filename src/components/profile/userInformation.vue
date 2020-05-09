@@ -9,11 +9,11 @@
       <q-separator />
       <q-tab-panels v-model="tab" animated>
         <q-tab-panel name="profileInfo">
-          <userInformationInfo :data="data" />
+          <userInformationInfo :data="profileData" />
         </q-tab-panel>
 
         <q-tab-panel name="profileInfoDetails">
-          <userInformationDetailsInfo :data="data" />
+          <userInformationDetailsInfo :data="profileData" />
         </q-tab-panel>
 
         <q-tab-panel name="editProfile" v-if="!userEdit">
@@ -42,6 +42,7 @@ export default {
     return {
       tab: 'profileInfo',
       form: {},
+      profileData: {},
     };
   },
 
@@ -155,9 +156,14 @@ export default {
           .split('/')
           .slice(2, 3)
           .toString() !== 'profile' &&
-        this.$store.state.module1.userData.role !== 'MANAGER'
+        this.$store.state.module1.userData.user.role !== 'MANAGER'
       );
     },
+  },
+  mounted() {
+    this.$axios.get('/v1/api/vkann/profile').then(response => {
+      this.profileData = response.data.user;
+    });
   },
 };
 </script>

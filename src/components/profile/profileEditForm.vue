@@ -581,11 +581,11 @@ export default {
         this.errors = this.$v.form.$anyError;
 
         this.uiState = 'submit clicked';
+
         if (this.errors === false && this.empty === false) {
           this.uiState = 'form submitted';
           normalizeEmail(this.form.email);
           console.log(normalizeEmail(this.form.email));
-
           //  (beacause it is used in 2 place (profile & add user))
           if (this.nationalID && this.verifyEmail) {
             this.$emit('editDataUser', this.form);
@@ -610,7 +610,7 @@ export default {
   },
   computed: {
     departmentAllow() {
-      return this.$store.state.module1.userData.role === 'MANAGER';
+      return this.$store.state.module1.userData.user.role === 'MANAGER';
     },
   },
   mounted() {
@@ -623,34 +623,34 @@ export default {
     ) {
       this.$axios.get('/v1/api/vkann/profile').then(response => {
         if (response.status === 200) {
-          this.userId = response.data.id;
-          this.form.FirstName = response.data.firstName;
-          this.form.LastName = response.data.lastName;
-          this.form.email = response.data.email;
-          this.form.country = response.data.country;
-          this.form.MobileNumber = response.data.mobile;
-          this.form.tel = response.data.tel;
-          this.form.gender = response.data.gender;
-          this.form.role = response.data.role;
-          this.form.city = response.data.city;
-          this.form.address = response.data.address;
-          this.form.postalCode = response.data.zipCode;
-          this.form.git = response.data.git;
-          this.form.linkdin = response.data.linkedin;
+          this.userId = response.data.user.id;
+          this.form.FirstName = response.data.user.firstName;
+          this.form.LastName = response.data.user.lastName;
+          this.form.email = response.data.user.email;
+          this.form.country = response.data.user.country;
+          this.form.MobileNumber = response.data.user.mobile;
+          this.form.tel = response.data.user.tel;
+          this.form.gender = response.data.user.gender;
+          this.form.role = response.data.user.role;
+          this.form.city = response.data.user.city;
+          this.form.address = response.data.user.address;
+          this.form.postalCode = response.data.user.zipCode;
+          this.form.git = response.data.user.git;
+          this.form.linkdin = response.data.user.linkedin;
 
-          this.form.nationalId = response.data.nationalId;
-          this.form.departman = response.data.department;
-          this.form.status = response.data.status;
-          this.form.personality = response.data.personality;
+          this.form.nationalId = response.data.user.nationalId;
+          this.form.departman = response.data.user.department;
+          this.form.status = response.data.user.status;
+          this.form.personality = response.data.user.personality;
           this.nationalID = true;
           this.verifyEmail = true;
-          this.mobileData.con = response.data.country;
-          this.mobileData.mobile = response.data.mobile;
+          this.mobileData.con = response.data.user.country;
+          this.mobileData.mobile = response.data.user.mobile;
           this.mobileLoading = false;
 
-          if (response.data.tags.length > 1) {
+          if (response.data.user.tags.length > 0) {
             // for tags
-            const serverItems = response.data.tags.map(item => ({
+            const serverItems = response.data.user.tags.map(item => ({
               // eslint-disable-next-line no-underscore-dangle
               id: item._id,
               title: item.title,

@@ -31,9 +31,9 @@ export default {
         description: '',
         createdAt: new Date(),
         createdBy: {
-          id: this.$store.state.module1.userData.id,
-          firstName: this.$store.state.module1.userData.firstName,
-          lastName: this.$store.state.module1.userData.lastName,
+          id: this.$store.state.module1.userData.user.id,
+          firstName: this.$store.state.module1.userData.user.firstName,
+          lastName: this.$store.state.module1.userData.user.lastName,
         },
       },
     };
@@ -54,7 +54,7 @@ export default {
 </script>
 <style lang="scss">
 .addTaskComment {
-  width: 100%;
+  width: 60%;
   h6 {
     display: block;
     width: 100%;

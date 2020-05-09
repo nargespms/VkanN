@@ -3,12 +3,15 @@
     <span class="headerTitleKanboard">
       {{ $t('toDo') }}
       <span class="searchColumn">
-        <q-icon name="fas fa-undo" @click="reloadCmp()"></q-icon>
-        <q-icon name="fas fa-filter" @click="kanboardFilterColumn =!kanboardFilterColumn"></q-icon>
+        <q-icon class="pointer" name="fas fa-undo" @click="reloadCmp()"></q-icon>
+        <q-icon
+          class="pointer"
+          name="fas fa-filter"
+          @click="kanboardFilterColumn =!kanboardFilterColumn"
+        ></q-icon>
       </span>
     </span>
     <kanboardFilterColumn @getFilterColumn="getFilterColumn" v-if="kanboardFilterColumn" />
-
     <q-scroll-area ref="scrollArea" :visible="visible" class="kanboardScrollArea">
       <draggable :emptyInsertThreshold="100" @change="log" @add="add" group="task">
         <transition-group name="list-complete">
@@ -18,6 +21,7 @@
               :key="item.id"
               @deleteTaskOperation="deleteTaskOperation"
               @taskModalEdit="taskModalEdit"
+              @taskModalComment="taskModalComment"
             />
           </template>
         </transition-group>
@@ -29,6 +33,15 @@
         @disable="disable"
         @reloadCmp="reloadCmp"
       />
+      <q-dialog v-model="enableComments" transition-show="jump-down" transition-hide="jump-up">
+        <taskComment
+          @setCommentValue="setCommentValue"
+          v-show="enableComments"
+          class="bg-white q-pa-lg"
+          view="Lhh lpR fff"
+          style="width: 1000px;max-width:50vw;"
+        />
+      </q-dialog>
     </q-scroll-area>
     <q-pagination
       v-if="!loading"
@@ -49,6 +62,7 @@ import draggable from 'vuedraggable';
 import taskCard from './taskCard.vue';
 import kanboardFilterColumn from './kanboardFilterColumn.vue';
 import taskModal from '../structure/taskModal.vue';
+import taskComment from '../tasks/taskComment.vue';
 
 export default {
   name: 'todoTasks',
@@ -57,7 +71,9 @@ export default {
     draggable,
     taskModal,
     kanboardFilterColumn,
+    taskComment,
   },
+  props: ['staffFilter'],
   data() {
     return {
       data: [],
@@ -78,6 +94,7 @@ export default {
       kanboardFilterColumn: false,
       filterable: false,
       loading: true,
+      enableComments: false,
     };
   },
   methods: {
@@ -93,16 +110,24 @@ export default {
       this.task = value;
       this.enableEdit = true;
     },
+    taskModalComment(value) {
+      console.log(value);
+      this.enableComments = true;
+    },
+    setCommentValue(value) {
+      console.log(value);
+      console.log('edit comment');
+    },
     reloadCmp(value) {
       this.$emit('reloadCmp', value);
-      console.log('todo');
     },
     deleteTaskOperation(value) {
-      this.$axios.delete(`/v1/api/vkann/tasks/${value}`).then(res => {
+      this.$axios.delete(`/v1/api/vkann/tasks/${value.id}`).then(res => {
         console.log(res).catch(e => {
           console.log(e);
         });
       });
+      this.reloadCmp();
     },
 
     log(evt) {
@@ -144,7 +169,6 @@ export default {
     },
 
     onRequest() {
-      console.log('onrequest');
       // eslint-disable-next-line prefer-destructuring
       const filter = this.filter;
 
@@ -173,6 +197,14 @@ export default {
   mounted() {
     this.onRequest();
   },
+  watch: {
+    staffFilter(newVal) {
+      const asignee = { asignee: newVal };
+      this.filter = asignee;
+      this.filterable = true;
+      this.onRequest();
+    },
+  },
 };
 </script>
 
@@ -180,7 +212,6 @@ export default {
 .searchColumn {
   display: flex;
   justify-content: space-between;
-  cursor: pointer;
 }
 .kanboardFilterColumn {
   border-radius: 0 0 5px 5px;

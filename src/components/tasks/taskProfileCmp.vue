@@ -92,13 +92,57 @@
         <span class="valueIntro">{{ data.attachments }}</span>
       </div>
     </div>
+    <div class="taskWrapper mt32">
+      <div class="newTaskInfoHeader" @click="taskStateComment = !taskStateComment">
+        <span class="pr12">
+          <q-icon v-if="!taskStateComment" class="text-blue-grey-8" name="fa fa-arrow-down" />
+          <q-icon v-if="taskStateComment" class="text-blue-grey-8" name="fa fa-arrow-up" />
+        </span>
+        {{ $t('comments') }}
+      </div>
+      <div class="taskCommentContent">
+        <q-slide-transition>
+          <taskComment
+            @setCommentValue="setCommentValue"
+            v-if="taskStateComment"
+            transition-show="scale"
+            transition-hide="scale"
+          />
+        </q-slide-transition>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import taskComment from './taskComment.vue';
+
 export default {
   name: 'taskProfileCmp',
+  components: {
+    taskComment,
+  },
   props: ['data'],
+  data() {
+    return {
+      taskStateComment: false,
+      comments: {},
+    };
+  },
+  methods: {
+    setCommentValue(value) {
+      this.comments = value;
+      console.log(value);
+      this.$axios
+        .post('/v1/api/vkann/comments', {
+          taskId: this.data.id,
+          description: value.description,
+        })
+        .then(res => {
+          console.log(res);
+        });
+    },
+  },
 };
 </script>
 

@@ -392,6 +392,16 @@ const routes = [
         },
       },
       {
+        name: 'quotesList',
+        path: 'billing/invoices/quotesList',
+        component: () => import('pages/quotesList'),
+        meta: {
+          requiresAuth: true,
+          roles: ['MANAGER', 'ASSISTANT', 'CLIENT', 'MEMBER'],
+          dep: ['GENERAL', 'BILLING'],
+        },
+      },
+      {
         name: 'addInvoice',
         path: 'billing/invoices/addInvoice',
         component: () => import('pages/addInvoice'),

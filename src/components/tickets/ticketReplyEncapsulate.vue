@@ -48,7 +48,7 @@
         >{{ $t('cancel') }}</q-btn>
 
         <q-btn
-          v-if="$store.state.module1.userData.role === 'MANAGER' && !editTicket"
+          v-if="$store.state.module1.userData.user.role === 'MANAGER' && !editTicket"
           class="deleteDesc text-white"
           @click="deleteTicket(ticket)"
         >{{ $t('delete') }}</q-btn>
@@ -124,7 +124,7 @@
         >{{ $t('cancel') }}</q-btn>
 
         <q-btn
-          v-if="$store.state.module1.userData.role === 'MANAGER' && !editTicket"
+          v-if="$store.state.module1.userData.user.role === 'MANAGER' && !editTicket"
           class="deleteDesc text-white"
           @click="deleteTicket(ticket)"
         >{{ $t('delete') }}</q-btn>

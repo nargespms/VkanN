@@ -1,10 +1,11 @@
 <template>
   <div class="userInfoDetails">
     <div class="item">
-      <div class="item-content">
+      <div class="item-content wrap">
         <span class="introParam">{{ $t('tags') }}</span>
-        <span class="valueIntro" v-for="tag in data.tags" :key="tag.index">
-          {{ tag.title }}
+        <span class="cl-bl tagWrap" v-for="tag in data.tags" :key="tag.index">
+          <span>{{ tag.title }}&nbsp;</span>
+          <span>,</span>
         </span>
       </div>
       <div class="item-content">

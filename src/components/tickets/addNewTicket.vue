@@ -2,7 +2,7 @@
   <div class="addNewTicketCmp">
     <!-- choosing departman for ticket -->
     <div class="chooseDep" v-if="!ticketFormStatus">
-      <div class="generalButWrap" v-if="$store.state.module1.userData.role === 'CLIENT'">
+      <div class="generalButWrap" v-if="$store.state.module1.userData.user.role === 'CLIENT'">
         <q-btn
           class="optionChooseBut"
           icon="attach_money"
@@ -23,7 +23,7 @@
         />
       </div>
     </div>
-    <div v-if="ticketFormStatus || $store.state.module1.userData.role !== 'CLIENT'">
+    <div v-if="ticketFormStatus || $store.state.module1.userData.user.role !== 'CLIENT'">
       <!-- new ticket form -->
       <ticketForm
         :choosedDep="this.$route.query.depid"

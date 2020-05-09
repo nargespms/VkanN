@@ -59,8 +59,8 @@ export default function({ store }) {
         next();
       } else {
         const user = JSON.parse(localStorage.getItem('Data'));
-        const userRole = user.module1.userData.role;
-        const userDep = user.module1.userData.department;
+        const userRole = user.module1.userData.user.role;
+        const userDep = user.module1.userData.user.department;
 
         if (to.meta.roles.includes(userRole) && to.meta.dep.includes(userDep)) {
           console.log('happy');

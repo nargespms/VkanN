@@ -1,11 +1,7 @@
-<template >
-  <div class="q-pa-xl">
+<template>
+  <div>
     <div class="tableListWrap">
-      <tableDataWrap
-        module="contract"
-        :columns="columns"
-        :endpoint="'/v1/api/vkann/contracts/list'"
-      />
+      <tableDataWrap module="quote" :columns="columns" :endpoint="'/v1/api/vkann/qoutes/list'" />
     </div>
   </div>
 </template>
@@ -14,7 +10,7 @@
 import tableDataWrap from '../structure/tableDataWrap.vue';
 
 export default {
-  name: 'contractList',
+  name: 'quotesListCmp',
   components: {
     tableDataWrap,
   },
@@ -22,7 +18,7 @@ export default {
     return {
       columns: [
         {
-          lable: 'contractNumber',
+          lable: 'number',
           filterable: true,
           sortable: false,
           filterType: 'text',
@@ -33,6 +29,8 @@ export default {
           sortable: false,
           filterType: 'text',
         },
+        { lable: 'amount', filterable: false, sortable: true, filterType: '' },
+
         {
           lable: 'client',
           filterable: true,
@@ -40,24 +38,17 @@ export default {
           filterType: 'text',
         },
         {
-          lable: 'startDate',
-          filterable: true,
-          sortable: true,
-          filterType: 'Date',
-        },
-        {
-          lable: 'endDate',
-          filterable: true,
-          sortable: true,
-          filterType: 'Date',
-        },
-        {
-          lable: 'formal',
+          lable: 'issueDate',
           filterable: true,
           sortable: false,
-          filterType: 'DropBox',
+          filterType: 'Date',
         },
-
+        {
+          lable: 'validUntil',
+          filterable: true,
+          sortable: false,
+          filterType: 'Date',
+        },
         {
           lable: 'status',
           filterable: true,

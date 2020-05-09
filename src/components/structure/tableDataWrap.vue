@@ -38,6 +38,7 @@
       :pagination="pagination"
       @onIdClick="onIdClick"
       @ticketDelete="ticketDelete"
+      @retriveTicket="retriveTicket"
     />
     <invoiceTableData
       v-if="this.module === 'invoice'"
@@ -46,7 +47,14 @@
       :loading="loading"
       @request="onRequest"
       :pagination="pagination"
-      @onIdClick="onIdClick"
+    />
+    <quoteTableData
+      v-if="this.module === 'quote'"
+      :data="data"
+      :columns="columns"
+      :loading="loading"
+      @request="onRequest"
+      :pagination="pagination"
     />
     <contractTableData
       v-if="this.module === 'contract'"
@@ -65,6 +73,8 @@
       @request="onRequest"
       :pagination="pagination"
       @onIdClick="onIdClick"
+      @taskDelete="taskDelete"
+      @retriveTask="retriveTask"
     />
   </div>
 </template>
@@ -75,6 +85,7 @@ import clientsTableData from '../userMangement/clientsTableData.vue';
 import serviceTableData from '../services/serviceTableData.vue';
 import ticketTableData from '../tickets/ticketTableData.vue';
 import invoiceTableData from '../invoices/invoiceTableData.vue';
+import quoteTableData from '../invoices/quoteTableData.vue';
 import contractTableData from '../contracts/contractTableData.vue';
 import taskTableData from '../tasks/taskTableData.vue';
 
@@ -86,6 +97,7 @@ export default {
     serviceTableData,
     ticketTableData,
     invoiceTableData,
+    quoteTableData,
     contractTableData,
     taskTableData,
   },
@@ -168,6 +180,15 @@ export default {
     },
     ticketDelete(value) {
       this.$emit('ticketDelete', value);
+    },
+    retriveTicket(value) {
+      this.$emit('retriveTicket', value);
+    },
+    taskDelete(value) {
+      this.$emit('taskDelete', value);
+    },
+    retriveTask(value) {
+      this.$emit('retriveTask', value);
     },
     userDelete(value) {
       this.$emit('userDelete', value);
