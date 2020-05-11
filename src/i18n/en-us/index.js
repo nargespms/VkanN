@@ -305,4 +305,5 @@ export default {
   year: 'Year',
   filterBy: 'filter By',
   part: 'part',
+  close: 'close',
 };

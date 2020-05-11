@@ -349,6 +349,7 @@
         <!-- data in invoice -->
         <template v-for="item in invoice.items">
           <invoiceTableEncapsulateItems
+            :v-if="item.id"
             :key="item.id"
             :data="item"
             :first="first"
@@ -356,6 +357,7 @@
             @getFromItemEncapsulate="getFromItemEncapsulate"
             @removeItem="removeItem"
             :profileMode="profileMode"
+            :invoiceId="invoice.id"
           />
         </template>
 
@@ -507,6 +509,7 @@ export default {
   props: ['profileMode'],
   data() {
     return {
+      encapsulKey: 0,
       print: false,
       showing1: false,
       invoiceTotal: 0,
@@ -593,28 +596,28 @@ export default {
           this.invoice.items[foundItemIndex] = value;
         }
         console.log(`value${value}`);
-        const serverItems = {
-          rowNumber: value.number,
-          code: value.itemCode,
-          description: value.itemDescription,
-          quantity: value.itemNumber,
-          unit: value.itemUnit,
-          fee: value.itemAmount,
-          total: value.itemTotalAmount,
-          discount: value.itemDiscount,
-          totalAfterDiscount: value.itemTotalWithDiscount,
-          TAX: 9,
-          finalTotal: value.itemTotalAmountTaxIncluded,
-        };
+        // const serverItems = {
+        //   rowNumber: value.number,
+        //   code: value.itemCode,
+        //   description: value.itemDescription,
+        //   quantity: value.itemNumber,
+        //   unit: value.itemUnit,
+        //   fee: value.itemAmount,
+        //   total: value.itemTotalAmount,
+        //   discount: value.itemDiscount,
+        //   totalAfterDiscount: value.itemTotalWithDiscount,
+        //   TAX: 9,
+        //   finalTotal: value.itemTotalAmountTaxIncluded,
+        // };
         //
-        this.$axios
-          .put(`/v1/api/vkann/items/${value.id}`, {
-            invoiceId: this.invoice.id,
-            ...serverItems,
-          })
-          .then(res => {
-            console.log(res);
-          });
+        // this.$axios
+        //   .put(`/v1/api/vkann/items/${value.id}`, {
+        //     invoiceId: this.invoice.id,
+        //     ...serverItems,
+        //   })
+        //   .then(res => {
+        //     console.log(res);
+        //   });
         //
       }
 
@@ -839,8 +842,21 @@ export default {
       const foundItemIndex = this.invoice.items.findIndex(
         item => item.id === value.id
       );
+
       if (foundItemIndex !== -1) {
-        this.invoice.items.splice(foundItemIndex, 1);
+        if (this.profileMode !== 'Add') {
+          console.log(value);
+          this.$axios.delete(`/v1/api/vkann/items/${value.id}`).then(res => {
+            console.log(res);
+            this.$axios
+              .get(`/v1/api/vkann/invoices/${this.invoice.id}`)
+              .then(response => {
+                this.invoice.item = response.data.items;
+              });
+          });
+        } else {
+          this.invoice.items.splice(foundItemIndex, 1);
+        }
       }
     },
     EnableDate() {
@@ -876,6 +892,9 @@ export default {
         .slice(0, 3)
         .map(i => (i < 10 ? `0${i}` : i))
         .join('');
+    },
+    reloadCmp() {
+      this.encapsulKey += 1;
     },
   },
   computed: {

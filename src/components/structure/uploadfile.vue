@@ -1,16 +1,18 @@
 <template >
   <div class="clear">
     <div class="fileUploadWrapper">
+      <div id="preview">
+        <img v-if="imgUrl" :src="imgUrl" />
+      </div>
+      <div v-if="fileValue" class="uploadedFile">
+        <span v-for="file in fileContent" :key="file.id">{{file.name}}</span>
+      </div>
       <div class="fileUploadPlace">
         <div class="fileUploadPlaceInner">
-          <div v-if="!fileValue" class="emptyFile">
+          <div class="emptyFile">
             <q-icon name="fas fa-cloud-upload-alt" />
             <span>Browse ....</span>
             <span>{{$t(this.text)}}</span>
-          </div>
-          <div v-if="fileValue" class="uploadedFile">
-            <q-icon name="fas fa-file" />
-            <!-- <span v-for="file in fileContent" :key="file.id">{{file.name}}</span> -->
           </div>
         </div>
         <input type="file" name="filesToUpload" multiple id="upload_file" @change="fileStatus" />
@@ -38,35 +40,34 @@ export default {
   data() {
     return {
       fileValue: false,
+      imgUrl: null,
     };
   },
-  // computed: {
-  //   fileContent() {
-  //     return document.querySelector('input[type=file]').files;
-  //   },
-  // },
+  computed: {
+    fileContent() {
+      return document.querySelector('input[type=file]').files;
+    },
+  },
   methods: {
-    fileStatus() {
+    fileStatus(e) {
+      console.log(e);
+
       this.fileValue = true;
-      // this.fileContent = document.querySelector('input[type=file]').files;
-      // console.log(this.fileContent[0]);
+      const file = e.target.files[0];
+      this.imgUrl = URL.createObjectURL(file);
     },
 
     submit_btn() {
       const [file] = document.querySelector('input[type=file]').files;
       if (file) {
+        const { name } = file;
+
         // get the extension from file
-        const extensionArray = file.name.split('.').slice();
-        const extension = file.name
-          .split('.')
-          .slice(extensionArray.length - 1)
-          .toString();
-        // console.log(extensionArray);
-        console.log(extension);
-        console.log(file);
+        const extension = name.slice(name.lastIndexOf('.') + 1);
+
         // Create a new tus upload
         const upload = new tus.Upload(file, {
-          endpoint: '/v1/api/vkann/url',
+          endpoint: '/v1/api/vkann/upload',
           retryDelays: [0, 3000, 5000, 10000, 20000],
           metadata: {
             filename: file.name,
@@ -75,20 +76,30 @@ export default {
           },
           onError(error) {
             console.log(`Failed because: ${error}`);
+            console.log(upload.url);
           },
           onProgress(bytesUploaded, bytesTotal) {
             const percentage = ((bytesUploaded / bytesTotal) * 100).toFixed(2);
             console.log(bytesUploaded, bytesTotal, `${percentage}%`);
           },
-          onSuccess() {
-            console.log('Download %s from %s', upload.file.name, upload.url);
+          onSuccess: () => {
+            this.postUrl(upload, extension);
           },
         });
-        console.log(upload);
 
-        // Start the upload
         upload.start();
       }
+    },
+    postUrl(file, extension) {
+      const { url } = file;
+      const id = url.slice(url.lastIndexOf('/') + 1);
+      this.$axios
+        .post(`/v1/api/vkann/save/${id}`, {
+          extension,
+        })
+        .then(res => {
+          console.log(res);
+        });
     },
   },
 };
@@ -150,6 +161,26 @@ export default {
   i {
     font-size: 15px;
     padding-right: 12px;
+  }
+}
+#preview {
+  img {
+    max-width: 100%;
+    height: 250px;
+    margin: auto;
+    display: block;
+    padding: 12px;
+  }
+}
+.uploadedFile {
+  background: #f4f4f4;
+  border: 1px solid #aeaeae;
+  width: 95%;
+  margin: auto;
+  border-radius: 2px;
+  padding: 12px;
+  span {
+    display: block;
   }
 }
 </style>

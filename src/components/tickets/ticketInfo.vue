@@ -25,9 +25,11 @@
         </template>
         <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
       </q-select>
+
       <q-btn color="primary" @click="editorState" class="replyTicketBut">
         <q-icon name="fas fa-edit" />
-        {{ $t('reply') }}
+        <span v-if="!replyEnable">{{ $t('reply') }}</span>
+        <span v-if="replyEnable">{{ $t('close') }}</span>
       </q-btn>
     </div>
   </div>
@@ -49,6 +51,7 @@ export default {
         'CUSTOMERREPLY',
       ],
       localStatus: this.status,
+      replyEnable: false,
     };
   },
   computed: {
@@ -69,6 +72,7 @@ export default {
   methods: {
     editorState() {
       this.$emit('editorState');
+      this.replyEnable = !this.replyEnable;
     },
     changeStatusTicket() {
       this.$emit('changeStatus', this.localStatus);

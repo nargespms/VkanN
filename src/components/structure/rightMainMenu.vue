@@ -43,18 +43,8 @@
         </div>
       </div>
     </q-img>
-    <q-scroll-area
-      style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd"
-    >
+    <q-scroll-area style="height: 550px; margin-top: 150px; border-right: 1px solid #ddd">
       <q-list>
-        <q-btn
-          v-if="!this.mobileSize"
-          :class="miniState ? '' : 'pl8'"
-          center
-          unelevated
-          icon="menu"
-          @click="miniState = !miniState"
-        />
         <div class="mainMenuWrapper">
           <ul>
             <!-- home route -->
@@ -370,6 +360,17 @@
         </div>
       </q-list>
     </q-scroll-area>
+    <q-btn
+      round
+      v-if="!this.mobileSize"
+      :class="miniState ? '' : 'pl8'"
+      class="burgerToMini"
+      center
+      unelevated
+      color="primary"
+      icon="menu"
+      @click="miniState = !miniState"
+    />
   </q-drawer>
 </template>
 <script>
@@ -424,10 +425,6 @@ export default {
     transition: linear 0.25s;
     background-color: #e7e7e7;
   }
-
-  // .q-icon::before {
-  //   justify-content: unset !important;
-  // }
 }
 .expandableMenu {
   a {
@@ -459,5 +456,10 @@ export default {
     min-width: 56px;
     text-align: center;
   }
+}
+.burgerToMini {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
 }
 </style>

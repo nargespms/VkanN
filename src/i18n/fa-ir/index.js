@@ -382,4 +382,5 @@ export default {
   expiredInvoices: 'فاکتورهای منقضی',
   unpaidInvoices: ' فاکتورهای پرداخت نشده',
   paidInvoiceAmount: 'مبلغ فاکتورهای پرداخت شده',
+  close: 'بستن',
 };

@@ -43,21 +43,39 @@
     <td>{{ itemTotalAmountTaxIncluded }}{{ $t(currency) }}</td>
 
     <td>
-      <!-- delete current item -->
-      <q-btn
-        class="rmRecord"
-        round
-        icon="delete"
-        color="negative"
-        @click="deleteRecord"
-        :disable="first"
-      >
-        <q-tooltip
-          v-model="showing1"
-          transition-show="scale"
-          transition-hide="scale"
-        >{{ $t('delete') }}</q-tooltip>
-      </q-btn>
+      <div class="flex nowrap">
+        <q-btn
+          v-if="profileMode === 'Edit'"
+          class="saveRecord"
+          round
+          color="positive"
+          @click="saveRecord"
+          :disable="savedRecord"
+        >
+          <q-icon v-if="!savedRecord" name="fa fa-save" />
+          <q-icon v-if="savedRecord" name="fa fa-check" />
+          <q-tooltip
+            v-model="showing2"
+            transition-show="scale"
+            transition-hide="scale"
+          >{{ $t('save') }}</q-tooltip>
+        </q-btn>&nbsp;
+        <!-- delete current item -->
+        <q-btn
+          class="rmRecord"
+          round
+          icon="delete"
+          color="negative"
+          @click="deleteRecord"
+          :disable="first"
+        >
+          <q-tooltip
+            v-model="showing1"
+            transition-show="scale"
+            transition-hide="scale"
+          >{{ $t('delete') }}</q-tooltip>
+        </q-btn>
+      </div>
     </td>
   </tr>
 </template>
@@ -65,10 +83,12 @@
 <script>
 export default {
   name: 'invoiceTableEncapsulateItems',
-  props: ['data', 'first', 'currency', 'profileMode'],
+  props: ['data', 'first', 'currency', 'profileMode', 'invoiceId'],
   data() {
     return {
       showing1: false,
+      showing2: false,
+      savedRecord: false,
       item: { ...this.data },
     };
   },
@@ -91,6 +111,7 @@ export default {
       console.log(this.item);
       console.log('innn');
       this.$emit('getFromItemEncapsulate', this.item);
+      this.savedRecord = false;
     },
     deleteRecord() {
       this.$q
@@ -106,6 +127,31 @@ export default {
           console.log('Cancel');
         });
     },
+    saveRecord() {
+      const serverItems = {
+        rowNumber: this.item.number,
+        code: this.item.itemCode,
+        description: this.item.itemDescription,
+        quantity: this.item.itemNumber,
+        unit: this.item.itemUnit,
+        fee: this.item.itemAmount,
+        total: this.item.itemTotalAmount,
+        discount: this.item.itemDiscount,
+        totalAfterDiscount: this.item.itemTotalWithDiscount,
+        TAX: 9,
+        finalTotal: this.item.itemTotalAmountTaxIncluded,
+      };
+
+      this.$axios
+        .put(`/v1/api/vkann/items/${this.item.id}`, {
+          invoiceId: this.invoiceId,
+          ...serverItems,
+        })
+        .then(res => {
+          console.log(res);
+          this.savedRecord = true;
+        });
+    },
   },
   computed: {
     itemTotalAmount() {
@@ -119,6 +165,61 @@ export default {
     },
     itemTotalAmountTaxIncluded() {
       return this.itemTaxAmount + this.itemTotalWithDiscount;
+    },
+  },
+  mounted() {
+    if (this.profileMode === 'Edit') {
+      if (this.data.itemDescription.length < 1) {
+        const serverItems = {
+          rowNumber: this.item.number,
+          code: this.item.itemCode,
+          description: this.item.itemDescription,
+          quantity: this.item.itemNumber,
+          unit: this.item.itemUnit,
+          fee: this.item.itemAmount,
+          total: this.item.itemTotalAmount,
+          discount: this.item.itemDiscount,
+          totalAfterDiscount: this.item.itemTotalWithDiscount,
+          TAX: 9,
+          finalTotal: this.item.itemTotalAmountTaxIncluded,
+        };
+
+        this.$axios
+          .post(`/v1/api/vkann/items`, {
+            invoiceId: this.invoiceId,
+            ...serverItems,
+          })
+          .then(res => {
+            console.log(res);
+          });
+      }
+    }
+  },
+  watch: {
+    data(newVal) {
+      console.log(newVal);
+      //  const serverItems = {
+      //   rowNumber: this.item.number,
+      //   code: this.item.itemCode,
+      //   description: this.item.itemDescription,
+      //   quantity: this.item.itemNumber,
+      //   unit: this.item.itemUnit,
+      //   fee: this.item.itemAmount,
+      //   total: this.item.itemTotalAmount,
+      //   discount: this.item.itemDiscount,
+      //   totalAfterDiscount: this.item.itemTotalWithDiscount,
+      //   TAX: 9,
+      //   finalTotal: this.item.itemTotalAmountTaxIncluded,
+      // };
+
+      // this.$axios
+      //   .post(`/v1/api/vkann/items/`, {
+      //     invoiceId: this.invoice.id,
+      //     ...serverItems,
+      //   })
+      //   .then(res => {
+      //     console.log(res);
+      //   });
     },
   },
 };
