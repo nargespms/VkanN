@@ -1,10 +1,7 @@
 <template>
   <div class="userAvatar">
     <q-card class="my-card">
-      <div class="avatarWrapp">
-        <img src="~assets/Default-user.png" />
-        <p class="absolute-bottom text-h6 choosePhoto">{{ $t('choosePhoto') }}</p>
-      </div>
+      <avatarUpload @changAvatar="editAvatar" :UploadButton="false" />
       <q-card-section class="usrInfoAvatar">
         <p>
           <span>{{ this.data.firstName }}</span>
@@ -13,13 +10,61 @@
         </p>
       </q-card-section>
     </q-card>
+    <div v-if="data.role === 'CLIENT'">
+      <cardsAction class="clientAccess" :data="client.tickets" />
+      <cardsAction class="clientAccess" :data="client.invoices" />
+    </div>
   </div>
 </template>
 
 <script>
+import cardsAction from '../structure/cardsAction.vue';
+import avatarUpload from '../structure/avatarUpload.vue';
+
 export default {
   name: 'userAvatarCmp',
   props: ['data'],
+  components: { cardsAction, avatarUpload },
+  data() {
+    return {
+      client: {
+        tickets: {
+          icon: 'system_update_alt',
+          bg: '#26A69A',
+          cardName: 'ticketsList',
+          parentUrl: 'tickets',
+        },
+        invoices: {
+          icon: 'fas fa-file-invoice-dollar',
+          bg: '#ffa900',
+          cardName: 'invoicesList',
+          parentUrl: 'billing/invoices',
+        },
+      },
+    };
+  },
+  computed: {
+    userData() {
+      return this.data;
+    },
+  },
+  methods: {
+    editAvatar(value) {
+      if (
+        this.$route.path
+          .split('/')
+          .slice(2, 3)
+          .toString() === 'profile'
+      ) {
+        this.$axios.put('/v1/api/vkann/profile', {
+          ...this.userData,
+          avatarFile: value,
+        });
+      } else {
+        this.$emit('changeAvatar', value);
+      }
+    },
+  },
 };
 </script>
 
@@ -51,5 +96,11 @@ export default {
 }
 .avatarWrapp {
   position: relative;
+}
+.clientAccess {
+  width: 220px;
+  float: none;
+  margin: 16px auto;
+  padding: 0;
 }
 </style>

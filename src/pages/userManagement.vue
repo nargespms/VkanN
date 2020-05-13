@@ -3,8 +3,8 @@
     <div class="cardActionWrap">
       <cardsAction
         v-if="
-          $store.state.module1.userData.user.role === 'MANAGER'
-        "
+      $store.state.module1.userData.user.role === 'MANAGER'
+      "
         :data="users.staffs"
       />
       <cardsAction
@@ -39,14 +39,12 @@ export default {
     return {
       users: {
         staffs: {
-          number: 15,
           icon: 'person_pin',
           bg: '#26A69A',
           cardName: 'staffs',
           parentUrl: 'userManagement',
         },
         clients: {
-          number: 150,
           icon: 'people',
           bg: '#D64367',
           cardName: 'clients',

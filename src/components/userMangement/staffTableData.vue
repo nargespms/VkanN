@@ -167,6 +167,10 @@
       <!-- custom rows -->
       <template v-slot:body="props">
         <q-tr>
+          <q-td>
+            <span>{{ $t(props.row.avatar) }}</span>
+          </q-td>
+
           <q-td v-if="props.row.id !== $store.state.module1.userData.user.id">
             <span>
               <router-link
@@ -251,9 +255,6 @@
             <span>{{ $t(props.row.status) }}</span>
           </q-td>
 
-          <q-td>
-            <span>{{ $t(props.row.avatar) }}</span>
-          </q-td>
           <q-td class="center">
             <q-btn
               flat

@@ -135,10 +135,10 @@ export default {
       console.log(evt);
     },
     add(evt) {
-      // eslint-disable-next-line no-underscore-dangle
-      this.newItem = evt.item.__vue__._data.item;
+      console.log(evt);
+
       this.$axios
-        .patch(`/v1/api/vkann/tasks/state/${this.newItem.id}`, {
+        .patch(`/v1/api/vkann/tasks/state/${evt.item.id}`, {
           state: 'TODO',
         })
         .then(res => {

@@ -9,11 +9,15 @@
       <q-separator />
       <q-tab-panels v-model="tab" animated>
         <q-tab-panel name="profileInfo">
-          <userInformationInfo :data="profileData" />
+          <userInformationInfo
+            :data="this.$route.path.split('/').slice(2, 3).toString() === 'profile' ?  profileData : data"
+          />
         </q-tab-panel>
 
         <q-tab-panel name="profileInfoDetails">
-          <userInformationDetailsInfo :data="profileData" />
+          <userInformationDetailsInfo
+            :data="this.$route.path.split('/').slice(2, 3).toString() === 'profile' ?  profileData : data"
+          />
         </q-tab-panel>
 
         <q-tab-panel name="editProfile" v-if="!userEdit">
@@ -161,9 +165,16 @@ export default {
     },
   },
   mounted() {
-    this.$axios.get('/v1/api/vkann/profile').then(response => {
-      this.profileData = response.data.user;
-    });
+    if (
+      this.$route.path
+        .split('/')
+        .slice(2, 3)
+        .toString() === 'profile'
+    ) {
+      this.$axios.get('/v1/api/vkann/profile').then(response => {
+        this.profileData = response.data.user;
+      });
+    }
   },
 };
 </script>

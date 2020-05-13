@@ -356,6 +356,16 @@
                 </router-link>
               </q-expansion-item>
             </li>
+            <li class="mainMenuLi">
+              <q-item class="p8">
+                <router-link class="noneExpandableMenu" :to="'/' + locale + '/' + 'logs'">
+                  <q-item-section avatar>
+                    <q-icon name="fa fa-history" class="fn18" />
+                  </q-item-section>
+                  <q-item-section>{{ $t('logs') }}</q-item-section>
+                </router-link>
+              </q-item>
+            </li>
           </ul>
         </div>
       </q-list>
@@ -363,7 +373,6 @@
     <q-btn
       round
       v-if="!this.mobileSize"
-      :class="miniState ? '' : 'pl8'"
       class="burgerToMini"
       center
       unelevated

@@ -2,15 +2,13 @@
   <div class="captchaWrap">
     <div class="captcha">
       <div class="captchaImg">
-        <!-- <img class :src="this.capImg" /> -->
         <div class="captchaImgWrap" v-html="capImg"></div>
         <q-icon class="getNewCaptcha" name="fas fa-undo" @click="getNewCaptcha">
           <q-tooltip
             v-model="showing1"
             transition-show="scale"
             transition-hide="scale"
-            >{{ $t('getNewCaptcha') }}</q-tooltip
-          >
+          >{{ $t('getNewCaptcha') }}</q-tooltip>
         </q-icon>
       </div>
       <div class="captchaEnter">

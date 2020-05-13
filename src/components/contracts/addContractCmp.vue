@@ -189,7 +189,7 @@
           </template>
           <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
         </q-select>
-        <div class="w100 pt20">
+        <div class="w100 pt20 pb12">
           <uploadfile :UploadButton="false" ref="upload" :text="'attachments'" />
         </div>
       </div>

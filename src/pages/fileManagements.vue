@@ -1,8 +1,8 @@
 <template>
   <div class="q-pa-xl">
     <div class="cardActionWrap">
-      <cardsAction :data="files.invoices" />
-      <cardsAction :data="files.contracts" />
+      <cardsAction :data="files.list" />
+      <cardsAction :data="files.add" />
     </div>
   </div>
 </template>
@@ -22,14 +22,13 @@ export default {
   data() {
     return {
       files: {
-        invoices: {
-          number: 15,
+        list: {
           icon: 'fas fa-copy',
           bg: '#26A69A',
           cardName: 'filesList',
           parentUrl: 'fileManagements',
         },
-        contracts: {
+        add: {
           icon: 'fa fa-upload',
           bg: '#ffa900',
           cardName: 'uploadFile',

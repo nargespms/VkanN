@@ -4,6 +4,10 @@
       <div id="preview">
         <img v-if="imgUrl" :src="imgUrl" />
       </div>
+      <div class="progressBarWrap" v-if="startUpload">
+        <span>{{percentage }} %</span>
+        <div :style="{width : `${percentage}%` }" class="progressBar"></div>
+      </div>
       <div v-if="fileValue" class="uploadedFile">
         <span v-for="file in fileContent" :key="file.id">{{file.name}}</span>
       </div>
@@ -15,7 +19,14 @@
             <span>{{$t(this.text)}}</span>
           </div>
         </div>
-        <input type="file" name="filesToUpload" multiple id="upload_file" @change="fileStatus" />
+        <input
+          :style="[!fileValue ? {'height':'280px'} : {'height':'80px'}]"
+          type="file"
+          name="filesToUpload"
+          multiple
+          id="upload_file"
+          @change="fileStatus"
+        />
       </div>
     </div>
     <q-btn
@@ -41,6 +52,8 @@ export default {
     return {
       fileValue: false,
       imgUrl: null,
+      percentage: 0,
+      startUpload: false,
     };
   },
   computed: {
@@ -55,6 +68,9 @@ export default {
       this.fileValue = true;
       const file = e.target.files[0];
       this.imgUrl = URL.createObjectURL(file);
+      if (!this.UploadButton) {
+        this.submit_btn();
+      }
     },
 
     submit_btn() {
@@ -74,16 +90,24 @@ export default {
             filetype: file.type,
             extension,
           },
-          onError(error) {
+          onError: error => {
             console.log(`Failed because: ${error}`);
             console.log(upload.url);
+            this.$q.notify({
+              message: this.$t('413 Request Entity Too Large'),
+              color: 'negative',
+              icon: 'warning',
+              position: 'top',
+            });
           },
-          onProgress(bytesUploaded, bytesTotal) {
+          onProgress: (bytesUploaded, bytesTotal) => {
             const percentage = ((bytesUploaded / bytesTotal) * 100).toFixed(2);
             console.log(bytesUploaded, bytesTotal, `${percentage}%`);
+            this.calPercentage(percentage);
           },
           onSuccess: () => {
             this.postUrl(upload, extension);
+            this.startUpload = true;
           },
         });
 
@@ -101,6 +125,9 @@ export default {
           console.log(res);
         });
     },
+    calPercentage(value) {
+      this.percentage = value;
+    },
   },
 };
 </script>
@@ -113,7 +140,6 @@ export default {
   background-color: #fff;
   border: 1px solid #cecece;
   input[type='file'] {
-    height: 208px;
     opacity: 0;
     width: 100%;
     cursor: pointer;
@@ -176,11 +202,22 @@ export default {
   background: #f4f4f4;
   border: 1px solid #aeaeae;
   width: 95%;
-  margin: auto;
+  margin: 8px auto;
   border-radius: 2px;
   padding: 12px;
   span {
     display: block;
   }
+}
+.progressBar {
+  background-color: #27c207;
+  height: 8px;
+  transition: width 2s;
+  border: 1px solid #1e9506;
+  border-radius: 1px;
+}
+.progressBarWrap {
+  width: 95%;
+  margin: auto;
 }
 </style>

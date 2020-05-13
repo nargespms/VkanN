@@ -29,6 +29,8 @@ export default {
       componentKey: 0,
 
       columns: [
+        { lable: 'avatar', filterable: false, sortable: false, filterType: '' },
+
         {
           lable: 'firstName',
           filterable: true,
@@ -72,7 +74,6 @@ export default {
           sortable: false,
           filterType: 'DropBox',
         },
-        { lable: 'avatar', filterable: false, sortable: false, filterType: '' },
         { lable: 'operation', filterable: false, sortable: false },
       ],
     };

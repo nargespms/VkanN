@@ -137,12 +137,14 @@ export default {
     },
 
     add(evt) {
-      // window.console.log(evt);
-      // eslint-disable-next-line no-underscore-dangle
-      this.newItem = evt.item.__vue__._data.item;
       this.$axios
-        .patch(`/v1/api/vkann/tasks/state/${this.newItem.id}`, {
+        .patch(`/v1/api/vkann/tasks/state/${evt.item.id}`, {
           state: 'SPRINT2',
+        })
+        .then(res => {
+          if (res.status === 200) {
+            this.$emit('reloadCmp', true);
+          }
         })
 
         .catch(e => {
@@ -155,7 +157,6 @@ export default {
             });
           }
         });
-      this.$emit('reloadCmp', true);
     },
     animateScroll() {
       this.$refs.scrollArea.setScrollPosition(0);

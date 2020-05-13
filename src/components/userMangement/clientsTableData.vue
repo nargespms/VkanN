@@ -130,6 +130,10 @@
       <template v-slot:body="props">
         <q-tr>
           <q-td>
+            <span>{{ $t(props.row.avatar) }}</span>
+          </q-td>
+
+          <q-td>
             <router-link
               class="listNameTable"
               :to="
@@ -179,9 +183,7 @@
           <q-td>
             <span>{{ $t(props.row.status) }}</span>
           </q-td>
-          <q-td>
-            <span>{{ $t(props.row.avatar) }}</span>
-          </q-td>
+
           <q-td class="center">
             <q-btn
               flat

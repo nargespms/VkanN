@@ -76,6 +76,14 @@
       @taskDelete="taskDelete"
       @retriveTask="retriveTask"
     />
+    <logTableData
+      v-if="this.module === 'logs'"
+      :data="data"
+      :columns="columns"
+      :loading="loading"
+      @request="onRequest"
+      :pagination="pagination"
+    />
   </div>
 </template>
 
@@ -88,6 +96,7 @@ import invoiceTableData from '../invoices/invoiceTableData.vue';
 import quoteTableData from '../invoices/quoteTableData.vue';
 import contractTableData from '../contracts/contractTableData.vue';
 import taskTableData from '../tasks/taskTableData.vue';
+import logTableData from '../logs/logTableData.vue';
 
 export default {
   name: 'tableDataWrap',
@@ -100,6 +109,7 @@ export default {
     quoteTableData,
     contractTableData,
     taskTableData,
+    logTableData,
   },
   props: ['endpoint', 'columns', 'module'],
   data() {
@@ -112,7 +122,6 @@ export default {
         descending: false,
         page: 1,
         limit: 10,
-        rowsNumber: 10,
       },
     };
   },
@@ -141,7 +150,9 @@ export default {
         })
         .then(response => {
           this.data = response.data.result.docs;
-          this.pagination.rowsNumber = response.data.result.length;
+          this.pagination.rowsNumber = response.data.result.totalDocs;
+          this.pagination.rowsPerPage = response.data.result.limit;
+
           // don't forget to update local pagination object
           this.pagination.page = page;
           this.pagination.limit = limit;

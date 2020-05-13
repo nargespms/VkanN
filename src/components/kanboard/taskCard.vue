@@ -1,6 +1,7 @@
 <template>
   <q-card
     class="taskPacket"
+    :id="item.id"
     @drag="dragged"
     :class="item.priority === 'CRITICAL' ? 'border-red': 'border-default'"
   >

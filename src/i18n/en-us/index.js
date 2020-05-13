@@ -306,4 +306,5 @@ export default {
   filterBy: 'filter By',
   part: 'part',
   close: 'close',
+  logs: 'logs',
 };

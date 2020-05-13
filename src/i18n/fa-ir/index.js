@@ -310,8 +310,8 @@ export default {
   USD: 'دلار',
   EUR: 'یورو',
   newServiceAdded: 'سرویس جدید ایجاد شد',
-  LOW: 'کم اهمیت',
-  NORMAL: 'نرمال',
+  LOW: 'کم ',
+  NORMAL: 'متوسط',
   ticketNumber: 'شماره تیکت',
   INPROGRESS: 'در حال بررسی',
   CLOSED: 'بسته شده',
@@ -383,4 +383,5 @@ export default {
   unpaidInvoices: ' فاکتورهای پرداخت نشده',
   paidInvoiceAmount: 'مبلغ فاکتورهای پرداخت شده',
   close: 'بستن',
+  logs: 'وقایع',
 };

@@ -182,6 +182,8 @@
                     '/' +
                     'tickets' +
                     '/' +
+                    'ticketsList' +
+                    '/' +
                     props.row.id
                 "
               >{{ props.row.title }}</router-link>

@@ -133,7 +133,7 @@ const routes = [
       },
       {
         name: 'ticket',
-        path: 'tickets/:ticket',
+        path: 'tickets/ticketsList/:ticket',
         component: () => import('pages/ticket'),
         meta: {
           requiresAuth: true,
@@ -328,6 +328,7 @@ const routes = [
           dep: ['GENERAL', 'BILLING', 'TECH', 'INFO'],
         },
       },
+
       // contracts
       {
         name: 'contracts',
@@ -439,6 +440,16 @@ const routes = [
           requiresAuth: true,
           roles: ['MANAGER', 'ASSISTANT', 'CLIENT', 'MEMBER'],
           dep: ['GENERAL', 'BILLING'],
+        },
+      },
+      {
+        name: 'logs',
+        path: 'logs',
+        component: () => import('pages/logs'),
+        meta: {
+          requiresAuth: true,
+          roles: ['MANAGER', 'ASSISTANT', 'MEMBER'],
+          dep: ['GENERAL', 'TECH', 'BILLING'],
         },
       },
       { name: '404', path: '404', component: () => import('pages/E404.vue') },

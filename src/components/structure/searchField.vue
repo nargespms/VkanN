@@ -50,8 +50,9 @@ export default {
 
 <style lang="scss">
 .searchWrap {
-  display: inline-block;
   position: relative;
+  padding: 0px 12px;
+
   // margin-left: 24px;
 }
 
@@ -62,7 +63,6 @@ export default {
   font-weight: bold;
   background: none;
   border: none;
-  display: inline;
   padding: 0;
   cursor: pointer;
   &:focus {

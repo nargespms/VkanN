@@ -78,7 +78,7 @@
               <div v-if="col.lable === 'startDate'">
                 <q-input
                   outlined
-                  v-model="startDate"
+                  v-model="firstStartDate"
                   mask="date"
                   :rules="['date']"
                   :label="$t('date')"
@@ -91,14 +91,14 @@
                         transition-show="scale"
                         transition-hide="scale"
                       >
-                        <q-date v-model="startDate" today-btn ok-label calendar="persian">
+                        <q-date v-model="firstStartDate" today-btn ok-label calendar="persian">
                           <div class="row items-center justify-end q-gutter-sm">
                             <q-btn
                               :label="$t('ok')"
                               color="primary"
                               flat
                               v-close-popup
-                              @click="startSetDate(startDate)"
+                              @click="firstStartSetDate(firstStartDate)"
                             />
                             <q-btn :label="$t('cancel')" color="primary" flat v-close-popup />
                           </div>
@@ -106,8 +106,42 @@
                       </q-popup-proxy>
                     </q-icon>
                   </template>
-                  <template v-if="startDate" v-slot:prepend>
-                    <q-icon name="cancel" @click="startDateNull" class="cursor-pointer" />
+                  <template v-if="firstStartDate" v-slot:prepend>
+                    <q-icon name="cancel" @click="firstStartDateNull" class="cursor-pointer" />
+                  </template>
+                </q-input>
+                <q-input
+                  outlined
+                  v-model="secondStartDate"
+                  mask="date"
+                  :rules="['date']"
+                  :label="$t('date')"
+                  name="event"
+                >
+                  <template v-slot:append>
+                    <q-icon name="event" class="cursor-pointer" color="black">
+                      <q-popup-proxy
+                        ref="qDateProxy"
+                        transition-show="scale"
+                        transition-hide="scale"
+                      >
+                        <q-date v-model="secondStartDate" today-btn ok-label calendar="persian">
+                          <div class="row items-center justify-end q-gutter-sm">
+                            <q-btn
+                              :label="$t('ok')"
+                              color="primary"
+                              flat
+                              v-close-popup
+                              @click="secondStartSetDate(secondStartDate)"
+                            />
+                            <q-btn :label="$t('cancel')" color="primary" flat v-close-popup />
+                          </div>
+                        </q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                  <template v-if="secondStartDate" v-slot:prepend>
+                    <q-icon name="cancel" @click="secondStartDateNull" class="cursor-pointer" />
                   </template>
                 </q-input>
               </div>
@@ -245,7 +279,8 @@ export default {
   name: 'contractTableData',
   data() {
     return {
-      startDate: '',
+      firstStartDate: '',
+      secondStartDate: '',
       endDate: '',
       contractType: [
         { label: 'FORMAL', value: true },
@@ -301,17 +336,26 @@ export default {
       return new this.$persianDate(dateValue).toDate().toISOString();
     },
 
-    startSetDate(value) {
-      this.filter.startDate = this.persionToGregorian(value);
+    firstStartSetDate(value) {
+      this.filter.firstStartDate = this.persionToGregorian(value);
+      this.colFilterChange();
+    },
+    secondStartSetDate(value) {
+      this.filter.secondStartDate = this.persionToGregorian(value);
       this.colFilterChange();
     },
     endSetDate(value) {
       this.filter.endDate = this.persionToGregorian(value);
       this.colFilterChange();
     },
-    startDateNull() {
-      this.startDate = null;
-      delete this.filter.startDate;
+    firstStartDateNull() {
+      this.firstStartDate = null;
+      delete this.filter.firstStartDate;
+      this.colFilterChange();
+    },
+    secondStartDateNull() {
+      this.secondStartDate = null;
+      delete this.filter.secondStartDate;
       this.colFilterChange();
     },
     endDateNull() {

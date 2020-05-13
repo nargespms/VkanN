@@ -26,7 +26,6 @@ export default {
     return {
       contracts: {
         list: {
-          number: 15,
           icon: 'fa fa-table',
           bg: '#26A69A',
           cardName: 'contractsList',

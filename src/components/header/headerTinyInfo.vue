@@ -6,31 +6,35 @@
         <languageSwitcher :locale="locale" />
 
         <!-- seprator -->
-        <q-icon name="fas fa-ellipsis-v " class="text-white sepratorInfoHeader"></q-icon>
 
+        <!-- <q-icon name="fas fa-ellipsis-v " class="text-white sepratorInfoHeader"></q-icon> -->
         <!-- search -->
-        <div class="searchWrap text-white">
-          <searchField :locale="locale" />
+        <div class="searchWrap text-white verSep">
+          <searchField :locale="locale" class="alignCenter" />
         </div>
 
         <!-- seprator -->
-        <q-icon name="fas fa-ellipsis-v " class="text-white sepratorInfoHeader"></q-icon>
+        <!-- <q-icon name="fas fa-ellipsis-v " class="text-white sepratorInfoHeader"></q-icon> -->
 
         <router-link
           v-if="!$store.state.module1.logedIn"
           :to="'/' + locale + '/' + 'signIn'"
-          class="loginBut text-white"
+          class="loginBut text-white verSep"
         >
-          <span>
-            {{ $t('login') }}
-            <q-icon name="fas fa-user" class="pl12"></q-icon>
-          </span>
+          <div>
+            <q-icon name="fas fa-user" class="pr12"></q-icon>
+            <span>{{ $t('login') }}</span>
+          </div>
         </router-link>
-        <div v-if="$store.state.module1.logedIn" class="loginBut text-white" @click="logOutPannel">
-          <span>
-            {{ $t('logOut') }}
-            <q-icon name="fa fa-key" class="fn12 pl12"></q-icon>
-          </span>
+        <div
+          v-if="$store.state.module1.logedIn"
+          class="loginBut text-white verSep"
+          @click="logOutPannel"
+        >
+          <div>
+            <q-icon name="fa fa-key" class="fn12 pr12"></q-icon>
+            <span>{{ $t('logOut') }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -86,6 +90,8 @@ export default {
   flex-direction: column;
   justify-content: center;
   cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
 }
 .tinyFixInfoInner {
   float: right;
@@ -97,5 +103,6 @@ export default {
 }
 .searchWrap {
   cursor: pointer;
+  padding: 0px 12px;
 }
 </style>

@@ -2,9 +2,22 @@
   <div class="flex">
     <ul class="localesWrap">
       <li v-for="locale in locales" :key="locale.value" class="localeValue">
-        <span @click="changeRoute(locale.value)">
-          {{ locale.value }}
-        </span>
+        <img
+          @click="changeRoute(locale.value)"
+          class="flag"
+          v-if="locale.value === 'fa'"
+          src="../../assets/Iran.png"
+          alt
+        />
+
+        <img
+          @click="changeRoute(locale.value)"
+          class="flag"
+          v-if="locale.value === 'en'"
+          src="../../assets/us.png"
+          alt
+        />
+        <!-- <span @click="changeRoute(locale.value)">{{ locale.value }}</span> -->
       </li>
     </ul>
   </div>
@@ -15,6 +28,7 @@ export default {
   name: 'languageSwitcher',
   data() {
     return {
+      showing: false,
       locales: [
         {
           label: 'فارسی',
@@ -26,16 +40,16 @@ export default {
           value: 'en',
           url: '' / ' + locale.value + ' / ' +newroute"',
         },
-        {
-          label: 'العربیه',
-          value: 'ar',
-          url: '' / ' + locale.value + ' / ' +newroute"',
-        },
-        {
-          label: 'Dutch',
-          value: 'de',
-          url: '' / ' + locale.value + ' / ' +newroute"',
-        },
+        // {
+        //   label: 'العربیه',
+        //   value: 'ar',
+        //   url: '' / ' + locale.value + ' / ' +newroute"',
+        // },
+        // {
+        //   label: 'Dutch',
+        //   value: 'de',
+        //   url: '' / ' + locale.value + ' / ' +newroute"',
+        // },
       ],
     };
   },
@@ -78,5 +92,12 @@ export default {
   display: inline-block;
   cursor: pointer;
   padding: 0px 12px;
+}
+.flag {
+  width: 25px;
+  border-style: none;
+  padding-right: 4px;
+  margin-right: 4px;
+  vertical-align: middle;
 }
 </style>

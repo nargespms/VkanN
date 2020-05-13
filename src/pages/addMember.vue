@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-xl">
     <div class="addMemberPage">
-      <userAvatarCmp :data="data" />
+      <userAvatarCmp @changeAvatar="changeAvatar" :data="data" />
       <profileEditForm :profileMode="'ADD'" @sendDataUser="sendDataUser" />
     </div>
   </div>
@@ -26,9 +26,13 @@ export default {
       form: {},
       data: {},
       profileMode: 'ADD',
+      avatarFile: '',
     };
   },
   methods: {
+    changeAvatar(value) {
+      this.avatarFile = value;
+    },
     sendDataUser(value) {
       this.form = value;
       console.log(this.form);
@@ -59,6 +63,7 @@ export default {
             git: this.form.git,
             address: this.form.address,
             password: this.form.PassWord,
+            avatarFile: this.avatarFile,
           })
           .then(res => {
             if (res.status === 200) {

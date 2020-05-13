@@ -23,7 +23,6 @@ export default {
     return {
       billing: {
         invoices: {
-          number: 15,
           icon: 'fas fa-file-invoice-dollar',
           bg: '#26A69A',
           cardName: 'invoices',

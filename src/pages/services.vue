@@ -34,7 +34,6 @@ export default {
     return {
       services: {
         list: {
-          number: 15,
           icon: 'fa fa-table',
           bg: '#26A69A',
           cardName: 'servicesList',

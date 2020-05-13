@@ -45,21 +45,18 @@ export default {
           parentUrl: 'tasks',
         },
         myList: {
-          number: 18,
           icon: 'play_for_work',
           bg: '#26A69A',
           cardName: 'myTasksList',
           parentUrl: 'tasks',
         },
         list: {
-          number: 150,
           icon: 'play_for_work',
           bg: '#D64367',
           cardName: 'tasksList',
           parentUrl: 'tasks',
         },
         kanboard: {
-          number: 100,
           icon: 'fa fa-table',
           bg: '#1a667e',
           cardName: 'kanBoard',

@@ -32,7 +32,6 @@ export default {
           parentUrl: 'tickets',
         },
         list: {
-          number: 18,
           icon: 'system_update_alt',
           bg: '#26A69A',
           cardName: 'ticketsList',

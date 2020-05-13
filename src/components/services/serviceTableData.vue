@@ -1,5 +1,8 @@
 <template>
   <div>
+    {{pagination}}
+    ******
+    {{innerPagination}}
     <q-table
       :data="data"
       :columns="columns"
@@ -205,7 +208,7 @@ export default {
       separator: 'cell',
       filter: {},
       tableSearch: '',
-      innerPagination: this.pagination,
+      // innerPagination: this.pagination,
     };
   },
   props: {
@@ -219,7 +222,6 @@ export default {
         descending: false,
         page: 1,
         limit: 10,
-        rowsNumber: 10,
       }),
     },
   },
@@ -244,6 +246,28 @@ export default {
       props.filter = this.filter;
       this.innerPagination = props.pagination;
       this.$emit('request', props);
+    },
+  },
+  // watch: {
+  //   pagination: {
+  //     immediate: true,
+  //     deep: true,
+  //     handler(newVal) {
+  //       this.innerPagination = newVal;
+  //       console.log(`inner:${this.innerPagination}`);
+  //       console.log(`newval:${newVal}`);
+  //       console.log(newVal);
+  //     },
+  //   },
+  // },
+  computed: {
+    innerPagination: {
+      get() {
+        return this.pagination;
+      },
+      set(newVal) {
+        return newVal;
+      },
     },
   },
 };
