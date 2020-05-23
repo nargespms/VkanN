@@ -384,4 +384,7 @@ export default {
   paidInvoiceAmount: 'مبلغ فاکتورهای پرداخت شده',
   close: 'بستن',
   logs: 'وقایع',
+  NewTask: 'تسک جدید',
+  NewTicket: 'تیکت جدید',
+  payment: 'پرداخت',
 };

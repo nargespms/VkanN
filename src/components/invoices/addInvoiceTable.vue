@@ -919,49 +919,49 @@ export default {
         .get(`/v1/api/vkann/invoices/${this.$route.params.invoiceId}`)
         .then(res => {
           console.log(res);
-          this.invoice.id = res.data.id;
-          this.invoice.cardNumber = res.data.cardNumber;
-          this.invoice.serialNumber = res.data.number;
-          this.invoice.type = res.data.type;
+          this.invoice.id = res.data.invoice.id;
+          this.invoice.cardNumber = res.data.invoice.cardNumber;
+          this.invoice.serialNumber = res.data.invoice.number;
+          this.invoice.type = res.data.invoice.type;
 
-          this.serviceEdit = res.data.service;
+          this.serviceEdit = res.data.invoice.service;
           // eslint-disable-next-line no-underscore-dangle
-          this.invoice.serviceName = res.data.service._id;
-          this.invoice.currency = res.data.currency;
+          this.invoice.serviceName = res.data.invoice.service._id;
+          this.invoice.currency = res.data.invoice.currency;
           this.enableEndDate = true;
           this.enableEndDateQuote = true;
-          this.invoice.official = res.data.official;
-          this.clientEdit = res.data.client;
+          this.invoice.official = res.data.invoice.official;
+          this.clientEdit = res.data.invoice.client;
           // eslint-disable-next-line no-underscore-dangle
-          this.invoice.client = res.data.client._id;
+          this.invoice.client = res.data.invoice.client._id;
           // eslint-disable-next-line no-underscore-dangle
-          this.getUserInfo(res.data.client._id);
-          this.invoice.cash = res.data.cash;
-          this.invoice.description = res.data.description;
-          this.invoice.notes = res.data.note;
+          this.getUserInfo(res.data.invoice.client._id);
+          this.invoice.cash = res.data.invoice.cash;
+          this.invoice.description = res.data.invoice.description;
+          this.invoice.notes = res.data.invoice.note;
           // dates convertor
           this.invoice.date = this.gregorianTopersianString(
-            res.data.invoiceDate
+            res.data.invoice.invoiceDate
           );
           this.invoice.startdate = this.gregorianTopersianString(
-            res.data.issueDate
+            res.data.invoice.issueDate
           );
           this.invoice.quoteStartDate = this.gregorianTopersianString(
-            res.data.issueDate
+            res.data.invoice.issueDate
           );
           this.invoice.quoteEndDate = this.gregorianTopersianString(
-            res.data.validUntil
+            res.data.invoice.validUntil
           );
           this.invoice.enddate = this.gregorianTopersianString(
-            res.data.dueDate
+            res.data.invoice.dueDate
           );
-          if (res.data.official) {
+          if (res.data.invoice.official) {
             this.invoiceTotalTax = res.data.total;
           } else {
             this.invoiceTotal = res.data.total;
           }
           // reverse map
-          const localItems = res.data.items.map(item => ({
+          const localItems = res.data.invoice.items.map(item => ({
             // eslint-disable-next-line no-underscore-dangle
             id: item._id,
             number: item.rowNumber,

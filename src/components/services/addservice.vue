@@ -133,10 +133,20 @@
       </div>
       <div class="col3">
         <div class="mr16 fullw mb16">
-          <uploadfile :UploadButton="false" ref="upload" :text="'attachments'" />
+          <uploadfile
+            @getUploadedId="getUploadedId"
+            :UploadButton="false"
+            ref="upload"
+            :text="'attachments'"
+          />
         </div>
         <div class="fullw mb16">
-          <uploadfile :UploadButton="false" ref="upload" :text="'avatar'" />
+          <uploadfile
+            @getUploadedId="getUploadedAvatar"
+            :UploadButton="false"
+            ref="upload"
+            :text="'avatar'"
+          />
         </div>
       </div>
       <div class="saveInfo">
@@ -183,6 +193,7 @@ export default {
       },
       clientEdit: '',
       tagEdit: '',
+      attachments: '',
     };
   },
   validations: {
@@ -191,6 +202,9 @@ export default {
     },
   },
   methods: {
+    getUploadedId(value) {
+      this.attachments = value;
+    },
     getAutoCompleteValueclient(value) {
       this.service.client = value.id;
     },
@@ -219,7 +233,7 @@ export default {
               status: this.service.status,
               voip: this.service.voip,
               description: this.service.description,
-              attachments: '5e1a30480000000000000000',
+              attachments: this.attachments,
             })
             .then(response => {
               console.log(response);
@@ -258,9 +272,11 @@ export default {
               parkDomain: this.service.parkDomain,
               billingStatus: this.service.billingStatus,
               status: this.service.status,
-              VOIP: this.service.voip,
+              ...(this.service.voip ? { VOIP: this.service.voip } : ''),
+
+              // VOIP: this.service.voip,
               description: this.service.description,
-              // attachments: '5e1a30480000000000000000',
+              attachments: this.attachments,
             })
             .then(res => {
               console.log(res);
@@ -290,6 +306,9 @@ export default {
           position: 'top',
         });
       }
+    },
+    getUploadedAvatar() {
+      console.log('back should consider field for this');
     },
   },
   mounted() {

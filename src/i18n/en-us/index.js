@@ -307,4 +307,5 @@ export default {
   part: 'part',
   close: 'close',
   logs: 'logs',
+  payment: 'payment',
 };

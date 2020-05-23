@@ -76,7 +76,7 @@
             {{ $t('attachments') }}
           </span>
 
-          <uploadfile />
+          <uploadfile @getUploadedId="getUploadedId" />
         </div>
         <q-btn class="uploadTicket" color="primary" type="submit" @click.prevent="submitTicket">
           <q-icon name="fas fa-paper-plane " />
@@ -120,6 +120,7 @@ export default {
           description: '',
         },
       },
+      attachments: '',
     };
   },
   validations: {
@@ -172,7 +173,11 @@ export default {
         },
       });
     },
+    getUploadedId(value) {
+      console.log(value);
 
+      this.ticket.thread.attachments = value;
+    },
     submitTicket() {
       this.empty = !this.$v.ticket.$anyDirty;
       this.errors = this.$v.ticket.$anyError;

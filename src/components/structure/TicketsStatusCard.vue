@@ -3,7 +3,7 @@
     <cardsAction :data="tickets.open" />
     <cardsAction :data="tickets.inProgress" />
     <cardsAction :data="tasks.critical" />
-    <cardsAction :data="tasks.expired" />
+    <cardsAction unclickable="true" :data="tasks.expired" />
   </div>
 </template>
 
@@ -16,37 +16,38 @@ export default {
   components: {
     cardsAction,
   },
+  props: ['data'],
   data() {
     return {
       tickets: {
         open: {
-          number: 15,
+          number: this.data.openTickets,
           icon: 'system_update_alt',
           bg: '#26A69A',
-          cardName: 'ticketsList',
+          cardName: 'ticketsList?status=UNANSWERD',
           cardLabel: 'openTickets',
           parentUrl: 'tickets',
         },
         inProgress: {
-          number: 20,
+          number: this.data.ipTickets,
           icon: 'fas fa-cog',
           bg: '#D64367',
-          cardName: 'ticketsList',
+          cardName: 'ticketsList?status=INPROGRESS',
           cardLabel: 'inprogressTickets',
           parentUrl: 'tickets',
         },
       },
       tasks: {
         critical: {
-          number: 15,
+          number: this.data.criticalTask,
           icon: 'warning',
           bg: '#3EAE1E',
-          cardName: 'tasksList',
+          cardName: 'tasksList?priority=CRITICAL',
           cardLabel: 'criticalTasks',
           parentUrl: 'tasks',
         },
         expired: {
-          number: 2,
+          number: this.data.expiredTask,
           icon: 'fas fa-hourglass-end',
           bg: '#1a667e',
           cardName: 'tasksList',

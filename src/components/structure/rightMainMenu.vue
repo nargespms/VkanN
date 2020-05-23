@@ -2,12 +2,12 @@
   <q-drawer
     v-model="localLeftDrawerOpen"
     bordered
-    content-class="bg-white"
+    content-class="bg-white relative"
     :mini="miniState"
     :breakpoint="980"
     @hide="hideMenu"
   >
-    <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
+    <q-img class="absolute-top" src="../../assets/material.png" style="height: 150px">
       <div v-if="mobileSize || !miniState" class="absolute-bottom bg-transparent">
         <router-link
           :to="

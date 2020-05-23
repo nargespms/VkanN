@@ -15,11 +15,12 @@ export default {
   components: {
     cardsAction,
   },
+  props: ['data'],
   data() {
     return {
       invoices: {
         expired: {
-          number: 15,
+          number: this.data.expiredinvoice,
           icon: 'fas fa-hourglass-end',
           bg: '#26A69A',
           cardName: 'invoicesList',
@@ -27,7 +28,7 @@ export default {
           parentUrl: 'billing/invoices',
         },
         unpaid: {
-          number: 20,
+          number: this.data.unpaidinvoice,
           icon: 'fas fa-ban',
           bg: '#D64367',
           cardName: 'invoicesList',

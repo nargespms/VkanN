@@ -462,3 +462,36 @@ body {
   border-left: 1px solid white;
   padding-left: 12px;
 }
+.relative {
+  position: relative;
+}
+.headerTable {
+  background-color: #2f718fe8;
+}
+.tableListWrap {
+  .expandTable {
+    .q-icon {
+      color: #666;
+    }
+  }
+  .q-table__sort-icon {
+    color: #666;
+  }
+  .q-table__top {
+    background-color: #2f718fe8 !important;
+    color: #fff !important;
+    .q-field__control {
+      border-bottom: 1px solid #b4b4b4;
+    }
+  }
+  .listNameTable,
+  .q-table thead th {
+    color: #000;
+    font-size: 16px;
+    text-align: center;
+  }
+}
+[dir] .q-table__bottom {
+  background-color: #2f718fe8 !important;
+  color: #fff !important;
+}

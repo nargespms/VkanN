@@ -31,23 +31,32 @@ export default {
         tickets: {
           icon: 'system_update_alt',
           bg: '#26A69A',
-          cardName: 'ticketsList',
+          cardName: `ticketsList?client=${this.data.firstName} ${this.data.lastName}`,
+          cardLabel: 'ticketsList',
           parentUrl: 'tickets',
         },
         invoices: {
           icon: 'fas fa-file-invoice-dollar',
           bg: '#ffa900',
-          cardName: 'invoicesList',
+          cardName: `invoicesList?client=${this.data.firstName} ${this.data.lastName}`,
+          cardLabel: 'invoicesList',
           parentUrl: 'billing/invoices',
         },
       },
     };
+  },
+  watch: {
+    data(newVal) {
+      this.client.tickets.cardName = `ticketsList?client=${newVal.firstName} ${newVal.lastName}`;
+      this.client.invoices.cardName = `invoicesList?client=${newVal.firstName} ${newVal.lastName}`;
+    },
   },
   computed: {
     userData() {
       return this.data;
     },
   },
+
   methods: {
     editAvatar(value) {
       if (

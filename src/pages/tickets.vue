@@ -1,6 +1,5 @@
 <template>
   <div class="q-pa-xl">
-    <taskModal v-if="$store.state.module1.userData.user.role !== 'CLIENT'" />
     <div class="cardActionWrap">
       <cardsAction :data="tickets.list" />
       <cardsAction :data="tickets.addTickets" />
@@ -9,7 +8,6 @@
 </template>
 
 <script>
-import taskModal from '../components/structure/taskModal.vue';
 import cardsAction from '../components/structure/cardsAction.vue';
 
 export default {
@@ -20,7 +18,6 @@ export default {
 
   components: {
     cardsAction,
-    taskModal,
   },
   data() {
     return {

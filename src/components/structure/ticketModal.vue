@@ -1,12 +1,6 @@
 <template>
   <div class="clear">
-    <q-btn
-      :label="$t('addNewTicket')"
-      color="primary"
-      @click="ticket = true"
-      icon="add"
-      class="float"
-    />
+    <q-btn :label="$t('NewTicket')" color="grey-7" @click="ticket = true" icon="add" class="float" />
     <q-dialog
       class="dialogTicket"
       v-model="ticket"

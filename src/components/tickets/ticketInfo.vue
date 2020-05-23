@@ -41,15 +41,7 @@ export default {
   props: ['data'],
   data() {
     return {
-      ticketStatus: [
-        'CLOSED',
-        'OPEN',
-        'ANSEWRED',
-        'UNANSWERD',
-        'INPROGRESS',
-        'ONHOLD',
-        'CUSTOMERREPLY',
-      ],
+      ticketStatus: ['CLOSED', 'ANSEWRED', 'UNANSWERD', 'INPROGRESS', 'ONHOLD'],
       localStatus: this.status,
       replyEnable: false,
     };

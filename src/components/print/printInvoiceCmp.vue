@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isLoading" class="printInvoiceWrapper">
+  <div class="printInvoiceWrapper">
     <p v-if="printData.type === 'QUOTE'" class="invoiceTypeShow">{{ $t(printData.type) }}</p>
     <div class="printHeaderInvoice">
       <div class="invoiceLogo">
@@ -239,11 +239,11 @@ import showItemsTable from '../invoices/showItemsTable.vue';
 export default {
   name: 'printInvoiceCmp',
   components: { showItemsTable },
+  props: ['printData'],
   data() {
     return {
-      printData: {},
       aasaamInfo: faOrganization,
-      isLoading: true,
+      // isLoading: true,
       profileMode: 'show',
       invoice: {
         cash: '',
@@ -258,17 +258,17 @@ export default {
       return value.toLocaleString(`${this.$route.params.locale}`);
     },
   },
-  mounted() {
-    this.$axios
-      .get(`/v1/api/vkann/invoices/${this.$route.params.invoiceId}`)
-      .then(res => {
-        this.printData = res.data;
-        this.invoice.cash = res.data.cash;
-        this.invoice.currency = res.data.currency;
-        this.invoice.items = res.data.items;
-        this.isLoading = false;
-      });
-  },
+  // mounted() {
+  //   this.$axios
+  //     .get(`/v1/api/vkann/invoices/${this.$route.params.invoiceId}`)
+  //     .then(res => {
+  //       this.printData = res.data.invoice;
+  //       this.invoice.cash = res.data.invoice.cash;
+  //       this.invoice.currency = res.data.invoice.currency;
+  //       this.invoice.items = res.data.invoice.items;
+  //       this.isLoading = false;
+  //     });
+  // },
 };
 </script>
 

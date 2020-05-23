@@ -190,7 +190,12 @@
           <template v-slot:selected-item="scope">{{ $t(scope.opt) }}</template>
         </q-select>
         <div class="w100 pt20 pb12">
-          <uploadfile :UploadButton="false" ref="upload" :text="'attachments'" />
+          <uploadfile
+            @getUploadedId="getUploadedId"
+            :UploadButton="false"
+            ref="upload"
+            :text="'attachments'"
+          />
         </div>
       </div>
       <div class="col3 flex">
@@ -257,6 +262,7 @@ export default {
         startdate: '',
         enddate: '',
         tags: [],
+        attachments: '',
       },
       clientEdit: '',
       serviceEdit: '',
@@ -283,7 +289,9 @@ export default {
       // console.log(value.id);
       this.contract.client = value.id;
     },
-
+    getUploadedId(value) {
+      this.contract.attachments = value;
+    },
     addTagFn(value) {
       console.log(value);
       this.contract.tags = value.map(v => v.id);
@@ -318,7 +326,7 @@ export default {
               endDate: standardEndDate,
               amount: this.contract.amount,
               currency: this.contract.currency,
-              attachments: '5e1a30480000000000000000',
+              attachments: this.contract.attachments,
               status: this.contract.status,
               contractNumber: this.contract.number,
             })

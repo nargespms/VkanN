@@ -107,6 +107,8 @@ export default {
           },
           onSuccess: () => {
             this.postUrl(upload, extension);
+            console.log(upload);
+
             this.startUpload = true;
           },
         });
@@ -123,6 +125,8 @@ export default {
         })
         .then(res => {
           console.log(res);
+
+          this.$emit('getUploadedId', res.data.id);
         });
     },
     calPercentage(value) {

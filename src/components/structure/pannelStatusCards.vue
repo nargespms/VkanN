@@ -1,28 +1,21 @@
 <template>
   <div class="q-pa-xl pt32">
-    <TicketsStatusCard />
-    <charts />
-    <div class="dashboardSeprator center">
-      <span class="fn20">{{$t('billing')}}</span>
-    </div>
-    <billingStatusCard />
-    <charts />
+    <generalDashboardInfo />
+
+    <billingDashboard />
   </div>
 </template>
 
 
 <script>
-import TicketsStatusCard from './TicketsStatusCard.vue';
-import charts from './charts.vue';
-
-import billingStatusCard from './billingStatusCard.vue';
+import billingDashboard from '../dashboard/billingDashboard.vue';
+import generalDashboardInfo from '../dashboard/generalDashboardInfo.vue';
 
 export default {
   name: 'pannelStatusCards',
   components: {
-    TicketsStatusCard,
-    billingStatusCard,
-    charts,
+    billingDashboard,
+    generalDashboardInfo,
   },
 };
 </script>

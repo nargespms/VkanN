@@ -7,7 +7,7 @@
         {{$t('attachments')}}
       </span>
 
-      <uploadfile />
+      <uploadfile @getUploadedId="getUploadedId" />
     </div>
     <q-btn class="uploadTicket" color="primary" type="submit" @click.prevent="submitTicket">
       <q-icon name="fas fa-paper-plane " />
@@ -36,6 +36,10 @@ export default {
     };
   },
   methods: {
+    getUploadedId(value) {
+      this.$emit('getUploadedId', value);
+    },
+
     getTextFromEditor(value) {
       this.textValue = value;
       console.log(value);

@@ -27,6 +27,15 @@ export default {
       const dateValue = value.split('/').map(i => parseInt(i, 10));
       return new this.$persianDate(dateValue).toDate().toISOString();
     },
+    convertNumToEn(num) {
+      return num
+        .split('')
+        .map(char => {
+          const pos = '۰۱۲۳۴۵۶۷۸۹'.indexOf(char);
+          return pos === -1 ? char : pos;
+        })
+        .join('');
+    },
   },
 };
 </script>

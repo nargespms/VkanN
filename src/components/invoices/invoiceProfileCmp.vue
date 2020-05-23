@@ -1,6 +1,6 @@
 <template>
   <div>
-    <printInvoiceCmp />
+    <printInvoiceCmp :printData="printData" />
   </div>
 </template>
 
@@ -12,5 +12,6 @@ export default {
   components: {
     printInvoiceCmp,
   },
+  props: ['printData'],
 };
 </script>

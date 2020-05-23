@@ -3,7 +3,11 @@
     <div class="ticketWrap">
       <ticketInfo :data="this.ticket" @editorState="editorState" @changeStatus="changeStatus" />
       <template v-if="replyState">
-        <replyTicket :data="specificThreadToReply" @addToThreads="addToThreads" />
+        <replyTicket
+          @getUploadedId="getUploadedId"
+          :data="specificThreadToReply"
+          @addToThreads="addToThreads"
+        />
       </template>
     </div>
     <!--  for clients (chat) -->
@@ -47,9 +51,13 @@ export default {
       ticket: {},
       specificThreadToReply: '',
       componentKey: 0,
+      attachments: '',
     };
   },
   methods: {
+    getUploadedId(value) {
+      this.attachments = value;
+    },
     addToThreads(value) {
       console.log(value);
 
@@ -57,6 +65,7 @@ export default {
         .post('/v1/api/vkann/threads', {
           ticketId: this.ticket.id,
           description: value,
+          attachments: this.attachments,
         })
         .then(res => {
           console.log(res);

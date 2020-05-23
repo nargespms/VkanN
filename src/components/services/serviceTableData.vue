@@ -1,8 +1,5 @@
 <template>
   <div>
-    {{pagination}}
-    ******
-    {{innerPagination}}
     <q-table
       :data="data"
       :columns="columns"
@@ -208,7 +205,7 @@ export default {
       separator: 'cell',
       filter: {},
       tableSearch: '',
-      // innerPagination: this.pagination,
+      innerPagination: this.pagination,
     };
   },
   props: {
@@ -248,25 +245,10 @@ export default {
       this.$emit('request', props);
     },
   },
-  // watch: {
-  //   pagination: {
-  //     immediate: true,
-  //     deep: true,
-  //     handler(newVal) {
-  //       this.innerPagination = newVal;
-  //       console.log(`inner:${this.innerPagination}`);
-  //       console.log(`newval:${newVal}`);
-  //       console.log(newVal);
-  //     },
-  //   },
-  // },
-  computed: {
-    innerPagination: {
-      get() {
-        return this.pagination;
-      },
-      set(newVal) {
-        return newVal;
+  watch: {
+    pagination: {
+      handler(newVal) {
+        this.innerPagination = newVal;
       },
     },
   },
@@ -274,38 +256,10 @@ export default {
 </script>
 
 <style lang="scss">
-.tableListWrap {
-  .expandTable {
-    .q-icon {
-      color: #666;
-    }
-  }
-  .q-table__sort-icon {
-    color: #666;
-  }
-  .q-table__top {
-    .q-field__control {
-      border-bottom: 1px solid #b4b4b4;
-    }
-  }
-  .listNameTable,
-  .q-table thead th {
-    color: #000;
-    font-size: 16px;
-    text-align: center;
-  }
-}
 [dir] .my-sticky-header-column-table td:first-child {
   background-color: #e0e0e0;
 }
-[dir] .q-table__top {
-  background-color: #2f2f2f;
-  color: #fff !important;
-}
-[dir] .q-table__bottom {
-  background-color: #2f2f2f;
-  color: #fff !important;
-}
+
 [dir] .my-sticky-header-column-table tr:first-child th {
   background: #e0e0e0;
 }

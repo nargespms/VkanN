@@ -60,6 +60,7 @@
                   ref="ticketPicker"
                   transition-show="scale"
                   transition-hide="scale"
+                  content-class="task"
                 >
                   <tableDataWrap
                     @pickerInfo="pickerInfo"
@@ -204,11 +205,13 @@
                       @input="() => $refs.qDateProxy.hide()"
                       today-btn
                       calendar="persian"
+                      :options="taskDueDate"
                     />
                   </q-popup-proxy>
                 </q-icon>
               </template>
             </q-input>
+            {{taskDueDate()}}
           </div>
         </q-slide-transition>
       </div>
@@ -347,7 +350,20 @@ export default {
       priority: { required },
     },
   },
+
   methods: {
+    persionToGregorian(value) {
+      const dateValue = value.split('/').map(i => parseInt(i, 10));
+      return new this.$persianDate(dateValue).toDate().toISOString();
+    },
+    today() {
+      const date = new this.$persianDate();
+      date.formatPersian = false;
+      return date.format('YYYY/MM/DD');
+    },
+    taskDueDate(date) {
+      return date >= this.today();
+    },
     getAutoCompleteValueService(value) {
       this.task.serviceName = value.id;
     },
@@ -359,8 +375,6 @@ export default {
     pickerInfo(value) {
       this.task.ticketId = value.ticketNum;
       this.ticketPicker = false;
-
-      // console.log(value);
     },
     getTextFromEditor(value) {
       this.task.description = value;
@@ -369,14 +383,6 @@ export default {
       this.task.tags = value.map(v => v.id);
     },
 
-    filterFn(val, update) {
-      update(() => {
-        const needle = val.toLowerCase();
-        this.options = this.staffMember.filter(
-          v => v.name.toLowerCase().indexOf(needle) > -1
-        );
-      });
-    },
     submitTask() {
       this.empty = !this.$v.task.$anyDirty;
       this.errors = !this.$v.task.$anyError;
@@ -443,6 +449,7 @@ export default {
           this.task.title.length !== 0 &&
           this.task.departman.length !== 0
         ) {
+          const standardDueDate = this.persionToGregorian(this.task.dueDate);
           this.$axios
             .put(`/v1/api/vkann/tasks/${this.$route.params.taskId}`, {
               title: this.task.title,
@@ -453,7 +460,7 @@ export default {
               tags: this.task.tags,
               priority: this.task.priority,
               ticketId: this.task.ticketId,
-              dueDate: new Date(this.task.dueDate),
+              dueDate: standardDueDate,
               estimatedTime: this.task.stimateTime,
               // eslint-disable-next-line no-underscore-dangle
               ...(this.task.assignee.length > 0
@@ -533,10 +540,6 @@ export default {
         }
       }
     },
-    persionToGregorian(value) {
-      const dateValue = value.split('/').map(i => parseInt(i, 10));
-      return new this.$persianDate(dateValue).toDate().toISOString();
-    },
   },
   mounted() {
     if (this.profileMode === 'Edit') {
@@ -558,7 +561,6 @@ export default {
             this.task.serviceName = res.data.task.service._id;
           }
           this.staffEdit = res.data.task.asignee;
-          console.log('inja?');
 
           // eslint-disable-next-line no-underscore-dangle
           this.task.assignee = res.data.task.asignee._id;
@@ -709,12 +711,14 @@ export default {
   font-size: 16px;
   text-align: center;
 }
-.ticketTable tr:hover {
-  .idPicker {
-    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14),
-      0 3px 1px -2px rgba(0, 0, 0, 0.12);
-    cursor: pointer;
-    transition: ease-in 0.25s;
+.task {
+  .ticketTable tr:hover {
+    .idPicker {
+      box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14),
+        0 3px 1px -2px rgba(0, 0, 0, 0.12);
+      cursor: pointer;
+      transition: ease-in 0.25s;
+    }
   }
 }
 </style>

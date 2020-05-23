@@ -5,12 +5,25 @@
         class="usrInfoAvatar cardSectionWrapper bgCardPart"
         :style="{background:data.bg}"
       >
-        <router-link :to="url" class="text-white cardLinkInner">
+        <router-link v-if="!unclickable" :to="url" class="text-white cardLinkInner">
           <q-icon :name="data.icon" />
           <span v-if="!data.cardLabel" class="fnb cardName">{{$t(name)}}</span>
           <span v-if="data.cardLabel">{{$t(data.cardLabel)}}</span>
-          <span class="numberCardData" v-if="this.data.number">{{localizeNumber }}</span>
+          <span
+            class="numberCardData"
+            v-if="this.data.number || this.data.number === 0"
+          >{{localizeNumber }}</span>
         </router-link>
+
+        <div v-if="unclickable" class="text-white">
+          <q-icon :name="data.icon" />
+          <span v-if="!data.cardLabel" class="fnb cardName">{{$t(name)}}</span>
+          <span v-if="data.cardLabel">{{$t(data.cardLabel)}}</span>
+          <span
+            class="numberCardData"
+            v-if="this.data.number || this.data.number === 0"
+          >{{localizeNumber }}</span>
+        </div>
       </q-card-section>
       <!-- optional -->
       <!-- <q-card-actions class="bg-white">
@@ -23,7 +36,14 @@
 <script>
 export default {
   name: 'cardsAction',
-  props: ['data'],
+  // props: ['data', 'unclickable'],
+  props: {
+    data: Object,
+    unclickable: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       name: this.data.cardName,

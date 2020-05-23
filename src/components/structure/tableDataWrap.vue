@@ -127,15 +127,16 @@ export default {
   },
   methods: {
     onIdClick(value) {
-      console.log(value);
       this.$emit('pickerInfo', value);
     },
     onRequest(props) {
+      console.log(props);
+
       const { page, limit, rowsNumber, sortBy, descending } = props.pagination;
       const { tableSearch, filter } = props;
-      console.log(filter);
+
       this.loading = true;
-      console.log(props);
+
       this.$axios
         .get(this.endpoint, {
           params: {
@@ -149,16 +150,20 @@ export default {
           },
         })
         .then(response => {
-          this.data = response.data.result.docs;
-          this.pagination.rowsNumber = response.data.result.totalDocs;
-          this.pagination.rowsPerPage = response.data.result.limit;
-
-          // don't forget to update local pagination object
-          this.pagination.page = page;
-          this.pagination.limit = limit;
-          this.pagination.sortBy = sortBy;
-          this.pagination.descending = descending;
           this.loading = false;
+
+          const paginaton = {
+            rowsNumber: response.data.result.totalDocs,
+            rowsPerPage: response.data.result.limit,
+            page,
+            limit,
+            sortBy,
+            descending,
+          };
+
+          this.pagination = { ...this.pagination, ...paginaton };
+          this.data = response.data.result.docs;
+
           // test sort by
           if (sortBy) {
             this.data.sort((a, b) => {
@@ -213,6 +218,12 @@ export default {
       pagination: this.pagination,
       tableSearch: undefined,
     });
+    if (this.$route.query) {
+      this.onRequest({
+        pagination: this.pagination,
+        filter: { ...this.$route.query },
+      });
+    }
   },
 };
 </script>

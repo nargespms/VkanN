@@ -3,6 +3,7 @@
     <router-link
       :to="`/${this.$route.params.locale}/print/invoice/${this.$route.params.invoiceId}`"
       target="_blank"
+      class="float"
     >
       <q-btn color="primary" icon="print" class="printInvoiceBut">
         <q-tooltip
@@ -12,6 +13,19 @@
         >{{ $t('print') }}&nbsp;{{ $t('invoice') }}</q-tooltip>
       </q-btn>
     </router-link>
+    <q-btn
+      @click="payProcess"
+      color="primary"
+      :label="$t('payment')"
+      class="printInvoiceBut float"
+      :disable="printData.status === 'PAID'"
+    >
+      <q-tooltip
+        v-model="showing1"
+        transition-show="scale"
+        transition-hide="scale"
+      >{{ $t('payment') }}</q-tooltip>
+    </q-btn>
 
     <q-card class="clearme">
       <div>
@@ -35,7 +49,7 @@
 
         <q-tab-panels v-if="!isLoading" v-model="tab" animated>
           <q-tab-panel name="invoiceProfile" class="invoiceProfile">
-            <invoiceProfileCmp />
+            <invoiceProfileCmp :printData="printData" />
           </q-tab-panel>
 
           <q-tab-panel
@@ -52,6 +66,19 @@
         </q-tab-panels>
       </div>
     </q-card>
+    <q-btn
+      @click="payProcess"
+      color="primary"
+      :label="$t('payment')"
+      class="centerPayBut"
+      :disable="printData.status === 'PAID' || printData.status === 'PENDING'"
+    >
+      <q-tooltip
+        v-model="showing2"
+        transition-show="scale"
+        transition-hide="scale"
+      >{{ $t('payment') }}</q-tooltip>
+    </q-btn>
   </div>
 </template>
 
@@ -69,11 +96,23 @@ export default {
     return {
       tab: 'invoiceProfile',
       invoiceData: {},
-      isLoading: false,
+      isLoading: true,
       showing: false,
+      showing1: false,
+      showing2: false,
+      printData: {},
     };
   },
   methods: {
+    payProcess() {
+      this.$axios
+        .get(
+          `/v1/api/vkann/transaction/payment/parspal/${this.$route.params.invoiceId}`
+        )
+        .then(res => {
+          console.log(res);
+        });
+    },
     tabChanged(value) {
       this.tab = value;
       console.log(value);
@@ -86,12 +125,25 @@ export default {
     },
   },
   mounted() {
-    console.log(this.$route.params.invoiceId);
+    this.$axios
+      .get(`/v1/api/vkann/invoices/${this.$route.params.invoiceId}`)
+      .then(res => {
+        this.printData = res.data.invoice;
+        // this.invoice.cash = res.data.invoice.cash;
+        // this.invoice.currency = res.data.invoice.currency;
+        // this.invoice.items = res.data.invoice.items;
+        this.isLoading = false;
+      });
   },
 };
 </script>
 
 <style lang="scss">
+.centerPayBut {
+  margin: 12px auto;
+  width: 200px;
+  display: block;
+}
 .invoiceImg {
   @media screen and (max-width: 800px) {
     display: none;

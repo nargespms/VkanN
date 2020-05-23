@@ -263,15 +263,8 @@ export default {
       todayDate: new Date(),
       departmans: ['INFO', 'TECH', 'BILLING'],
       priorities: ['CRITICAL', 'IMPORTANT', 'NORMAL', 'LOW'],
-      ticketStatus: [
-        'CLOSED',
-        'OPEN',
-        'ANSEWRED',
-        'UNANSWERD',
-        'INPROGRESS',
-        'ONHOLD',
-        'CUSTOMERREPLY',
-      ],
+      ticketStatus: ['CLOSED', 'ANSEWRED', 'UNANSWERD', 'INPROGRESS', 'ONHOLD'],
+
       FilterOption: this.status,
       separator: 'cell',
       filter: {},
@@ -358,42 +351,31 @@ export default {
       return this.$store.state.module1.userData.user.role === 'MANAGER';
     },
   },
+  watch: {
+    pagination: {
+      handler(newVal) {
+        this.innerPagination = newVal;
+      },
+    },
+  },
+  // mounted() {
+  //   console.log(this.$route.query);
+  //   this.filter = { ...this.$route.query };
+  //   console.log(this.filter);
+  //   this.onRequest({
+  //     pagination: this.innerPagination,
+  //     filter: { ...this.$route.query },
+  //   });
+  //   console.log('too');
+  // },
 };
 </script>
 
 <style lang="scss">
-.tableListWrap {
-  .expandTable {
-    .q-icon {
-      color: #666;
-    }
-  }
-  .q-table__sort-icon {
-    color: #666;
-  }
-  .q-table__top {
-    .q-field__control {
-      border-bottom: 1px solid #b4b4b4;
-    }
-  }
-  .listNameTable,
-  .q-table thead th {
-    color: #000;
-    font-size: 16px;
-    text-align: center;
-  }
-}
 [dir] .my-sticky-header-column-table td:first-child {
   background-color: #e0e0e0;
 }
-[dir] .q-table__top {
-  background-color: #2f2f2f;
-  color: #fff !important;
-}
-[dir] .q-table__bottom {
-  background-color: #2f2f2f;
-  color: #fff !important;
-}
+
 [dir] .my-sticky-header-column-table tr:first-child th {
   background: #e0e0e0;
 }
@@ -444,13 +426,13 @@ export default {
 .tableSearchInput * {
   color: #fff !important;
 }
-.ticketTable tr:hover {
-  .idPicker {
-    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14),
-      0 3px 1px -2px rgba(0, 0, 0, 0.12);
-    transition: ease-in 0.25s;
-  }
-}
+// .ticketTable tr:hover {
+//   .idPicker {
+//     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14),
+//       0 3px 1px -2px rgba(0, 0, 0, 0.12);
+//     transition: ease-in 0.25s;
+//   }
+// }
 .red {
   background-color: #b70000;
   color: #fff;
