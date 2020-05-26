@@ -1,6 +1,7 @@
 # develop stage
 FROM node:12 as build-stage
-WORKDIR /app
+# WORKDIR /app
+RUN cd /app
 COPY package*.json ./
 RUN npm install
 COPY . .
@@ -12,6 +13,7 @@ RUN npm run build
 # FROM nginx:1.17.5-alpine as production-stage
 # COPY --from=build-stage /app/dist/spa /usr/share/nginx/html
 EXPOSE 8083
+WORKDIR /app
 # CMD ["nginx", "-g", "daemon off;"]
 # start the app
 # WORKDIR /
