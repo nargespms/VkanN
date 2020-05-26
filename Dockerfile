@@ -25,10 +25,11 @@ FROM node:12 as build-stage
 
 # Create app directory
 RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+WORKDIR /usr/src/app    
 
 # Install app dependencies
 COPY /app/package.json /usr/src/app/
+RUN npm install -g quasar-cli
 RUN npm install
 
 # Bundle app source
