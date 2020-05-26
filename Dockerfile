@@ -1,9 +1,10 @@
 # develop stage
 FROM node:12 as build-stage
-# WORKDIR /app
-ADD app /app
-RUN cd /app
+WORKDIR /app
+
+COPY package*.json ./
 RUN npm install
+COPY ./src .
 # RUN quasar build
 # build stage
 # FROM develop-stage as build-stage
@@ -17,6 +18,7 @@ WORKDIR /app
 # start the app
 # WORKDIR /
 CMD [ "quasar ","build" ]
+
 
 
 
