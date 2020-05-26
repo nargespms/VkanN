@@ -29,8 +29,9 @@ WORKDIR /usr/src/app
 
 # Install app dependencies
 COPY /app/package.json /usr/src/app/
-RUN npm install -g quasar-cli
-RUN npm install
+RUN npm install -g quasar-cli \ 
+    && npm install \
+    && npm update -g
 
 # Bundle app source
 COPY ./app /usr/src/app
