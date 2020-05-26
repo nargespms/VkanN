@@ -36,7 +36,7 @@ RUN npm install -g quasar-cli \
 
 # Bundle app source
 COPY ./app /usr/src/app
-STOPSIGNAL SIGTERM
+# STOPSIGNAL SIGTERM
 EXPOSE 8083
 CMD [ "npm", "run" ,"build" ]
 
