@@ -13,7 +13,7 @@ RUN quasar build
 EXPOSE 8083
 # CMD ["nginx", "-g", "daemon off;"]
 # start the app
-CMD [ "quasar" ,"build" ]
+CMD [ "npm ", "run-script","build" ]
 
 
 
