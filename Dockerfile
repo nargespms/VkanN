@@ -4,7 +4,7 @@ FROM node:12 as build-stage
 ADD app /app
 RUN cd /app
 RUN npm install
-RUN quasar build
+# RUN quasar build
 # build stage
 # FROM develop-stage as build-stage
 # RUN quasar build
@@ -16,7 +16,7 @@ WORKDIR /app
 # CMD ["nginx", "-g", "daemon off;"]
 # start the app
 # WORKDIR /
-# CMD [ "quasar ","build" ]
+CMD [ "quasar ","build" ]
 
 
 
