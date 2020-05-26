@@ -2,7 +2,7 @@
 FROM node:12 as develop-stage
 WORKDIR /src
 COPY package*.json ./
-RUN npm global add @quasar/cli
+RUN npm install -g @quasar/cli
 COPY . .
 # build stage
 FROM develop-stage as build-stage
