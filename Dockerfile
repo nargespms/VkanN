@@ -3,9 +3,7 @@ FROM node:12 as build-stage
 # WORKDIR /app
 ADD app /app
 RUN cd /app
-COPY package*.json ./
 RUN npm install
-COPY . .
 RUN npm run build
 # build stage
 # FROM develop-stage as build-stage
