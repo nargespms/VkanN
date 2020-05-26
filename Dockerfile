@@ -6,7 +6,6 @@ RUN npm install -g @quasar/cli
 COPY . .
 # build stage
 FROM develop-stage as build-stage
-RUN npm
 RUN quasar build
 # # production stage
 # FROM nginx:1.17.5-alpine as production-stage
