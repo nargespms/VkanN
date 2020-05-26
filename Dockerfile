@@ -35,6 +35,6 @@ RUN npm install
 COPY ./app /usr/src/app
 
 EXPOSE 8080
-CMD [ "npm", "start" ]
+CMD [ "npm", "build" ]
 
 
