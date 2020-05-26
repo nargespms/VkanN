@@ -3,6 +3,7 @@ FROM node:12 as develop-stage
 WORKDIR /src
 COPY package*.json ./
 RUN npm install -g @quasar/cli
+RUN npm install
 COPY . .
 # build stage
 FROM develop-stage as build-stage
@@ -13,7 +14,7 @@ RUN quasar build
 EXPOSE 8083
 # CMD ["nginx", "-g", "daemon off;"]
 # start the app
-CMD [ "npm ", "run-script","build" ]
+CMD [ "quasar ","build" ]
 
 
 
