@@ -1,6 +1,7 @@
 # develop stage
 FROM node:12 as build-stage
 # WORKDIR /app
+ADD app /app
 RUN cd /app
 COPY package*.json ./
 RUN npm install
