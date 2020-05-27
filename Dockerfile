@@ -31,8 +31,7 @@ WORKDIR /usr/src/app
 COPY /app/package.json /usr/src/app/
 RUN npm install -g quasar-cli \ 
     && npm install \
-    && npm update -g \
-    && truncate -s 0 /var/log/*.log
+    && npm update -g 
 
 # Bundle app source
 COPY ./app /usr/src/app

@@ -21,7 +21,7 @@ export default {
             this.$store.commit('module1/userDataFromServer', null, {
               module: 'module1',
             });
-            this.$router.push({ path: `/${this.$route.params.locale}/signIn` });
+            this.$router.push({ path: '/fa/signIn' });
           }
         });
     },
